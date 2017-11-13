@@ -1,4 +1,6 @@
+.DS_Store
 target/
-resources/
 *-init.clj
+resources/public/js
+resources/public/img
 figwheel_server.log

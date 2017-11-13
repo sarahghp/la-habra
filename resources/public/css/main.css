@@ -1,0 +1,48 @@
+.logos img {
+  width: 100px;
+  margin-left: 5px;
+  display: none;
+}
+
+@keyframes fade-in-out {
+  0%, 94%, 100% {
+    fill-opacity: 1;
+  }
+
+  4% {
+    fill-opacity: .7;
+  }
+
+  8% {
+    fill-opacity: .5;
+  }
+
+  50% {
+    fill-opacity: .2;
+  }
+
+  54% {
+    fill-opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    fill-opacity: 1;
+  }
+
+  100% {
+    fill-opacity: 0;
+  }
+}
+
+.fade-i-o {
+  animation: fade-in-out 1s infinite;
+}
+
+.fade-o {
+  animation-name: fade-out;
+  animation-duration: 4s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
