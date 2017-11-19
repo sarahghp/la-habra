@@ -64,21 +64,27 @@
   [:path { :key item-key :class class :d d :style style }])
 
 (defn circ
-  [x y r f c]
+  [x y r f]
   [:circle { :cx x
              :cy y
              :r r
              :fill f
-             :class c
              :key (random-uuid)} ])
 
-(defn gen-ps ;; makes pattern shape
-  [fill-id path transform class]
-  { :class (or class "")
-    :style { :fill (str "url(#" fill-id ") #fff")
+(defn gen-shape
+  [fill-string path transform]
+  { :style { :fill fill-string
              :transform transform }
     :d path
     :item-key (random-uuid)})
+
+(defn gen-ps ;; makes pattern shape
+  [fill-id]
+  (partial gen-shape (str "url(#" fill-id ") #fff")))
+
+(defn gen-ss ;; makes pattern shape
+  [fill]
+  (partial gen-shape fill))
 
 (defn gen-offset-lines
   [f h space-btw line-num]
@@ -133,6 +139,19 @@
         (.insertRule sheet keyframes sheet-length)
           name ))
 
+;; -------------------- SHAPE ANIMATION HELPER ---------------------------
+
+(defn anim
+  [shape name duration count delay timing]
+  (let [animations
+    { :animation-name name
+      :animation-duration duration
+      :animation-iteration-count count
+      :animation-delay delay
+      :animation-timing-function (or timing "ease")}]
+          (update-in shape [:style] #(merge % animations))))
+
+
 ;; -------------------- SOME BASE KEYFRAMES ---------------------------
 
 (make-frames
@@ -159,6 +178,8 @@
 
 (defn trans [x y] (str "translate(" x "px, " y "px)"))
 
+(println (anim ((gen-ps (:id pink-squares)) hept (trans 10 40)) "wee-oo" "10s" "infinite" 0 nil ))
+
 
 ;; ------------------- BLINKING ---------------------------
 
@@ -174,17 +195,17 @@
 
 (defonce collection (atom (list)))
 
-(def fade-me (atom (poly (gen-ps (:id pink-squares) tri (trans 100 100) "fade-o"))))
-(def ac (atom (circ 200 200 20 orange "oo")))
+(def fade-me (atom (poly (anim ((gen-ps (:id pink-squares)) hept (trans 100 400)) "wee-oo" "10s" "infinite" 0 nil))))
+; (def ac (atom (circ 200 200 20 orange)))
 
 (defn cx [frame] (list
   #_(when (even-frame frame)
     (poly (gen-ps (:id pink-squares) hept (trans 10 40) nil)))
-  (poly (gen-ps (:id pink-squares) hex (trans 600 (mod (+ 10 frame) @height)) nil))
+  ; (poly (gen-ps (:id pink-squares) hex (trans 600 (mod (+ 10 frame) @height)) nil))
   @fade-me
-  (gen-bg-lines mint (mod frame 60))
-  (poly (gen-ps (:id pink-squares) hept (trans 10 40) nil))
-  @ac
+  ; (gen-bg-lines mint (mod frame 60))
+  ; (poly (gen-ps (:id pink-squares) hept (trans 10 40) nil))
+  ; @ac
 
   ))
 
