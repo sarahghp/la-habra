@@ -145,6 +145,7 @@
   [shape name duration count delay timing]
   (let [animations
     { :animation-name name
+      :animation-fill-mode "forwards"
       :animation-duration duration
       :animation-iteration-count count
       :animation-delay delay
@@ -169,7 +170,7 @@
   [0 17 37 57 100]
   (make-body "transform"
     [ "scale(1)"
-      "translateX(500%) scale(1.4)"
+      "translateX(400%) scale(1.4)"
       "translateX(70%) scale(2.5)"
       "scale(3.9)"
       "scale(1)"]))
@@ -195,15 +196,26 @@
 
 (defonce collection (atom (list)))
 
-(def fade-me (atom (poly (anim ((gen-ps (:id pink-squares)) hept (trans 100 400)) "wee-oo" "10s" "infinite" 0 nil))))
+(def fade-me (atom
+  (poly
+    (anim
+      ((gen-ps (:id pink-squares)) hept (trans 0 0))
+      "fade-out" "14s" 1 0 nil))))
+
+(def me-too (atom
+  (poly
+    (anim
+      ((gen-ss mint) hex (trans 0 0))
+      "fade-out" "15s" "infinite" 0 nil))))
 ; (def ac (atom (circ 200 200 20 orange)))
 
 (defn cx [frame] (list
-  #_(when (even-frame frame)
-    (poly (gen-ps (:id pink-squares) hept (trans 10 40) nil)))
+    #_(when-not (nth-frame 14 frame)
+    (poly ((gen-ps (:id pink-squares)) hept (trans 10 40))))
   ; (poly (gen-ps (:id pink-squares) hex (trans 600 (mod (+ 10 frame) @height)) nil))
   @fade-me
-  ; (gen-bg-lines mint (mod frame 60))
+  @me-too
+  (gen-bg-lines mint (mod frame 60))
   ; (poly (gen-ps (:id pink-squares) hept (trans 10 40) nil))
   ; @ac
 
