@@ -1,6 +1,6 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
-            [clojure.string :as string :refer [split-lines]]))
+            [clojure.string :as string :refer [split-lines split join]]))
 
 (enable-console-print!)
 
@@ -13,8 +13,9 @@
 (def settings {:width @width
                :height @height })
 
-
-;; ------------------------ PRIMITIVES ---------------------
+;; ------------------------------------------------------ ;;
+;; ------------------------ SHAPES ---------------------
+;; ------------------------------------------------------ ;;
 
 ;; shape primitives
 
@@ -35,6 +36,8 @@
 ;; fill primitives
 
 ;; solid colors
+(def mint "#00baa9")
+(def orange "#f80")
 
 ;; patterns
 
@@ -56,9 +59,18 @@
               :width "10"
               :height "10" }]])
 
-(defn shape
+(defn poly
   [{ :keys [class d style item-key] }]
   [:path { :key item-key :class class :d d :style style }])
+
+(defn circ
+  [x y r f c]
+  [:circle { :cx x
+             :cy y
+             :r r
+             :fill f
+             :class c
+             :key (random-uuid)} ])
 
 (defn gen-ps ;; makes pattern shape
   [fill-id path transform class]
@@ -68,10 +80,80 @@
     :d path
     :item-key (random-uuid)})
 
+(defn gen-offset-lines
+  [f h space-btw line-num]
+  (let [adj-h (* h line-num 0.2)]
+    [:rect { :x 0
+             :y (* line-num (+ adj-h space-btw))
+             :width (:width settings)
+             :height adj-h
+             :fill f
+             :key (random-uuid)}]))
+
+(defn gen-bg-lines
+  [color num]
+  [:g {:key (random-uuid)} (map (partial gen-offset-lines color 4 10) (range num))])
+
+
 ;; ------------------------------------------------------ ;;
 ;; --------------------- ANIMATIONS --------------------- ;;
 ;; ------------------------------------------------------ ;;
 
+;; -------------------- CSS MANIP HELPERS ------------------
+
+(defn make-body
+  [att values]
+  (let [decorated-att (str att ": ")
+        decorated-vals (map #(str % ";") values)]
+    (map join (partition 2
+      (interleave
+        (repeat (count decorated-vals) decorated-att)
+        decorated-vals)))))
+
+(defn splice-bodies
+  [& bodies]
+  (->> bodies
+    (map #(split % #";"))
+    (apply map vector)
+    (apply map #(str % ";" %2 ";"))))
+
+(defn frames-and-bodies
+  [frames bodies]
+  (->> bodies
+      (map #(apply str % " }"))
+      (interleave (map #(str % "% { ") frames))
+      (apply str)))
+
+;; get the key frames string, append it to the stylesheet, return name
+(defn make-frames
+  [name frames bodies]
+  (let [sheet (aget js/document "styleSheets" "0")
+        sheet-length (aget sheet "cssRules" "length")
+        keyframes (str "@keyframes " name "{ " (frames-and-bodies frames bodies) "}" )]
+        (.insertRule sheet keyframes sheet-length)
+          name ))
+
+;; -------------------- SOME BASE KEYFRAMES ---------------------------
+
+(make-frames
+  "fade-in-out"
+  [0 4 8 50 54 94]
+  (make-body "fill-opacity" [1 0.7 0.5 0.2 0 1]))
+
+(make-frames
+  "fade-out"
+  [0 100]
+  (make-body "fill-opacity" [1 0]))
+
+(make-frames
+  "wee-oo"
+  [0 17 37 57 100]
+  (make-body "transform"
+    [ "scale(1)"
+      "translateX(500%) scale(1.4)"
+      "translateX(70%) scale(2.5)"
+      "scale(3.9)"
+      "scale(1)"]))
 
 ;; -------------------- MOVING ---------------------------
 
@@ -92,13 +174,17 @@
 
 (defonce collection (atom (list)))
 
-(def fade-me (atom (shape (gen-ps (:id pink-squares) tri (trans 100 100) "fade-o"))))
+(def fade-me (atom (poly (gen-ps (:id pink-squares) tri (trans 100 100) "fade-o"))))
+(def ac (atom (circ 200 200 20 orange "oo")))
 
 (defn cx [frame] (list
-  (when (even-frame frame)
-    (shape (gen-ps (:id pink-squares) hept (trans 10 40) nil)))
-  ; (shape (gen-ps (:id pink-squares) tri (trans 100 100) "fade-o"))
-  ;@fade-me
+  #_(when (even-frame frame)
+    (poly (gen-ps (:id pink-squares) hept (trans 10 40) nil)))
+  (poly (gen-ps (:id pink-squares) hex (trans 600 (mod (+ 10 frame) @height)) nil))
+  @fade-me
+  (gen-bg-lines mint (mod frame 60))
+  (poly (gen-ps (:id pink-squares) hept (trans 10 40) nil))
+  @ac
 
   ))
 
@@ -113,11 +199,11 @@
 
 (defonce start-cx-timer
   (js/setInterval
-    #(reset! collection (cx @frame)) 20))
+    #(reset! collection (cx @frame)) 50))
 
 (defonce start-frame-timer
   (js/setInterval
-    #(swap! frame inc) 500))
+    #(swap! frame inc) 300))
 
 (defn drawing []
   [:svg { :height (:width settings), :width (:height settings) }
@@ -125,7 +211,7 @@
     ;; eventually this should take in all the patterns
     [:defs (pattern pink-squares)]
 
-    ;; then here dereference a state full of shapes
+    ;; then here dereference a state full of polys
     @collection ])
 
 (reagent/render-component [drawing]
