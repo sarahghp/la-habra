@@ -62,9 +62,15 @@
       "scale(3.9)"
       "scale(1)"]))
 
-;; -------------------- MOVING ---------------------------
+  (make-frames
+    "rot"
+    [0 100]
+    (make-body "transform" ["rotate(0deg)" "rotate(360deg)"]))
 
-(defn trans [x y] (str "translate(" x "px, " y "px)"))
+(make-frames
+  "rev"
+  [0 100]
+  (make-body "transform" ["rotate(0deg)" "rotate(-360deg)"]))
 
 ;; ------------------- BLINKING ---------------------------
 

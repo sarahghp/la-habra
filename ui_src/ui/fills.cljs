@@ -3,6 +3,8 @@
 ;; solid colors
 (def mint "#00baa9")
 (def orange "#f80")
+(def navy "#161f93")
+(def pink "#fb5d67")
 
 ;; patterns
 
