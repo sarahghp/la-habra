@@ -2,7 +2,16 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct b1 b2 b3 b4]]
-            [ui.fills :as fills :refer [pattern mint navy orange pink pink-squares]]
+            [ui.fills :as fills :refer
+              [ gray
+                mint
+                navy
+                orange
+                br-orange
+                pink
+                white
+                pattern
+                pink-squares]]
             [ui.animations :as animations :refer
               [ make-body
                 splice-bodies
@@ -167,7 +176,7 @@
 (def rot-rect-2
   (->>
     (gen-rect pink 400 200 80 10)
-    (style {:transform-origin "center"})
+    (style {:transform-origin "center" :opacity .5})
     (anim "rot" "7s" "infinite" { :delay ".5s"})
     (rect)
     (atom)
@@ -178,34 +187,61 @@
   (max n (- n)))
 
 (defn cx [frame]
-  ;; write animation/atom helper and define those here
   (list
-    #_(when-not (nth-frame 14 frame)
-        (poly ((gen-ps (:id pink-squares)) hept (trans 10 40))))
-  ; (println (abs (- @height (* 10 frame))))
-  #_(rect (gen-rect navy 0 (if
-    (< 0 (- @height (* 10 frame)))
-      (- @height (* 10 (mod frame @height)))
-      0) "100%" @height))
-  (rect (gen-rect mint 0 0 "100%" "100%"))
 
-  ; (when (nth-frame 2 frame) (circ ((gen-sc orange) 100 100 20)))
+  #_(let [h (settings :height)]
+    (->>
+      (gen-rect
+        navy 0 (- h (mod (* 2 frame) (* 2 h)))
+        "100%" h)
+      (rect)
+        ))
+
+  (let [colors [orange  navy  mint  pink  gray white]
+        n (count colors)]
+        (->>
+          (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
+          (style {:opacity 1})
+          (rect)
+          (when (or (nth-frame 4 frame) (nth-frame 5 frame) (nth-frame 6 frame) (nth-frame 7 frame)))
+        ))
+
+  (when (nth-frame 1 frame) (circ ((gen-sc orange) 100 (/ (settings :height) 2.4) 20)))
+  (when (nth-frame 1 frame) (circ ((gen-sc navy) 150 (/ (settings :height) 2.4) 20)))
+
+  #_(when (nth-frame 2 frame) (->>
+     ((gen-sc br-orange) 130 (/ (settings :height) 2.4) 20)
+     (style {:opacity .7})
+     (circ)
+    ))
+
+  (when (nth-frame 1 frame) (circ ((gen-sc mint) 200 (/ (settings :height) 2.4) 20)))
+  (when (nth-frame 1 frame) (circ ((gen-sc pink) 250 (/ (settings :height) 2.4) 20)))
+  (when (nth-frame 1 frame) (circ ((gen-sc gray) 300 (/ (settings :height) 2.4) 20)))
+  (when (nth-frame 1 frame) (circ ((gen-sc white) 350 (/ (settings :height) 2.4) 20)))
+
   ; (when (nth-frame 4 frame) (circ ((gen-sc orange) 600 450 60)))
-  (when (nth-frame 2 frame) (circ ((gen-sc navy) 100 100 20)))
-  @rot-rect
-  @rot-rect-2
-  ;(when (nth-frame 2 frame) (rect (gen-rect navy 400 200 80 10)))
-  ;(when (nth-frame 6 frame) (circ ((gen-sc navy) 180 660 200)))
-  ;(when (nth-frame 12 frame) (circ ((gen-sc orange) 40 700 200)))
+  ; (when (nth-frame 2 frame) (circ ((gen-sc navy) 100 100 20)))
+  ; @rot-rect
+  ; @rot-rect-2
+
 
   ;(poly ((gen-ps (:id pink-squares)) hex (trans 600 (mod (* 2 frame) @height)) nil))
-  @fade-me
+  ; @fade-me
   ;(gen-bg-lines navy (mod frame 60))
   ;(gen-bg-lines mint (mod frame 60))
-  ;(poly ((gen-ps (:id pink-squares)) hept (trans 10 40) nil))
-  @ac
-  (when (nth-frame 4 frame)(freak-out (/ @width 1) (/ @height 1) 200 10 pink))
-  ;(poly ((gen-ps (:id pink-squares)) hex (trans 100 (mod (* 4 (+ 12 frame)) @height)) nil))
+  #_(->>
+    ((gen-ps (:id pink-squares)) tri)
+    (style {:transform "translate(100px, 400px)"})
+    (poly))
+  ; @ac
+  ; (when (nth-frame 4 frame)(freak-out (/ @width 1) (/ @height 1) 200 10 pink))
+  #_(->>
+    ((gen-ps (:id pink-squares)) hex)
+    (style {:transform
+      (str "translate(100px," (mod (* 4 (+ 12 frame)) @height) "px)")})
+    (poly)
+  )
 
 
   ))
