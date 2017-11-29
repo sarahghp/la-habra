@@ -27,6 +27,7 @@
                 :cache-analysis true}}
     {:source-paths ["ui_src" "dev_src"]
      :id "frontend-dev"
+     :figwheel {:heads-up-display false}
      :compiler {:output-to "resources/public/js/ui-core.js"
                 :output-dir "resources/public/js/ui-out"
                 :source-map true
