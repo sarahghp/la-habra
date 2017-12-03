@@ -1,9 +1,6 @@
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Gonzih/feeds2imap.clj/blob/master/LICENSE.md) [![Build Status](https://travis-ci.org/Gonzih/cljs-electron.svg?branch=master)](https://travis-ci.org/Gonzih/cljs-electron)
 
-# La Habra 
-## The Shape of Things to DOM
-
-*This project is built on [a cljs/electron app template from Max Gonzih](https://github.com/Gonzih/cljs-electron)*
+# La Habra: The Shape of Things to DOM
 
 ### La Habra is the tool I use to live code visuals as one half of [Codie](https://twitter.com/hi_codie). They look like this.
 
@@ -33,4 +30,6 @@ npm install electron-prebuilt -g # install electron binaries
 lein cooper                      # compile cljs and start figwheel
 electron .                       # start electron from another terminal
 ```
+
+*This project is built on [a cljs/electron app template from Max Gonzih](https://github.com/Gonzih/cljs-electron)*
 
