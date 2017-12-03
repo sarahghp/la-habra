@@ -7,6 +7,8 @@
 
 La Habra is the tool I use to live code visuals as one half of Codie. They look like this.
 
+![gif of livecoded visuals](./11-28-finale.gif)
+
 This repo includes the latest version of the app on master, as well as saved final states from performances in dated branches.
 
 The relevant code is all in `ui_src/ui`. It creates two timers (one for the frame and one to refresh the drawing), provides some timing and drawing shortcut functions, and includes some animation helpers that enable me to do terrible things to the stylesheet from the main Clojurescript file. Also built-in are some basic colors and patterns.
