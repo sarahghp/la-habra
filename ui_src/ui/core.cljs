@@ -9,9 +9,14 @@
                 orange
                 br-orange
                 pink
-                white
-                pattern
-                pink-squares]]
+                white]]
+            [ui.patterns :as patterns :refer
+             [ pattern
+               blue-circs
+               pink-circs
+               pink-stripes
+               gray-circs
+               gray-circs-lg]]
             [ui.animations :as animations :refer
               [ make-body
                 splice-bodies
@@ -25,9 +30,10 @@
 (println "Loaded.")
 
 ;; hides heads up display for performance
-(let [heads-up-display (.getElementById js/document "figwheel-heads-up-container")]
+(defn hide-display [] (let [heads-up-display (.getElementById js/document "figwheel-heads-up-container")]
   (.setAttribute heads-up-display "style" "display: none")
-)
+))
+
 
 ;; ------------------------ SETTINGS  ---------------------
 
@@ -150,32 +156,7 @@
 
 ; "fade-in-out" "fade-out" "wee-oo" "rot" "rev"
 
-;; ----------- COLLECTION SETUP AND CHANGE ----------------
-
-(defonce collection (atom (list)))
-
-(make-frames
-  "woosh"
-    [10, 35, 55, 85, 92]
-   (make-body "transform" [
-     "translate(80%, 50%) rotate(2deg) scale(1.2)"
-     "translate(80%, 50%) rotate(100deg) scale(4.4)"
-     "translate(80%, 50%) rotate(194deg) scale(10.4)"
-     "translate(80%, 50%) rotate(210deg) scale(5.2)"
-     "translate(80%, 50%) rotate(400deg) scale(1)"
-     ]))
-
-     (make-frames
-       "woosh-2"
-         [10, 35, 55, 85, 92]
-        (make-body "transform" [
-          "translate(80%, 50%) rotate(2deg) scale(11.2)"
-          "translate(80%, 50%) rotate(100deg) scale(4.4)"
-          "translate(80%, 50%) rotate(194deg) scale(10.4)"
-          "translate(80%, 50%) rotate(210deg) scale(7.2)"
-          "translate(80%, 50%) rotate(400deg) scale(1)"
-          ]))
-
+;; --------------- ANIMATIONS STORAGE --------------------
 
 (make-frames "atob" [0 100] (make-body "transform" ["translate(100px, 0px) scale(1.4)" "translate(800px, 400px) scale(4.2)"]))
 (make-frames "ctod" [0 100] (make-body "transform" ["translate(1000px, 0px)" "translate(200px, 500px)"]))
@@ -184,7 +165,7 @@
 
 (def fade-me
   (->>
-    ((gen-ps (:id pink-squares)) hept)
+    ((gen-ps (:id pink-circs)) hept)
     (anim "fade-out" "14s" "infinite")
     (poly)
     (atom)
@@ -201,7 +182,7 @@
 (def ac
   (->>
     ((gen-sc orange) 200 200 20)
-    (anim "wee-oo" "15s" "infinite")
+    (anim "wee-oo" "5s" "infinite")
     (circ)
     (atom)))
 
@@ -213,114 +194,162 @@
     (rect)
     (atom)))
 
+;; ----------- COLLECTION SETUP AND CHANGE ----------------
+
+(defonce collection (atom (list)))
+
+(make-frames
+  "woosh"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+     "translate(80%, 50%) rotate(2deg) scale(1.2)"
+     "translate(80%, 50%) rotate(100deg) scale(4.4)"
+     "translate(80%, 50%) rotate(194deg) scale(10.4)"
+     "translate(80%, 50%) rotate(210deg) scale(5.2)"
+     "translate(80%, 50%) rotate(400deg) scale(1)"
+     ]))
+     
+     (make-frames
+       "woosh-2"
+         [10, 35, 55, 85, 92]
+        (make-body "transform" [
+          "translate(500px, 50%) rotate(2deg) scale(2.2)"
+          "translate(500px, 50%) rotate(100deg) scale(6.4)"
+          "translate(500px, 50%) rotate(194deg) scale(12.4)"
+          "translate(500px, 50%) rotate(210deg) scale(6.2)"
+          "translate(500px, 50%) rotate(400deg) scale(1)"
+          ]))
+          
+          (make-frames
+            "woosh-2"
+              [10, 35, 55, 85, 92]
+             (make-body "transform" [
+               "translate(500px, 600px) rotate(2deg) scale(2.2)"
+               "translate(500px, 600px) rotate(100deg) scale(6.4)"
+               "translate(500px, 600px) rotate(194deg) scale(12.4)"
+               "translate(500px, 600px) rotate(210deg) scale(6.2)"
+               "translate(500px, 600px) rotate(400deg) scale(1)"
+               ]))
+  
+  ; 500px, 50% // 500px, 600px // 2 6 12 6 1
+  
+
+
+
+
+
 (def move-me
   (->>
-   ((gen-ps (:id pink-squares)) hept)
+   ((gen-ps (:id gray-circs-lg)) hept)
    (style {:transform-origin "center" :transform "scale(1.4)"})
-   (anim "woosh-2" "3s" "infinite")
+   (anim "woosh" "20s" "infinite")
    (poly)
    (atom)))
-
+   
    (def move-me-2
      (->>
-      ((gen-ps (:id pink-squares)) hept)
+      ((gen-ps (:id gray-circs-lg)) hept)
       (style {:transform-origin "center" :transform "scale(1.4)"})
-      (anim "woosh" "2s" "infinite")
+      (anim "woosh-2" "22s" "infinite")
       (poly)
       (atom)))
-
+      
       (def move-me-3
         (->>
-         ((gen-ss br-orange) hept)
+         ((gen-ps (:id pink-circs) hex)
          (style {:transform-origin "center" :transform "scale(1.4)"})
-         (anim "woosh" "2s" "infinite")
+         (anim "woosh-3" "18s" "infinite")
          (poly)
          (atom)))
+         
+         (def move-me-4
+           (->>
+            ((gen-ps (:id pink-circs) hept)
+            (style {:transform-origin "center" :transform "scale(1.4)"})
+            (anim "woosh-3" "42s" "infinite")
+            (poly)
+            (atom)))
+
+; gray-circs-lg hept woosh
+
 
 
 (defn cx [frame]
   (list
 
 
-  (let [h (settings :height)]
+  #_(let [h (settings :height)]
     (->>
       (gen-rect
-        navy 0 (- h (mod (* 2 frame) (* 10 h)))
+        navy 0 (- h (mod (* 2 frame) (* 10 h))) 
         "100%" h)
       (rect)
         ))
 
-  ;(freak-out @width @height 40 50 white)
-
-  (let [colors [ white mint mint mint navy navy navy navy] ; orange navy mint pink gray white
+  (let [colors [ gray gray gray gray ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
-          (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
+          (gen-rect (nth colors (mod frame n)) 0 0 "2000%" "2000%")
           (style {:opacity .7})
           (rect)
-          ;(when (or (nth-frame 4 frame) (nth-frame 5 frame) (nth-frame 6 frame) (nth-frame 7 frame)))
         ))
 
-  #_(->>
-   (gen-rect navy 60 510 160 20)
+  (->>
+   (gen-rect navy 60 510 180 20)
    (style {:transform-origin "center ":transform "rotate(-30deg)"})
+   (when (nth-frame 3 frame)) 
    (rect))
 
+ (->>
+  (gen-rect navy 80 540 180 20)
+  (style {:transform-origin "center ":transform "rotate(-30deg)"})
+  (when (nth-frame 3 frame)) 
+  (rect))
+  
   (->>
-   ((gen-sc gray) 300 300 100)
-   (circ)
-   (when (nth-frame 4 frame)))
+   (gen-rect navy 560 210 180 20)
+   (style {:transform-origin "center ":transform "rotate(-30deg)"})
+   (when (nth-frame 4 frame)) 
+   (rect))
 
  (->>
-  ((gen-sc white) 400 500 80)
-  (circ)
-  (when (nth-frame 1 frame)))
-
+  (gen-rect navy 580 240 180 20)
+  (style {:transform-origin "center ":transform "rotate(-30deg)"})
+  (when (nth-frame 4 frame)) 
+  (rect))
+  
+  
+  
   (->>
-   ((gen-sc white) 500 440 30)
-   (circ)
-   (when (nth-frame 6 frame)))
-
-  ;(gen-bg-lines mint (mod frame 60))
-
-  ;@move-me-3
-  ;@move-me
-  ;@move-me-2
-
-  ;(gen-bg-lines navy (mod (+ frame 10) 60))
-
-
-
- #_(->>
-  ((gen-ss pink) tri)
-  (style {:transform "translate(700px, 120px) scale(0.4) "})
-  (poly)
-  (when (nth-frame 1 frame)))
-
-     ;(map #(->> (gen-rect navy (+ 100 (* % 160)) 60 100 14) (style {:transform-origin "center"}) (anim "rot" "1s" "infinite" {:delay (str ".01" % "s")}) (rect)) (range 5))
-
- #_(->>
-   ((gen-sc gray) 300 300 100)
+   ((gen-sc mint) 400 400 100)
    (circ)
    (when (nth-frame 4 frame)))
+   
+   (->>
+    ((gen-sc mint) 480 240 60)
+    (circ)
+    (when (nth-frame 6 frame)))
+    
 
- #_(->>
-  ((gen-sc white) 600 500 200)
-  (anim "rot" "5s" "infinite")
-  (circ)
-  (when (nth-frame 2 frame)))
-
-  #_(->>
-   ((gen-sc orange) 600 500 200)
-   (anim "rot" "5s" "infinite")
-   (circ)
-   (when (nth-frame 6 frame)))
-
-  ;(when (nth-frame 7 frame) (freak-out @width @height 60 100 white))
-  ;(when (nth-frame 3 frame) (freak-out @width @height 80 100 gray))
-  ;(when (nth-frame 2 frame) (freak-out @width @height 10 400 pink))
-
-  ;@drops
+   
+   @move-me
+  @move-me-2
+   
+   (->>
+    ((gen-pc (:id pink-stripes)) 400 100 60)
+   (style {:transform "rotate(10deg)"})
+    (circ)
+    (when (nth-frame 4 frame)))
+    
+  
+   @move-me-4
+   
+   (when (nth-frame 12 frame)
+     (freak-out @width
+                @height
+                20
+                200
+                white))
 
 
 
@@ -347,10 +376,16 @@
   [:svg { :height (:width settings), :width (:height settings) }
 
     ;; eventually this should take in all the patterns
-    [:defs (pattern pink-squares)]
+    [:defs (map pattern [ blue-circs
+                          pink-circs
+                          pink-stripes
+                          gray-circs
+                          gray-circs-lg])]
 
     ;; then here dereference a state full of polys
     @collection ])
 
 (reagent/render-component [drawing]
                           (js/document.getElementById "app-container"))
+
+(hide-display)
