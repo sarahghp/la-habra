@@ -186,12 +186,6 @@
     (circ)
     (atom)))
     
-    (def ac-2
-      (->>
-        ((gen-sc br-orange) 400 400 100)
-        (anim "wee-oo" "10s" "infinite")
-        (circ)
-        (atom)))
 
 
 (def rot-rect
@@ -202,13 +196,13 @@
     (rect)
     (atom)))
     
-  (def rot-o
-    (->>
-      ((gen-ps (:id blue-circs)) oct)
-      (style {:transform-origin "center"})
-      (anim "cent-rot" "1s" "infinite")
-      (poly)
-      (atom)))
+(def rot-o
+  (->>
+    ((gen-ps (:id blue-circs)) oct)
+    (style {:transform-origin "center"})
+    (anim "cent-rot" "1s" "infinite")
+    (poly)
+    (atom)))
 
 ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
@@ -223,26 +217,7 @@
      "translate(80%, 50%) rotate(194deg) scale(10.4)"
      "translate(80%, 50%) rotate(210deg) scale(5.2)"
      "translate(80%, 50%) rotate(400deg) scale(1)"
-     ]))
-     
-(make-frames
- "woosh-2"
-   [10, 35, 55, 85, 92]
-  (make-body "transform" [
-    "translate(500px, 50%) rotate(2deg) scale(10.2)"
-    "translate(500px, 50%) rotate(100deg) scale(14.4)"
-    "translate(500px, 50%) rotate(194deg) scale(10.4)"
-    "translate(500px, 50%) rotate(210deg) scale(6.2)"
-    "translate(500px, 50%) rotate(400deg) scale(1)"
-    ]))
-     
-  
-; 500px, 50% // 500px, 600px // 2 6 12 6 1
-  
-
-
-
-
+     ]))    
 
 (def move-me
   (->>
@@ -251,19 +226,7 @@
    (anim "woosh" "4s" "infinite")
    (poly)
    (atom)))
-   
- (def move-me-2
-   (->>
-    ((gen-ps (:id pink-circs)) hex)
-    (style {:transform-origin "center" :transform "scale(1.4)"})
-    (anim "woosh-2" "6s" "infinite")
-    (poly)
-    (atom)))
-
-
-; gray-circs-lg hept woosh
-
-
+  
 
 (defn cx [frame]
   (list
@@ -283,45 +246,7 @@
           (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
           (style {:opacity .7})
           (rect)
-        ))
-        
-
-              
-        ;; most code here lost in a restart; good thing there's
-        ;; video, eh?
-        
-        #_(->>
-         (gen-rect mint 60 510 180 20)
-         (style {:transform-origin "center ":transform "rotate(-30deg)"})
-         (when (nth-frame 10 frame)) 
-         (rect))
-         
-        #_(->>
-        (gen-rect mint 80 540 180 20)
-        (style {:transform-origin "center ":transform "rotate(-30deg)"})
-        (when (nth-frame 10 frame)) 
-        (rect))
-
-        #_(->>
-         (gen-rect mint 510 260 180 20)
-         (style {:transform-origin "center ":transform "rotate(-30deg)"})
-         (when (nth-frame 8 frame)) 
-         (rect))
-         
-        #_(->>
-          (gen-rect mint 530 290 180 20)
-          (style {:transform-origin "center ":transform "rotate(-30deg)"})
-          (when (nth-frame 8 frame)) 
-          (rect))  
-  
-         
-  
-         ;(gen-bg-lines gray (mod frame 70))
-
-        
-          
-                       
-              
+        ))        
 
               
 
