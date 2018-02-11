@@ -1,5 +1,9 @@
 {
   "name": "codie",
   "version": "0.1.0",
-  "main": "resources/main.js"
+  "main": "resources/main.js",
+  "scripts": {
+    "start": "lein cooper",
+    "server": "electron ."
+  }
 }
