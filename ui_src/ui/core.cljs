@@ -212,20 +212,67 @@
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
-     "translate(80%, 50%) rotate(2deg) scale(1.2)"
-     "translate(80%, 50%) rotate(100deg) scale(4.4)"
-     "translate(80%, 50%) rotate(194deg) scale(10.4)"
-     "translate(80%, 50%) rotate(210deg) scale(5.2)"
-     "translate(80%, 50%) rotate(400deg) scale(1)"
-     ]))    
+     "translate(80%, 250%) rotate(2deg) scale(8.2)"
+     "translate(80%, 250%) rotate(100deg) scale(6.4)"
+     "translate(80%, 250%) rotate(194deg) scale(10.4)"
+     "translate(80%, 250%) rotate(210deg) scale(12.2)"
+     "translate(80%, 250%) rotate(400deg) scale(8)"
+     ]))
+     
+(make-frames
+  "throb-2"
+  [10, 25, 40, 80, 91]
+  (make-body "transform" [
+    "translate(80%, 50%) scale(1.2)"
+    "translate(80%, 50%) scale(1.4)"
+    "translate(80%, 50%) scale(1.4)"
+    "translate(80%, 50%) scale(1.2)"
+    "translate(80%, 50%) scale(1)"
+    ]))
+    
+(make-frames
+  "creep"
+  [10, 25, 40, 80, 91]
+  (make-body "transform" [
+    "translate(280%, 750%) scale(5)"
+    "translate(280%, 650%) scale(5)"
+    "translate(280%, 450%) scale(5)"
+    "translate(280%, 250%) scale(5)"
+    "translate(280%, 250%) scale(5)"
+    ]))
 
 (def move-me
   (->>
    ((gen-ps (:id gray-circs-lg)) hept)
-   (style {:transform-origin "center" :transform "scale(1.4)"})
-   (anim "woosh" "4s" "infinite")
+   (style {:transform-origin "center" :transform "translate(80%, 250%) scale(10.2)"})
+   (anim "woosh" "6s" "infinite")
    (poly)
    (atom)))
+   
+   (def move-me-3
+     (->>
+      ((gen-ps (:id gray-circs-lg)) hept)
+      (style {:transform-origin "center" :transform "translate(80%, 250%) scale(1.4)"})
+      (anim "woosh" "4s" "infinite")
+      (poly)
+      (atom)))
+      
+   
+(def move-me-2
+ (->>
+  ((gen-ps (:id pink-stripes)) hept)
+  (style {:transform-origin "center" :transform "translate(280%, 750%) scale(5)"})
+  (anim "creep" "14s" "infinite")
+  (poly)
+  (atom)))
+  
+  (def throbby-boy
+    (->>
+      ((gen-sc gray) (/ @width 2) (/ @height 2) 200)
+      (anim "throb-2" "6s" "infinite")
+      (circ)
+      (atom)))
+      
   
 
 (defn cx [frame]
@@ -239,14 +286,123 @@
         "100%" h)
       (rect)
         ))
+        
+    (when (nth-frame 12 frame)
+      (freak-out @width
+                 @height
+                 40
+                 100
+                 gray))
+                 
+                 #_(when (nth-frame 10 frame)
+                   (freak-out @width
+                              @height
+                              20
+                              200
+                              gray))
 
-  (let [colors [ gray gray gray gray white white white white ] ; orange navy mint pink gray white
+  (let [colors [ white white white white pink pink pink pink ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
           (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
-          (style {:opacity .7})
+          (style {:opacity .5})
           (rect)
-        ))        
+        ))
+        
+  (let [colors [ pink pink pink white white white ] ; orange navy mint pink gray white
+        n (count colors)]
+        (->>
+          (gen-rect (nth colors (mod frame n)) 0 0 "50%" "100%")
+          (style {:opacity .5})
+          (rect)
+        ))
+        
+  (let [colors [ white white white pink pink pink ] ; orange navy mint pink gray white
+        n (count colors)]
+        (->>
+          (gen-rect (nth colors (mod frame n)) 0 0 "100%" "33%")
+          (style {:opacity .5})
+          (rect)
+        ))
+        
+  (let [colors [ white white white pink pink ] ; orange navy mint pink gray white
+              n (count colors)]
+              (->>
+                (gen-rect (nth colors (mod frame n)) 0 0 "100%" "63%")
+                (style {:opacity .5})
+                (rect)
+              ))
+              
+    (->>
+     ((gen-sc gray) (/ @width 2) (/ @height 2) 100)
+     (circ)
+     (when (or (nth-frame 3 frame )(nth-frame 2 frame))))
+     
+     (when (nth-frame 3 frame)(gen-bg-lines white 70))
+     
+     #_(->>
+      ((gen-sc gray) (/ @width 2) (/ @height 2) 200)
+      (anim "rot" "20s" "infinite")
+      (circ)
+      (when (nth-frame 1 frame)))
+      
+      
+        
+  (->>
+   ((gen-sc pink) (/ @width 2) 100 80)
+   (circ)
+   (when (nth-frame 8 frame)))
+   
+   (->>
+    ((gen-sc white) (/ @width 2) 900 80)
+    (circ)
+    (when (nth-frame 4 frame)))
+   
+   #_(->>
+     ((gen-ss pink) oct)
+       (style {:transform-origin "center" :transform "translate(440px, 60px) scale(1)"})
+       (poly)
+       (when (nth-frame 7 frame)))
+   
+   #_(->>
+    ((gen-sc white) 540 600 40)
+    (circ)
+    (when (nth-frame 6 frame)))
+   
+   #_(->>
+    ((gen-sc gray) 500 500 80)
+    (circ)
+    (when (nth-frame 2 frame)))
+    
+    
+    #_(->>
+     ((gen-sc gray) 540 700 200)
+     ;(anim "rot" "10s" "infinite")
+     (circ)
+     (when (nth-frame 3 frame)))
+         
+   
+      ;  @throbby-boy
+  ;@move-me
+  ;@move-me-2 
+  
+
+  
+  (when (nth-frame 6 frame)
+    (freak-out @width
+               @height
+               40
+               200
+               white))
+               
+ (when (nth-frame 2 frame)
+   (freak-out @width
+              @height
+              10
+              300
+              gray))
+              
+   ;(when (or (nth-frame 2 frame))(gen-bg-lines pink 70))
 
               
 
