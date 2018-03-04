@@ -257,10 +257,6 @@
 
 (defonce frame (atom 0))
 
-(defn frame-and-draw []
-  (swap! frame inc)
-  (reset! collection (cx @frame)))
-
 (defonce start-cx-timer
   (js/setInterval
     #(reset! collection (cx @frame)) 50))
