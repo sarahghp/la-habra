@@ -127,6 +127,27 @@
   [x y r num color]
   [:g {:key (random-uuid)} (map #(circ ((gen-sc color) (rand x) (rand y) (rand r))) (range num))])
 
+;;(defn gen-offsets)
+;; pass thruogh offset and base obj
+
+
+(defn gen-grid
+  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj))
+  ([cols rows offset base-obj]
+    (for [a (range cols) b (range rows)]
+      (let [x (base-obj :x) 
+            y (base-obj :y)
+            a-off (offset :col)
+            b-off (offset :row)]
+              (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))})))))
+              
+(println         (->>
+          (gen-grid
+            1 2
+            {:col 40 :row 40}
+            (gen-rect mint 10 0 10 @height))
+           (map rect)))
+
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------
 
 (defn anim
@@ -186,8 +207,6 @@
     (circ)
     (atom)))
     
-
-
 (def rot-rect
   (->>
     (gen-rect navy 60 500 160 20)
@@ -212,9 +231,9 @@
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
-     "translate(80%, 50%) rotate(2deg) scale(1.2)"
-     "translate(80%, 50%) rotate(100deg) scale(4.4)"
-     "translate(80%, 50%) rotate(194deg) scale(10.4)"
+     "translate(80%, 50%) rotate(2deg) scale(11.2)"
+     "translate(80%, 50%) rotate(100deg) scale(14.4)"
+     "translate(80%, 50%) rotate(194deg) scale(110.4)"
      "translate(80%, 50%) rotate(210deg) scale(5.2)"
      "translate(80%, 50%) rotate(400deg) scale(1)"
      ]))    
@@ -223,7 +242,7 @@
   (->>
    ((gen-ps (:id gray-circs-lg)) hept)
    (style {:transform-origin "center" :transform "scale(1.4)"})
-   (anim "woosh" "4s" "infinite")
+   (anim "woosh" "14s" "infinite")
    (poly)
    (atom)))
   
@@ -240,14 +259,41 @@
       (rect)
         ))
 
-  (let [colors [ gray gray gray gray white white white white ] ; orange navy mint pink gray white
+  (let [colors [ pink pink pink pink ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
           (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
           (style {:opacity .7})
           (rect)
-        ))        
+        ))
+        
+  (->>
+    (gen-grid
+      100 100
+      {:col 40 :row 40}
+      (gen-rect navy 10 10 6 6)) 
+     (map rect)
+     (when (nth-frame 24 frame)))
+   
+  (->>
+    (gen-grid
+      100 1
+      {:col 40 :row 40}
+      (gen-rect navy 10 0 6 @height))
+      (map #(style {:opacity .5} %))
+     (map rect)
+     (when (and (not (nth-frame 24 frame)) (nth-frame 6 frame))))
+  
+   (->>
+     (gen-grid
+       1 100
+       {:col 40 :row 40}
+       (gen-rect navy 0 10 @width 6))
+       (map #(style {:opacity .5} %))
+      (map rect)
+      (when (and (not (nth-frame 24 frame)) (nth-frame 4 frame))))
 
+                
               
 
   )) ; cx end
@@ -281,4 +327,4 @@
 (reagent/render-component [drawing]
                           (js/document.getElementById "app-container"))
 
-(hide-display)
+;(hide-display)
