@@ -16,7 +16,8 @@
                pink-circs
                pink-stripes
                gray-circs
-               gray-circs-lg]]
+               gray-circs-lg
+               shadow]]
             [ui.animations :as animations :refer
               [ make-body
                 splice-bodies
@@ -128,25 +129,29 @@
   [:g {:key (random-uuid)} (map #(circ ((gen-sc color) (rand x) (rand y) (rand r))) (range num))])
 
 ;;(defn gen-offsets)
-;; pass thruogh offset and base obj
-
 
 (defn gen-grid
   ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj))
   ([cols rows offset base-obj]
-    (for [a (range cols) b (range rows)]
-      (let [x (base-obj :x) 
-            y (base-obj :y)
-            a-off (offset :col)
-            b-off (offset :row)]
+    (let [x (base-obj :x) 
+          y (base-obj :y)
+          a-off (offset :col)
+          b-off (offset :row)]
+            (for [a (range cols) b (range rows)]
               (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))})))))
-              
-(println         (->>
-          (gen-grid
-            1 2
-            {:col 40 :row 40}
-            (gen-rect mint 10 0 10 @height))
-           (map rect)))
+  
+  (defn gen-shadow
+    [offset base-obj]
+    (let [x (base-obj :x)
+          y (base-obj :y)
+          x-off (offset :x)
+          y-off (offset :y)
+          fill-id (:id shadow)
+          shadow-obj (merge base-obj 
+            {:x (+ x x-off)} 
+            {:y (+ y y-off)}
+            {:style {:opacity .7 :fill (str "url(#" fill-id ") #fff")}})]
+      (list shadow-obj base-obj)))
 
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------
 
@@ -245,7 +250,6 @@
    (anim "woosh" "14s" "infinite")
    (poly)
    (atom)))
-  
 
 (defn cx [frame]
   (list
@@ -269,31 +273,42 @@
         
   (->>
     (gen-grid
-      100 100
+      40 40
       {:col 40 :row 40}
-      (gen-rect navy 10 10 6 6)) 
+      (gen-rect navy 10 10 6 6))
+      (map #(gen-shadow {:x 4 :y 4} %))
+      (flatten) 
      (map rect)
      (when (nth-frame 24 frame)))
    
   (->>
     (gen-grid
-      100 1
+      40 1
       {:col 40 :row 40}
-      (gen-rect navy 10 0 6 @height))
-      (map #(style {:opacity .5} %))
-     (map rect)
-     (when (and (not (nth-frame 24 frame)) (nth-frame 6 frame))))
-  
+      (gen-rect navy 10 0 6 @height)) 
+     (map #(style {:opacity .5} %)) 
+     (map #(gen-shadow {:x 4 :y 0} %))
+     (flatten)
+     (map rect) 
+     (when (and (not (nth-frame 24 frame)) (nth-frame 6 frame)))
+     )
+
    (->>
      (gen-grid
-       1 100
+       1 40
        {:col 40 :row 40}
-       (gen-rect navy 0 10 @width 6))
-       (map #(style {:opacity .5} %))
+       (gen-rect navy 0 10 @width 6)) 
+       (map #(style {:opacity .5} %)) 
+       (map #(gen-shadow {:x 0 :y 4} %))
+       (flatten)
       (map rect)
       (when (and (not (nth-frame 24 frame)) (nth-frame 4 frame))))
 
-                
+    #_(->>
+     ((gen-sc white) 200 200 80)
+     (gen-shadow {:x 10 :y 10})
+     (map circ)
+     (when (nth-frame 1 frame)))
               
 
   )) ; cx end
@@ -319,7 +334,8 @@
                           pink-circs
                           pink-stripes
                           gray-circs
-                          gray-circs-lg])]
+                          gray-circs-lg
+                          shadow])]
 
     ;; then here dereference a state full of polys
     @collection ])
