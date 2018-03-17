@@ -238,7 +238,7 @@
    (make-body "transform" [
      "translate(80%, 50%) rotate(2deg) scale(11.2)"
      "translate(80%, 50%) rotate(100deg) scale(14.4)"
-     "translate(80%, 50%) rotate(194deg) scale(110.4)"
+     "translate(80%, 50%) rotate(194deg) scale(11.4)"
      "translate(80%, 50%) rotate(210deg) scale(5.2)"
      "translate(80%, 50%) rotate(400deg) scale(1)"
      ]))    
@@ -247,7 +247,7 @@
   (->>
    ((gen-ps (:id gray-circs-lg)) hept)
    (style {:transform-origin "center" :transform "scale(1.4)"})
-   (anim "woosh" "14s" "infinite")
+   (anim "woosh" "6s" "infinite")
    (poly)
    (atom)))
 
@@ -263,7 +263,7 @@
       (rect)
         ))
 
-  (let [colors [ pink pink pink pink ] ; orange navy mint pink gray white
+  (let [colors [ white white white white ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
           (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
@@ -271,46 +271,71 @@
           (rect)
         ))
         
-  (->>
-    (gen-grid
-      40 40
-      {:col 40 :row 40}
-      (gen-rect navy 10 10 6 6))
-      (map #(gen-shadow {:x 4 :y 4} %))
-      (flatten) 
-     (map rect)
-     (when (nth-frame 24 frame)))
-   
-  (->>
-    (gen-grid
-      40 1
-      {:col 40 :row 40}
-      (gen-rect navy 10 0 6 @height)) 
-     (map #(style {:opacity .5} %)) 
-     (map #(gen-shadow {:x 4 :y 0} %))
-     (flatten)
-     (map rect) 
-     (when (and (not (nth-frame 24 frame)) (nth-frame 6 frame)))
-     )
 
-   (->>
-     (gen-grid
-       1 40
-       {:col 40 :row 40}
-       (gen-rect navy 0 10 @width 6)) 
-       (map #(style {:opacity .5} %)) 
-       (map #(gen-shadow {:x 0 :y 4} %))
-       (flatten)
-      (map rect)
-      (when (and (not (nth-frame 24 frame)) (nth-frame 4 frame))))
 
     #_(->>
      ((gen-sc white) 200 200 80)
      (gen-shadow {:x 10 :y 10})
      (map circ)
      (when (nth-frame 1 frame)))
+     
+     #_(->>
+      ((gen-sc mint) (/ @width 2) (/ @height 2) 100)
+      (circ)
+      (when (nth-frame 8 frame)))
+      
+      
+      #_(->>
+       ((gen-sc pink) (/ @width 2) (/ @height 2) 120)
+       (anim "rot" "10s" "infinite")
+       (circ)
+       (when (nth-frame 10 frame)))
+      
+      #_(->>
+       ((gen-sc navy) (/ @width 4) (/ @height 4) 40)
+       (circ)
+       (when (nth-frame 6 frame)))
+       
+      ;(when (nth-frame 10 frame)(gen-bg-lines gray 60))
+      
+    
               
+              
+              
+                  
+        
+        #_(->>
+          (gen-grid
+            40 40
+            {:col 40 :row 40}
+            (gen-rect navy 10 10 6 6)) 
+            (map #(gen-shadow {:x 4 :y 4} %)) 
+            (flatten) 
+           (map rect)
+           (when (nth-frame 24 frame)))
+         
+        #_(->>
+          (gen-grid
+            40 1
+            {:col 40 :row 40}
+            (gen-rect navy 10 0 6 @height)) 
+           (map #(style {:opacity .5} %)) 
+           ;(map #(gen-shadow {:x 4 :y 0} %)) 
+           ;(flatten)
+           (map rect) 
+           (when (and (not (nth-frame 24 frame)) (nth-frame 6 frame)))
+           )
 
+        #_(->>
+           (gen-grid
+             1 40
+             {:col 40 :row 40}
+             (gen-rect navy 0 10 @width 6)) 
+             (map #(style {:opacity .5} %)) 
+            (map rect)
+            (when (and (not (nth-frame 24 frame)) (nth-frame 4 frame))))
+            
+        
   )) ; cx end
 
 
