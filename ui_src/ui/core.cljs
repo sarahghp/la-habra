@@ -14,10 +14,13 @@
              [ pattern
                blue-circs
                pink-circs
-               pink-stripes
+               pink-lines
                gray-circs
                gray-circs-lg
-               shadow]]
+               gray-lines
+               gray-patch
+               shadow
+               noise]]
             [ui.animations :as animations :refer
               [ make-body
                 splice-bodies
@@ -81,6 +84,14 @@
     :h h
     :style {
       :fill fill-string }})
+      
+(defn gen-sr
+  [fill]
+  (partial gen-rect fill))
+
+(defn gen-pr
+  [fill-id]
+  (partial gen-rect (str "url(#" fill-id ") #fff")))
 
 (defn gen-circ
   [fill-string x y radius]
@@ -88,6 +99,13 @@
     :y y
     :r radius
     :style { :fill fill-string }})
+    
+(defn gen-nc
+  [filter-id x y radius]
+  { :x x
+    :y y
+    :r radius
+    :style { :fill (str "url(#" filter-id ") #fff") }})
 
 (defn gen-sc
   [fill]
@@ -131,14 +149,24 @@
 ;;(defn gen-offsets)
 
 (defn gen-grid
-  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj))
+  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj)) 
   ([cols rows offset base-obj]
     (let [x (base-obj :x) 
           y (base-obj :y)
           a-off (offset :col)
           b-off (offset :row)]
-            (for [a (range cols) b (range rows)]
-              (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))})))))
+            (set (for [a (range cols) b (range rows)]
+              (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))}))))))
+              
+#_(defn gen-grid
+  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj)) 
+  ([cols rows offset base-obj]
+    (let [x (base-obj :x) 
+          y (base-obj :y)
+          a-off (offset :col)
+          b-off (offset :row)]
+            (map (fn [a b] (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))})) (range cols) (range rows)) 
+            )))
   
   (defn gen-shadow
     [offset base-obj]
@@ -214,9 +242,33 @@
     
 (def rot-rect
   (->>
-    (gen-rect navy 60 500 160 20)
+    (gen-rect mint 60 500 360 60)
     (style {:transform-origin "center"})
-    (anim "rot" "5s" "infinite")
+    (anim "rot" "1s" "infinite")
+    (rect)
+    (atom)))
+    
+(def rot-rect-2
+  (->>
+    (gen-rect mint 560 700 360 60)
+    (style {:transform-origin "center"})
+    (anim "rot" "1s" "infinite")
+    (rect)
+    (atom)))
+    
+(def rot-rect-3
+  (->>
+    (gen-rect mint 160 200 360 60)
+    (style {:transform-origin "center"})
+    (anim "rot" "1s" "infinite")
+    (rect)
+    (atom)))
+    
+(def rot-rect-4
+  (->>
+    (gen-rect mint 460 100 360 60)
+    (style {:transform-origin "center"})
+    (anim "rot" "1s" "infinite")
     (rect)
     (atom)))
     
@@ -241,29 +293,39 @@
      "translate(80%, 50%) rotate(194deg) scale(110.4)"
      "translate(80%, 50%) rotate(210deg) scale(5.2)"
      "translate(80%, 50%) rotate(400deg) scale(1)"
-     ]))    
+     ]))
+          
+(make-frames
+  "creep"
+  [10, 25, 40, 80, 91]
+  (make-body "transform" [
+    "translate(280%, 750%) scale(5)"
+    "translate(280%, 650%) scale(5)"
+    "translate(280%, 450%) scale(5)"
+    "translate(280%, 250%) scale(5)"
+    "translate(280%, 250%) scale(5)"
+    ]))
 
 (def move-me
   (->>
-   ((gen-ps (:id gray-circs-lg)) hept)
+   ((gen-ps (:id blue-circs)) hept)
    (style {:transform-origin "center" :transform "scale(1.4)"})
-   (anim "woosh" "14s" "infinite")
+   (anim "woosh" "4s" "infinite")
    (poly)
    (atom)))
+   
+   
+(def creepy (->>
+  ((gen-ps (:id pink-lines)) hex)
+  (style {:transform-origin "center" :transform "translate(280%, 750%)"})
+  (anim "creep" "14s" "infinite")
+  (poly)
+  (atom)))
 
 (defn cx [frame]
   (list
 
-
-  #_(let [h (settings :height)]
-    (->>
-      (gen-rect
-        navy 0 (- h (mod (* 2 frame) (* 10 h))) 
-        "100%" h)
-      (rect)
-        ))
-
-  (let [colors [ pink pink pink pink ] ; orange navy mint pink gray white
+  (let [colors [ navy navy navy navy navy navy navy navy ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
           (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
@@ -273,46 +335,46 @@
         
   (->>
     (gen-grid
-      40 40
-      {:col 40 :row 40}
-      (gen-rect navy 10 10 6 6))
-      (map #(gen-shadow {:x 4 :y 4} %))
-      (flatten) 
-     (map rect)
-     (when (nth-frame 24 frame)))
-   
-  (->>
-    (gen-grid
       40 1
       {:col 40 :row 40}
-      (gen-rect navy 10 0 6 @height)) 
+      (gen-rect navy 10 0 2 @height)) 
      (map #(style {:opacity .5} %)) 
-     (map #(gen-shadow {:x 4 :y 0} %))
-     (flatten)
      (map rect) 
-     (when (and (not (nth-frame 24 frame)) (nth-frame 6 frame)))
-     )
-
+     (when-not (nth-frame 24 frame)))
+     
    (->>
      (gen-grid
        1 40
        {:col 40 :row 40}
-       (gen-rect navy 0 10 @width 6)) 
-       (map #(style {:opacity .5} %)) 
-       (map #(gen-shadow {:x 0 :y 4} %))
-       (flatten)
-      (map rect)
-      (when (and (not (nth-frame 24 frame)) (nth-frame 4 frame))))
+       (gen-rect navy 10 0 @width 2)) 
+      (map #(style {:opacity .5} %)) 
+      (map rect) 
+      (when (nth-frame 24 frame)))
 
-    #_(->>
-     ((gen-sc white) 200 200 80)
-     (gen-shadow {:x 10 :y 10})
-     (map circ)
-     (when (nth-frame 1 frame)))
+  (->> 
+    (gen-nc "noise" (* .5 @width) (* .5 @height) 200)
+    (style {:opacity .5})
+    (circ)
+    (when (nth-frame 6 frame)))
+    
+    (->> 
+      (gen-nc "noise" (* .75 @width) (* .15 @height) 80)
+      (style {:opacity .5})
+      (circ)
+      (when (nth-frame 12 frame)))
+      
+      @move-me
+    
+  (when (nth-frame 24 frame)
+    (freak-out @width
+               @height
+               20
+               200
+               pink))
+
               
 
   )) ; cx end
-
 
 ;; ----------- LOOP AND DRAW ------------------------------
 
@@ -330,11 +392,13 @@
   [:svg { :width (:width settings), :height (:height settings) }
 
     ;; eventually this should take in all the patterns
-    [:defs (map pattern [ blue-circs
+    [:defs (noise) (map pattern [ blue-circs
                           pink-circs
-                          pink-stripes
+                          pink-lines
                           gray-circs
                           gray-circs-lg
+                          gray-lines
+                          gray-patch
                           shadow])]
 
     ;; then here dereference a state full of polys

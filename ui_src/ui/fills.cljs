@@ -1,6 +1,6 @@
 (ns ui.fills)
 
-;; solid colors
+;; solid colors A
 (def gray "#53535c")
 (def mint "#00baa9")
 (def navy "#161f93")
