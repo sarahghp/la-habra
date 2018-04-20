@@ -6,6 +6,7 @@
               [ gray
                 mint
                 navy
+                blue
                 orange
                 br-orange
                 pink
@@ -236,7 +237,7 @@
 (def ac
   (->>
     ((gen-sc orange) 200 200 100)
-    (anim "wee-oo" "5s" "infinite")
+    (anim "wee-oo" "4s" "infinite")
     (circ)
     (atom)))
     
@@ -294,6 +295,17 @@
      "translate(80%, 50%) rotate(210deg) scale(5.2)"
      "translate(80%, 50%) rotate(400deg) scale(1)"
      ]))
+     
+     (make-frames
+       "woosh-2"
+         [10, 35, 55, 85, 92]
+        (make-body "transform" [
+          "translate(210%, 50%) rotate(2deg) scale(11.2)"
+          "translate(210%, 50%) rotate(100deg) scale(14.4)"
+          "translate(210%, 50%) rotate(194deg) scale(110.4)"
+          "translate(210%, 50%) rotate(210deg) scale(5.2)"
+          "translate(210%, 50%) rotate(400deg) scale(1)"
+          ]))
           
 (make-frames
   "creep"
@@ -310,22 +322,38 @@
   (->>
    ((gen-ps (:id blue-circs)) hept)
    (style {:transform-origin "center" :transform "scale(1.4)"})
-   (anim "woosh" "4s" "infinite")
+   (anim "woosh" "8s" "infinite")
    (poly)
    (atom)))
    
+   (def move-me-2
+     (->>
+      ((gen-ps (:id pink-lines)) hept)
+      (style {:transform-origin "center" :transform "translate(280%, 750%) scale(1.4)"})
+      (anim "woosh-2" "4s" "infinite")
+      (poly)
+      (atom)))
+      
+   
    
 (def creepy (->>
-  ((gen-ps (:id pink-lines)) hex)
+  ((gen-ps (:id gray-lines)) hex)
   (style {:transform-origin "center" :transform "translate(280%, 750%)"})
-  (anim "creep" "14s" "infinite")
+  (anim "creep" "8s" "infinite")
   (poly)
   (atom)))
 
 (defn cx [frame]
   (list
+    
+    #_(when (nth-frame 24 frame)
+      (freak-out @width
+                @height
+                 60
+                 100
+                 white))
 
-  (let [colors [ navy navy navy navy navy navy navy navy ] ; orange navy mint pink gray white
+  (let [colors [  orange orange orange orange ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
           (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
@@ -333,46 +361,68 @@
           (rect)
         ))
         
-  (->>
-    (gen-grid
-      40 1
-      {:col 40 :row 40}
-      (gen-rect navy 10 0 2 @height)) 
-     (map #(style {:opacity .5} %)) 
-     (map rect) 
-     (when-not (nth-frame 24 frame)))
-     
+  
+  #_(->>
+   ((gen-sc white) (* .75 @width) (* .15 @height) 60)
+   (circ)
+   (when (nth-frame 4 frame)))
+   
+  #_(->>
+   ((gen-pc (:id blue-circs)) (* .5 @width) (* .5 @height) 120)
+   (circ)
+   (when (nth-frame 8 frame)))
+   
    (->>
      (gen-grid
-       1 40
+       40 1
        {:col 40 :row 40}
-       (gen-rect navy 10 0 @width 2)) 
+       (gen-rect navy 10 0 2 @height)) 
       (map #(style {:opacity .5} %)) 
       (map rect) 
-      (when (nth-frame 24 frame)))
-
-  (->> 
-    (gen-nc "noise" (* .5 @width) (* .5 @height) 200)
-    (style {:opacity .5})
-    (circ)
-    (when (nth-frame 6 frame)))
-    
-    (->> 
-      (gen-nc "noise" (* .75 @width) (* .15 @height) 80)
-      (style {:opacity .5})
-      (circ)
-      (when (nth-frame 12 frame)))
+      (when (or (nth-frame 1 frame)(nth-frame 5 frame)(nth-frame 6 frame) (nth-frame 12 frame))))
       
-      @move-me
-    
-  (when (nth-frame 24 frame)
-    (freak-out @width
-               @height
-               20
-               200
-               pink))
-
-              
+    (->>
+      (gen-grid
+        1 40
+        {:col 40 :row 40}
+        (gen-rect navy 10 0 @width 2)) 
+       (map #(style {:opacity .5} %)) 
+       (map rect) 
+       (when (or (nth-frame 1 frame)(nth-frame 5 frame)(nth-frame 6 frame) (nth-frame 12 frame))))
+           
+       ; @move-me
+       ; @move-me-2
+       ; @creepy
+       
+       #_(when (nth-frame 8 frame)
+         (freak-out @width 
+                    @height
+                    40
+                    200
+                    mint))
+                    
+        #_(when (nth-frame 16 frame)
+          (freak-out @width 
+                     @height
+                     20
+                     200
+                     white))
+                     
+        ;(when (nth-frame 2 frame) (gen-bg-lines navy 60))
+        ;(when (nth-frame 4 frame) (gen-bg-lines white 60))
+        
+        #_(->>
+         ((gen-sc white) (/ @width 2) (/ @height 2) 200)
+         (anim "rot" "10s" "infinite")
+         (circ)
+         (when (nth-frame 6 frame)))
+         
+         #_(->>
+          (gen-nc "noise" (/ @width 2) (/ @height 2) 1000)
+          (style {:opacity .5})
+          (anim "rot" "10s" "infinite")
+          (circ)
+          (when (or (nth-frame 8 frame) (nth-frame 9 frame) (nth-frame 10 frame))))
 
   )) ; cx end
 
