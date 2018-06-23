@@ -12,6 +12,7 @@
                 pink
                 white
                 yellow]]
+            [ui.filters :as filters :refer [filt turb noiz soft-noiz]]
             [ui.patterns :as patterns :refer
              [ pattern
                pattern-def
@@ -43,6 +44,7 @@
 (enable-console-print!)
 
 (println "Loaded.")
+(println "*" (filt turb))
 
 ;; hides heads up display for performance
 (defn hide-display [] (let [heads-up-display (.getElementById js/document "figwheel-heads-up-container")]
@@ -156,14 +158,15 @@
     :style style} 
     (map (partial gen-offset-lines color 1 4) (range num))]))
 
+;; freakout varieties: circles with just r num color, default to @width/@height
+;; ability to to pass max AND min to distro
+
 (defn freak-out
   [x y r num color]
   [:g {:key (random-uuid)} (map #(circ ((gen-sc color) (rand x) (rand y) (rand r))) (range num))])
 
-;;(defn gen-offsets)
 
 (defn gen-grid
-  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj)) 
   ([cols rows offset base-obj]
     (let [x (base-obj :x) 
           y (base-obj :y)
@@ -380,23 +383,23 @@
 (def move-me
   (->>
    ((gen-ps (:id yellow-lines)) hept)
-   (style {:transform-origin "center" :transform "scale(4.4)"})
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "8s" "infinite")
    (poly)
    (atom)))
    
    (def move-me-4
      (->>
-      ((gen-ss white) hept)
-      (style {:transform-origin "center" :transform "scale(4.4)"})
+      ((gen-ps (:id white-dots)) hept)
+      (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
       (anim "woosh-2" "8s" "infinite" {:delay ".4s"})
       (poly)
       (atom)))
    
  (def move-me-2
    (->>
-    ((gen-ps (:id white-dots)) hept)
-    (style {:transform-origin "center" :transform "translate(1000px, 400%) scale(4.4)"})
+    ((gen-ss orange) hept)
+    (style {:opacity .2 :transform-origin "center" :transform "translate(1000px, 400%) scale(4.4)"})
     (anim "woosh-3" "4s" "infinite")
     (poly)
     (atom)))
@@ -429,7 +432,9 @@
 (defn cx [frame]
   (list
 
-    (let [colors [ mint mint mint mint navy navy navy navy ] ; orange navy mint pink gray white
+    (let [colors [ 
+      ;mint mint mint mint mint mint 
+      navy navy navy navy navy navy ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
@@ -437,19 +442,19 @@
             (rect)
           ))
 
-    #_(let [patterns [ 
+    (let [patterns [ 
             ;gray-dots gray-dots gray-dots gray-dots gray-dots gray-dots
             ;gray-dots gray-dots gray-dots gray-dots gray-dots gray-dots 
-            yellow-dots yellow-dots yellow-dots yellow-dots yellow-dots yellow-dots
-            yellow-dots yellow-dots yellow-dots yellow-dots yellow-dots yellow-dots ] ; orange navy mint pink gray white
+            white-dots white-dots white-dots white-dots white-dots white-dots
+            white-dots white-dots white-dots white-dots white-dots white-dots ] ; orange navy mint pink gray white
           n (count patterns)]
           (->>
             ((gen-pr (:id (nth patterns (mod frame n)))) 0 0 "100%" "100%")
-            (style {:transform "scale(1.2)" :opacity .9})
+            (style {:transform "scale(1.2)" :opacity .4})
             (rect)
           ))
 
-    (->>
+    #_(->>
       (gen-grid
         40 1
         {:col 40 :row 40}
@@ -459,26 +464,26 @@
        (when (nth-frame 1 frame)))
        
        
-       (->>
+       #_(->>
          (gen-grid
            1 40
            {:col 40 :row 40}
            (gen-rect white 0 5 @width 2)) 
           (map #(style {:opacity .5} %)) 
           (map rect) 
-          (when-not (or  (nth-frame 3 frame) (nth-frame 4 frame))))
+          (when (or  (nth-frame 1 frame) (nth-frame 4 frame))))
           
        
-       (->>
+       #_(->>
          (gen-grid
            1 40
            {:col 40 :row 40}
-           (gen-rect pink 0 5 @width 2)) 
+           (gen-rect mint 0 5 @width 2)) 
           (map #(style {:opacity .5} %)) 
           (map rect) 
           (when (nth-frame 4 frame)))
           
-          (->>
+          #_(->>
             (gen-grid
               1 40
               {:col 40 :row 40}
@@ -488,7 +493,6 @@
              (when (nth-frame 3 frame)))
              
              
-             @move-me-4
         
     #_(when (nth-frame 1 frame)
       (freak-out @width
@@ -517,14 +521,7 @@
                    30
                    30
                    mint))
-                  
-                  
-    (when-not (nth-frame 6 frame)
-      (freak-out @width
-                 @height
-                 4
-                 500
-                 yellow))
+                
                  
      #_(when (nth-frame 6 frame) 
        (freak-out @width
@@ -552,69 +549,67 @@
     (when (nth-frame 1 frame)))
     
           
+  
+     #_(->>
+      ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
+      (style {:opacity .5 :filter (filt soft-noiz) })
+      (circ)
+      (when (nth-frame 2 frame)))
       
-    #_(->>
-     ((gen-sr pink) 0 500 @width 120)
-     (style {:opacity .2})
-     (rect)
-     (when-not (nth-frame 10 frame)))
-     
-     #_(->>
-      ((gen-sr yellow) 0 500 @width 120)
-      (style {:opacity .2})
-      (rect)
-      (when-not (nth-frame 11 frame)))
+      (gen-bg-lines white (mod frame 70))
+      
+      (->>
+       ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
+       (style {:opacity .5 :filter (filt turb) })
+       (circ)
+       (when (nth-frame 1 frame)))
+      
+       (gen-bg-lines white (mod frame 70))
 
+      
+      (->>
+       ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand)))
+       (style {:opacity .4 :filter (filt noiz) })
+       (circ)
+       (when (nth-frame 1 frame)))
+       
+       (->>
+        ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand)))
+        (style {:opacity .4 :filter (filt noiz) })
+        (circ)
+        (when (nth-frame 1 frame)))   
+      
+    ;@move-me
+    ;@move-me-4
+    @move-me-2 ; fix the animation to be livlier
+  
      #_(->>
-      ((gen-sr mint) 0 630 @width 120)
-      (style {:opacity .2})
+      ((gen-sr white) (* @width .10) (* @height .20) 400 40)
+      (style {:transform-origin "center" :transform "rotate(-30deg)"})
       (rect)
-      (when-not (nth-frame 14 frame)))
+      (when (nth-frame 4 frame)))
       
       #_(->>
-       ((gen-pr (:id gray-lines)) 0 630 @width 120)
-       (style {:opacity .5})
+       ((gen-sr (pattern white-lines)) (* @width .10) (* @height .20) 400 40)
+       (style {:transform-origin "center" :transform "rotate(-30deg) translateY(-50px)"})
        (rect)
-       (when (or (nth-frame 12 frame) (nth-frame 13 frame))))
-        
-
-     
-     
-      #_(->>
-       ((gen-sr pink) 0 50 @width 120)
-       (style {:opacity .2})
-       (rect)
-       (when-not (nth-frame 4 frame)))
+       (when (or (nth-frame 3 frame) (nth-frame 4 frame))))
+       
+       
        
        #_(->>
-        ((gen-sr yellow) 0 50 @width 120)
-        (style {:opacity .2})
+        ((gen-sr white) (* @width .50) (* @height .780) 400 40)
+        (style {:transform-origin "center" :transform "rotate(-30deg)"})
         (rect)
-        (when-not (nth-frame 4 frame)))
+        (when (nth-frame 4 frame)))
+        
+        #_(->>
+         ((gen-sr (pattern white-lines)) (* @width .50) (* @height .780) 400 40)
+         (style {:transform-origin "center" :transform "rotate(-30deg) translateY(-50px)"})
+         (rect)
+         (when (or (nth-frame 3 frame) (nth-frame 4 frame))))
+       
 
-       #_(->>
-        ((gen-sr mint) 0 180 @width 120)
-        (style {:opacity .2})
-        (rect)
-        (when-not (nth-frame 6 frame)))
-        
-        #_(->>
-         ((gen-pr (:id gray-lines)) 0 180 @width 120)
-         (style {:opacity .5})
-         (rect)
-         (when (nth-frame 12 frame)))
-        
-        #_(->>
-         ((gen-sr yellow) 0 340 @width 120)
-         (style {:opacity .4})
-         (rect)
-         (when-not (nth-frame 7 frame)))
-    
-  ;@drops
-  ;@drops-2
-  
-     
-      
         
        
   )) ; cx end
@@ -640,8 +635,10 @@
     #(swap! frame inc) 500))
 
 (defn drawing []
-  [:svg { :width (:width settings), :height (:height settings) }
-
+  [:svg { :width (:width settings) :height (:height settings) }
+    (:def turb)
+    (:def noiz)
+    (:def soft-noiz)
     ;; eventually this should take in all the patterns
     [:defs (noise) (map pattern-def [ blue-dots
                                   blue-lines
