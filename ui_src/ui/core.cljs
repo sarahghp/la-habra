@@ -68,15 +68,16 @@
 ;; ------------------------ GENERATORS ---------------------
 
 (defn poly
-  [{ :keys [d style] }]
-  [:path { :key (random-uuid) :d d :style style }])
+  [{ :keys [d style mask] :or {mask ""} } ]
+  [:path { :key (random-uuid) :d d :style style :mask mask }])
 
 (defn circ
-  [{:keys [x y r style] }]
+  [{:keys [x y r style mask] :or {mask ""} }]
   [:circle { :cx x
              :cy y
              :r r
              :style style
+             :mask mask
              :key (random-uuid)} ])
 
 (defn rect
@@ -106,10 +107,11 @@
   (partial gen-rect (str "url(#" fill-id ") #fff")))
 
 (defn gen-circ
-  [fill-string x y radius]
+  [fill-string x y radius mask]
   { :x x
     :y y
     :r radius
+    :mask mask
     :style { :fill fill-string }})
     
 (defn gen-nc
@@ -128,8 +130,9 @@
   (partial gen-circ (str "url(#" fill-id ") #fff")))
 
 (defn gen-shape
-  [fill-string path]
+  [fill-string path mask]
   { :style { :fill fill-string }
+    :mask mask
     :d path })
 
 (defn gen-ps ;; makes pattern shape
@@ -397,12 +400,20 @@
       (atom)))
    
  (def move-me-2
-   (->>
-    ((gen-ss orange) hept)
-    (style {:opacity .2 :transform-origin "center" :transform "translate(1000px, 400%) scale(4.4)"})
-    (anim "woosh-3" "4s" "infinite")
-    (poly)
-    (atom)))
+   (atom [:g { :key (random-uuid) :clip-path "url(#clippy)" } 
+     (->>
+      ((gen-ss orange) hept)
+      (style {:opacity .4 :transform-origin "center" :transform "translate(1000px, 400%) scale(4.4)"})
+      (anim "woosh-3" "4s" "infinite")
+      (poly))]))
+    
+(def move-me-2a
+  (->>
+   ((gen-ss mint) hept "url(#poly-mask)")
+   (style {:opacity .4 :transform-origin "center" :transform "translate(1000px, 400%) scale(4.4)"})
+   (anim "woosh-3" "4s" "infinite")
+   (poly)
+   (atom)))
     
 (def move-me-3
   (->>
@@ -427,6 +438,9 @@
      (style {:transform (str "translateY(" (* n 10) "px)") :opacity op})
      (rect)
      (when (nth-frame 1 frame)))))
+     
+     
+     (println @move-me-2a)
 
 
 (defn cx [frame]
@@ -556,32 +570,49 @@
       (circ)
       (when (nth-frame 2 frame)))
       
-      (gen-bg-lines white (mod frame 70))
+      ;(gen-bg-lines white (mod frame 70))
+      
+      @move-me-2
       
       (->>
        ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
-       (style {:opacity .5 :filter (filt turb) })
+       (style {:opacity .5 })
        (circ)
        (when (nth-frame 1 frame)))
       
-       (gen-bg-lines white (mod frame 70))
+      (->>
+       ((gen-sc white) (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
+       (style {:opacity .5 :transform-origin "center" :transform "rotate(65deg)" })
+       (circ)
+       (when (nth-frame 1 frame)))
+       
+       
+       
+       
+      
+       ;@move-me-2 ; fix the animation to be livlier
+       ;@move-me-2a
+       
+      
+       ;(gen-bg-lines white (mod frame 70))
 
       
-      (->>
-       ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand)))
+      #_(->>
+       ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand))) 
        (style {:opacity .4 :filter (filt noiz) })
        (circ)
        (when (nth-frame 1 frame)))
        
-       (->>
-        ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand)))
+       #_(->>
+        ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand))) 
         (style {:opacity .4 :filter (filt noiz) })
         (circ)
         (when (nth-frame 1 frame)))   
       
     ;@move-me
     ;@move-me-4
-    @move-me-2 ; fix the animation to be livlier
+
+    ;more overlapping, transparent rects
   
      #_(->>
       ((gen-sr white) (* @width .10) (* @height .20) 400 40)
@@ -611,9 +642,11 @@
        
 
         
-       
-  )) ; cx end
+         ;(println "cx" @collection)
 
+  )) ; cx end
+  
+  
 ;; ----------- LOOP AND DRAW ------------------------------
 
 (defonce frame (atom 0))
@@ -621,45 +654,63 @@
 ; should I replace with requestAnimationFrame?
 (defonce start-cx-timer
   (js/setInterval
-    #(reset! collection (cx @frame)) 50))
-  
-  #_(defonce start-cx-timer
-    (reset! collection (cx @frame)) 
-    (js/requestAnimationFrame start-cx-timer))
-    
-  #_(defonce start-anim
-    (js/requestAnimationFrame start-cx-timer))
+    #(reset! collection (cx @frame)) 500))
 
 (defonce start-frame-timer
   (js/setInterval
     #(swap! frame inc) 500))
+    
+
+(def gradient
+  [:linearGradient { :id "grad" }
+      [:stop { :offset "0" :stop-color "white" :stop-opacity "0" }]
+      [:stop { :offset "1" :stop-color "white" :stop-opacity "1" }]])
+    
+(def grad-mask 
+  [:mask { :id "grad-mask" }
+    [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 200 :fill "url(#grad)" }]
+  ])
+  
+(def poly-mask 
+  [:mask { :id "poly-mask" }
+    [:path {:d "M103.5 0 186.407601 37.9720691 206.884087 123.294534 149.510247 191.717838 57.4897527 191.717838 0.115912866 123.294534 20.5923992 37.9720691z" :fill "url(#grad)"} ]
+  ])
+
+(def clippy 
+  [:clipPath { :id "clippy" } [:circle { :cx "50%" :cy "50%" :r "8%"  :style { :fill "#ffffff" } }]])
+
+
+
 
 (defn drawing []
   [:svg { :width (:width settings) :height (:height settings) }
     (:def turb)
     (:def noiz)
     (:def soft-noiz)
-    ;; eventually this should take in all the patterns
-    [:defs (noise) (map pattern-def [ blue-dots
-                                  blue-lines
-                                  pink-dots
-                                  pink-lines
-                                  gray-dots
-                                  gray-dots-lg
-                                  gray-lines
-                                  gray-patch
-                                  navy-dots
-                                  navy-lines
-                                  yellow-dots
-                                  yellow-lines
-                                  white-dots
-                                  white-dots-lg
-                                  white-lines
-                                  shadow
-                                  noise ])]
+    [:defs gradient grad-mask poly-mask clippy
+           (noise) 
+           ;; eventually this should take in all the patterns
+           (map pattern-def [ blue-dots
+                              blue-lines
+                              pink-dots
+                              pink-lines
+                              gray-dots
+                              gray-dots-lg
+                              gray-lines
+                              gray-patch
+                              navy-dots
+                              navy-lines
+                              yellow-dots
+                              yellow-lines
+                              white-dots
+                              white-dots-lg
+                              white-lines
+                              shadow
+                              noise ])]
 
     ;; then here dereference a state full of polys
-    @collection ])
+    @collection 
+    ])
 
 (reagent/render-component [drawing]
                           (js/document.getElementById "app-container"))
