@@ -44,7 +44,6 @@
 (enable-console-print!)
 
 (println "Loaded.")
-(println "*" (filt turb))
 
 ;; hides heads up display for performance
 (defn hide-display [] (let [heads-up-display (.getElementById js/document "figwheel-heads-up-container")]
@@ -168,7 +167,6 @@
   [x y r num color]
   [:g {:key (random-uuid)} (map #(circ ((gen-sc color) (rand x) (rand y) (rand r))) (range num))])
 
-
 (defn gen-grid
   ([cols rows offset base-obj]
     (let [x (base-obj :x) 
@@ -178,7 +176,6 @@
             (set (for [a (range cols) b (range rows)]
               (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))}))))))
               
-  
   (defn gen-shadow
     [offset base-obj]
     (let [x (base-obj :x)
@@ -223,10 +220,6 @@
 
 ;; --------------- ANIMATIONS STORAGE --------------------
 
-(make-frames "atob" [0 100] (make-body "transform" ["translate(100px, 0px) scale(1.4)" "translate(800px, 400px) scale(4.2)"]))
-(make-frames "ctod" [0 100] (make-body "transform" ["translate(1000px, 0px)" "translate(200px, 500px)"]))
-(make-frames "etof" [0 100] (make-body "transform" ["translateY(60px)" "translateY(800px)"]))
-
 (defn back-and-forth!
   [name start-str finish-str]
   (make-frames name [0 50 100] 
@@ -235,9 +228,40 @@
       (str finish-str)
       (str start-str)])))
 
-(back-and-forth! "bf1" "scale(100.5) rotate(270deg)" "scale(10.5) rotate(0deg)")
-(back-and-forth! "gg1" "scale(1.5)" "scale(4.5)")
-(back-and-forth! "gg2" "translateY(0%)" "translateY(4200%)")
+(make-frames "etof" [0 100] (make-body "transform" ["translateY(60px)" "translateY(800px)"]))
+
+(make-frames
+  "woosh"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+     "translate(80%, 50%) rotate(2deg) scale(1.2)"
+     "translate(80%, 50%) rotate(-200deg) scale(4.4)"
+     "translate(80%, 50%) rotate(120deg) scale(8.4)"
+     "translate(80%, 50%) rotate(-210deg) scale(15.2)"
+     "translate(80%, 50%) rotate(400deg) scale(12)"
+     ]))
+
+(make-frames
+  "creep"
+  [10, 25, 40, 80, 91]
+  (make-body "transform" [
+    "translate(280%, 750%) scale(5)"
+    "translate(280%, 650%) scale(5)"
+    "translate(280%, 450%) scale(5)"
+    "translate(280%, 250%) scale(5)"
+    "translate(280%, 250%) scale(5)"
+    ]))
+    
+(make-frames
+  "bloop-x"
+  [0 48 100]
+  (make-body "transform" [
+    (str "translateX(0px)")
+    (str "translateX(400px)")
+    (str "translateX(1000px)")
+  ]))
+
+;; --------------- ATOMS STORAGE --------------------
 
 (def drops
   (atom  (map
@@ -255,90 +279,6 @@
         (rect))
       (range 5))))
 
-
-;; ----------- COLLECTION SETUP AND CHANGE ----------------
-
-(defonce collection (atom (list)))
-
-(make-frames
-  "woosh"
-    [10, 35, 55, 85, 92]
-   (make-body "transform" [
-     "translate(80%, 50%) rotate(2deg) scale(1.2)"
-     "translate(80%, 50%) rotate(-200deg) scale(4.4)"
-     "translate(80%, 50%) rotate(120deg) scale(8.4)"
-     "translate(80%, 50%) rotate(-210deg) scale(15.2)"
-     "translate(80%, 50%) rotate(400deg) scale(12)"
-     ]))
- 
-(make-frames
- "woosh-2"
-   [10, 35, 45, 55, 85, 92]
-  (make-body "transform" [
-    "translate(800px, 50%) rotate(2deg) scale(1.2)"
-    "translate(400px, 50%) rotate(-200deg) scale(4.4)"
-    "translate(-200px, 150%) rotate(400deg) scale(8.4)"
-    "translate(-1000px, 250%) rotate(210deg) scale(8.2)"
-    "translate(550px, 250%) rotate(400deg) scale(4.2)"
-    "translate(800px, 250%) rotate(400deg) scale(10.2)"
-    ]))
-    
-(make-frames
- "woosh-3"
-   [10, 35, 45, 55, 85, 92]
-  (make-body "transform" [
-    "translate(1000px, 300%) rotate(2deg) scale(1.2)"
-    "translate(1000px, 200%) rotate(-200deg) scale(4.4)"
-    "translate(0px, 100%) rotate(400deg) scale(6.4)"
-    "translate(0px, 50%) rotate(210deg) scale(18.2)"
-    "translate(1000px, 100%) rotate(400deg) scale(6.2)"
-    "translate(1000px, 300%) rotate(400deg) scale(4.2)"
-    ]))
-    
-    
-(make-frames
- "woosh-4"
-   [10, 35, 45, 55, 85, 92]
-  (make-body "transform" [
-    "translate(-1000px, 300%) rotate(200deg) scale(1.2)"
-    "translate(-1000px, 200%) rotate(0deg) scale(4.4)"
-    "translate(800px, 50%) rotate(-360deg) scale(8.4)"
-    "translate(800px, 0%) rotate(0deg) scale(18.2)"
-    "translate(0px, 100%) rotate(100deg) scale(10.2)"
-    "translate(-1000px, 300%) rotate(400deg) scale(4.2)"
-    ]))
-        
-(make-frames
-  "creep"
-  [10, 25, 40, 80, 91]
-  (make-body "transform" [
-    "translate(280%, 750%) scale(5)"
-    "translate(280%, 650%) scale(5)"
-    "translate(280%, 450%) scale(5)"
-    "translate(280%, 250%) scale(5)"
-    "translate(280%, 250%) scale(5)"
-    ]))
-    
-
-    
-  (make-frames
-    "bloop-x"
-    [0 48 100]
-    (make-body "transform" [
-      (str "translateX(0px)")
-      (str "translateX(400px)")
-      (str "translateX(1000px)")
-    ]))
-      
-
- 
- 
- 
-
-    
-  
-
-
 (def bloops
   (->>
     ((gen-sc white) 0 100 40)
@@ -346,43 +286,6 @@
     (circ)
     (atom)))
     
-(def bloops2
-  (->>
-    ((gen-sc white) 0 200 80)
-    (anim "bloop-x" "2s" "infinite" {:timing "ease-out"})
-    (circ)
-    (atom)))
-
-(def bloops3
-  (->>
-    ;((gen-sc white) 0 260 40)
-    ((gen-pc (:id navy-dots)) 0 260 40)
-    (anim "bloop-x" ".5s" "infinite" {:timing "ease-out"})
-    (circ)
-    (atom)))
-
-(def bloops4
-  (->>
-    ((gen-sc white) -80 400 40)
-    (anim "bloop-x" "1s" "infinite" {:delay ".7s" :timing "ease-out"})
-    (circ)
-    (atom)))
-    
-(def bloops5
-  (->>
-    ;((gen-sc white) -80 500 80)
-    ((gen-pc (:id gray-lines)) -80 500 80)
-    (anim "bloop-x" "2s" "infinite" {:delay ".7s" :timing "ease-out"})
-    (circ)
-    (atom)))
-
-(def bloops6
-  (->>
-    ((gen-sc white) -80 560 40)
-    (anim "bloop-x" ".5s" "1" {:delay ".7s" :timing "ease-out"})
-    (circ)
-    (atom)))
-
 (def move-me
   (->>
    ((gen-ps (:id yellow-lines)) hept)
@@ -391,44 +294,15 @@
    (poly)
    (atom)))
    
-   (def move-me-4
-     (->>
-      ((gen-ps (:id white-dots)) hept)
-      (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-      (anim "woosh-2" "8s" "infinite" {:delay ".4s"})
-      (poly)
-      (atom)))
-   
- (def move-me-2
-   (atom [:g { :key (random-uuid) :clip-path "url(#clippy)" } 
-     (->>
-      ((gen-ss orange) hept)
-      (style {:opacity .4 :transform-origin "center" :transform "translate(1000px, 400%) scale(4.4)"})
-      (anim "woosh-3" "4s" "infinite")
-      (poly))]))
-    
-(def move-me-2a
-  (->>
-   ((gen-ss mint) hept "url(#poly-mask)")
-   (style {:opacity .4 :transform-origin "center" :transform "translate(1000px, 400%) scale(4.4)"})
-   (anim "woosh-3" "4s" "infinite")
-   (poly)
-   (atom)))
-    
-(def move-me-3
-  (->>
-   ((gen-ps (:id gray-patch)) hept)
-   (style {:transform-origin "center" :transform "translate(-1000px, 300%) scale(4.4)"})
-   (anim "woosh-4" "3s" "infinite")
-   (poly)
-   (atom)))
-      
-  (def bg (->> 
-    (gen-nc "noise" (* .5 @width) (* .5 @height) 1800)
-    (style {:opacity 1})
-    (anim "fade-in-out" "100s" "infinite")
-    (circ)
-    (atom)))
+(def bg (->> 
+  (gen-nc "noise" (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity 1})
+  (anim "fade-in-out" "100s" "infinite")
+  (circ)
+  (atom)))
+
+;; ------------------- DRAWING HELPERS ------------------------
+
 
 (defn thin
   [color frame flicker? n]
@@ -439,9 +313,10 @@
      (rect)
      (when (nth-frame 1 frame)))))
      
-     
-     (println @move-me-2a)
 
+ ;; ----------- COLLECTION SETUP AND CHANGE ----------------
+
+(defonce collection (atom (list)))
 
 (defn cx [frame]
   (list
@@ -468,111 +343,6 @@
             (rect)
           ))
 
-    #_(->>
-      (gen-grid
-        40 1
-        {:col 40 :row 40}
-        (gen-rect white 5 0 2 @height)) 
-       (map #(style {:opacity .5} %)) 
-       (map rect) 
-       (when (nth-frame 1 frame)))
-       
-       
-       #_(->>
-         (gen-grid
-           1 40
-           {:col 40 :row 40}
-           (gen-rect white 0 5 @width 2)) 
-          (map #(style {:opacity .5} %)) 
-          (map rect) 
-          (when (or  (nth-frame 1 frame) (nth-frame 4 frame))))
-          
-       
-       #_(->>
-         (gen-grid
-           1 40
-           {:col 40 :row 40}
-           (gen-rect mint 0 5 @width 2)) 
-          (map #(style {:opacity .5} %)) 
-          (map rect) 
-          (when (nth-frame 4 frame)))
-          
-          #_(->>
-            (gen-grid
-              1 40
-              {:col 40 :row 40}
-              (gen-rect navy 0 5 @width 2)) 
-             (map #(style {:opacity .5} %)) 
-             (map rect) 
-             (when (nth-frame 3 frame)))
-             
-             
-        
-    #_(when (nth-frame 1 frame)
-      (freak-out @width
-                 @height
-                 40
-                 20
-                 (pattern pink-lines)))
-                 
-     #_(when (or (nth-frame 5 frame) (nth-frame 7 frame)) 
-       (freak-out @width
-                  @height
-                  4
-                  1000
-                  pink))
-                 
-     #_(when (nth-frame 4 frame) 
-       (freak-out @width
-                  @height
-                  30
-                  60
-                  (pattern gray-dots-lg)))
-                  
-      #_(when (nth-frame 8 (+ 4 frame)) 
-        (freak-out @width
-                   @height
-                   30
-                   30
-                   mint))
-                
-                 
-     #_(when (nth-frame 6 frame) 
-       (freak-out @width
-                  @height
-                  14
-                  200
-                  yellow))
-                  
-      #_(when (or (nth-frame 6 frame) (nth-frame 6 (+ 1 frame))) 
-        (freak-out @width
-                   @height
-                   14
-                   200
-                   pink))
-        
-        
-        ;@move-me
-        
-
-        
-   #_(->> 
-    (gen-nc "noise" (* .5 @width) (* .5 @height) 1800)
-    (style {:opacity 1 :transform "translate(40px, 40px) rotate(15deg)"})
-    (circ)
-    (when (nth-frame 1 frame)))
-    
-          
-  
-     #_(->>
-      ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
-      (style {:opacity .5 :filter (filt soft-noiz) })
-      (circ)
-      (when (nth-frame 2 frame)))
-      
-      ;(gen-bg-lines white (mod frame 70))
-      
-      @move-me-2
       
       (->>
        ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
@@ -585,64 +355,6 @@
        (style {:opacity .5 :transform-origin "center" :transform "rotate(65deg)" })
        (circ)
        (when (nth-frame 1 frame)))
-       
-       
-       
-       
-      
-       ;@move-me-2 ; fix the animation to be livlier
-       ;@move-me-2a
-       
-      
-       ;(gen-bg-lines white (mod frame 70))
-
-      
-      #_(->>
-       ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand))) 
-       (style {:opacity .4 :filter (filt noiz) })
-       (circ)
-       (when (nth-frame 1 frame)))
-       
-       #_(->>
-        ((gen-sc orange) (* (rand) @width) (* (rand) @height) (* 100 (rand))) 
-        (style {:opacity .4 :filter (filt noiz) })
-        (circ)
-        (when (nth-frame 1 frame)))   
-      
-    ;@move-me
-    ;@move-me-4
-
-    ;more overlapping, transparent rects
-  
-     #_(->>
-      ((gen-sr white) (* @width .10) (* @height .20) 400 40)
-      (style {:transform-origin "center" :transform "rotate(-30deg)"})
-      (rect)
-      (when (nth-frame 4 frame)))
-      
-      #_(->>
-       ((gen-sr (pattern white-lines)) (* @width .10) (* @height .20) 400 40)
-       (style {:transform-origin "center" :transform "rotate(-30deg) translateY(-50px)"})
-       (rect)
-       (when (or (nth-frame 3 frame) (nth-frame 4 frame))))
-       
-       
-       
-       #_(->>
-        ((gen-sr white) (* @width .50) (* @height .780) 400 40)
-        (style {:transform-origin "center" :transform "rotate(-30deg)"})
-        (rect)
-        (when (nth-frame 4 frame)))
-        
-        #_(->>
-         ((gen-sr (pattern white-lines)) (* @width .50) (* @height .780) 400 40)
-         (style {:transform-origin "center" :transform "rotate(-30deg) translateY(-50px)"})
-         (rect)
-         (when (or (nth-frame 3 frame) (nth-frame 4 frame))))
-       
-
-        
-         ;(println "cx" @collection)
 
   )) ; cx end
   
@@ -678,8 +390,6 @@
 
 (def clippy 
   [:clipPath { :id "clippy" } [:circle { :cx "50%" :cy "50%" :r "8%"  :style { :fill "#ffffff" } }]])
-
-
 
 
 (defn drawing []
