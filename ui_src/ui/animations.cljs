@@ -51,16 +51,21 @@
   "fade-out"
   [0 100]
   (make-body "fill-opacity" [1 0]))
+  
+(make-frames
+  "fade-in"
+  [0 30 80 90 100]
+  (make-body "fill-opacity" [0 0 0.5 1 1]))
 
 (make-frames
   "wee-oo"
   [0 17 37 57 100]
   (make-body "transform"
-    [ "scale(1)"
-      "translateX(400%) scale(1.4)"
+    [ "translateX(1%) scale(1)"
+      "translateX(60%) scale(1.4)"
       "translateX(70%) scale(2.5)"
-      "scale(3.9)"
-      "scale(1)"]))
+      "translateX(100%) scale(13.9)"
+      "translateX(1%) scale(1)"]))
 
   (make-frames
     "rot"
