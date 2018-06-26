@@ -361,14 +361,36 @@
           ))
 
 
-       
-      
-
-        (->>
-         ((gen-sr orange) (* 0.25 @width) (* 0.55 @height) 600 800)
-         (style {:opacity .2})
-         (rect)
-         (when (nth-frame 1 frame)))
+          [:g {:key (random-uuid) :mask "url(#poly-mask)"}
+            (when (nth-frame 1 frame)
+              (freak-out @width
+                       @height
+                       80
+                       40
+                       mint))
+                       
+             (freak-out @width
+                      @height
+                      20
+                      40
+                      pink)
+          ]
+          
+          
+                
+          (->>
+           ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
+           (style {:opacity .5 })
+           (circ)
+           (when (nth-frame 1 frame)))
+          
+          (->>
+           ((gen-sc white) (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
+           (style {:opacity .5 :transform-origin "center" :transform "rotate(65deg)" })
+           (circ)
+           (when (nth-frame 1 frame)))
+           
+    
          
          
 
@@ -401,13 +423,12 @@
     [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 200 :fill "url(#grad)" }]
   ])
   
+  
 (def poly-mask 
   [:mask { :id "poly-mask" }
-    [:path {:d "M103.5 0 186.407601 37.9720691 206.884087 123.294534 149.510247 191.717838 57.4897527 191.717838 0.115912866 123.294534 20.5923992 37.9720691z" :fill "url(#grad)"} ]
-  ])
+    [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-2 10s infinite"}} ]
+])
 
-(def clippy 
-  [:clipPath { :id "clippy" } [:circle { :cx "50%" :cy "50%" :r "8%"  :style { :fill "#ffffff" } }]])
 
 
 (defn drawing []
@@ -415,7 +436,7 @@
     (:def turb)
     (:def noiz)
     (:def soft-noiz)
-    [:defs gradient grad-mask poly-mask clippy
+    [:defs gradient grad-mask poly-mask
            (noise) 
            ;; eventually this should take in all the patterns
            (map pattern-def [ blue-dots
