@@ -230,6 +230,8 @@
 
 (make-frames "etof" [0 100] (make-body "transform" ["translateY(60px)" "translateY(800px)"]))
 
+(back-and-forth! "scaley" "scale(1)" "scale(15)")
+
 (make-frames
   "woosh"
     [10, 35, 55, 85, 92]
@@ -240,6 +242,17 @@
      "translate(80%, 50%) rotate(-210deg) scale(15.2)"
      "translate(80%, 50%) rotate(400deg) scale(12)"
      ]))
+     
+     (make-frames
+       "woosh-2"
+         [10, 35, 55, 85, 92]
+        (make-body "transform" [
+          "translate(480%, 50%) rotate(2deg) scale(1.2)"
+          "translate(480%, 50%) rotate(-200deg) scale(4.4)"
+          "translate(480%, 50%) rotate(120deg) scale(8.4)"
+          "translate(480%, 50%) rotate(-210deg) scale(15.2)"
+          "translate(480%, 50%) rotate(400deg) scale(12)"
+          ]))
 
 (make-frames
   "creep"
@@ -269,35 +282,38 @@
        (gen-rect mint (+ 30 (* % 160)) 60 100 24)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (rect))
-     (range 5))))
+     (range 6))))
      
  (def drops-2
    (atom  (map
       #(->>
-        (gen-rect navy (+ 30 (* % 160)) 60 100 24)
+        (gen-rect white (+ 30 (* % 160)) 60 100 24)
         (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
         (rect))
-      (range 5))))
+      (range 6))))
 
 (def bloops
   (->>
     ((gen-sc white) 0 100 40)
+    (style {:opacity .7})
     (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
     (circ)
     (atom)))
+                
     
 (def move-me
   (->>
-   ((gen-ps (:id yellow-lines)) hept)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "8s" "infinite")
+   ((gen-ss orange) hept)
+   (style {:opacity .2 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "4s" "infinite")
    (poly)
    (atom)))
    
+   
 (def bg (->> 
   (gen-nc "noise" (* .5 @width) (* .5 @height) 1800)
-  (style {:opacity 1})
-  (anim "fade-in-out" "100s" "infinite")
+  (style {:opacity .4 :transform-origin "center" :transform "scale(10)"})
+  (anim "scaley" "20s" "infinite")
   (circ)
   (atom)))
 
@@ -322,8 +338,9 @@
   (list
 
     (let [colors [ 
-      ;mint mint mint mint mint mint 
-      navy navy navy navy navy navy ] ; orange navy mint pink gray white
+      mint mint mint mint mint mint 
+      ;navy navy navy navy navy navy 
+      ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
@@ -343,18 +360,19 @@
             (rect)
           ))
 
+
+       
       
-      (->>
-       ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
-       (style {:opacity .5 })
-       (circ)
-       (when (nth-frame 1 frame)))
-      
-      (->>
-       ((gen-sc white) (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
-       (style {:opacity .5 :transform-origin "center" :transform "rotate(65deg)" })
-       (circ)
-       (when (nth-frame 1 frame)))
+
+        (->>
+         ((gen-sr orange) (* 0.25 @width) (* 0.55 @height) 600 800)
+         (style {:opacity .2})
+         (rect)
+         (when (nth-frame 1 frame)))
+         
+         
+
+
 
   )) ; cx end
   
@@ -366,7 +384,7 @@
 ; should I replace with requestAnimationFrame?
 (defonce start-cx-timer
   (js/setInterval
-    #(reset! collection (cx @frame)) 500))
+    #(reset! collection (cx @frame)) 50))
 
 (defonce start-frame-timer
   (js/setInterval
