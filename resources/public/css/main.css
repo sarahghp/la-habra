@@ -40,7 +40,7 @@ body {
   }
 }*/
 
-/*@keyframes wee-oo {
+@keyframes wee-oo {
   0% {
     transform: scale(1);
   }
@@ -60,7 +60,7 @@ body {
   100% {
     transform: scale(1);
   }
-}*/
+}
 
 /*.fade-i-o {
   animation: fade-in-out 1s infinite;
@@ -73,7 +73,7 @@ body {
   animation-fill-mode: forwards;
 }
 
-.oo {
+*/ .oo {
   transform-origin: center;
   animation: wee-oo 10s infinite;
-}*/
+}
