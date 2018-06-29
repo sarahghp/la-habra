@@ -64,11 +64,7 @@
   [changes shape]
   (update-in shape [:style] #(merge % changes)))
 
-;; ------------------------ GENERATORS ---------------------
-
-(defn poly
-  [{ :keys [d style mask] :or {mask ""} } ]
-  [:path { :key (random-uuid) :d d :style style :mask mask }])
+;; ------------------------ WRAPPERS ---------------------
 
 (defn circ
   [{:keys [x y r style mask] :or {mask ""} }]
@@ -78,7 +74,7 @@
              :style style
              :mask mask
              :key (random-uuid)} ])
-
+             
 (defn rect
  [{:keys [x y w h style] }]
  [:rect { :x x
@@ -87,7 +83,28 @@
           :height h
           :style style
           :key (random-uuid)} ])
+          
+(defn shape
+  [{ :keys [d style mask] :or {mask ""} } ]
+  [:path { :key (random-uuid) :d d :style style :mask mask }])
 
+
+
+;; ------------------------ GENERATORS ---------------------
+
+(defn gen-circ
+  [fill-string x y radius & mask]
+  { :x x
+    :y y
+    :r radius
+    :mask mask
+    :style { :fill fill-string }})
+    
+(defn gen-group
+  ([internals] (gen-group {} internals))
+  ([{ :keys [style mask] :or { style {} mask "" } } & internals]
+    [:g { :key (random-uuid) :style style :mask mask } internals ]))
+    
 (defn gen-rect
   [fill-string x y w h]
   { :x x
@@ -96,51 +113,12 @@
     :h h
     :style {
       :fill fill-string }})
-      
-(defn gen-sr
-  [fill]
-  (partial gen-rect fill))
-
-(defn gen-pr
-  [fill-id]
-  (partial gen-rect (str "url(#" fill-id ") #fff")))
-
-(defn gen-circ
-  [fill-string x y radius mask]
-  { :x x
-    :y y
-    :r radius
-    :mask mask
-    :style { :fill fill-string }})
     
-(defn gen-nc
-  [filter-id x y radius]
-  { :x x
-    :y y
-    :r radius
-    :style { :fill (str "url(#" filter-id ") #fff") }})
-
-(defn gen-sc
-  [fill]
-  (partial gen-circ fill))
-
-(defn gen-pc
-  [fill-id]
-  (partial gen-circ (str "url(#" fill-id ") #fff")))
-
 (defn gen-shape
-  [fill-string path mask]
+  [fill-string path & mask]
   { :style { :fill fill-string }
     :mask mask
     :d path })
-
-(defn gen-ps ;; makes pattern shape
-  [fill-id]
-  (partial gen-shape (str "url(#" fill-id ") #fff")))
-
-(defn gen-ss ;; makes solid shape
-  [fill]
-  (partial gen-shape fill))
 
 (defn gen-offset-lines
   [f h space-btw line-num]
@@ -164,8 +142,15 @@
 ;; ability to to pass max AND min to distro
 
 (defn freak-out
-  [x y r num color]
-  [:g {:key (random-uuid)} (map #(circ ((gen-sc color) (rand x) (rand y) (rand r))) (range num))])
+  ([x y r num color] (freak-out x 0 y 0 r num color {}))
+  ([x y r num color style] (freak-out 0 x 0 y r num color style))
+  ([min-x max-x min-y max-y r num color] (freak-out min-x max-x min-y max-y r num color {}))
+  ([min-x max-x min-y max-y max-r num color style]
+  [:g { :key (random-uuid) 
+        :style style } 
+      (map 
+        #(circ (gen-circ color (+ min-x (rand (- max-x min-x))) (+ min-y (rand (- max-y min-y))) (rand max-r))) 
+        (range num))]))
 
 (defn gen-grid
   ([cols rows offset base-obj]
@@ -237,22 +222,33 @@
     [10, 35, 55, 85, 92]
    (make-body "transform" [
      "translate(80%, 50%) rotate(2deg) scale(1.2)"
-     "translate(80%, 50%) rotate(-200deg) scale(4.4)"
-     "translate(80%, 50%) rotate(120deg) scale(8.4)"
-     "translate(80%, 50%) rotate(-210deg) scale(15.2)"
-     "translate(80%, 50%) rotate(400deg) scale(12)"
+     "translate(380%, 350%) rotate(-200deg) scale(2.4)"
+     "translate(280%, 450%) rotate(120deg) scale(3.4)"
+     "translate(180%, 250%) rotate(-210deg) scale(5.2)"
+     "translate(80%, 50%) rotate(400deg) scale(6.2)"
      ]))
      
-     (make-frames
-       "woosh-2"
-         [10, 35, 55, 85, 92]
-        (make-body "transform" [
-          "translate(480%, 50%) rotate(2deg) scale(1.2)"
-          "translate(480%, 50%) rotate(-200deg) scale(4.4)"
-          "translate(480%, 50%) rotate(120deg) scale(8.4)"
-          "translate(480%, 50%) rotate(-210deg) scale(15.2)"
-          "translate(480%, 50%) rotate(400deg) scale(12)"
-          ]))
+(make-frames
+ "woosh-2"
+   [10, 35, 55, 85, 92]
+  (make-body "transform" [
+    "translate(480%, 50%) rotate(2deg) scale(1.2)"
+    "translate(480%, 50%) rotate(-200deg) scale(4.4)"
+    "translate(480%, 50%) rotate(120deg) scale(8.4)"
+    "translate(480%, 50%) rotate(-210deg) scale(10.2)"
+    "translate(480%, 50%) rotate(400deg) scale(4)"
+    ]))
+    
+(make-frames
+ "woosh-3"
+   [10, 35, 55, 85, 92]
+  (make-body "transform" [
+    "translate(480%, 50%) rotate(2deg) scale(1.2)"
+    "translate(180%, 150%) rotate(-200deg) scale(4.4)"
+    "translate(80%, 250%) rotate(120deg) scale(3.4)"
+    "translate(0%, 300%) rotate(-210deg) scale(4.2)"
+    "translate(280%, 150%) rotate(400deg) scale(8)"
+    ]))
 
 (make-frames
   "creep"
@@ -294,7 +290,7 @@
 
 (def bloops
   (->>
-    ((gen-sc white) 0 100 40)
+    (gen-circ white 0 100 40)
     (style {:opacity .7})
     (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
     (circ)
@@ -303,15 +299,15 @@
     
 (def move-me
   (->>
-   ((gen-ss orange) hept)
+   (gen-shape orange hept)
    (style {:opacity .2 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "4s" "infinite")
-   (poly)
+   (shape)
    (atom)))
    
    
 (def bg (->> 
-  (gen-nc "noise" (* .5 @width) (* .5 @height) 1800)
+  (gen-circ (pattern "noise") (* .5 @width) (* .5 @height) 1800)
   (style {:opacity .4 :transform-origin "center" :transform "scale(10)"})
   (anim "scaley" "20s" "infinite")
   (circ)
@@ -324,7 +320,7 @@
   [color frame flicker? n]
   (let [op (if (and (nth-frame 4 frame) flicker?) (rand) 1)]
     (->>
-     ((gen-sr color) (* 0.15 @width) (* 0.15 @height) (* 0.7 @width) 3)
+     (gen-rect color (* 0.15 @width) (* 0.15 @height) (* 0.7 @width) 3)
      (style {:transform (str "translateY(" (* n 10) "px)") :opacity op})
      (rect)
      (when (nth-frame 1 frame)))))
@@ -355,46 +351,55 @@
             white-dots white-dots white-dots white-dots white-dots white-dots ] ; orange navy mint pink gray white
           n (count patterns)]
           (->>
-            ((gen-pr (:id (nth patterns (mod frame n)))) 0 0 "100%" "100%")
+            (gen-rect (pattern (:id (nth patterns (mod frame n)))) 0 0 "100%" "100%")
             (style {:transform "scale(1.2)" :opacity .4})
             (rect)
           ))
-
-
-          [:g {:key (random-uuid) :mask "url(#poly-mask)"}
-            (when (nth-frame 1 frame)
-              (freak-out @width
-                       @height
-                       80
-                       40
-                       mint))
-                       
-             (freak-out @width
-                      @height
-                      20
-                      40
-                      pink)
-          ]
-          
-          
+                      
+  (gen-group { :mask "url(#poly-mask)" } 
+    (gen-bg-lines orange (mod frame 60))
+    (when (nth-frame 1 frame)
+      (freak-out @width
+               @height
+               80
+               40
+               mint))
+               
+     (freak-out @width
+              @height
+              20
+              40
+              pink))
+    
+  (gen-group { :mask "url(#poly-mask-3)" } 
+    (gen-bg-lines navy (mod (* 2 frame) 80)))
+  
+  (gen-group { :mask "url(#poly-mask-2)" } 
+    (->> 
+      (gen-circ (pattern "noise") (* .5 @width) (* .5 @height) 1800)
+      (style {:opacity .4 :transform-origin "center" :transform "scale(10)"})
+      (circ)))
+                  
+          #_(when (nth-frame 1 frame)
+            (freak-out 400 @width
+                       (* 0.5 @height) @height
+                       20
+                       10
+                       pink
+                       {:opacity .5}))
                 
           (->>
-           ((gen-sc navy) (* 0.5 @width) (* 0.5 @height) 200)
-           (style {:opacity .5 })
+           (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200)
+           (style {:opacity .7 })
            (circ)
            (when (nth-frame 1 frame)))
           
           (->>
-           ((gen-sc white) (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
-           (style {:opacity .5 :transform-origin "center" :transform "rotate(65deg)" })
+           (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
+           (style {:opacity .7 :transform-origin "center" :transform "rotate(65deg)" })
            (circ)
            (when (nth-frame 1 frame)))
            
-    
-         
-         
-
-
 
   )) ; cx end
   
@@ -429,6 +434,16 @@
     [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-2 10s infinite"}} ]
 ])
 
+(def poly-mask-2
+  [:mask { :id "poly-mask-2" }
+    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-3 3s infinite"}} ]
+])
+
+(def poly-mask-3
+  [:mask { :id "poly-mask-3" }
+    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 5s infinite"}} ]
+])
+
 
 
 (defn drawing []
@@ -436,7 +451,7 @@
     (:def turb)
     (:def noiz)
     (:def soft-noiz)
-    [:defs gradient grad-mask poly-mask
+    [:defs gradient grad-mask poly-mask poly-mask-2 poly-mask-3
            (noise) 
            ;; eventually this should take in all the patterns
            (map pattern-def [ blue-dots

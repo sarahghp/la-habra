@@ -54,7 +54,7 @@
 
 ;; gen pattern string to use patterns as colors
 (defn pattern 
-  [{ fill-id :id }]
+  [ fill-id ]
   (str "url(#" fill-id ") #fff"))
 
 ;; pattern gen fn for defs on init
