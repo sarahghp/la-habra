@@ -12,7 +12,7 @@
                 pink
                 white
                 yellow]]
-            [ui.filters :as filters :refer [filt turb noiz soft-noiz]]
+            [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
              [ pattern
                pattern-def
@@ -63,6 +63,10 @@
 (defn style
   [changes shape]
   (update-in shape [:style] #(merge % changes)))
+
+(defn url
+  ([ fill-id ]
+    (str "url(#" fill-id ")")))
 
 ;; ------------------------ WRAPPERS ---------------------
 
@@ -392,14 +396,14 @@
           ))
   
                       
-  (gen-group { :mask "url(#poly-mask)" } 
-    (gen-bg-lines orange (mod frame 60))
+  #_(gen-group { :mask "url(#poly-mask)" } 
+    (gen-bg-lines orange (mod frame 60)) 
     (when (nth-frame 1 frame)
       (freak-out @width
                @height
                80
                40
-               mint))
+               mint)) 
                
      (freak-out @width
               @height
@@ -407,24 +411,11 @@
               40
               pink))
     
-  (gen-group { :mask "url(#poly-mask-3)" } 
-    (gen-bg-lines navy (mod (* 2 frame) 80)))
   
-  (gen-group { :mask "url(#poly-mask-2)" } 
-    (->> 
-      (gen-circ (pattern "noise") (* .5 @width) (* .5 @height) 1800)
-      (style {:opacity .4 :transform-origin "center" :transform "scale(10)"})
-      (circ)))
-                  
-  #_(->>
-   (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200)
-   (style {:opacity .7 })
-   (circ)
-   (when (nth-frame 1 frame)))
-  
+
   (->>
-    (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
-    (style {:opacity .7 :transform-origin "center" :transform "rotate(65deg)" })
+    (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
+    (style {:opacity .7 :transform-origin "center" :transform "rotate(65deg)" :filter (url (:id splotchy))  })
     (circ)
     (when (nth-frame 1 frame)))
   
@@ -472,16 +463,14 @@
     [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 5s infinite"}} ]
 ])
 
-
+(def all-filters [turb noiz soft-noiz disappearing splotchy blur])
 
 (defn drawing []
   [:svg { :width (:width settings) :height (:height settings) }
-    (:def turb)
-    (:def noiz)
-    (:def soft-noiz)
+     ;; filters
+    (map #(:def %) all-filters)
+    ;; masks and patterns
     [:defs gradient grad-mask poly-mask poly-mask-2 poly-mask-3
-           (noise) 
-           ;; eventually this should take in all the patterns
            (map pattern-def [ blue-dots
                               blue-lines
                               pink-dots

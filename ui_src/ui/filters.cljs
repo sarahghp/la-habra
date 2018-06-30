@@ -2,23 +2,49 @@
 
 (enable-console-print!)
 
-(defn filt 
-  [{ fill-id :id }]
-  (str "url(#" fill-id ")"))
-
 (def turb
   (let [id "filter-tirb"]
     { :id id
       :def [:filter { :id id :key (random-uuid) }
         [:feTurbulence { :type "turbulence" 
-                         :baseFrequency "0.05"
+                         :baseFrequency "0.1 0.1"
+                         :numOctaves "2" 
+                         :stitchTiles "stitch"
+                         :result "turbulence" }]
+        [:feDisplacementMap { :in2 "turbulence" 
+                              :in "SourceGraphic"
+                              :scale "100" 
+                              :xChannelSelector "R" 
+                              :yChannelSelector "B" }]]}))
+
+(def splotchy
+  (let [id "filter-splotchy"]
+    { :id id
+      :def [:filter { :id id :key (random-uuid) }
+        [:feTurbulence { :type "turbulence" 
+                         :baseFrequency "0.1 0.1"
+                         :numOctaves "20" 
+                         :result "turbulence" }]
+        [:feDisplacementMap { :in2 "turbulence" 
+                              :in "SourceGraphic"
+                              :scale "600" 
+                              :xChannelSelector "R" 
+                              :yChannelSelector "B" }]]}))
+                              
+                              
+(def disappearing
+  (let [id "filter-disappearing"]
+    { :id id
+      :def [:filter { :id id :key (random-uuid) }
+        [:feTurbulence { :type "turbulence" 
+                         :baseFrequency "0.5 0.8"
                          :numOctaves "2" 
                          :result "turbulence" }]
         [:feDisplacementMap { :in2 "turbulence" 
                               :in "SourceGraphic"
-                              :scale "50" 
+                              :scale "600" 
                               :xChannelSelector "R" 
-                              :yChannelSelector "G" }]]}))
+                              :yChannelSelector "B" }]]}))
     
 (def noiz 
   (let [id "filter-noiz"]
@@ -42,3 +68,10 @@
         [ :feColorMatrix { :type "matrix" :values "1 0 0 0 0.22 0 1 0 0 0.22 0 0 1 0 0.22 0 0 0 1 0" :in "f4" :result "f5" } ]
         [ :feMerge [:feMergeNode { :in "SourceGraphic" } ] [:feMergeNode { :in "f5" } ]]]
     }))
+
+(def blur 
+  (let [id "blurry"]
+    { :id id 
+      :def [:filter 
+        { :id id :key (random-uuid) }
+          [:feGaussianBlur { :in "SourceGraphic" :stdDeviation "2 0" }]]}))
