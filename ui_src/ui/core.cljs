@@ -67,16 +67,34 @@
 ;; ------------------------ WRAPPERS ---------------------
 
 (defn circ
-  [{:keys [x y r style mask] :or {mask ""} }]
+  [{:keys [x y r style mask] :or {mask ""}}]
   [:circle { :cx x
              :cy y
              :r r
              :style style
              :mask mask
              :key (random-uuid)} ])
-             
+
+(defn line
+  [{:keys [first-point second-point color width style] :or { width 4 style {} }}]
+  [:line { :x1 (first-point 0)
+           :y1 (first-point 1) 
+           :x2 (second-point 0)
+           :y2 (second-point 1)
+           :stroke color
+           :stroke-width width
+           :style style
+           :key (random-uuid) }])
+
+(defn polygon
+  [{:keys [points style mask] :or {mask ""}}]
+  [:polygon { :key (random-uuid)
+              :points points
+              :style style
+              :mask mask }])
+
 (defn rect
- [{:keys [x y w h style] }]
+ [{:keys [x y w h style]}]
  [:rect { :x x
           :y y
           :width w
@@ -85,8 +103,11 @@
           :key (random-uuid)} ])
           
 (defn shape
-  [{ :keys [d style mask] :or {mask ""} } ]
-  [:path { :key (random-uuid) :d d :style style :mask mask }])
+  [{:keys [d style mask] :or {mask ""}}]
+  [:path { :key (random-uuid) 
+           :d d 
+           :style style 
+           :mask mask }])
 
 
 
@@ -104,6 +125,20 @@
   ([internals] (gen-group {} internals))
   ([{ :keys [style mask] :or { style {} mask "" } } & internals]
     [:g { :key (random-uuid) :style style :mask mask } internals ]))
+
+(defn gen-line
+  [first-point second-point color & width]
+  { :first-point first-point
+    :second-point second-point
+    :color color 
+    :width width
+    :style {}})
+
+(defn gen-poly
+  [fill-string points & mask]
+  { :points points 
+    :style { :fill fill-string } 
+    :mask mask})
     
 (defn gen-rect
   [fill-string x y w h]
@@ -355,6 +390,7 @@
             (style {:transform "scale(1.2)" :opacity .4})
             (rect)
           ))
+  
                       
   (gen-group { :mask "url(#poly-mask)" } 
     (gen-bg-lines orange (mod frame 60))
@@ -380,26 +416,18 @@
       (style {:opacity .4 :transform-origin "center" :transform "scale(10)"})
       (circ)))
                   
-          #_(when (nth-frame 1 frame)
-            (freak-out 400 @width
-                       (* 0.5 @height) @height
-                       20
-                       10
-                       pink
-                       {:opacity .5}))
-                
-          (->>
-           (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200)
-           (style {:opacity .7 })
-           (circ)
-           (when (nth-frame 1 frame)))
-          
-          (->>
-           (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
-           (style {:opacity .7 :transform-origin "center" :transform "rotate(65deg)" })
-           (circ)
-           (when (nth-frame 1 frame)))
-           
+  #_(->>
+   (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200)
+   (style {:opacity .7 })
+   (circ)
+   (when (nth-frame 1 frame)))
+  
+  (->>
+    (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 "url(#grad-mask)")
+    (style {:opacity .7 :transform-origin "center" :transform "rotate(65deg)" })
+    (circ)
+    (when (nth-frame 1 frame)))
+  
 
   )) ; cx end
   
