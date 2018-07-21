@@ -4,3 +4,5 @@ target/
 resources/public/js
 resources/public/img
 figwheel_server.log
+.lein-repl-history
+.nrepl-port
