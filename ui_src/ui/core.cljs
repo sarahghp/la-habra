@@ -14,7 +14,8 @@
                 yellow]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
-             [ pattern
+             [ gen-color-noise
+               pattern
                pattern-def
                blue-dots
                blue-lines
@@ -67,6 +68,23 @@
 (defn url
   ([ fill-id ]
     (str "url(#" fill-id ")")))
+
+(defn sin [x] (.sin js/Math x))
+
+(defn seconds-to-frames
+  [seconds]
+  (* 2 seconds))
+
+(defonce ran (atom {}))
+
+(defn fade-and-hold
+  [name frame duration fader solid]
+  (let [init-frame (@ran name)
+        ran? (and init-frame (<= (+ init-frame (seconds-to-frames duration)) frame))
+        ret (if ran? solid fader)]
+    (when-not init-frame (swap! ran assoc name frame))
+    ret))
+
 
 ;; ------------------------ WRAPPERS ---------------------
 
@@ -252,9 +270,30 @@
       (str finish-str)
       (str start-str)])))
 
+(defn a-to-b!
+  [name att start-str finish-str]
+  (make-frames name [0 100] 
+    (make-body att [
+      (str start-str)
+      (str finish-str)])))
+
+(defn fade-start!
+  [name op-end]
+  (make-frames name [0 99 100] 
+    (make-body "fill-opacity" [
+      (str 0)
+      (str 0)
+      (str op-end)])))
+
+(fade-start! "fi" 1)
+
 (make-frames "etof" [0 100] (make-body "transform" ["translateY(60px)" "translateY(800px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
+
+(a-to-b! "new-fi" "fill-opacity" "0" ".5")
+(a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
+(a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
 
 (make-frames
   "woosh"
@@ -361,13 +400,29 @@
       (shape)
       (atom)))
    
-   
+
 (def bg (->> 
-  (gen-circ (pattern "noise") (* .5 @width) (* .5 @height) 1800)
-  (style {:opacity .4 :transform-origin "center" :transform "scale(10)"})
-  (anim "scaley" "20s" "infinite")
+  (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
+  (anim "sc-rot" "60s" "1" {:timing "linear" :delay "7s"})
   (circ)
   (atom)))
+
+(def bg-2 (->> 
+  (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
+  (anim "sc-rot" "80s" "1" {:timing "linear" :delay "13s"})
+  (circ)
+  (atom)))
+
+(def fade-rect
+  (->>
+    (gen-rect navy 0 0 (* 0.5 @width) @height)
+    (anim "new-fi" "4s" "1")
+    (rect)
+    (atom)))
+
+
 
 ;; ------------------- DRAWING HELPERS ------------------------
 
@@ -378,29 +433,75 @@
     (->>
      (gen-rect color (* 0.15 @width) (* 0.15 @height) (* 0.7 @width) 3)
      (style {:transform (str "translateY(" (* n 10) "px)") :opacity op})
-     (rect)
-     (when (nth-frame 1 frame)))))
-     
+     (rect))))
+
+(defn flicker-test [n frame]
+  (or (and (= n 10) (nth-frame 12 frame))
+      (and (= n 12) (nth-frame 8 frame))
+      (= n 44) (= n 45)
+      (and (= n 46) (nth-frame 8 frame))))
+
+(def slide-lines
+ (->>
+   (gen-group {:style {:animation "fi 39s 1"}} (gen-group {:style {:opacity .3 :filter (url (:id noiz)) :transform "translateY(0%)" :animation "slide-up 12s 1 38s ease-in"}}
+              (doall (map #(thin white 1 true %) (range 60)))))
+   (atom)))
+
+(defn hold-lines [frame]
+  (gen-group {:style {:opacity .3 :filter (url (:id noiz)) :transform "translateY(0%)"}}
+             (doall (map #(thin white frame (flicker-test % frame) %) (range 60)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 (defonce collection (atom (list)))
+(reset! ran {})
 
 (defn cx [frame]
   (list
 
     (let [colors [ 
-      mint mint mint mint mint mint 
-      ;navy navy navy navy navy navy 
+      navy navy navy navy navy navy 
+      ;orange
       ] ; orange navy mint pink gray white
-          n (count colors)]
-          (->>
-            (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
-            (style {:opacity .5})
-            (rect)
-          ))
+        n (count colors)]
+        (->>
+          (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
+          (style {:opacity .9})
+          (rect)))
+    
 
-    (let [patterns [ 
+    (fade-and-hold :base-rect frame 5
+      @fade-rect
+      
+      (->>
+        (gen-rect navy 0 0 (* 0.5 @width) @height)
+        (style {:opacity .5})
+        (rect)
+        (when (nth-frame 1 frame))))
+    
+    (fade-and-hold :bg1 frame 67
+                   @bg
+                   (->>
+                     (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
+                     (style {:opacity 1 :transform-origin "center" :transform "scale(30) rotate(-80deg)"})
+                     (circ)
+                     (when (nth-frame 1 frame))))
+  
+   (fade-and-hold :bg2 frame 93
+                  @bg-2
+                  (->>
+                    (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
+                    (style {:opacity 1 :transform-origin "center" :transform "scale(30) rotate(-80deg)"})
+                    (circ)
+                    (when (nth-frame 1 frame))))
+   
+    (fade-and-hold :lines frame 50
+                   @slide-lines
+                   (hold-lines frame))
+    
+  
+
+    #_(let [patterns [ 
             ;pink-dots pink-dots pink-dots pink-dots pink-dots pink-dots
             ;gray-dots gray-dots gray-dots gray-dots gray-dots gray-dots 
             ;white-dots white-dots white-dots white-dots white-dots white-dots
@@ -427,97 +528,16 @@
                                     100
                                     pink)))
             
-            (gen-group {:mask (url "poly-mask-2")}
+            #_(gen-group {:mask (url "poly-mask-2")}
                        (gen-bg-lines white 80))
     
-            (gen-group {:style {:opacity .5 :filter (url (:id noiz))}} 
+            #_(gen-group {:style {:opacity .5 :filter (url (:id noiz))}} 
                         (when (nth-frame 1 frame)
                           (freak-out 0 @width
                                      0 @height
                                      40
                                      100
                                      blue)))
-    
-
-    
-                                     
-    
-      ;@move-me
-      ;@move-me-2
-    
-    #_(->>
-      (gen-circ (pattern (:id white-lines)) (* 0.7 @width) (* 0.25 @height) 220 "url(#grad-mask)")
-      (style {:opacity 1 :transform-origin "center" :transform "rotate(65deg)" })
-      (circ)
-      (when (nth-frame 1 frame)))
-      
-    
-    #_(->>
-      (gen-line [80 300] [400 300] white 20)
-      (line)
-      (when-not (nth-frame 4 frame)))
-  
-  #_(->>
-      (gen-line [80 360] [400 360] white 20)
-      (line)
-      (when-not (nth-frame 4 (- 1 frame))))
-  #_(->>
-      (gen-line [80 420] [400 420] white 20)
-      (line)
-      (when-not (nth-frame 4 (- 2 frame))))
-  #_(->>
-    (gen-poly yellow "100 200 600 160 600 660 100 600")
-    (style {:opacity 0.7})
-    (polygon)
-    (when (nth-frame 1 frame)))
-    
-
-    
-  #_(->>
-    (gen-line [80 300] [400 300] pink 20)
-    (line)
-    (when (nth-frame 4 frame)))
-    
-    
-  #_(->>
-    (gen-line [80 360] [400 360] (pattern (:id pink-lines)) 20)
-    (line)
-    (when (nth-frame 4 (- 1 frame))))
-  
-
-  
-  #_(->>
-    (gen-line [80 420] [400 420] pink 20)
-    (line)
-    (when (nth-frame 4 (- 2 frame))))
-    
-  #_(->>
-     (gen-circ blue 540 600 20)
-     (circ)
-     (when (nth-frame 2 frame)))
-    
-
-
-                      
-  #_(gen-group { :mask "url(#poly-mask)" } 
-    (gen-bg-lines orange (mod frame 60)) 
-    (when (nth-frame 1 frame)
-      (freak-out @width
-               @height
-               80
-               40
-               mint)) 
-               
-     (freak-out @width
-              @height
-              20
-              40
-              pink))
-    
-  
-
-
-  
 
   )) ; cx end
   
@@ -567,32 +587,33 @@
     [:path {:d hept :fill "#fff" :style { :transform-origin "center" :transform "translate(280%, 250%) rotate(-200deg) scale(5.2)"}} ]
 ])
 
-
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
+(def all-fills [gray mint navy blue orange br-orange pink white yellow])
 
 (defn drawing []
   [:svg { :width (:width settings) :height (:height settings) }
      ;; filters
     (map #(:def %) all-filters)
     ;; masks and patterns
-    [:defs gradient grad-mask poly-mask poly-mask-2 poly-mask-3 poly-mask-4
-           (map pattern-def [ blue-dots
-                              blue-lines
-                              pink-dots
-                              pink-lines
-                              gray-dots
-                              gray-dots-lg
-                              gray-lines
-                              gray-patch
-                              navy-dots
-                              navy-lines
-                              yellow-dots
-                              yellow-lines
-                              white-dots
-                              white-dots-lg
-                              white-lines
-                              shadow
-                              noise ])]
+    [:defs 
+     gradient grad-mask poly-mask poly-mask-2 poly-mask-3 poly-mask-4 noise
+     (map gen-color-noise all-fills)
+     (map pattern-def [ blue-dots
+                        blue-lines
+                        pink-dots
+                        pink-lines
+                        gray-dots
+                        gray-dots-lg
+                        gray-lines
+                        gray-patch
+                        navy-dots
+                        navy-lines
+                        yellow-dots
+                        yellow-lines
+                        white-dots
+                        white-dots-lg
+                        white-lines
+                        shadow ])]
 
     ;; then here dereference a state full of polys
     @collection 
