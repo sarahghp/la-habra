@@ -218,18 +218,6 @@
             (set (for [a (range cols) b (range rows)]
               (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))}))))))
               
-  (defn gen-shadow
-    [offset base-obj]
-    (let [x (base-obj :x)
-          y (base-obj :y)
-          x-off (offset :x)
-          y-off (offset :y)
-          fill-id (:id shadow)
-          shadow-obj (merge base-obj 
-            {:x (+ x x-off)} 
-            {:y (+ y y-off)}
-            {:style {:opacity .7 :fill (str "url(#" fill-id ") #fff")}})]
-      (list shadow-obj base-obj)))
 
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------
 
@@ -299,41 +287,50 @@
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
-     "translate(80%, 50%) rotate(2deg) scale(1.2)"
-     "translate(380%, 100%) rotate(-200deg) scale(2.4)"
-     "translate(80%, 450%) rotate(120deg) scale(3.4)"
-     "translate(380%, 300%) rotate(-210deg) scale(2.2)"
-     "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
-     
+                           "translate(80%, 50%) rotate(2deg) scale(1.2)"
+                           "translate(380%, 100%) rotate(-200deg) scale(2.4)"
+                           "translate(80%, 450%) rotate(120deg) scale(3.4)"
+                           "translate(380%, 300%) rotate(-210deg) scale(2.2)"
+                           "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+
+
 (make-frames
- "woosh-2"
-   [10, 35, 55, 85, 92]
-  (make-body "transform" [
-    "translate(480%, 50%) rotate(2deg) scale(1.2)"
-    "translate(480%, 50%) rotate(-200deg) scale(4.4)"
-    "translate(480%, 50%) rotate(120deg) scale(8.4)"
-    "translate(480%, 50%) rotate(-210deg) scale(10.2)"
-    "translate(480%, 50%) rotate(400deg) scale(4)"]))
+ "woosh-6"
+   [10, 35, 55, 65, 85, 95]
+  (make-body "transform" ["translate(80%, 50%) rotate(2deg) scale(1.2)"
+                          "translate(380%, 100%) rotate(-200deg) scale(2.4)"
+                          "translate(80%, 450%) rotate(120deg) scale(3.4)"
+                          "translate(380%, 300%) rotate(-210deg) scale(2.2)"
+                          "translate(80%, 50%) rotate(400deg) scale(6.2)"
+                          "translate(80%, 50%) rotate(400deg) scale(10.2)"]))
     
+(make-frames
+  "woosh-2"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" ["translate(80%, 50%) rotate(2deg) scale(1.2)"
+                           "translate(380%, 100%) rotate(-200deg) scale(4.4)"
+                           "translate(80%, 450%) rotate(120deg) scale(8.4)"
+                           "translate(380%, 300%) rotate(-210deg) scale(10.2)"
+                           "translate(80%, 50%) rotate(400deg) scale(16.2)"]))
+
+
 (make-frames
  "woosh-3"
    [10, 35, 55, 85, 92]
-  (make-body "transform" [
-    "translate(480%, 50%) rotate(2deg) scale(1.2)"
-    "translate(180%, 150%) rotate(-200deg) scale(4.4)"
-    "translate(80%, 250%) rotate(120deg) scale(3.4)"
-    "translate(0%, 300%) rotate(-210deg) scale(4.2)"
-    "translate(280%, 150%) rotate(400deg) scale(8)"]))
+  (make-body "transform" ["translate(480%, 50%) rotate(2deg) scale(10.2)"
+                          "translate(180%, 250%) rotate(-200deg) scale(14.4)"
+                          "translate(0%, 550%) rotate(220deg) scale(15.4)"
+                          "translate(0%, 300%) rotate(-210deg) scale(14.2)"
+                          "translate(280%, 150%) rotate(400deg) scale(18)"]))
 
 (make-frames
-  "woosh-4"
-    [10, 35, 55, 85, 92]
-   (make-body "transform" [
-     "translate(80%, 50%) rotate(2deg) scale(5.2)"
-     "translate(380%, 350%) rotate(-200deg) scale(6.4)"
-     "translate(280%, 450%) rotate(120deg) scale(8.4)"
-     "translate(180%, 250%) rotate(-210deg) scale(5.2)"
-     "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+ "woosh-4"
+   [10, 35, 55, 75]
+  (make-body "transform" ["translate(480%, 50%) rotate(2deg) scale(15.2)"
+                          "translate(180%, 250%) rotate(-200deg) scale(18.4)"
+                          "translate(0%, 550%) rotate(220deg) scale(20.4)"
+                          "translate(280%, 150%) rotate(400deg) scale(30)"]))
+
      
 
 
@@ -386,32 +383,64 @@
     
 (def move-me
   (->>
-   (gen-shape blue hept)
+   (gen-shape mint hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "4s" "infinite")
+   (anim "woosh" "10s" "infinite")
    (shape)
    (atom)))
 
-   (def move-me-2
-     (->>
-      (gen-shape (pattern (:id pink-lines)) hept)
-      (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
-      (anim "woosh" "4s" "infinite" {:delay ".1s"})
-      (shape)
-      (atom)))
+(def move-me-2
+ (->>
+  (gen-shape (pattern (:id navy-lines)) hept)
+  (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+  (anim "woosh" "10s" "infinite" {:delay ".1s"})
+  (shape)
+  (atom)))
+
+  (def move-me-3
+    (->>
+     (gen-shape mint hept)
+     (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+     (anim "woosh-2" "8s" "infinite")
+     (shape)
+     (atom)))
+
+  (def move-me-4
+   (->>
+    (gen-shape (pattern (:id navy-lines)) hept)
+    (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+    (anim "woosh-2" "8s" "infinite" {:delay ".1s"})
+    (shape)
+    (atom)))
    
+  (def move-me-5
+   (->>
+    (gen-shape (pattern (:id yellow-dots)) oct)
+    (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
+    (anim "woosh-3" "4s" "infinite" {:delay ".1s"})
+    (shape)
+    (atom)))
+
+
+  (def move-me-6
+   (->>
+    (gen-shape (pattern (:id navy-dots)) hex)
+    (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
+    (anim "woosh-4" "4s" "infinite" {:delay ".2s"})
+    (shape)
+    (atom)))
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "60s" "1" {:timing "linear" :delay "7s"})
+  (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
   (circ)
   (atom)))
 
 (def bg-2 (->> 
   (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "80s" "1" {:timing "linear" :delay "13s"})
+  (anim "sc-rot" "52s" "1" {:timing "linear" :delay "13s"})
   (circ)
   (atom)))
 
@@ -443,32 +472,47 @@
 
 (def slide-lines
  (->>
-   (gen-group {:style {:animation "fi 39s 1"}} (gen-group {:style {:opacity .3 :filter (url (:id noiz)) :transform "translateY(0%)" :animation "slide-up 12s 1 38s ease-in"}}
-              (doall (map #(thin white 1 true %) (range 60)))))
+   (gen-group {:style {:animation "fi 39s 1"}} 
+              (gen-group {:style {:opacity .3 
+                                  :filter (url (:id noiz)) 
+                                  :transform "translateY(0%)" 
+                                  :animation "slide-up 12s 1 38s ease-in"}}
+                         (doall (map #(thin white 1 true %) (range 80)))))
    (atom)))
 
 (defn hold-lines [frame]
   (gen-group {:style {:opacity .3 :filter (url (:id noiz)) :transform "translateY(0%)"}}
-             (doall (map #(thin white frame (flicker-test % frame) %) (range 60)))))
+             (doall (map #(thin white frame (flicker-test % frame) %) (range 80)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
+(def n 4)
+
 (defonce collection (atom (list)))
-(reset! ran {})
+;(reset! ran {})
 
 (defn cx [frame]
   (list
 
+   
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
     (let [colors [ 
-      navy navy navy navy navy navy 
-      ;orange
+      navy navy navy navy navy
+      orange
       ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
           (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
           (style {:opacity .9})
           (rect)))
-    
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;; OPENING ANIMATIONS ;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
     (fade-and-hold :base-rect frame 5
       @fade-rect
@@ -479,7 +523,7 @@
         (rect)
         (when (nth-frame 1 frame))))
     
-    (fade-and-hold :bg1 frame 67
+    (fade-and-hold :bg1 frame 39
                    @bg
                    (->>
                      (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
@@ -487,46 +531,185 @@
                      (circ)
                      (when (nth-frame 1 frame))))
   
-   (fade-and-hold :bg2 frame 93
+    (fade-and-hold :bg2 frame 66
                   @bg-2
                   (->>
                     (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
                     (style {:opacity 1 :transform-origin "center" :transform "scale(30) rotate(-80deg)"})
                     (circ)
                     (when (nth-frame 1 frame))))
-   
-    (fade-and-hold :lines frame 50
+
+    (fade-and-hold :lines frame 52
                    @slide-lines
                    (hold-lines frame))
     
   
-
-    #_(let [patterns [ 
-            ;pink-dots pink-dots pink-dots pink-dots pink-dots pink-dots
-            ;gray-dots gray-dots gray-dots gray-dots gray-dots gray-dots 
-            ;white-dots white-dots white-dots white-dots white-dots white-dots
-            white-dots white-dots white-dots white-dots white-dots white-dots ] ; orange navy mint pink gray white
-          n (count patterns)]
-          (->>
-            (gen-rect (pattern (:id (nth patterns (mod frame n)))) 0 0 "100%" "100%")
-            (style {:transform "scale(1.2)" :opacity .4})
-            (rect)))
-
-            #_(gen-group {:mask (url "poly-mask-4") }
-                        (when (nth-frame 1 frame)
-                          (freak-out 0 @width
-                                     0 @height
-                                     60
-                                     300
-                                     mint)))
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;; BELLS ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;:::: USING POLY-MASK & POLY-MASK-2 :::;;:::::::::
+    ;;;;;;:::::::::::; ANIM: WOOSH-6 ;:::;;::::::::::::::;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-            #_(gen-group {:mask (url "poly-mask")}
-                       (when (nth-frame 1 frame)
-                         (freak-out @width
-                                    @height
-                                    10
-                                    100
-                                    pink)))
+    
+    
+    #_(fade-and-hold :first-bell frame 38
+      (gen-group {:mask (url "poly-mask")}
+                         (when (nth-frame 1 frame)
+                           (freak-out @width
+                                      @height
+                                      40
+                                      100
+                                      white
+                                      {:opacity .5}))) 
+                          
+                          (when (nth-frame 1 frame)
+                            (freak-out @width
+                                       @height
+                                       40
+                                       100
+                                       white
+                                       {:opacity .5})))
+    
+    #_(fade-and-hold :second-bell frame 58
+     (gen-group {:mask (url "poly-mask-2")}
+                        (when (nth-frame 1 frame)
+                          (freak-out @width
+                                     @height
+                                     40
+                                     100
+                                     pink
+                                     {:opacity .5}))) 
+                  
+                         (when (nth-frame 1 frame)
+                           (freak-out @width
+                                      @height
+                                      40
+                                      100
+                                      pink
+                                      {:opacity .5})))
+    
+
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;; ENTER THE POLYGONS: ABOVE ;;;;;;;;;;;;;;
+    ;;;;;;::::::: USING MOVE-ME MOVE-ME-2 ::::::;;:::::::::
+    ;;;;;;::::::::::::; ANIM: WOOSH :;;:::;;::::::::::::::;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+    ;@move-me
+    ;@move-me-2
+        
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;; POLYGONS GROW AND BELOW ABOVE ;;;;;;;;;;;;
+    ;;;;;;::::: USING MOVE-ME-3 MOVE-ME-4 MOVE-ME-5 ::::::;
+    ;;;;;;:::::::: ANIM: WOOSH-2, WOOSH-3 :;;:::;;:::::::::
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+    ; @move-me-3
+    ; @move-me-4
+    ; 
+    ; (when (nth-frame n frame)
+    ;   (freak-out @width
+    ;              @height
+    ;              40
+    ;              100
+    ;              white
+    ;              {:opacity .5}))
+    ; 
+    ; (when (nth-frame (* 2 n) frame)
+    ;      (freak-out @width
+    ;                 @height
+    ;                 40
+    ;                 100
+    ;                 pink
+    ;                 {:opacity .5}))
+    ; 
+    ; @move-me-5
+    
+    
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;; AWAY FROM POLYGONS TO GEOM SET ;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+    ;(gen-bg-lines white 60)
+    ;;(when (nth-frame 36 frame) (gen-bg-lines white 60))
+    ;;(when (nth-frame 24 frame) (gen-bg-lines white 60))
+    (gen-bg-lines white (mod frame 80))
+    ;
+    (list (->>
+      (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
+      (style {:opacity .3})
+      (rect)
+      (when (nth-frame 2 frame)))
+      
+      
+    (->>
+      (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
+      (style {:opacity .3})
+      (rect)
+      (when (nth-frame 3 frame)))
+
+    (->>
+      (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
+      (style {:opacity .5})
+      (rect)
+      (when (nth-frame 4 frame)))
+    
+    (->>
+      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(280deg)"})
+      (circ)
+      (when (nth-frame 12 frame)))
+    
+    (->>
+      (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(80deg)"})
+      (circ)
+      (when-not (nth-frame 12 frame))))
+    
+    
+
+    
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;; !!!!!!! TIME FOR CHAOS !!!!!!! ;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+    @move-me-5
+    @move-me-6
+    
+   
+    
+    
+    
+    
+    
+    ;; dunno bout these buds
+    #_(->>
+      (gen-circ mint (* 0.5 @width) (* 0.5 @height) 200)
+      (circ)
+      (when (nth-frame 10 frame)))
+    
+    #_(->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(90deg)"})
+      (circ)
+      (when (nth-frame 10 frame)))
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
             
             #_(gen-group {:mask (url "poly-mask-2")}
                        (gen-bg-lines white 80))
@@ -536,7 +719,7 @@
                           (freak-out 0 @width
                                      0 @height
                                      40
-                                     100
+                                     80
                                      blue)))
 
   )) ; cx end
@@ -546,7 +729,6 @@
 
 (defonce frame (atom 0))
 
-; should I replace with requestAnimationFrame?
 (defonce start-cx-timer
   (js/setInterval
     #(reset! collection (cx @frame)) 50))
@@ -563,29 +745,24 @@
     
 (def grad-mask 
   [:mask { :id "grad-mask" }
-    [:circle { :cx (* 0.7 @width) :cy (* 0.25 @height) :r 220 :fill "url(#grad)" }]
-  ])
+    [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 200 :fill "url(#grad)" }]])
   
   
 (def poly-mask 
   [:mask { :id "poly-mask" }
-    [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh 4s infinite"}} ]
-])
+    [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}} ]])
 
 (def poly-mask-2
   [:mask { :id "poly-mask-2" }
-    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 10s infinite 1s"}} ]
-])
+    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 1 40s"}} ]])
 
 (def poly-mask-3
   [:mask { :id "poly-mask-3" }
-    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 20s infinite 5.2s"}} ]
-])
+    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 20s infinite 5.2s"}} ]])
 
 (def poly-mask-4
   [:mask { :id "poly-mask-4" }
-    [:path {:d hept :fill "#fff" :style { :transform-origin "center" :transform "translate(280%, 250%) rotate(-200deg) scale(5.2)"}} ]
-])
+    [:path {:d hept :fill "#fff" :style { :transform-origin "center" :transform "translate(280%, 250%) rotate(-200deg) scale(5.2)"}} ]])
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
 (def all-fills [gray mint navy blue orange br-orange pink white yellow])
