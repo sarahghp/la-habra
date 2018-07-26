@@ -25,8 +25,14 @@
                gray-dots-lg
                gray-lines
                gray-patch
+               mint-dots
+               mint-lines
                navy-dots
                navy-lines
+               orange-dots
+               orange-lines
+               br-orange-dots
+               br-orange-lines
                yellow-dots
                yellow-lines
                white-dots
@@ -421,12 +427,20 @@
     (shape)
     (atom)))
 
-
   (def move-me-6
    (->>
-    (gen-shape (pattern (:id navy-dots)) hex)
+    (gen-shape (pattern (:id mint-dots)) hex)
     (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
     (anim "woosh-4" "4s" "infinite" {:delay ".2s"})
+    (shape)
+    (atom)))
+
+
+  (def move-me-7
+   (->>
+    (gen-shape (pattern (:id br-orange-lines)) hept)
+    (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
+    (anim "woosh-3" "6s" "infinite" {:delay ".5s"})
     (shape)
     (atom)))
 
@@ -441,6 +455,20 @@
   (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
   (anim "sc-rot" "52s" "1" {:timing "linear" :delay "13s"})
+  (circ)
+  (atom)))
+
+(def bg-3 (->> 
+  (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
+  (anim "sc-rot" "4s" "infinite" {:timing "linear"})
+  (circ)
+  (atom)))
+
+(def bg-4 (->> 
+  (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
+  (anim "sc-rot" "7s" "infinite" {:delay "3s"})
   (circ)
   (atom)))
 
@@ -485,7 +513,6 @@
              (doall (map #(thin white frame (flicker-test % frame) %) (range 80)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
-
 (def n 4)
 
 (defonce collection (atom (list)))
@@ -500,8 +527,12 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     (let [colors [ 
-      navy navy navy navy navy
-      orange
+      ;navy navy navy navy navy
+      ;orange
+      navy 
+      orange 
+      mint 
+      pink     
       ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
@@ -523,7 +554,7 @@
         (rect)
         (when (nth-frame 1 frame))))
     
-    (fade-and-hold :bg1 frame 39
+    #_(fade-and-hold :bg1 frame 39
                    @bg
                    (->>
                      (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
@@ -531,7 +562,7 @@
                      (circ)
                      (when (nth-frame 1 frame))))
   
-    (fade-and-hold :bg2 frame 66
+    #_(fade-and-hold :bg2 frame 66
                   @bg-2
                   (->>
                     (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
@@ -539,7 +570,7 @@
                     (circ)
                     (when (nth-frame 1 frame))))
 
-    (fade-and-hold :lines frame 52
+    #_(fade-and-hold :lines frame 52
                    @slide-lines
                    (hold-lines frame))
     
@@ -636,13 +667,12 @@
     ;(gen-bg-lines white 60)
     ;;(when (nth-frame 36 frame) (gen-bg-lines white 60))
     ;;(when (nth-frame 24 frame) (gen-bg-lines white 60))
-    (gen-bg-lines white (mod frame 80))
-    ;
-    (list (->>
+    
+    #_(list (->>
       (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
       (style {:opacity .3})
       (rect)
-      (when (nth-frame 2 frame)))
+      (when (nth-frame 2 frame))) 
       
       
     (->>
@@ -678,50 +708,116 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    @move-me-5
-    @move-me-6
+    ;(gen-bg-lines pink (mod (* 8 frame) 80))
     
-   
+    (when (nth-frame 2 frame) (gen-bg-lines pink 60))
     
+    @bg-3
+    @bg-4
     
+    ;(when (nth-frame 4 frame) (gen-bg-lines pink 60))
     
-    
-    
-    ;; dunno bout these buds
-    #_(->>
-      (gen-circ mint (* 0.5 @width) (* 0.5 @height) 200)
-      (circ)
-      (when (nth-frame 10 frame)))
-    
-    #_(->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(90deg)"})
-      (circ)
-      (when (nth-frame 10 frame)))
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
-            
-            #_(gen-group {:mask (url "poly-mask-2")}
-                       (gen-bg-lines white 80))
-    
-            #_(gen-group {:style {:opacity .5 :filter (url (:id noiz))}} 
-                        (when (nth-frame 1 frame)
-                          (freak-out 0 @width
-                                     0 @height
-                                     40
-                                     80
-                                     blue)))
 
+    
+    #_(list (->>
+      (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
+      (style {:opacity .3})
+      (rect)
+      (when (nth-frame 2 frame))) 
+      
+      
+    (->>
+      (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
+      (style {:opacity .3})
+      (rect)
+      (when (nth-frame 3 frame)))
+
+    (->>
+      (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
+      (style {:opacity .5})
+      (rect)
+      (when (nth-frame 4 frame)))
+          
+    
+    (->>
+      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(280deg)"})
+      (circ)
+      (when (nth-frame 6 frame)))
+    
+    (->>
+      (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(80deg)"})
+      (circ)
+      (when-not (nth-frame 6 frame)))
+          
+    (->>
+      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(280deg)"})
+      (circ)
+      (when (nth-frame 2 frame)))
+    
+    (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(80deg)"})
+      (circ)
+      (when (nth-frame 2 frame))))
+    
+    
+    
+    ;@move-me-5
+    ;@move-me-6
+    ;@move-me-7
+    
+  
+    
+    (when (nth-frame 8 frame)
+      (freak-out @width
+                 @height
+                 20
+                 100
+                 white
+                 {:opacity .6}))
+    
+
+
+         
+   (->>
+     (gen-circ navy (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+     (style {:transform-origin "center" :transform "rotate(280deg)"})
+     (circ)
+     (when (nth-frame 1 frame)))
+   
+   (->>
+     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+     (style {:transform-origin "center" :transform "rotate(80deg)"})
+     (circ)
+     (when (nth-frame 1 frame)))
+    
+    
+    
+    
+    ;; SAVE THESE TO REVIST FOR BRIDGE
+    
+     #_(gen-group {:mask (url "poly-mask-3")}
+                (when (nth-frame 1 frame)
+                  (freak-out @width
+                             @height
+                             20
+                             40
+                             mint)) 
+                (when (nth-frame 1 frame)
+                  (freak-out @width
+                             @height
+                             4
+                             200
+                             pink)))
+     
+     #_(gen-group {:mask (url "poly-mask")}
+                (gen-bg-lines br-orange (mod frame 60)))
+    
+    
+    
   )) ; cx end
   
   
@@ -745,24 +841,21 @@
     
 (def grad-mask 
   [:mask { :id "grad-mask" }
-    [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 200 :fill "url(#grad)" }]])
+    [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]])
   
+
+(def masks [[:mask { :id "poly-mask" :key (random-uuid)}
+              [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
+            [:mask { :id "poly-mask-2" :key (random-uuid)}
+              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 1 40s"}}]]
+            [:mask { :id "poly-mask-3" :key (random-uuid)}
+              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 20s infinite 5.2s"}} ]]
+            [:mask { :id "poly-mask-5" :key (random-uuid)}
+              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-4 4s infinite"}} ]]
+            [:mask { :id "poly-mask-4" :key (random-uuid)}
+              [:path {:d hept :fill "#fff" :style { :transform-origin "center" :transform "translate(280%, 250%) rotate(-200deg) scale(5.2)"}} ]]
+            ])
   
-(def poly-mask 
-  [:mask { :id "poly-mask" }
-    [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}} ]])
-
-(def poly-mask-2
-  [:mask { :id "poly-mask-2" }
-    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 1 40s"}} ]])
-
-(def poly-mask-3
-  [:mask { :id "poly-mask-3" }
-    [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 20s infinite 5.2s"}} ]])
-
-(def poly-mask-4
-  [:mask { :id "poly-mask-4" }
-    [:path {:d hept :fill "#fff" :style { :transform-origin "center" :transform "translate(280%, 250%) rotate(-200deg) scale(5.2)"}} ]])
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
 (def all-fills [gray mint navy blue orange br-orange pink white yellow])
@@ -773,7 +866,8 @@
     (map #(:def %) all-filters)
     ;; masks and patterns
     [:defs 
-     gradient grad-mask poly-mask poly-mask-2 poly-mask-3 poly-mask-4 noise
+     gradient grad-mask noise
+     (map identity masks)
      (map gen-color-noise all-fills)
      (map pattern-def [ blue-dots
                         blue-lines
@@ -783,8 +877,14 @@
                         gray-dots-lg
                         gray-lines
                         gray-patch
+                        mint-dots
+                        mint-lines
                         navy-dots
                         navy-lines
+                        orange-dots
+                        orange-lines
+                        br-orange-dots
+                        br-orange-lines
                         yellow-dots
                         yellow-lines
                         white-dots

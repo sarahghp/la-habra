@@ -50,6 +50,24 @@
 (def white-lines { :id "white-stripe-4"
                    :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDI0MCwgNiUsIDkwJSwgMCknIC8+CiAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzQnIGhlaWdodD0nMTAnIGZpbGw9J2hzbGEoMjQwLCA2JSwgOTAlLCAxKScgLz4KPC9zdmc+" })
 
+(def mint-dots { :id "mint-circles-4"
+                  :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDM2MCwgMTAwJSwgMTAwJSwgMCknIC8+CiAgPGNpcmNsZSBjeD0nMi41JyBjeT0nMi41JyByPScyLjUnIGZpbGw9JyMwMGJhYTknLz4KPC9zdmc+" })
+                 
+(def mint-lines { :id "mint-stripe-3"
+                   :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDM2MCwgMTAwJSwgMTAwJSwgMCknIC8+CiAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzEwJyBoZWlnaHQ9JzMnIGZpbGw9JyMwMGJhYTknIC8+Cjwvc3ZnPg==" })
+
+(def orange-dots { :id "orange-circles-3"
+                  :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDM2MCwgMTAwJSwgMTAwJSwgMCknIC8+CiAgPGNpcmNsZSBjeD0nMicgY3k9JzInIHI9JzInIGZpbGw9JyNmZmFhMzcnLz4KPC9zdmc+" })
+                 
+(def orange-lines { :id "orange-stripe-3"
+                   :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDM2MCwgMTAwJSwgMTAwJSwgMCknIC8+CiAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzEwJyBoZWlnaHQ9JzMnIGZpbGw9JyNmZmFhMzcnIC8+Cjwvc3ZnPg==" })
+
+(def br-orange-dots { :id "br-orange-circles-3"
+                 :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDM2MCwgMTAwJSwgMTAwJSwgMCknIC8+CiAgPGNpcmNsZSBjeD0nMicgY3k9JzInIHI9JzInIGZpbGw9JyNmODAnLz4KPC9zdmc+" })
+                
+(def br-orange-lines { :id "br-orange-stripe-3"
+                  :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDM2MCwgMTAwJSwgMTAwJSwgMCknIC8+CiAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzMnIGhlaWdodD0nMTAnIGZpbGw9JyNmODAnIC8+Cjwvc3ZnPg==" })
+
 
 
 ;; gen pattern string to use patterns as colors
