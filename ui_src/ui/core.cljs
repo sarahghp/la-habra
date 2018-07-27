@@ -362,7 +362,7 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect mint (+ 30 (* % 160)) 10 200 24)
+       (gen-rect mint (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (rect))
      (range 6))))
@@ -370,7 +370,7 @@
  (def drops-2
    (atom  (map
       #(->>
-        (gen-rect white (+ 30 (* % 160)) 10 200 24)
+        (gen-rect white (+ 30 (* % 160)) 10 200 36)
         (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
         (rect))
       (range 6))))
@@ -404,7 +404,7 @@
   (->>
    (gen-shape mint hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-2" "8s" "infinite")
+   (anim "woosh-2" "6s" "infinite")
    (shape)
    (atom)))
 
@@ -412,7 +412,7 @@
  (->>
   (gen-shape (pattern (:id navy-lines)) hept)
   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
-  (anim "woosh-2" "8s" "infinite" {:delay ".1s"})
+  (anim "woosh-2" "6s" "infinite" {:delay ".1s"})
   (shape)
   (atom)))
  
@@ -518,6 +518,7 @@
              (doall (map #(thin white frame (flicker-test % frame) %) (range 80)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
+"OK STOP NOW"
 (def n 1)
 
 (defonce collection (atom (list)))
@@ -533,7 +534,7 @@
 
     (let [colors [ 
       navy navy navy navy navy
-      orange
+      ;orange
       ;navy orange mint pink     
       ] ; orange navy mint pink gray white
         n (count colors)]
@@ -556,7 +557,7 @@
         (rect)
         (when (nth-frame 1 frame))))
     
-    #_(fade-and-hold :bg1 frame 39
+    (fade-and-hold :bg1 frame 39
                    @bg
                    (->>
                      (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
@@ -564,7 +565,7 @@
                      (circ)
                      (when (nth-frame 1 frame))))
   
-    #_(fade-and-hold :bg2 frame 66
+    (fade-and-hold :bg2 frame 66
                   @bg-2
                   (->>
                     (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
@@ -572,7 +573,7 @@
                     (circ)
                     (when (nth-frame 1 frame))))
 
-    #_(fade-and-hold :lines frame 52
+    (fade-and-hold :lines frame 52
                    @slide-lines
                    (hold-lines frame))
     
@@ -638,26 +639,26 @@
     ;;;;;;:::::::: ANIM: WOOSH-2, WOOSH-3 :;;:::;;:::::::::
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    ; @move-me-3
-    ; @move-me-4
-    ; 
-    ; (when (nth-frame n frame)
-    ;   (freak-out @width
-    ;              @height
-    ;              40
-    ;              100
-    ;              white
-    ;              {:opacity .5}))
-    ; 
-    ; (when (nth-frame (* 2 n) frame)
-    ;      (freak-out @width
-    ;                 @height
-    ;                 40
-    ;                 100
-    ;                 pink
-    ;                 {:opacity .5}))
-    ; 
-    ; @move-me-5
+    ;@move-me-3
+    ;@move-me-4
+    
+    #_(when (nth-frame n frame)
+      (freak-out @width
+                 @height
+                 40
+                 100
+                 white
+                 {:opacity .5}))
+    
+    #_(when (nth-frame (* 2 n) frame)
+         (freak-out @width
+                    @height
+                    40
+                    100
+                    pink
+                    {:opacity .5}))
+    
+    ;@move-me-5
     
     
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -668,7 +669,7 @@
     
     ;(gen-bg-lines white 60)
     ;;(when (nth-frame 36 frame) (gen-bg-lines white 60))
-    ;;(when (nth-frame 24 frame) (gen-bg-lines white 60))
+    ;(when (nth-frame 24 frame) (gen-bg-lines white 60))
     
     #_(list (->>
       (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
@@ -681,19 +682,19 @@
       (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
       (style {:opacity .3})
       (rect)
-      (when (nth-frame 3 frame)))
+      (when (nth-frame 3 frame))) 
 
     (->>
       (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
       (style {:opacity .5})
       (rect)
-      (when (nth-frame 4 frame)))
+      (when (nth-frame 4 frame))) 
     
     (->>
       (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
       (style {:transform-origin "center" :transform "rotate(280deg)"})
       (circ)
-      (when (nth-frame 12 frame)))
+      (when (nth-frame 12 frame))) 
     
     (->>
       (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
@@ -711,7 +712,7 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    ;(gen-bg-lines pink (mod (* 8 frame) 80))
+    ;(gen-bg-lines white (mod (* 6 frame) 80))
     
     ;(when (nth-frame 2 frame) (gen-bg-lines pink 60))
     
