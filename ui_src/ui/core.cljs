@@ -281,7 +281,7 @@
 
 (fade-start! "fi" 1)
 
-(make-frames "etof" [0 100] (make-body "transform" ["translateY(60px)" "translateY(800px)"]))
+(make-frames "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
 
@@ -299,17 +299,6 @@
                            "translate(380%, 300%) rotate(-210deg) scale(2.2)"
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
 
-
-(make-frames
- "woosh-6"
-   [10, 35, 55, 65, 85, 95]
-  (make-body "transform" ["translate(80%, 50%) rotate(2deg) scale(1.2)"
-                          "translate(380%, 100%) rotate(-200deg) scale(2.4)"
-                          "translate(80%, 450%) rotate(120deg) scale(3.4)"
-                          "translate(380%, 300%) rotate(-210deg) scale(2.2)"
-                          "translate(80%, 50%) rotate(400deg) scale(6.2)"
-                          "translate(80%, 50%) rotate(400deg) scale(10.2)"]))
-    
 (make-frames
   "woosh-2"
     [10, 35, 55, 85, 92]
@@ -322,12 +311,12 @@
 
 (make-frames
  "woosh-3"
-   [10, 35, 55, 85, 92]
-  (make-body "transform" ["translate(480%, 50%) rotate(2deg) scale(10.2)"
-                          "translate(180%, 250%) rotate(-200deg) scale(14.4)"
+   [10, 35, 45, 65, 85]
+  (make-body "transform" ["translate(480%, 50%) rotate(2deg) scale(4.2)"
+                          "translate(180%, 250%) rotate(-200deg) scale(8.4)"
                           "translate(0%, 550%) rotate(220deg) scale(15.4)"
-                          "translate(0%, 300%) rotate(-210deg) scale(14.2)"
-                          "translate(280%, 150%) rotate(400deg) scale(18)"]))
+                          "translate(0%, 300%) rotate(-210deg) scale(20.2)"
+                          "translate(280%, 150%) rotate(400deg) scale(24)"]))
 
 (make-frames
  "woosh-4"
@@ -337,35 +326,43 @@
                           "translate(0%, 550%) rotate(220deg) scale(20.4)"
                           "translate(280%, 150%) rotate(400deg) scale(30)"]))
 
-     
-
+  
+(make-frames
+ "woosh-5"
+   [10, 35, 55, 85, 92]
+  (make-body "transform" ["translate(480%, 50%) rotate(2deg) scale(1.2)"
+                          "translate(180%, 250%) rotate(-200deg) scale(4.4)"
+                          "translate(0%, 550%) rotate(220deg) scale(8.4)"
+                          "translate(0%, 300%) rotate(210deg) scale(15.2)"
+                          "translate(280%, 150%) rotate(400deg) scale(18)"]))
 
 (make-frames
-  "creep"
-  [10, 25, 40, 80, 91]
-  (make-body "transform" [
-    "translate(280%, 750%) scale(5)"
-    "translate(280%, 650%) scale(5)"
-    "translate(280%, 450%) scale(5)"
-    "translate(280%, 250%) scale(5)"
-    "translate(280%, 250%) scale(5)"
-    ]))
+ "woosh-6"
+   [10, 35, 55, 65, 85, 95]
+  (make-body "transform" ["translate(80%, 50%) rotate(2deg) scale(1.2)"
+                          "translate(380%, 100%) rotate(-200deg) scale(2.4)"
+                          "translate(80%, 450%) rotate(120deg) scale(3.4)"
+                          "translate(380%, 300%) rotate(-210deg) scale(2.2)"
+                          "translate(80%, 50%) rotate(400deg) scale(6.2)"
+                          "translate(80%, 50%) rotate(400deg) scale(10.2)"]))
+
+(make-frames
+ "woosh-7"
+   [10, 35, 55, 65, 85, 95]
+  (make-body "transform" ["translate(10%, 50%) rotate(2deg) scale(1.2)"
+                          "translate(80%, 100%) rotate(-200deg) scale(2.4)"
+                          "translate(380%, 450%) rotate(120deg) scale(4.4)"
+                          "translate(480%, 300%) rotate(-210deg) scale(6.2)"
+                          "translate(10%, 50%) rotate(400deg) scale(12.2)"
+                          "translate(10%, 50%) rotate(400deg) scale(20.2)"]))
     
-(make-frames
-  "bloop-x"
-  [0 48 100]
-  (make-body "transform" [
-    (str "translateX(0px)")
-    (str "translateX(400px)")
-    (str "translateX(1000px)")
-  ]))
 
 ;; --------------- ATOMS STORAGE --------------------
 
 (def drops
   (atom  (map
      #(->>
-       (gen-rect mint (+ 30 (* % 160)) 60 100 24)
+       (gen-rect mint (+ 30 (* % 160)) 10 200 24)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (rect))
      (range 6))))
@@ -373,7 +370,7 @@
  (def drops-2
    (atom  (map
       #(->>
-        (gen-rect white (+ 30 (* % 160)) 60 100 24)
+        (gen-rect white (+ 30 (* % 160)) 10 200 24)
         (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
         (rect))
       (range 6))))
@@ -403,46 +400,54 @@
   (shape)
   (atom)))
 
-  (def move-me-3
-    (->>
-     (gen-shape mint hept)
-     (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-     (anim "woosh-2" "8s" "infinite")
-     (shape)
-     (atom)))
+(def move-me-3
+  (->>
+   (gen-shape mint hept)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "8s" "infinite")
+   (shape)
+   (atom)))
 
-  (def move-me-4
-   (->>
-    (gen-shape (pattern (:id navy-lines)) hept)
-    (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
-    (anim "woosh-2" "8s" "infinite" {:delay ".1s"})
-    (shape)
-    (atom)))
-   
-  (def move-me-5
-   (->>
-    (gen-shape (pattern (:id yellow-dots)) oct)
-    (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
-    (anim "woosh-3" "4s" "infinite" {:delay ".1s"})
-    (shape)
-    (atom)))
+(def move-me-4
+ (->>
+  (gen-shape (pattern (:id navy-lines)) hept)
+  (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+  (anim "woosh-2" "8s" "infinite" {:delay ".1s"})
+  (shape)
+  (atom)))
+ 
+(def move-me-5
+ (->>
+  (gen-shape (pattern (:id yellow-dots)) oct)
+  (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
+  (anim "woosh-3" "6s" "infinite" {:delay ".1s"})
+  (shape)
+  (atom)))
 
-  (def move-me-6
-   (->>
-    (gen-shape (pattern (:id mint-dots)) hex)
-    (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
-    (anim "woosh-4" "4s" "infinite" {:delay ".2s"})
-    (shape)
-    (atom)))
+(def move-me-6
+ (->>
+  (gen-shape (pattern (:id mint-dots)) hex)
+  (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
+  (anim "woosh-3" "6s" "infinite" {:delay ".2s"})
+  (shape)
+  (atom)))
 
 
-  (def move-me-7
-   (->>
-    (gen-shape (pattern (:id br-orange-lines)) hept)
-    (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
-    (anim "woosh-3" "6s" "infinite" {:delay ".5s"})
-    (shape)
-    (atom)))
+(def move-me-7
+ (->>
+  (gen-shape (pattern (:id br-orange-lines)) hept)
+  (style {:opacity .7 :transform-origin "center" :transform "translate(880%, 50%) scale(4.4)"})
+  (anim "woosh-5" "6s" "infinite" {:delay ".5s"})
+  (shape)
+  (atom)))
+
+(def move-me-8
+ (->>
+  (gen-shape (pattern (:id white-lines)) hept)
+  (style {:opacity .7 :transform-origin "center" :transform "translate(0%, 50%) scale(4.4)"})
+  (anim "woosh-7" "6s" "infinite" {:delay ".5s"})
+  (shape)
+  (atom)))
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
@@ -513,7 +518,7 @@
              (doall (map #(thin white frame (flicker-test % frame) %) (range 80)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
-(def n 4)
+(def n 1)
 
 (defonce collection (atom (list)))
 ;(reset! ran {})
@@ -527,12 +532,9 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     (let [colors [ 
-      ;navy navy navy navy navy
-      ;orange
-      navy 
-      orange 
-      mint 
-      pink     
+      navy navy navy navy navy
+      orange
+      ;navy orange mint pink     
       ] ; orange navy mint pink gray white
         n (count colors)]
         (->>
@@ -704,16 +706,17 @@
     
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;;;;;;;;;;;; !!!!!!! TIME FOR CHAOS !!!!!!! ;;;;;;;;;;;
+    ;;;;;;;;;;;; !!!! TIME FOR CHAOS PT 1 !!!! ;;;;;;;;;;;
+    ;;;;;;;;;;; USING BG-3 & BG-4 WITH SC-ROT ;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
     ;(gen-bg-lines pink (mod (* 8 frame) 80))
     
-    (when (nth-frame 2 frame) (gen-bg-lines pink 60))
+    ;(when (nth-frame 2 frame) (gen-bg-lines pink 60))
     
-    @bg-3
-    @bg-4
+    ;@bg-3
+    ;@bg-4
     
     ;(when (nth-frame 4 frame) (gen-bg-lines pink 60))
     
@@ -730,26 +733,26 @@
       (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
       (style {:opacity .3})
       (rect)
-      (when (nth-frame 3 frame)))
+      (when (nth-frame 3 frame))) 
 
     (->>
       (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
       (style {:opacity .5})
       (rect)
-      (when (nth-frame 4 frame)))
+      (when (nth-frame 4 frame))) 
           
     
     (->>
       (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
       (style {:transform-origin "center" :transform "rotate(280deg)"})
       (circ)
-      (when (nth-frame 6 frame)))
+      (when (nth-frame 6 frame))) 
     
     (->>
       (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
       (style {:transform-origin "center" :transform "rotate(80deg)"})
       (circ)
-      (when-not (nth-frame 6 frame)))
+      (when-not (nth-frame 6 frame))) 
           
     (->>
       (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
@@ -764,35 +767,86 @@
       (when (nth-frame 2 frame))))
     
     
+      
+      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      ;;;;;;;;;;;; !!!! TIME FOR CHAOS PT 2 !!!! ;;;;;;;;;;;;
+      ;;;;;;;;;;; USING MOVE-ME-5, 6, 7, 8 & DROPS ;;;;;;;;;;
+      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+
+#_(list 
+ (->>
+  (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
+  (style {:opacity .3})
+  (rect)
+  (when (nth-frame 2 frame))) 
+    
+  (->>
+    (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
+    (style {:opacity .3})
+    (rect)
+    (when (nth-frame 3 frame))) 
+
+  (->>
+    (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
+    (style {:opacity .5})
+    (rect)
+    (when (nth-frame 4 frame))))
+    
+    
+    ;@move-me-8
+    ;@move-me-7
     
     ;@move-me-5
     ;@move-me-6
-    ;@move-me-7
     
-  
-    
-    (when (nth-frame 8 frame)
+    #_(when (nth-frame 8 frame)
       (freak-out @width
                  @height
-                 20
-                 100
+                 60
+                 200
                  white
                  {:opacity .6}))
     
-
+                 
+   #_(when (nth-frame 16 frame)
+     (freak-out @width
+                @height
+                20
+                200
+                gray
+                {:opacity 1}))
+    
+    #_(->>
+      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(280deg)"})
+      (circ)
+      (when (nth-frame 1 frame))) 
+    
+    #_(->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+      (style {:transform-origin "center" :transform "rotate(80deg)"})
+      (circ)
+      (when (nth-frame 1 frame)))
 
          
-   (->>
-     (gen-circ navy (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
-     (style {:transform-origin "center" :transform "rotate(280deg)"})
-     (circ)
-     (when (nth-frame 1 frame)))
-   
-   (->>
-     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
-     (style {:transform-origin "center" :transform "rotate(80deg)"})
-     (circ)
-     (when (nth-frame 1 frame)))
+    
+    ;@drops
+    ;@drops-2
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
