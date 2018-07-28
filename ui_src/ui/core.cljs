@@ -288,6 +288,7 @@
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
 (a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
+(a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
 
 (make-frames
   "woosh"
@@ -355,6 +356,16 @@
                           "translate(480%, 300%) rotate(-210deg) scale(6.2)"
                           "translate(10%, 50%) rotate(400deg) scale(12.2)"
                           "translate(10%, 50%) rotate(400deg) scale(20.2)"]))
+
+(make-frames
+ "woosh-8"
+   [10, 35, 55, 65, 85, 95]
+  (make-body "transform" ["translate(10%, 50%) rotate(2deg) scale(1.2)"
+                          "translate(80%, 100%) rotate(-200deg) scale(2.4)"
+                          "translate(380%, 450%) rotate(120deg) scale(4.4)"
+                          "translate(480%, 300%) rotate(-210deg) scale(6.2)"
+                          "translate(10%, 50%) rotate(400deg) scale(12.2)"
+                          "translate(10%, 50%) rotate(400deg) scale(20.2)"]))
     
 
 ;; --------------- ATOMS STORAGE --------------------
@@ -404,7 +415,7 @@
   (->>
    (gen-shape mint hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-2" "6s" "infinite")
+   (anim "woosh-2" "8s" "infinite")
    (shape)
    (atom)))
 
@@ -412,7 +423,7 @@
  (->>
   (gen-shape (pattern (:id navy-lines)) hept)
   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
-  (anim "woosh-2" "6s" "infinite" {:delay ".1s"})
+  (anim "woosh-2" "8s" "infinite" {:delay ".1s"})
   (shape)
   (atom)))
  
@@ -485,6 +496,18 @@
     (atom)))
 
 
+(def grow-3
+  (atom
+   (gen-group {:style {:transform-origin "center" :animation "grow2to3 1.2s 1"}}
+              (->>
+                (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+                (style {:transform-origin "center"})
+                (circ))
+              (->>
+                (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+                (style {:transform-origin "center"})
+                (circ)))))
+
 
 ;; ------------------- DRAWING HELPERS ------------------------
 
@@ -518,8 +541,73 @@
              (doall (map #(thin white frame (flicker-test % frame) %) (range 80)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
-"OK STOP NOW"
-(def n 1)
+(defn rects-base [frame] 
+  (list (->>
+     (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
+     (style {:opacity .3})
+     (rect)
+     (when (nth-frame 2 frame))) 
+     
+     
+   (->>
+     (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
+     (style {:opacity .3})
+     (rect)
+     (when (nth-frame 3 frame))) 
+
+   (->>
+     (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
+     (style {:opacity .5})
+     (rect)
+     (when (nth-frame 4 frame)))))
+
+
+(defn bwc [frame] 
+  (list (->>
+    (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+    (style {:transform-origin "center" :transform "rotate(280deg)"})
+    (circ)
+    (when (nth-frame 12 frame))) 
+  
+  (->>
+    (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+    (style {:transform-origin "center" :transform "rotate(80deg)"})
+    (circ)
+    (when-not (nth-frame 12 frame)))))
+
+(defn gwc [frame]
+  (list (->>
+    (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+    (style {:transform-origin "center" :transform "rotate(280deg)"})
+    (circ)
+    (when (nth-frame 6 frame))) 
+  
+  (->>
+    (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+    (style {:transform-origin "center" :transform "rotate(80deg)"})
+    (circ)
+    (when-not (nth-frame 6 frame))) 
+
+  (->>
+    (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+    (style {:transform-origin "center" :transform "rotate(280deg)"})
+    (circ)
+    (when (nth-frame 2 frame)))
+  
+  (->>
+    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
+    (style {:transform-origin "center" :transform "rotate(80deg)"})
+    (circ)
+    (when (nth-frame 2 frame)))))
+
+(defn rects-and-white [frame] 
+      (concat (rects-base frame) (bwc frame)))
+
+(defn rects-and-grad-flash [frame]
+  (concat (rects-base frame) (gwc frame)))
+
+
+(def n 2)
 
 (defonce collection (atom (list)))
 ;(reset! ran {})
@@ -572,6 +660,10 @@
                     (style {:opacity 1 :transform-origin "center" :transform "scale(30) rotate(-80deg)"})
                     (circ)
                     (when (nth-frame 1 frame))))
+    
+    
+    ;(rects-base frame)
+    ;(rects-and-white frame)
 
     (fade-and-hold :lines frame 52
                    @slide-lines
@@ -630,35 +722,33 @@
     ;;;;;;::::::::::::; ANIM: WOOSH :;;:::;;::::::::::::::;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    ;@move-me
-    ;@move-me-2
+    ; @move-me
+    ; @move-me-2
         
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;;;;;;;;;;;; POLYGONS GROW AND BELOW ABOVE ;;;;;;;;;;;;
-    ;;;;;;::::: USING MOVE-ME-3 MOVE-ME-4 MOVE-ME-5 ::::::;
-    ;;;;;;:::::::: ANIM: WOOSH-2, WOOSH-3 :;;:::;;:::::::::
+    ;;;;;;;;;;;; POLYGONS GROW AND MOVE ABOVE ;;;;;;;;;;;;;
+    ;;;;;;:::;;;;;;;;; USING MOVE-ME-3 ;;;;;;;;;;;;::::::;;
+    ;;;;;;:::: ANIM: WOOSH, WOOSH-2, WOOSH-3 :;;:::;;:::::;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    ;@move-me-3
-    ;@move-me-4
-    
-    #_(when (nth-frame n frame)
-      (freak-out @width
-                 @height
-                 40
-                 100
-                 white
-                 {:opacity .5}))
-    
-    #_(when (nth-frame (* 2 n) frame)
-         (freak-out @width
-                    @height
-                    40
-                    100
-                    pink
-                    {:opacity .5}))
-    
-    ;@move-me-5
+    ; @move-me-3
+    ; @move-me-4
+    ; 
+    ; (when (nth-frame n frame)
+    ;   (freak-out @width
+    ;              @height
+    ;              40
+    ;              100
+    ;              white
+    ;              {:opacity .5}))
+    ; 
+    ; (when (nth-frame (* 2 n) frame)
+    ;      (freak-out @width
+    ;                 @height
+    ;                 40
+    ;                 100
+    ;                 pink
+    ;                 {:opacity .5}))
     
     
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -668,43 +758,13 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
     ;(gen-bg-lines white 60)
-    ;;(when (nth-frame 36 frame) (gen-bg-lines white 60))
-    ;(when (nth-frame 24 frame) (gen-bg-lines white 60))
+    ;(when (or (nth-frame 36 frame) (nth-frame 37 frame)) (gen-bg-lines white 60))
+    ;(when (or (nth-frame 24 frame) (nth-frame 25 frame)) (gen-bg-lines white 60))
     
-    #_(list (->>
-      (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
-      (style {:opacity .3})
-      (rect)
-      (when (nth-frame 2 frame))) 
-      
-      
-    (->>
-      (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
-      (style {:opacity .3})
-      (rect)
-      (when (nth-frame 3 frame))) 
-
-    (->>
-      (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
-      (style {:opacity .5})
-      (rect)
-      (when (nth-frame 4 frame))) 
-    
-    (->>
-      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(280deg)"})
-      (circ)
-      (when (nth-frame 12 frame))) 
-    
-    (->>
-      (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(80deg)"})
-      (circ)
-      (when-not (nth-frame 12 frame))))
+    ;(rects-and-white frame)
     
     
 
-    
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;; !!!! TIME FOR CHAOS PT 1 !!!! ;;;;;;;;;;;
@@ -721,80 +781,19 @@
     
     ;(when (nth-frame 4 frame) (gen-bg-lines pink 60))
     
-
-    
-    #_(list (->>
-      (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
-      (style {:opacity .3})
-      (rect)
-      (when (nth-frame 2 frame))) 
-      
-      
-    (->>
-      (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
-      (style {:opacity .3})
-      (rect)
-      (when (nth-frame 3 frame))) 
-
-    (->>
-      (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
-      (style {:opacity .5})
-      (rect)
-      (when (nth-frame 4 frame))) 
-          
-    
-    (->>
-      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(280deg)"})
-      (circ)
-      (when (nth-frame 6 frame))) 
-    
-    (->>
-      (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(80deg)"})
-      (circ)
-      (when-not (nth-frame 6 frame))) 
-          
-    (->>
-      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(280deg)"})
-      (circ)
-      (when (nth-frame 2 frame)))
-    
-    (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(80deg)"})
-      (circ)
-      (when (nth-frame 2 frame))))
+    ;(rects-and-grad-flash frame)
     
     
-      
-      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      ;;;;;;;;;;;; !!!! TIME FOR CHAOS PT 2 !!!! ;;;;;;;;;;;;
-      ;;;;;;;;;;; USING MOVE-ME-5, 6, 7, 8 & DROPS ;;;;;;;;;;
-      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;; !!!! TIME FOR CHAOS PT 2 !!!! ;;;;;;;;;;;;
+    ;;;;;;;;;;; USING MOVE-ME-5, 6, 7, 8 & DROPS ;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
 
-#_(list 
- (->>
-  (gen-rect mint (* 0.4 @width) 100 (* 0.4 @width) (* 0.85 @height)) 
-  (style {:opacity .3})
-  (rect)
-  (when (nth-frame 2 frame))) 
-    
-  (->>
-    (gen-rect orange (* 0.1 @width) 500 (* 0.8 @width) (* 0.35 @height)) 
-    (style {:opacity .3})
-    (rect)
-    (when (nth-frame 3 frame))) 
-
-  (->>
-    (gen-rect mint (* 0.15 @width) 10 (* 0.4 @width) (* 0.75 @height)) 
-    (style {:opacity .5})
-    (rect)
-    (when (nth-frame 4 frame))))
+    ;(base-rects frame)
     
     
     ;@move-me-8
@@ -819,18 +818,23 @@
                 200
                 gray
                 {:opacity 1}))
+
+      
+    #_(fade-and-hold :big-grad frame 1
+                    @grow-3
+                    (list (->>
+                          (gen-circ navy (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+                          (style {:transform-origin "center" :transform "rotate(280deg)"})
+                          (circ)
+                          (when (nth-frame 1 frame))) 
+                        
+                        (->>
+                          (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+                          (style {:transform-origin "center" :transform "rotate(80deg)"})
+                          (circ)
+                          (when (nth-frame 1 frame)))))
     
-    #_(->>
-      (gen-circ navy (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(280deg)"})
-      (circ)
-      (when (nth-frame 1 frame))) 
-    
-    #_(->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
-      (style {:transform-origin "center" :transform "rotate(80deg)"})
-      (circ)
-      (when (nth-frame 1 frame)))
+
 
          
     
@@ -838,38 +842,47 @@
     ;@drops-2
     
     
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;; CREDITS ;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ;; SAVE THESE TO REVIST FOR BRIDGE
-    
-     #_(gen-group {:mask (url "poly-mask-3")}
-                (when (nth-frame 1 frame)
-                  (freak-out @width
-                             @height
-                             20
-                             40
-                             mint)) 
-                (when (nth-frame 1 frame)
-                  (freak-out @width
-                             @height
-                             4
-                             200
-                             pink)))
-     
-     #_(gen-group {:mask (url "poly-mask")}
-                (gen-bg-lines br-orange (mod frame 60)))
+    ; [:text {:x (* 0.5 @width) 
+    ;         :y (* 0.14 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "bold 60px monospace"
+    ;                 :fill br-orange }} 
+    ;  "a film from Codie"]
+    ; 
+    ; [:text {:x (* 0.5 @width) 
+    ;         :y (* 0.35 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "bold italic 200px monospace"
+    ;                 :fill white }} 
+    ;  "Tangara"]
+    ; 
+    ; 
+    ;  [:text {:x (* 0.5 @width) 
+    ;          :y (* 0.55 @height)
+    ;          :text-anchor "middle"
+    ;          :style {:font "bold italic 200px monospace"
+    ;                  :fill white }} 
+    ;   "fastuosa"]
+    ; 
+    ;  [:text {:x (* 0.5 @width) 
+    ;          :y (* 0.7 @height)
+    ;          :text-anchor "middle"
+    ;          :style {:font "bold 40px monospace"
+    ;                  :fill mint }} 
+    ;   "music • Melody Loveless"]
+    ; 
+    ;   [:text {:x (* 0.5 @width) 
+    ;           :y (* 0.76 @height)
+    ;           :text-anchor "middle"
+    ;           :style {:font "bold 40px monospace"
+    ;                   :fill mint }} 
+    ;    "animation • Sarah Groff Hennigh-Palermo"]
     
     
     
@@ -897,17 +910,18 @@
 (def grad-mask 
   [:mask { :id "grad-mask" }
     [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]])
-  
 
+
+;; 4 and 5 not currently in use 
 (def masks [[:mask { :id "poly-mask" :key (random-uuid)}
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
             [:mask { :id "poly-mask-2" :key (random-uuid)}
               [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 1 40s"}}]]
             [:mask { :id "poly-mask-3" :key (random-uuid)}
               [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 20s infinite 5.2s"}} ]]
-            [:mask { :id "poly-mask-5" :key (random-uuid)}
-              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-4 4s infinite"}} ]]
             [:mask { :id "poly-mask-4" :key (random-uuid)}
+              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh 4s infinite"}} ]]
+            [:mask { :id "poly-mask-5" :key (random-uuid)}
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :transform "translate(280%, 250%) rotate(-200deg) scale(5.2)"}} ]]
             ])
   
