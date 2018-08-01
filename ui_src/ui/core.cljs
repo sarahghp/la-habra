@@ -295,18 +295,18 @@
     [10, 35, 55, 85, 92]
    (make-body "transform" [
                            "translate(80%, 50%) rotate(2deg) scale(1.2)"
-                           "translate(380%, 100%) rotate(-200deg) scale(2.4)"
+                           "translate(604%, 100%) rotate(-200deg) scale(2.4)"
                            "translate(80%, 450%) rotate(120deg) scale(3.4)"
-                           "translate(380%, 300%) rotate(-210deg) scale(2.2)"
+                           "translate(604%, 300%) rotate(-210deg) scale(2.2)"
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
 
 (make-frames
   "woosh-2"
     [10, 35, 55, 85, 92]
    (make-body "transform" ["translate(80%, 50%) rotate(2deg) scale(1.2)"
-                           "translate(380%, 100%) rotate(-200deg) scale(4.4)"
+                           "translate(604%, 100%) rotate(-200deg) scale(4.4)"
                            "translate(80%, 450%) rotate(120deg) scale(8.4)"
-                           "translate(380%, 300%) rotate(-210deg) scale(10.2)"
+                           "translate(604%, 300%) rotate(-210deg) scale(10.2)"
                            "translate(80%, 50%) rotate(400deg) scale(16.2)"]))
 
 
@@ -341,11 +341,11 @@
  "woosh-6"
    [10, 35, 55, 65, 85, 95]
   (make-body "transform" ["translate(80%, 50%) rotate(2deg) scale(1.2)"
-                          "translate(380%, 100%) rotate(-200deg) scale(2.4)"
-                          "translate(80%, 450%) rotate(120deg) scale(3.4)"
-                          "translate(380%, 300%) rotate(-210deg) scale(2.2)"
-                          "translate(80%, 50%) rotate(400deg) scale(6.2)"
-                          "translate(80%, 50%) rotate(400deg) scale(10.2)"]))
+                          "translate(680%, 100%) rotate(-200deg) scale(2.4)"
+                          "translate(380%, 450%) rotate(120deg) scale(3.4)"
+                          "translate(680%, 300%) rotate(-210deg) scale(2.2)"
+                          "translate(80%, 50%) rotate(400deg) scale(10.2)"
+                          "translate(80%, 50%) rotate(400deg) scale(12.2)"]))
 
 (make-frames
  "woosh-7"
@@ -376,7 +376,7 @@
        (gen-rect mint (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (rect))
-     (range 6))))
+     (range 10))))
      
  (def drops-2
    (atom  (map
@@ -384,7 +384,7 @@
         (gen-rect white (+ 30 (* % 160)) 10 200 36)
         (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
         (rect))
-      (range 6))))
+      (range 10))))
 
 (def bloops
   (->>
@@ -606,11 +606,11 @@
 (defn rects-and-grad-flash [frame]
   (concat (rects-base frame) (gwc frame)))
 
-
 (def n 2)
 
 (defonce collection (atom (list)))
 ;(reset! ran {})
+
 
 (defn cx [frame]
   (list
@@ -722,8 +722,8 @@
     ;;;;;;::::::::::::; ANIM: WOOSH :;;:::;;::::::::::::::;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    ; @move-me
-    ; @move-me-2
+    ;@move-me
+    ;@move-me-2
         
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;; POLYGONS GROW AND MOVE ABOVE ;;;;;;;;;;;;;
@@ -749,7 +749,7 @@
     ;                 100
     ;                 pink
     ;                 {:opacity .5}))
-    
+    ; 
     
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -772,16 +772,17 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    ;(gen-bg-lines white (mod (* 6 frame) 80))
+    ; (gen-bg-lines white (mod (* 6 frame) 80))
+    ; ;(rects-and-grad-flash frame)
+    ; 
+    ; (when (nth-frame 2 frame) (gen-bg-lines pink 60))
+    ; 
+    ; @bg-3
+    ; @bg-4
+    ; 
+    ; (when (nth-frame 4 frame) (gen-bg-lines pink 60))
     
-    ;(when (nth-frame 2 frame) (gen-bg-lines pink 60))
     
-    ;@bg-3
-    ;@bg-4
-    
-    ;(when (nth-frame 4 frame) (gen-bg-lines pink 60))
-    
-    ;(rects-and-grad-flash frame)
     
     
     
@@ -792,54 +793,54 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-
-    ;(base-rects frame)
-    
-    
-    ;@move-me-8
-    ;@move-me-7
-    
-    ;@move-me-5
-    ;@move-me-6
-    
-    #_(when (nth-frame 8 frame)
-      (freak-out @width
-                 @height
-                 60
-                 200
-                 white
-                 {:opacity .6}))
-    
-                 
-   #_(when (nth-frame 16 frame)
-     (freak-out @width
-                @height
-                20
-                200
-                gray
-                {:opacity 1}))
-
-      
-    #_(fade-and-hold :big-grad frame 1
-                    @grow-3
-                    (list (->>
-                          (gen-circ navy (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
-                          (style {:transform-origin "center" :transform "rotate(280deg)"})
-                          (circ)
-                          (when (nth-frame 1 frame))) 
-                        
-                        (->>
-                          (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
-                          (style {:transform-origin "center" :transform "rotate(80deg)"})
-                          (circ)
-                          (when (nth-frame 1 frame)))))
-    
-
-
-         
-    
-    ;@drops
-    ;@drops-2
+   ; 
+   ;  (rects-base frame)
+   ; 
+   ; 
+   ;  @move-me-8
+   ;  @move-me-7
+   ; 
+   ;  @move-me-5
+   ;  @move-me-6
+   ; 
+   ;  (when (nth-frame 8 frame)
+   ;    (freak-out @width
+   ;               @height
+   ;               60
+   ;               200
+   ;               white
+   ;               {:opacity .6}))
+   ; 
+   ; 
+   ; (when (nth-frame 16 frame)
+   ;   (freak-out @width
+   ;              @height
+   ;              20
+   ;              200
+   ;              gray
+   ;              {:opacity 1}))
+   ; 
+   ; 
+   ;  (fade-and-hold :big-grad frame 1
+   ;                  @grow-3
+   ;                  (list (->>
+   ;                        (gen-circ navy (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+   ;                        (style {:transform-origin "center" :transform "rotate(280deg)"})
+   ;                        (circ)
+   ;                        (when (nth-frame 1 frame))) 
+   ; 
+   ;                      (->>
+   ;                        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask")) 
+   ;                        (style {:transform-origin "center" :transform "rotate(80deg)"})
+   ;                        (circ)
+   ;                        (when (nth-frame 1 frame)))))
+   ; 
+   ; 
+   ; 
+   ; 
+   ; 
+   ;  @drops
+   ;  @drops-2
     
     
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -848,41 +849,41 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    ; [:text {:x (* 0.5 @width) 
-    ;         :y (* 0.14 @height)
-    ;         :text-anchor "middle"
-    ;         :style {:font "bold 60px monospace"
-    ;                 :fill br-orange }} 
-    ;  "a film from Codie"]
-    ; 
-    ; [:text {:x (* 0.5 @width) 
-    ;         :y (* 0.35 @height)
-    ;         :text-anchor "middle"
-    ;         :style {:font "bold italic 200px monospace"
-    ;                 :fill white }} 
-    ;  "Tangara"]
-    ; 
-    ; 
-    ;  [:text {:x (* 0.5 @width) 
-    ;          :y (* 0.55 @height)
-    ;          :text-anchor "middle"
-    ;          :style {:font "bold italic 200px monospace"
-    ;                  :fill white }} 
-    ;   "fastuosa"]
-    ; 
-    ;  [:text {:x (* 0.5 @width) 
-    ;          :y (* 0.7 @height)
-    ;          :text-anchor "middle"
-    ;          :style {:font "bold 40px monospace"
-    ;                  :fill mint }} 
-    ;   "music • Melody Loveless"]
-    ; 
-    ;   [:text {:x (* 0.5 @width) 
-    ;           :y (* 0.76 @height)
-    ;           :text-anchor "middle"
-    ;           :style {:font "bold 40px monospace"
-    ;                   :fill mint }} 
-    ;    "animation • Sarah Groff Hennigh-Palermo"]
+    [:text {:x (* 0.5 @width) 
+            :y (* 0.14 @height)
+            :text-anchor "middle"
+            :style {:font "bold 60px monospace"
+                    :fill br-orange }} 
+     "a film from Codie"]
+    
+    [:text {:x (* 0.5 @width) 
+            :y (* 0.35 @height)
+            :text-anchor "middle"
+            :style {:font "bold italic 200px monospace"
+                    :fill white }} 
+     "Tangara"]
+    
+    
+     [:text {:x (* 0.5 @width) 
+             :y (* 0.55 @height)
+             :text-anchor "middle"
+             :style {:font "bold italic 200px monospace"
+                     :fill white }} 
+      "fastuosa"]
+    
+     [:text {:x (* 0.5 @width) 
+             :y (* 0.7 @height)
+             :text-anchor "middle"
+             :style {:font "bold 40px monospace"
+                     :fill mint }} 
+      "music • Melody Loveless"]
+    
+      [:text {:x (* 0.5 @width) 
+              :y (* 0.76 @height)
+              :text-anchor "middle"
+              :style {:font "bold 40px monospace"
+                      :fill mint }} 
+       "animation • Sarah Groff Hennigh-Palermo"]
     
     
     
@@ -968,4 +969,4 @@
 (reagent/render-component [drawing]
                           (js/document.getElementById "app-container"))
 
-;(hide-display)
+(hide-display)
