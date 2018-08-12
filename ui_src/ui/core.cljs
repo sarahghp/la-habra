@@ -230,6 +230,60 @@
   (atom)))
 
 
+(def fi-1
+  (->>
+    (gen-rect mint 0 0 "100%" "100%" (url "cutout"))
+    (style {:opacity .2})
+    (anim "fade-in-out" "6s" "infinite")
+    (rect)
+    (atom)))
+
+(def fi-2
+  (->>
+    (gen-rect navy 0 0 "100%" "100%" (url "cutout"))
+    (style {:opacity .2 :transform "translate(50px, 50px)"})
+    (anim "fade-in-out" "6s" "infinite" {:delay "1s"})
+    (rect)
+    (atom)))
+
+(def fi-3
+  (->>
+    (gen-rect orange 0 0 "100%" "100%" (url "cutout"))
+    (style {:opacity .2 :transform-origin "center" :transform "rotate(110deg)"})
+    (anim "fade-in-out" "6s" "infinite" {:delay "2s"})
+    (rect)
+    (atom)))
+
+(def fi-4
+  (->>
+    (gen-rect pink 0 0 "100%" "100%" (url "cutout"))
+    (style {:opacity .2 :transform-origin "center" :transform "rotate(260deg)"})
+    (anim "fade-in-out" "6s" "infinite" {:delay "2.2s"})
+    (rect)
+    (atom)))
+
+(def levels 
+  (map-indexed 
+    (fn [idx color]
+          (->>
+            (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
+            (style {:opacity .4 
+                    :transform-origin "center" 
+                    :transform (str
+                                "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
+                                "rotate(" (- 360 (rand-int 720)) "deg)")})
+            (anim "fade-in-out" "4s" "infinite" {:delay (str (* .1 idx) "s")})
+            (rect)
+            (atom)))
+    (take 100 (repeatedly #(nth [gray navy blue orange pink white yellow] (rand-int 6))))))
+
+
+    (defonce splotch
+      (->>
+        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 500)
+        (style {:opacity .5 :filter (url "filter-splotchy")})
+        (circ)
+        (atom)))
 
 ;; ------------------- DRAWING HELPERS ------------------------
 
@@ -263,15 +317,69 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        navy navy navy navy navy    
+        ;navy navy navy navy navy
+        white white white white white    
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (rect)))
+  
     
+    ;@fi-1
+    ;@fi-2
+    ;@fi-3
+    ;@fi-4
+  
+    (doall (map deref levels))
+  
+    
+  
 
+  (list (when (nth-frame 5 frame)
+     (map 
+     #(->>
+      (gen-rect white (+ 400 (* 98 %)) 20 80 200 (url "noiz")) 
+      (style {:opacity .4})
+      (rect))
+     (range 4)))
+    
+     (when (nth-frame 5 (- 1 frame))
+      (map 
+      #(->>
+       (gen-rect white (+ 410 (* 98 %)) 200 80 200)
+       (style {:opacity .4})
+       (rect))
+      (range 4)))
+    
+      (when (nth-frame 5 (- 2 frame))
+       (map 
+       #(->>
+        (gen-rect white (+ 380 (* 98 %)) 410 80 200)
+        (style {:opacity .4})
+        (rect))
+       (range 4)))
+    
+       (when (nth-frame 5 (- 3 frame))
+        (map 
+        #(->>
+         (gen-rect white (+ 400 (* 98 %)) 500 80 200)
+         (style {:opacity .4})
+         (rect))
+        (range 4)))
+    
+        (when (nth-frame 5 (- 4 frame))
+         (map 
+         #(->>
+          (gen-rect white (+ 400 (* 98 %)) 580 80 200)
+          (style {:opacity .4})
+          (rect))
+         (range 4))))
+      
+  ;@splotch
+
+    
     
   )) ; cx end
   
@@ -299,6 +407,13 @@
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
             [:mask { :id "grad-mask" :key (random-uuid)}
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
+            [:mask {:id "cutout" :key (random-uuid)}
+             (->>
+               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (rect))
+             (->>
+               (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
+               (circ))]
             ])
   
 
