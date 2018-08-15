@@ -538,7 +538,7 @@
 
 (defn hold-lines [frame]
   (gen-group {:style {:opacity .3 :filter (url (:id noiz)) :transform "translateY(0%)"}}
-             (doall (map #(thin white frame (flicker-test % frame) %) (range 80)))))
+             (doall (map #(thin white frame (flicker-test % frame) %) (range 1)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 (defn rects-base [frame] 
@@ -849,14 +849,16 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-    [:text {:x (* 0.5 @width) 
+    [:text {:key (random-uuid)
+            :x (* 0.5 @width) 
             :y (* 0.14 @height)
             :text-anchor "middle"
             :style {:font "bold 60px monospace"
                     :fill br-orange }} 
      "a film from Codie"]
     
-    [:text {:x (* 0.5 @width) 
+    [:text {:key (random-uuid)
+            :x (* 0.5 @width) 
             :y (* 0.35 @height)
             :text-anchor "middle"
             :style {:font "bold italic 200px monospace"
@@ -864,21 +866,24 @@
      "Tangara"]
     
     
-     [:text {:x (* 0.5 @width) 
+     [:text {:key (random-uuid)
+             :x (* 0.5 @width) 
              :y (* 0.55 @height)
              :text-anchor "middle"
              :style {:font "bold italic 200px monospace"
                      :fill white }} 
       "fastuosa"]
     
-     [:text {:x (* 0.5 @width) 
+     [:text {:key (random-uuid)
+             :x (* 0.5 @width) 
              :y (* 0.7 @height)
              :text-anchor "middle"
              :style {:font "bold 40px monospace"
                      :fill mint }} 
       "music • Melody Loveless"]
     
-      [:text {:x (* 0.5 @width) 
+      [:text {:key (random-uuid)
+              :x (* 0.5 @width) 
               :y (* 0.76 @height)
               :text-anchor "middle"
               :style {:font "bold 40px monospace"
