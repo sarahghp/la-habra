@@ -92,6 +92,7 @@
     (str "url(#" fill-id ")")))
 
 (defn sin [x] (.sin js/Math x))
+(defn cos [x] (.cos js/Math x))
 
 (defn seconds-to-frames
   [seconds]
@@ -168,7 +169,8 @@
 
 (make-frames "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
-(back-and-forth! "scaley" "scale(1)" "scale(15)")
+(back-and-forth! "scaley" "scale(1)" "scale(8)")
+(fade-start! "oio" .7)
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
@@ -232,7 +234,7 @@
 
 (def fi-1
   (->>
-    (gen-rect mint 0 0 "100%" "100%" (url "cutout"))
+    (gen-rect white 0 0 "100%" "100%")
     (style {:opacity .2})
     (anim "fade-in-out" "6s" "infinite")
     (rect)
@@ -240,26 +242,43 @@
 
 (def fi-2
   (->>
-    (gen-rect navy 0 0 "100%" "100%" (url "cutout"))
-    (style {:opacity .2 :transform "translate(50px, 50px)"})
-    (anim "fade-in-out" "6s" "infinite" {:delay "1s"})
+    (gen-rect orange 0 0 "100%" "100%")
+    (style {:opacity .8})
+    (anim "fade-in-out" "6s" "infinite" {:delay "3s"})
     (rect)
     (atom)))
 
 (def fi-3
   (->>
-    (gen-rect orange 0 0 "100%" "100%" (url "cutout"))
-    (style {:opacity .2 :transform-origin "center" :transform "rotate(110deg)"})
-    (anim "fade-in-out" "6s" "infinite" {:delay "2s"})
+    (gen-rect navy 0 0 "100%" "100%")
+    (style {:opacity .8})
+    (anim "fade-in-out" "36s" "infinite" {:delay "2s" :timing "linear"})
     (rect)
     (atom)))
 
 (def fi-4
   (->>
-    (gen-rect pink 0 0 "100%" "100%" (url "cutout"))
-    (style {:opacity .2 :transform-origin "center" :transform "rotate(260deg)"})
-    (anim "fade-in-out" "6s" "infinite" {:delay "2.2s"})
+    (gen-rect mint 0 0 "100%" "100%")
+    (style {:opacity .7})
+    (anim "fade-in-out" "36s" "infinite" {:timing "linear"})
     (rect)
+    (atom)))
+
+
+(def throb
+  (->>
+    (gen-circ white (* 0.5 @width) (* 0.3 @height) 100)
+    (style {:opacity .4 :transform-origin "center"})
+    (anim "scaley" "10s" "infinite")
+    (circ)
+    (atom)))
+
+(def throb-2
+  (->>
+    (gen-circ (pattern (:id br-orange-lines)) (* 0.5 @width) (* 0.3 @height) 100)
+    (style {:opacity .4 :transform-origin "center"})
+    (anim "scaley" "6s" "infinite" {:delay ".1s"})
+    (circ)
     (atom)))
 
 (def levels 
@@ -272,10 +291,10 @@
                     :transform (str
                                 "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
                                 "rotate(" (- 360 (rand-int 720)) "deg)")})
-            (anim "fade-in-out" "4s" "infinite" {:delay (str (* .1 idx) "s")})
+            (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
             (rect)
             (atom)))
-    (take 100 (repeatedly #(nth [gray navy blue orange pink white yellow] (rand-int 6))))))
+    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
 
 
     (defonce splotch
@@ -317,68 +336,178 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        ;navy navy navy navy navy
-        white white white white white    
+        ;mint mint mint mint mint
+        navy navy navy navy navy
+        ;white white white white white  
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
-            (style {:opacity .9})
+            (style {:opacity .7})
             (rect)))
   
-    
-    ;@fi-1
-    ;@fi-2
-    ;@fi-3
-    ;@fi-4
-  
-    (doall (map deref levels))
-  
-    
-  
+  ;@fi-1
+  ;@fi-2
+  @fi-3
+  @fi-4
 
-  (list (when (nth-frame 5 frame)
+  (->>
+    (gen-grid
+      40 1
+      {:col 40 :row 10}
+      (gen-rect white 5 0 2 @height)) 
+     (map #(style {:opacity .5} %)) 
+     (map rect) 
+     (when (nth-frame 1 frame)))
+
+ (->>
+   (gen-grid
+     1 80
+     {:col 40 :row 20}
+     (gen-rect white 5 0 @width 2)) 
+    (map #(style {:opacity .5} %)) 
+    (map rect) 
+    (when (nth-frame 1 frame)))
+  
+  
+  
+    #_(doall (map deref levels))
+  
+    
+  ; @throb-2
+  ; (when (or (nth-frame 12 (+ 3 frame) (nth-frame 12 (+ 4 frame))))
+  ;   (freak-out @width
+  ;              @height
+  ;              4
+  ;              1000
+  ;              yellow))
+  @throb
+
+  #_(list (when (nth-frame 5 frame)
      (map 
      #(->>
       (gen-rect white (+ 400 (* 98 %)) 20 80 200 (url "noiz")) 
       (style {:opacity .4})
-      (rect))
-     (range 4)))
+      (rect)) 
+     (range 4))) 
     
-     (when (nth-frame 5 (- 1 frame))
+     (when (nth-frame 5 (- 1 frame)) 
       (map 
       #(->>
        (gen-rect white (+ 410 (* 98 %)) 200 80 200)
        (style {:opacity .4})
-       (rect))
-      (range 4)))
+       (rect)) 
+      (range 4))) 
     
-      (when (nth-frame 5 (- 2 frame))
+      (when (nth-frame 5 (- 2 frame)) 
        (map 
        #(->>
         (gen-rect white (+ 380 (* 98 %)) 410 80 200)
         (style {:opacity .4})
-        (rect))
-       (range 4)))
+        (rect)) 
+       (range 4))) 
     
-       (when (nth-frame 5 (- 3 frame))
-        (map 
+       (when (nth-frame 5 (- 3 frame)) 
+        (map
         #(->>
          (gen-rect white (+ 400 (* 98 %)) 500 80 200)
          (style {:opacity .4})
-         (rect))
-        (range 4)))
+         (rect)) 
+        (range 4))) 
     
-        (when (nth-frame 5 (- 4 frame))
+        (when (nth-frame 5 (- 4 frame)) 
          (map 
          #(->>
           (gen-rect white (+ 400 (* 98 %)) 580 80 200)
           (style {:opacity .4})
-          (rect))
+          (rect)) 
          (range 4))))
       
   ;@splotch
+  
+  
+    #_(list (->>
+      (gen-circ (pattern (:id white-lines)) 
+                (* 260 (cos 0)) 
+                (* 260 (sin 0)) 
+                80)
+      (style {:transform (str 
+                          "translate(" 
+                          (* 0.5 @width)
+                          "px, " 
+                          (* 0.4 @height) "px)")})
+      (circ)
+      (when (nth-frame 6 frame)))
+  
+  
+    (->>
+      (gen-circ pink 
+                (* 260 (cos 1)) 
+                (* 260 (sin 1)) 
+                80)
+      (style {:transform (str 
+                          "translate(" 
+                          (* 0.5 @width) 
+                          "px, " 
+                          (* 0.4 @height) "px)")})
+      (circ)
+      (when (nth-frame 6 (+ 1 frame))))
+  
+  
+    (->>
+      (gen-circ (pattern (:id pink-dots)) 
+                (* 260 (cos 2)) 
+                (* 260 (sin 2)) 
+                80)
+      (style {:transform (str 
+                          "translate(" 
+                          (* 0.5 @width) 
+                          "px, " 
+                          (* 0.4 @height) "px)")})
+      (circ)
+      (when (nth-frame 6 (+ 2 frame))))
 
+  
+      (->>
+        (gen-circ white 
+                  (* 260 (cos 3)) 
+                  (* 260 (sin 3)) 
+                  80)
+        (style {:transform (str 
+                            "translate(" 
+                            (* 0.5 @width) 
+                            "px, " 
+                            (* 0.4 @height) "px)")})
+        (circ)
+        (when (nth-frame 6 (+ 3 frame))))
+  
+        (->>
+          (gen-circ (pattern (:id white-lines)) 
+                    (* 260 (cos 4)) 
+                    (* 260 (sin 4)) 
+                    80)
+          (style {:transform (str 
+                              "translate(" 
+                              (* 0.5 @width) 
+                              "px, " 
+                              (* 0.4 @height) "px)")})
+          (circ)
+          (when (nth-frame 6 (+ 4 frame))))
+
+
+          (->>
+            (gen-circ white 
+                      (* 260 (cos 5)) 
+                      (* 260 (sin 5)) 
+                      80)
+            (style {:transform (str 
+                                "translate(" 
+                                (* 0.5 @width) 
+                                "px, " 
+                                (* 0.4 @height) "px)")})
+            (circ)
+            (when (nth-frame 6 (+ 5 frame))))
+)
     
     
   )) ; cx end
