@@ -45,6 +45,11 @@
 (make-frames
   "fade-in-out"
   [0 4 8 50 54 94]
+  (make-body "fill-opacity" [1 0.7 0.5 0.2 0 1]))
+
+(make-frames
+  "fade-in-out-2"
+  [0 4 8 50 54 94]
   (make-body "fill-opacity" [0 0.2 0.5 0.7 0.2 0]))
 
 (make-frames
