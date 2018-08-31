@@ -194,9 +194,9 @@
    [10, 35, 55, 85, 92]
   (make-body "transform" [
                           "translate(604%, 50%) rotate(2deg) scale(2.2)"
-                          "translate(50%, 450%) rotate(-200deg) scale(4.4)"
-                          "translate(400%, 450%) rotate(120deg) scale(8.4)"
-                          "translate(604%, 300%) rotate(-210deg) scale(12.2)"
+                          "translate(50%, 450%) rotate(-200deg) scale(8.4)"
+                          "translate(400%, 450%) rotate(120deg) scale(12.4)"
+                          "translate(604%, 300%) rotate(-210deg) scale(14.2)"
                           "translate(80%, 50%) rotate(400deg) scale(4.2)"]))
 
 
@@ -232,8 +232,8 @@
 (def move-me
   (->>
    (gen-shape (pattern (:id blue-lines)) hept)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" "infinite")
+   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "6s" "infinite")
    (shape)
    (atom)))
 
@@ -241,24 +241,49 @@
  (def move-me-2
    (->>
     (gen-shape (pattern (:id blue-dots)) oct)
-    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-    (anim "woosh-2" "10s" "infinite")
+    (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+    (anim "woosh-2" "8s" "infinite")
     (shape)
     (atom)))
 
 
 (def move-me-3
   (->>
-   (gen-shape navy hept)
+   (gen-shape (pattern (:id white-lines)) hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" "infinite" {:delay "1s"})
+   (anim "woosh" "6s" "infinite" {:delay ".2s"})
    (shape)
    (atom)))
 
+
+ (def move-me-4
+   (->>
+    (gen-shape (pattern (:id white-dots)) oct)
+    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+    (anim "woosh-2" "8s" "infinite" {:delay ".2s"})
+    (shape)
+    (atom)))
+
+
+
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity .5 :transform-origin "center" :transform "scale(4)"})
+  (anim "sc-rot" "12s" "1" {:timing "linear" :delay "2s"})
+  (circ)
+  (atom)))
+
+ (def bg-2 (->> 
+   (gen-circ (pattern (str "noise-" white)) (* .5 @width) (* .5 @height) 1800)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4)"})
+   (anim "sc-rot" "12s" "1" {:timing "linear" :delay "6s"})
+   (circ)
+   (atom)))
+
+(def bg-3 (->> 
+  (gen-circ (pattern (str "noise-" pink)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
+  (anim "sc-rot" "12s" "1" {:timing "linear" :delay "8s"})
   (circ)
   (atom)))
 
@@ -414,26 +439,46 @@
   
     #_(doall (map deref levels))
   
-    
-  ; @throb-2
-  ; (when (or (nth-frame 12 (+ 3 frame) (nth-frame 12 (+ 4 frame))))
-  ;   (freak-out @width
-  ;              @height
-  ;              4
-  ;              1000
-  ;              yellow))
   
-  ;@move-me
-  ;@move-me-2
-  
-  @throb
-  @throb-2
-  @throb-3
-
-  
-
   
     @bg
+    @bg-2
+    @bg-3
+    
+  ; @throb-2
+  (when (or (nth-frame 16 (+ 3 frame) (nth-frame 12 (+ 4 frame))))
+    (freak-out @width
+               @height
+               40
+               200
+               (pattern (:id yellow-lines))))
+  
+  (when (or (nth-frame 16 (+ 5 frame) (nth-frame 12 (+ 6 frame))))
+    (freak-out @width
+               @height
+               40
+               200
+               yellow))
+  
+
+  
+  
+  @move-me-3
+  @move-me-4
+  @move-me
+  @move-me-2
+  
+  @drops-2
+  @drops
+  
+  ;@throb
+  ;@throb-2
+  ;@throb-3
+
+  
+
+  
+
     
     
   )) ; cx end
