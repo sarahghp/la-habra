@@ -1,5 +1,12 @@
 (ns ui.generators)
 
+;; ------------------------ SETTINGS  ---------------------
+
+(def width (atom (.-innerWidth js/window)))
+(def height (atom (.-innerHeight js/window)))
+
+(def settings {:width @width
+               :height @height })
 
 ;; ------------------------ WRAPPERS ---------------------
 
@@ -31,12 +38,13 @@
               :mask mask }])
 
 (defn rect
- [{:keys [x y w h style]}]
+ [{:keys [x y w h style mask] :or {mask ""}}]
  [:rect { :x x
           :y y
           :width w
           :height h
           :style style
+          :mask mask
           :key (random-uuid)} ])
           
 (defn shape
@@ -78,11 +86,12 @@
     :mask mask})
     
 (defn gen-rect
-  [fill-string x y w h]
+  [fill-string x y w h & mask]
   { :x x
     :y y
     :w w
     :h h
+    :mask mask
     :style {
       :fill fill-string }})
     
