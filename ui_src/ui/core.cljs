@@ -1,7 +1,7 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
-            [ui.shapes :as shapes :refer [tri square pent hex hept oct b1 b2 b3 b4]]
+            [ui.shapes :as shapes :refer [tri square pent hex hept oct b1 b2 b3 b4 s1]]
             [ui.fills :as fills :refer
               [ gray
                 mint
@@ -199,6 +199,10 @@
                           "translate(604%, 300%) rotate(-210deg) scale(12.2)"
                           "translate(80%, 50%) rotate(400deg) scale(4.2)"]))
 
+(make-frames
+ "dashy"
+ [100]
+ (make-body "stroke-dashoffset" [0]))
 
     
 
@@ -321,6 +325,41 @@
     (atom)))
 
 
+(def throb-4
+  (->>
+    (gen-circ white (* 0.5 @width) (* 0.3 @height) 100)
+    (style {:opacity .4 :transform-origin "center"})
+    (anim "scaley" "5s" "infinite")
+    (circ)
+    (atom)))
+
+(def throb-5
+  (->>
+    (gen-circ (pattern (:id br-orange-lines)) (* 0.5 @width) (* 0.5 @height) 100)
+    (style {:opacity .7 :transform-origin "center"})
+    (anim "scaley" "5s" "infinite" {:delay "1s"})
+    (circ)
+    (atom)))
+
+    
+(def throb-6
+  (->>
+    (gen-circ (pattern (:id pink-dots)) (* 0.5 @width) (* 0.8 @height) 100)
+    (style {:opacity .7 :transform-origin "center"})
+    (anim "scaley" "3s" "infinite" {:delay "3s"})
+    (circ)
+    (atom)))
+
+(def go-dash 
+    (->>
+      (gen-shape "hsla(100, 0%, 0%, 0)" s1)
+        (style {:transform "translate(100px, 100px) scale(.5)"})
+        (style {:stroke "#000" :stroke-width 10 :stroke-dasharray 4500 :stroke-dashoffset 4500})
+        (anim "dashy" "5s" "infinite" {:timing "linear"})
+        (shape)
+        (atom)))
+
+
 
 (def levels 
   (map-indexed 
@@ -426,14 +465,60 @@
   ;@move-me
   ;@move-me-2
   
-  @throb
-  @throb-2
-  @throb-3
+  ;@throb
+  ;@throb-2
+  ;@throb-3
+
+  #_(->>
+    (gen-shape mint b2)
+      (style {:transform "translate(100px, 100px) scale(2)"})
+      (shape)
+      (when (nth-frame 1 frame)))
+  
+  ;@go-dash
+  
+    ;@bg
+  
+  
+    (when (nth-frame 1 frame)
+      (freak-out @width
+                 @height
+                 4
+                 200
+                 yellow))
+  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               4
+               100
+               gray))
+  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               4
+               200
+               mint))
+  
+  
+    @throb-4
+    @throb-5
+    @throb-6
 
   
-
   
-    @bg
+  #_(let [patterns [ 
+      yellow-lines yellow-lines yellow-lines yellow-lines
+      yellow-dots yellow-dots yellow-dots yellow-dots      
+      ] ; orange navy mint pink gray white
+        n (count patterns)]
+          (->>
+            (gen-shape (pattern (:id (nth patterns (mod frame n)))) s1)
+              (style {:transform "translate(100px, 100px) scale(.5)"})
+              (style {:stroke "#000" :stroke-width 10 :stroke-dasharray 100})
+              (shape)
+              (when (nth-frame 1 frame))))
     
     
   )) ; cx end
