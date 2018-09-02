@@ -17,7 +17,7 @@
              :r r
              :style style
              :mask mask
-             :key (random-uuid)} ])
+             :key (random-uuid)}])
 
 (defn line
   [{:keys [first-point second-point color width style] :or { width 4 style {} }}]
@@ -28,14 +28,14 @@
            :stroke color
            :stroke-width width
            :style style
-           :key (random-uuid) }])
+           :key (random-uuid)}])
 
 (defn polygon
   [{:keys [points style mask] :or {mask ""}}]
   [:polygon { :key (random-uuid)
               :points points
               :style style
-              :mask mask }])
+              :mask mask}])
 
 (defn rect
  [{:keys [x y w h style mask] :or {mask ""}}]
@@ -45,16 +45,23 @@
           :height h
           :style style
           :mask mask
-          :key (random-uuid)} ])
+          :key (random-uuid)}])
           
 (defn shape
   [{:keys [d style mask] :or {mask ""}}]
   [:path { :key (random-uuid) 
            :d d 
            :style style 
-           :mask mask }])
+           :mask mask}])
 
-
+(defn draw [{:keys [type] :as drawing}]
+  (case type
+    :circle (circ drawing)
+    :line (line drawing)
+    :polygon (polygon drawing)
+    :rect (rect drawing)
+    :shape (shape drawing)
+    '()))
 
 ;; ------------------------ GENERATORS ---------------------
 
@@ -64,6 +71,7 @@
     :y y
     :r radius
     :mask mask
+    :type :circle
     :style { :fill fill-string }})
     
 (defn gen-group
@@ -77,12 +85,14 @@
     :second-point second-point
     :color color 
     :width width
+    :type line
     :style {}})
 
 (defn gen-poly
   [fill-string points & mask]
   { :points points 
-    :style { :fill fill-string } 
+    :style { :fill fill-string }
+    :type :polygon 
     :mask mask})
     
 (defn gen-rect
@@ -92,6 +102,7 @@
     :w w
     :h h
     :mask mask
+    :type :rect
     :style {
       :fill fill-string }})
     
@@ -99,6 +110,7 @@
   [fill-string path & mask]
   { :style { :fill fill-string }
     :mask mask
+    :type :shape
     :d path })
 
 (defn gen-offset-lines
@@ -130,7 +142,7 @@
   [:g { :key (random-uuid) 
         :style style } 
       (map 
-        #(circ (gen-circ color (+ min-x (rand (- max-x min-x))) (+ min-y (rand (- max-y min-y))) (rand max-r))) 
+        #(draw (gen-circ color (+ min-x (rand (- max-x min-x))) (+ min-y (rand (- max-y min-y))) (rand max-r))) 
         (range num))]))
 
 (defn gen-grid

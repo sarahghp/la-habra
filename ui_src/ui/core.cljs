@@ -13,11 +13,7 @@
                 white
                 yellow]]
             [ui.generators :refer 
-             [circ
-              line
-              polygon
-              rect
-              shape
+             [draw
               gen-circ
               gen-group
               gen-line
@@ -194,7 +190,7 @@
      #(->>
        (gen-rect mint (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (rect))
+       (draw))
      (range 10))))
      
 (def drops-2
@@ -202,7 +198,7 @@
     #(->>
       (gen-rect white (+ 30 (* % 160)) 10 200 36)
       (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
-      (rect))
+      (draw))
     (range 10))))
 
 (def bloops
@@ -210,7 +206,7 @@
     (gen-circ white 0 100 40)
     (style {:opacity .7})
     (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
-    (circ)
+    (draw)
     (atom)))
                 
     
@@ -219,14 +215,14 @@
    (gen-shape mint hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "10s" "infinite")
-   (shape)
+   (draw)
    (atom)))
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
   (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
-  (circ)
+  (draw)
   (atom)))
 
 
@@ -240,7 +236,7 @@
     (->>
      (gen-rect color (* 0.15 @width) (* 0.15 @height) (* 0.7 @width) 3)
      (style {:transform (str "translateY(" (* n 10) "px)") :opacity op})
-     (rect))))
+     (draw))))
 
 (defn flicker-test [n frame]
   (or (and (= n 10) (nth-frame 12 frame))
@@ -269,7 +265,7 @@
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
-            (rect)))
+            (draw)))
     
 
     
