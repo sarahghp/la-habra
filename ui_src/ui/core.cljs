@@ -305,7 +305,7 @@
             (draw)))
  
 
-  #_(when (nth-frame 1 frame)
+  (when (nth-frame 1 frame)
     (freak-out @width
                @height
                3
@@ -313,17 +313,41 @@
                white))
   
   
-;@tri-dash
-
-(->>
-  (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
-  (draw)
-  (when (nth-frame 1 frame)))
+@tri-dash
 
   (->>
     (gen-poly pink [100 100 300 100 500 400 100 600])
+    (style {:transform "scale(2)"})
     (draw)
-    (when (nth-frame 4 frame)))
+    (when (nth-frame 1 frame)))
+  
+  (gen-group {:mask (url "poly-flip")}
+             (->>
+               (gen-rect white 0 0 "100%" "100%")
+               (draw)
+               (when (nth-frame 1 frame)))
+             (->>
+               (gen-grid
+                 80 1
+                 {:col 20 :row 1}
+                 (gen-rect pink 0 0 2 @height)) 
+                (map #(style {:opacity .5} %)) 
+                (map draw) 
+                (when (nth-frame 1 frame)))
+             (->>
+               (gen-grid
+                 1 80
+                 {:col 1 :row 20}
+                 (gen-rect pink 0 0 @width 2)) 
+                (map #(style {:opacity .5} %)) 
+                (map draw) 
+                (when (nth-frame 1 frame))))
+  
+  (->>
+    (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
+    (style {:transform "rotate(-80deg)"})
+    (draw)
+    (when (nth-frame 1 frame)))
   
   #_(->>
     (gen-rect mint 100 100 500 400)
@@ -384,6 +408,11 @@
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
             [:mask { :id "grad-mask" :key (random-uuid)}
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
+            [:mask {:id "poly-flip" :key (random-uuid)}
+               (->>
+                 (gen-poly pink [100 100 300 100 500 400 100 600])
+                 (style {:transform "translate(130%, -15%) scale(-2)"})
+                 (draw))]
             [:mask {:id "cutout" :key (random-uuid)}
              (->>
                (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))

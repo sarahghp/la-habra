@@ -17,7 +17,8 @@
     :r radius
     :mask mask
     :type :circle
-    :style { :fill fill-string }})
+    :style {:fill fill-string
+            :transform-origin "center"}})
     
 (defn gen-line
   [first-point second-point color & width]
