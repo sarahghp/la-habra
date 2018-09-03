@@ -5,6 +5,7 @@
             [ui.fills :as fills :refer
               [ gray
                 mint
+                midnight
                 navy
                 blue
                 orange
@@ -79,6 +80,8 @@
 
 ;; -------------------- HELPERS ---------------------------
 
+(defn sin [x] (.sin js/Math x))
+
 (defn style
   [changes shape]
   (update-in shape [:style] #(merge % changes)))
@@ -86,8 +89,6 @@
 (defn url
   ([ fill-id ]
     (str "url(#" fill-id ")")))
-
-(defn sin [x] (.sin js/Math x))
 
 (defn seconds-to-frames
   [seconds]
@@ -181,6 +182,11 @@
                            "translate(604%, 300%) rotate(-210deg) scale(2.2)"
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
 
+(make-frames
+ "dashy"
+ [100]
+ (make-body "stroke-dashoffset" [0]))
+
     
 
 ;; --------------- ATOMS STORAGE --------------------
@@ -208,7 +214,6 @@
     (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
     (draw)
     (atom)))
-                
     
 (def move-me
   (->>
@@ -224,6 +229,22 @@
   (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
   (draw)
   (atom)))
+
+(def tri-dash
+  (->>
+    (gen-shape "hsla(360, 10%, 10%, 0)" oct)
+    (style {:transform-origin "center" 
+            :transform (str "translate(" 40 "vw," 40 "vh)"
+                            "scale(2)")})
+    (style {:stroke pink 
+            :stroke-width 10 
+            :stroke-dasharray 20 
+            :stroke-dashoffset 1000
+            :stroke-linecap :round
+            :stroke-linejoin :round})
+    (anim "dashy" "4s" "infinite")
+    (draw)
+    (atom)))
 
 
 
@@ -244,6 +265,21 @@
       (= n 44) (= n 45)
       (and (= n 46) (nth-frame 8 frame))))
 
+(def levels 
+  (map-indexed 
+    (fn [idx color]
+          (->>
+            (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
+            (style {:opacity .4 
+                    :transform-origin "center" 
+                    :transform (str
+                                "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
+                                "rotate(" (- 360 (rand-int 720)) "deg)")})
+            (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
+            (draw)
+            (atom)))
+    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
+
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
@@ -259,15 +295,68 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        navy navy navy navy navy    
+        ;navy navy navy navy navy
+        midnight    
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
-    
+ 
 
+  #_(when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               3
+               200
+               white))
+  
+  
+;@tri-dash
+
+(->>
+  (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
+  (draw)
+  (when (nth-frame 1 frame)))
+
+  (->>
+    (gen-poly pink [100 100 300 100 500 400 100 600])
+    (draw)
+    (when (nth-frame 4 frame)))
+  
+  #_(->>
+    (gen-rect mint 100 100 500 400)
+    (style {:opacity .5})
+    (draw)
+    (when (nth-frame 3 frame)))
+  
+  
+  #_(->>
+    (gen-rect mint 100 160 500 400)
+    (style {:opacity .5})
+    (draw)
+    (when (nth-frame 3 frame)))
+  
+  #_(->>
+    (gen-rect mint 300 300 500 400)
+    (style {:opacity .5})
+    (draw)
+    (when (nth-frame 5 frame)))
+  
+  #_(->>
+    (gen-rect mint 400 360 500 400)
+    (style {:opacity .5})
+    (draw)
+    (when (nth-frame 7 frame)))
+  
+  #_(->>
+    (gen-rect mint 300 700 500 400)
+    (style {:opacity .5})
+    (draw)
+    (when (nth-frame 8 frame)))
+  
+  #_(doall (map deref levels))
     
   )) ; cx end
   
@@ -295,6 +384,13 @@
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
             [:mask { :id "grad-mask" :key (random-uuid)}
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
+            [:mask {:id "cutout" :key (random-uuid)}
+             (->>
+               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (draw))
+             (->>
+               (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
+               (draw))]
             ])
   
 
