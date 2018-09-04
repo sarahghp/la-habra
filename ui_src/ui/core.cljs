@@ -15,6 +15,7 @@
                 yellow]]
             [ui.generators :refer 
              [draw
+              freak-out
               gen-circ
               gen-group
               gen-line
@@ -23,8 +24,10 @@
               gen-shape
               gen-offset-lines
               gen-bg-lines
-              freak-out
-              gen-grid]]
+              gen-grid
+              gen-line-grid
+              gen-cols
+              gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
              [ gen-color-noise
@@ -281,6 +284,7 @@
     (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
 
 
+
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 
@@ -312,9 +316,6 @@
                200
                white))
   
-  
-@tri-dash
-
   (->>
     (gen-poly pink [100 100 300 100 500 400 100 600])
     (style {:transform "scale(2)"})
@@ -342,6 +343,7 @@
                 (map #(style {:opacity .5} %)) 
                 (map draw) 
                 (when (nth-frame 1 frame))))
+
   
   (->>
     (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
@@ -349,6 +351,9 @@
     (draw)
     (when (nth-frame 1 frame)))
   
+  ;@tri-dash
+
+  (when (nth-frame 1 frame)(gen-rows white 10 10 40))
   #_(->>
     (gen-rect mint 100 100 500 400)
     (style {:opacity .5})
@@ -381,6 +386,7 @@
     (when (nth-frame 8 frame)))
   
   #_(doall (map deref levels))
+  
     
   )) ; cx end
   

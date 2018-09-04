@@ -8,6 +8,8 @@
 (def settings {:width @width
                :height @height })
 
+(enable-console-print!)
+
 ;; ------------------- SIMPLE GENERATORS ---------------------
 
 (defn gen-circ
@@ -94,6 +96,55 @@
     (map (partial gen-offset-lines color 1 4) (range num))]))
 
 
+(defn gen-cols
+  [color stroke-width num-cols offset]
+  (->> (range num-cols)
+       (map #(gen-line 
+               [(* % offset) 0] 
+               [(* % offset) @height] 
+               color stroke-width))
+       (map draw)))
+
+(defn gen-rows
+  [color stroke-width num-rows offset]
+  (->> (range num-rows)
+       (map #(gen-line 
+               [0 (* % offset)] 
+               [@width (* % offset)] 
+               color stroke-width))
+       (map draw)))
+
+(defn gen-line-grid
+  [color stroke-width cols rows offset]
+      (let [a-off (offset :col)
+            b-off (offset :row)]
+            (->> (range cols)
+                 (map #(gen-line 
+                         [(* % a-off) 0] 
+                         [(* % a-off) @height] 
+                         color stroke-width))
+                 ((fn [coll] 
+                  (into coll
+                        (map #(gen-line 
+                                [0 (* % b-off)] 
+                                [@width (* % b-off)] 
+                                color stroke-width)
+                             (range rows)))))
+                 (map draw))))
+
+(defn gen-grid-raw
+  ([cols rows offset base-obj]
+    (let [x-key (if (base-obj :cx) :cx :x)
+          y-key (if (base-obj :cy) :cy :y)
+          x (base-obj x-key)  
+          y (base-obj y-key)
+          a-off (offset :col)
+          b-off (offset :row)]
+            (set (for [a (range cols) b (range rows)]
+              (merge base-obj {x-key (+ x (* a a-off))} {y-key (+ y (* b b-off))}))))))
+
+(def gen-grid (memoize gen-grid-raw))
+
 (defn freak-out
   ([x y r num color] (freak-out x 0 y 0 r num color {}))
   ([x y r num color style] (freak-out 0 x 0 y r num color style))
@@ -108,12 +159,3 @@
                 (+ min-y (rand (- max-y min-y))) 
                 (rand max-r))) 
         (range num))]))
-
-(defn gen-grid
-  ([cols rows offset base-obj]
-    (let [x (base-obj :x) 
-          y (base-obj :y)
-          a-off (offset :col)
-          b-off (offset :row)]
-            (set (for [a (range cols) b (range rows)]
-              (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))}))))))
