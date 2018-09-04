@@ -145,17 +145,73 @@
 
 (def gen-grid (memoize gen-grid-raw))
 
+; check to see if circles already exist (key [min-max min-max max-r])
+; no? add to map
+; yes? update x y r in list
+
+(defonce positions 
+  (atom {}))
+
+; get val out of group vector
+; assoc new vals into map
+; replace nth vector 2 with new value 
+; replace whole vector
+
+(defn update-me-positions
+  [old-pos {:keys [min-x min-y max-x max-y max-r] :as id}]
+  (let [new-vals (->> 
+                 old-pos
+                 last
+                 (map #(assoc 
+                        % 
+                        :cx (+ min-x (rand (- max-x min-x)))
+                        :cy (+ min-y (rand (- max-y min-y)))
+                        :r (rand max-r))))
+        update-fn (fn [atom-val new-vals]
+                      (merge (atom-val id) [1] new-vals))]
+    (swap! positions update-fn new-vals)
+    (@positions id)))
+
+(defn generate-and-add-positions
+  [{:keys [min-x min-y max-x max-y max-r] :as min-maxes} color style num]
+  (let [drawing [:g { :key (random-uuid) 
+                      :style style } 
+                    (map 
+                      #(draw (gen-circ 
+                              color 
+                              (+ min-x (rand (- max-x min-x))) 
+                              (+ min-y (rand (- max-y min-y))) 
+                              (rand max-r))) 
+                      (range num))]] 
+  (swap! positions
+         assoc
+         min-maxes)
+    drawing))
+
+(defn add-and-retrieve!
+  [min-maxes color style num] ;a map with the keys 
+  (if-let [pos (@positions min-maxes)]
+    (update-me-positions min-maxes pos) 
+    (generate-and-add-positions min-maxes color style num)))
+
 (defn freak-out
   ([x y r num color] (freak-out x 0 y 0 r num color {}))
   ([x y r num color style] (freak-out 0 x 0 y r num color style))
   ([min-x max-x min-y max-y r num color] (freak-out min-x max-x min-y max-y r num color {}))
   ([min-x max-x min-y max-y max-r num color style]
-  [:g { :key (random-uuid) 
-        :style style } 
-      (map 
-        #(draw (gen-circ 
-                color 
-                (+ min-x (rand (- max-x min-x))) 
-                (+ min-y (rand (- max-y min-y))) 
-                (rand max-r))) 
-        (range num))]))
+    (add-and-retrieve! 
+     {:min-x min-x 
+      :max-x max-x 
+      :min-y min-y 
+      :max-y max-y 
+      :max-r max-r}
+     color 
+     style
+     num)))
+
+(println
+   (first (last (freak-out @width
+              @height
+              30
+              10
+              "#fff")))) 

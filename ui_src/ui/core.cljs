@@ -316,13 +316,34 @@
                200
                white))
   
-  (->>
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               10
+               400
+               pink))
+  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               25
+               200
+               (pattern (:id mint-lines))))
+  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               3
+               200
+               white))
+  
+  #_(->>
     (gen-poly pink [100 100 300 100 500 400 100 600])
     (style {:transform "scale(2)"})
     (draw)
     (when (nth-frame 1 frame)))
   
-  (gen-group {:mask (url "poly-flip")}
+  #_(gen-group {:mask (url "poly-flip")}
              (->>
                (gen-rect white 0 0 "100%" "100%")
                (draw)
@@ -345,7 +366,7 @@
                 (when (nth-frame 1 frame))))
 
   
-  (->>
+  #_(->>
     (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
     (style {:transform "rotate(-80deg)"})
     (draw)
@@ -353,7 +374,7 @@
   
   ;@tri-dash
 
-  (gen-group {:style {:opacity .3}}(gen-line-grid white 10 
+  #_(gen-group {:style {:opacity .3}}(gen-line-grid white 10 
     30 70 
     {:col 40 :row 12}))
     
