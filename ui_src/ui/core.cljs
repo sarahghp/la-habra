@@ -59,7 +59,7 @@
             [ui.animations :as animations :refer
               [ make-body
                 splice-bodies
-                make-frames
+                make-frames!
                 nth-frame
                 even-frame
                 odd-frame]]))
@@ -99,7 +99,7 @@
 
 (defonce ran (atom {}))
 
-(defn fade-and-hold
+(defn anim-and-hold
   [name frame duration fader solid]
   (let [init-frame (@ran name)
         ran? (and init-frame (<= (+ init-frame (seconds-to-frames duration)) frame))
@@ -127,7 +127,7 @@
 ;; ----------- ANIMATIONS ----------------
 
 ;; syntax reminder
-; (make-frames
+; (make-frames!
 ;   "NAME"
 ;   [frames]
 ;   (make-body "ATTRIBUTE" [values]))
@@ -143,7 +143,7 @@
 
 (defn back-and-forth!
   [name start-str finish-str]
-  (make-frames name [0 50 100] 
+  (make-frames! name [0 50 100] 
     (make-body "transform" [
       (str start-str)
       (str finish-str)
@@ -151,14 +151,14 @@
 
 (defn a-to-b!
   [name att start-str finish-str]
-  (make-frames name [0 100] 
+  (make-frames! name [0 100] 
     (make-body att [
       (str start-str)
       (str finish-str)])))
 
 (defn fade-start!
   [name op-end]
-  (make-frames name [0 99 100] 
+  (make-frames! name [0 99 100] 
     (make-body "fill-opacity" [
       (str 0)
       (str 0)
@@ -166,7 +166,7 @@
 
 (fade-start! "fi" 1)
 
-(make-frames "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
+(make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
 
@@ -175,7 +175,7 @@
 (a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
 (a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
 
-(make-frames
+(make-frames!
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
@@ -185,7 +185,7 @@
                            "translate(604%, 300%) rotate(-210deg) scale(2.2)"
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
 
-(make-frames
+(make-frames!
  "dashy"
  [100]
  (make-body "stroke-dashoffset" [0]))
@@ -353,7 +353,12 @@
   
   ;@tri-dash
 
-  (when (nth-frame 1 frame)(gen-rows white 10 10 40))
+  (gen-group {:style {:opacity .3}}(gen-line-grid white 10 
+    30 70 
+    {:col 40 :row 12}))
+    
+  
+
   #_(->>
     (gen-rect mint 100 100 500 400)
     (style {:opacity .5})
