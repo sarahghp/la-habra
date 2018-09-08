@@ -14,7 +14,7 @@ I expect the app to evolve as I perform more, but I don’t promise it will ever
 
 `***NOW AVAILABLE***` [Some more notes on the API and how it works.](./docs/how-to.md)
 
-`***ALSO RELEVANT*** [Snippets for Atom.](https://github.com/sarahgp/la-habra-snippets)`
+`***ALSO RELEVANT***` [Snippets for Atom.](https://github.com/sarahgp/la-habra-snippets)
 
 ### La Habra?
 I like to say the visuals I make are mostly inspired by sheets I had as a kid. La Habra is where we lived when I got those sheets (and my first Nintendo). It also translates to _there will be_, which I think is the promise of live coding. When we start it isn’t yet, but there will be shapes and music — in a few minutes.

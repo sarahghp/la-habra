@@ -95,7 +95,7 @@ However, La Habra provides functions for generating and varying the underlying h
 ```cljs
 (->>
   (gen-circ "#e0f" 100 100 20) ; arguments are fill, cx, cy, and r
-  (draw))                    ; transforms the data from gen-circ into reagent
+  (draw))                      ; transforms the data from gen-circ into reagent
 ```
 
 If we wanted the circle to only appear every fourth frame, we can use the `nth-frame` function.
@@ -116,7 +116,7 @@ To show every frame BUT the fourth, we can use [`when-not`](http://clojuredocs.o
   (when-not (nth-frame 4 frame))) ; uses the frame argument passed to `cx`
 ```
 
-All of these examples (and snippets) use the Clojurescript [thread-last macro](http://clojuredocs.org/clojure.core/-%3E%3E), which calls each function, from top to bottom, with the result of the previous function being passed as the last argument to the next one. In this case, the basic circle data is passed to draw and then the code representing the circle is passed to `when`, which only adds it to the list of elements in the SVG when the predicate, `(nth-frame 4 frame)` returns true.
+All of these examples (and snippets) use the Clojurescript [thread-last macro](http://clojuredocs.org/clojure.core/-%3E%3E), which calls each function, from top to bottom, with the result of the previous function being passed as the last argument to the next one. In this case, the basic circle data is passed to draw and then the code representing the circle is passed to `when`, which only adds it to the list of elements in the SVG when the predicate, `(nth-frame 4 frame)`, returns true.
 
 
 ### Basic Shapes
@@ -125,8 +125,7 @@ These basic shapes have generator helpers. Each takes a set of mandatory argumen
 
 Each must be passed to `draw` in order to be rendered.
 
-#### Circle
-`gen-circ`
+#### `gen-circ`  
 arguments: `fill-string x y radius & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba. 
@@ -142,8 +141,7 @@ The optional `mask` argument must be the ID to a mask definition. These can be g
   (draw))       
 ```
 
-#### Rect
-`gen-rect`
+#### `gen-rect`  
 arguments: `fill-string x y w h & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -159,8 +157,7 @@ The optional `mask` argument must be the ID to a mask definition. These can be g
     (draw))
 ```
  
-#### Line
-`gen-line`
+#### `gen-line`
 arguments: `first-point second-point color & width`
 
 `first-point` and `second-point` expect vectors representing the start and end points of the line: `[x y]`,
@@ -181,8 +178,7 @@ The optional `width` argument sets the stroke-width. It defaults to `4px` if no 
   (draw))
 ```
 
-#### Polygon
-`gen-poly`
+#### `gen-poly`
 arguments: `fill-string points & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -198,8 +194,7 @@ The optional `mask` argument must be the ID to a mask definition. These can be g
   (draw))
 ```
 
-#### Path/Shape
-`gen-shape`
+#### `gen-shape`
 arguments: `fill-string path & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -227,8 +222,7 @@ What if you want to change the basic shapes? What if you want to adjust the opac
 
 `style` to the rescue!
 
-####
-`style`
+#### `style`
 arguments: `changes shape`
 
 `changes` is a hashmap of style attributes and values to be added to the `shape`, the map of shape data produced by the `gen-*` functions.
@@ -253,6 +247,132 @@ arguments: `changes shape`
 ```
 
 ### Compound Generators
+
+These generate more complex sets of shapes.
+
+#### `gen-bg-lines`
+arguments: `color num style`
+
+Generates a number of lines of increasing width.
+
+`color` is any CSS-acceptable color string: hex, hsla, rgba.
+
+`num` is the number of lines to draw.
+
+The optional `style` argument takes the same sort of styles hashmap one would pass to the `style` function.
+
+**EXAMPLE**
+```cljs
+(gen-bg-lines "#e0f" 
+              (mod frame 80)
+              {:opacity .5})
+```
+
+
+#### `gen-cols`
+arguments: `color stroke-width num-cols offset`
+
+`color` is any CSS-acceptable color string: hex, hsla, rgba.
+
+`stroke-width` `num-cols` and `offset` are numbers representing those attributes. `offset` determines how far apart the lines will be and does **not** take stroke width into account.
+
+
+**EXAMPLE**
+```cljs
+(gen-cols "#e0f" 4 40 20)
+```
+
+
+#### `gen-rows`
+arguments: `color stroke-width num-rows offset`
+
+`color` is any CSS-acceptable color string: hex, hsla, rgba.
+
+`stroke-width` `num-rows` and `offset` are numbers representing those attributes. `offset` determines how far apart the lines will be and does **not** take stroke width into account.
+
+
+**EXAMPLE**
+```cljs
+(gen-rows "#e0f" 4 40 20)
+```
+
+
+#### `gen-line-grid`
+arguments: `color stroke-width num-cols num-rows offset`
+
+This function generates the columns returned by `gen-cols` and the rows from `gen-rows` together.
+
+`color` is any CSS-acceptable color string: hex, hsla, rgba.
+
+`stroke-width` `num-cols` and `num-rows` are numbers representing those attributes.
+
+`offset` is a map with keys for row and column offsets: `{:row 20 :col 10}`.
+
+
+**EXAMPLE**
+```cljs
+(gen-line-grid "#e0f" 4 80 40 {:row 20 :col 10})
+```
+
+
+#### `gen-grid`
+arguments: `num-cols num-rows offset base-obj`
+
+This function creates a grid from whatever base object is passed to it.
+
+`num-cols` and `num-rows` are numbers representing those attributes.
+
+`offset` is a map with keys for row and column offsets: `{:row 20 :col 10}`.
+
+`base-obj` is any shape to be repeated.
+
+**EXAMPLE**
+```cljs
+(->>
+  (gen-grid
+    10 10
+    {:col 100 :row 100}
+    (gen-circ "#e0f" 10 10 10)) 
+   (map #(style {:opacity .5} %)) ; note: style and draw must map over the group
+   (map draw))
+```
+
+
+#### `freak-out`
+arguments: `max-x max-y max-r num color`  
+OR `max-x max-y max-r num color style`  
+OR `min-x max-x min-y max-y max-r num color`  
+OR `min-x max-x min-y max-y max-r num color style`
+
+This function generates a new set of circles each redraw (so every 50ms). It gives a sparkle effect.
+
+`min-x` `max-x` `min-y` and `max-y` are numbers that together define the square in which the circles appear. If only two values, `max-x` and `max-y`, are passed, the minimum is set to `0`. 
+
+`max-r` is the maximum radius. The minimum is always 0.
+
+`color` is any CSS-acceptable color string: hex, hsla, rgba.
+
+The optional `style` argument takes the same sort of styles hashmap one would pass to the `style` function.
+
+
+**EXAMPLE**
+```cljs
+;; this example shows freakout with the minimum number of arguments
+(freak-out @width   ;@width is a helper that provides the width of the window
+           @height  ;@height is a helper that provides the height of the window
+           10  
+           100
+           "#e0f")
+           
+;; this example shows freakout with the maximum number of arguments           
+(freak-out 200 @width
+           200 @height
+           10  
+           100
+           "#e0f"
+           {:opacity .5})
+```
+
 
 ## Fills
 ### Solid
