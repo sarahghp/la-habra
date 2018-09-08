@@ -415,8 +415,37 @@ The solid fills, located unsurprisingly in `fills.cljs`, comprise the base palet
 
 ### Patterns
 
-Patterned fills make use the SVG pattern definition capability. Using Irene Ros's [Patternfills](https://iros.github.io/patternfills/) utility, I generated SVG patterns. Then using the base-64 encoded images and the 
+Patterned fills make use the SVG pattern definition capability. Using Irene Ros's [Patternfills](https://iros.github.io/patternfills/) utility, I generated SVG patterns. Then using the base-64 encoded images and the `pattern-def` helper, these are added to the SVG at the bottom of `core.cljs`.
 
+Available patterns are:
+- `blue-dots`
+- `blue-lines`
+- `pink-dots`
+- `pink-lines`
+- `gray-dots`
+- `gray-dots-lg`
+- `gray-lines`
+- `gray-patch`
+- `mint-dots`
+- `mint-lines`
+- `navy-dots`
+- `navy-lines`
+- `orange-dots`
+- `orange-lines`
+- `br-orange-dots`
+- `br-orange-lines`
+- `yellow-dots`
+- `yellow-lines`
+- `white-dots`
+- `white-dots-lg`
+- `white-lines`
+- `shadow`
+
+They are passed in the place of color arguments using the following helpers:
+
+```cljs
+(pattern (:id white-lines))
+```
 
 ---
 
