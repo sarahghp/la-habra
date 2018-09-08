@@ -5,6 +5,7 @@
 (def mint "#00baa9")
 (def navy "#161f93")
 (def blue "#001752")
+(def midnight "#05061f")
 (def orange "#ffaa37")
 (def br-orange "#f80")
 (def pink "#fb5d67")

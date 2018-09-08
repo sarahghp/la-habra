@@ -1,10 +1,12 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
-            [ui.shapes :as shapes :refer [tri square pent hex hept oct b1 b2 b3 b4]]
+            [ui.shapes :as shapes :refer [tri square pent hex hept oct 
+                                          b1 b2 b3 b4]]
             [ui.fills :as fills :refer
               [ gray
                 mint
+                midnight
                 navy
                 blue
                 orange
@@ -13,11 +15,8 @@
                 white
                 yellow]]
             [ui.generators :refer 
-             [circ
-              line
-              polygon
-              rect
-              shape
+             [draw
+              freak-out
               gen-circ
               gen-group
               gen-line
@@ -26,8 +25,10 @@
               gen-shape
               gen-offset-lines
               gen-bg-lines
-              freak-out
-              gen-grid]]
+              gen-grid
+              gen-line-grid
+              gen-cols
+              gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
              [ gen-color-noise
@@ -59,7 +60,7 @@
             [ui.animations :as animations :refer
               [ make-body
                 splice-bodies
-                make-frames
+                make-frames!
                 nth-frame
                 even-frame
                 odd-frame]]))
@@ -83,6 +84,8 @@
 
 ;; -------------------- HELPERS ---------------------------
 
+(defn sin [x] (.sin js/Math x))
+
 (defn style
   [changes shape]
   (update-in shape [:style] #(merge % changes)))
@@ -91,15 +94,13 @@
   ([ fill-id ]
     (str "url(#" fill-id ")")))
 
-(defn sin [x] (.sin js/Math x))
-
 (defn seconds-to-frames
   [seconds]
   (* 2 seconds))
 
 (defonce ran (atom {}))
 
-(defn fade-and-hold
+(defn anim-and-hold
   [name frame duration fader solid]
   (let [init-frame (@ran name)
         ran? (and init-frame (<= (+ init-frame (seconds-to-frames duration)) frame))
@@ -127,7 +128,7 @@
 ;; ----------- ANIMATIONS ----------------
 
 ;; syntax reminder
-; (make-frames
+; (make-frames!
 ;   "NAME"
 ;   [frames]
 ;   (make-body "ATTRIBUTE" [values]))
@@ -143,7 +144,7 @@
 
 (defn back-and-forth!
   [name start-str finish-str]
-  (make-frames name [0 50 100] 
+  (make-frames! name [0 50 100] 
     (make-body "transform" [
       (str start-str)
       (str finish-str)
@@ -151,14 +152,14 @@
 
 (defn a-to-b!
   [name att start-str finish-str]
-  (make-frames name [0 100] 
+  (make-frames! name [0 100] 
     (make-body att [
       (str start-str)
       (str finish-str)])))
 
 (defn fade-start!
   [name op-end]
-  (make-frames name [0 99 100] 
+  (make-frames! name [0 99 100] 
     (make-body "fill-opacity" [
       (str 0)
       (str 0)
@@ -166,7 +167,7 @@
 
 (fade-start! "fi" 1)
 
-(make-frames "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
+(make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
 
@@ -175,7 +176,7 @@
 (a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
 (a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
 
-(make-frames
+(make-frames!
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
@@ -185,7 +186,36 @@
                            "translate(604%, 300%) rotate(-210deg) scale(2.2)"
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
 
-    
+(make-frames!
+ "dashy"
+ [100]
+ (make-body "stroke-dashoffset" [0]))
+
+(make-frames!
+ "dashy2"
+ [50 100]
+ (make-body "stroke-dashoffset" [0 650]))
+
+(make-frames!
+ "morph"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"tri"')")
+  (str "path('"square"')")
+  (str "path('"pent"')")
+  (str "path('"hex"')")
+  (str "path('"hept"')")
+  (str "path('"oct"')")
+  (str "path('"tri"')")
+]))   
+
+(make-frames! 
+ "bubbles"
+ [40 100]
+ (make-body "transform"
+            ["translate(80%, 50%) rotate(360deg)"
+             "translate(0%, 0%) rotate(0deg)"]))
+
 
 ;; --------------- ATOMS STORAGE --------------------
 
@@ -194,7 +224,7 @@
      #(->>
        (gen-rect mint (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (rect))
+       (draw))
      (range 10))))
      
 (def drops-2
@@ -202,7 +232,7 @@
     #(->>
       (gen-rect white (+ 30 (* % 160)) 10 200 36)
       (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
-      (rect))
+      (draw))
     (range 10))))
 
 (def bloops
@@ -210,24 +240,86 @@
     (gen-circ white 0 100 40)
     (style {:opacity .7})
     (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
-    (circ)
+    (draw)
     (atom)))
-                
     
 (def move-me
   (->>
    (gen-shape mint hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "10s" "infinite")
-   (shape)
+   (draw)
    (atom)))
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
   (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
-  (circ)
+  (draw)
   (atom)))
+
+(def tri-dash
+  (->>
+    (gen-shape "hsla(360, 10%, 10%, 0)" oct)
+    (style {:transform-origin "center" 
+            :transform (str "translate(" 40 "vw," 40 "vh)"
+                            "scale(2)")})
+    (style {:stroke pink 
+            :stroke-width 10 
+            :stroke-dasharray 20 
+            :stroke-dashoffset 1000
+            :stroke-linecap :round
+            :stroke-linejoin :round})
+    (anim "dashy" "4s" "infinite")
+    (draw)
+    (atom)))
+
+(def tri-to-oct
+  (atom (gen-group {:style 
+                    {:stroke-dasharray 20 
+                     :stroke-dashoffset 1000
+                     :stroke-linecap :round
+                     :stroke-linejoin :round
+                     :animation "dashy 10s infinite" }}
+                   (gen-group {:style {:transform-origin "center" :animation "bubbles 10s infinite linear" }}
+                   (->>
+                    (gen-shape (pattern (:id white-dots)) tri)
+                    (style {:opacity .7 :fill-opacity .3 :transform "translate(20vw, 20vh) scale(2)"})
+                    (style {:stroke mint 
+                            :stroke-width 10 
+                            :stroke-linejoin :round})
+                    (anim "morph" "6s" "infinite")
+                    (draw))))))
+
+(def blrp
+  (atom
+   (map 
+    #(->>
+      (gen-circ mint 120 120 40)
+      (style {:fill-opacity 0})
+      (style {:transform (str "translateX(" (* 120 %) "px)")})
+      (style {:stroke mint
+              :stroke-width 6  
+              :stroke-dasharray 300 
+              :stroke-dashoffset 300})
+      (anim "dashy2" "10s" "infinite" {:delay (str (* .2 %) "s")})
+      (draw))
+    (range 8))))
+
+(def blrp-2
+  (atom
+   (map 
+    #(->>
+      (gen-circ mint 120 120 40)
+      (style {:fill-opacity 0})
+      (style {:transform (str "translate(" (* 120 %) "px, 200px)")})
+      (style {:stroke mint
+              :stroke-width 6  
+              :stroke-dasharray 300 
+              :stroke-dashoffset 300})
+      (anim "dashy2" "10s" "infinite" {:delay (str (* .3 %) "s")})
+      (draw))
+    (range 8))))
 
 
 
@@ -240,13 +332,29 @@
     (->>
      (gen-rect color (* 0.15 @width) (* 0.15 @height) (* 0.7 @width) 3)
      (style {:transform (str "translateY(" (* n 10) "px)") :opacity op})
-     (rect))))
+     (draw))))
 
 (defn flicker-test [n frame]
   (or (and (= n 10) (nth-frame 12 frame))
       (and (= n 12) (nth-frame 8 frame))
       (= n 44) (= n 45)
       (and (= n 46) (nth-frame 8 frame))))
+
+(def levels 
+  (map-indexed 
+    (fn [idx color]
+          (->>
+            (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
+            (style {:opacity .4 
+                    :transform-origin "center" 
+                    :transform (str
+                                "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
+                                "rotate(" (- 360 (rand-int 720)) "deg)")})
+            (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
+            (draw)
+            (atom)))
+    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
+
 
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
@@ -263,15 +371,69 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        navy navy navy navy navy    
+        ;navy navy navy navy navy
+        midnight    
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
-            (rect)))
-    
+            (draw)))
+ 
 
+
+  
+  ;@tri-to-oct
+  
+  @blrp
+    @blrp-2
+
+  
+  
+  #_(->>
+    (gen-poly pink [100 100 300 100 500 400 100 600])
+    (style {:transform "scale(2)"})
+    (draw)
+    (when (nth-frame 1 frame)))
+  
+  #_(gen-group {:mask (url "poly-flip")}
+             (->>
+               (gen-rect white 0 0 "100%" "100%")
+               (draw)
+               (when (nth-frame 1 frame)))
+             (->>
+               (gen-grid
+                 80 1
+                 {:col 20 :row 1}
+                 (gen-rect pink 0 0 2 @height)) 
+                (map #(style {:opacity .5} %)) 
+                (map draw) 
+                (when (nth-frame 1 frame)))
+             (->>
+               (gen-grid
+                 1 80
+                 {:col 1 :row 20}
+                 (gen-rect pink 0 0 @width 2)) 
+                (map #(style {:opacity .5} %)) 
+                (map draw) 
+                (when (nth-frame 1 frame))))
+
+  
+  #_(->>
+    (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
+    (style {:transform "rotate(-80deg)"})
+    (draw)
+    (when (nth-frame 1 frame)))
+  
+  ;@tri-dash
+
+  #_(gen-group {:style {:opacity .3}}(gen-line-grid white 10 
+    30 70 
+    {:col 40 :row 12}))
+    
+  
+  
+  
     
   )) ; cx end
   
@@ -299,6 +461,18 @@
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
             [:mask { :id "grad-mask" :key (random-uuid)}
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
+            [:mask {:id "poly-flip" :key (random-uuid)}
+               (->>
+                 (gen-poly pink [100 100 300 100 500 400 100 600])
+                 (style {:transform "translate(130%, -15%) scale(-2)"})
+                 (draw))]
+            [:mask {:id "cutout" :key (random-uuid)}
+             (->>
+               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (draw))
+             (->>
+               (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
+               (draw))]
             ])
   
 

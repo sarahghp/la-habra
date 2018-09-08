@@ -32,7 +32,7 @@
       (apply str)))
 
 ;; get the key frames string, append it to the stylesheet, return name
-(defn make-frames
+(defn make-frames!
   [name frames bodies]
   (let [sheet (aget js/document "styleSheets" "0")
         sheet-length (aget sheet "cssRules" "length")
@@ -42,22 +42,22 @@
 
 ;; -------------------- SOME BASE KEYFRAMES ---------------------------
 
-(make-frames
+(make-frames!
   "fade-in-out"
   [0 4 8 50 54 94]
   (make-body "fill-opacity" [1 0.7 0.5 0.2 0 1]))
 
-(make-frames
+(make-frames!
   "fade-out"
   [0 100]
   (make-body "fill-opacity" [1 0]))
   
-(make-frames
+(make-frames!
   "fade-in"
   [0 30 80 90 100]
   (make-body "fill-opacity" [0 0 0.5 1 1]))
 
-(make-frames
+(make-frames!
   "wee-oo"
   [0 17 37 57 100]
   (make-body "transform"
@@ -67,17 +67,17 @@
       "translateX(100%) scale(13.9)"
       "translateX(1%) scale(1)"]))
 
-  (make-frames
+  (make-frames!
     "rot"
     [0 100]
     (make-body "transform" ["rotate(0deg)" "rotate(360deg)"]))
     
-  (make-frames
+  (make-frames!
     "cent-rot"
     [0 100]
     (make-body "transform" ["translate(300px, 300px) scale(6.2) rotate(0deg)" "translate(300px, 300px) scale(1.2) rotate(360deg)"]))
 
-(make-frames
+(make-frames!
   "rev"
   [0 100]
   (make-body "transform" ["rotate(0deg)" "rotate(-360deg)"]))
