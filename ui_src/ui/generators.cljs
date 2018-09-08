@@ -145,17 +145,8 @@
 
 (def gen-grid (memoize gen-grid-raw))
 
-; check to see if circles already exist (key [min-max min-max max-r])
-; no? add to map
-; yes? update x y r in list
-
 (defonce positions 
   (atom {}))
-
-; get val out of group vector
-; assoc new vals into map
-; replace nth vector 2 with new value 
-; replace whole vector
 
 (defn update-me-positions
   [old-pos {:keys [min-x min-y max-x max-y max-r] :as id}]
@@ -208,10 +199,3 @@
      color 
      style
      num)))
-
-(println
-   (first (last (freak-out @width
-              @height
-              30
-              10
-              "#fff")))) 

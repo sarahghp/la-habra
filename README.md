@@ -2,15 +2,19 @@
 
 # La Habra: The Shape of Things to DOM
 
-### La Habra is the tool I use to live code visuals as one half of [Codie](https://twitter.com/hi_codie). They look like this.
+![gif of livecoded visuals](./docs/la-habra.gif)
 
-![gif of livecoded visuals](./11-28-finale.gif)
+### La Habra is the tool I use to live code visuals as one third of [Codie](https://codie.live). They look like those backgrounds up there.
 
 This repo includes the latest version of the app on master, as well as saved final states from performances in dated branches.
 
-The relevant code is all in `ui_src/ui`. It creates two timers (one for the frame and one to refresh the drawing), provides some timing and drawing shortcut functions, and includes some animation helpers that enable me to do terrible things to the stylesheet from the main Clojurescript file. Also built-in are some basic colors and patterns.
+The relevant code is all in [`ui_src/ui`](https://github.com/sarahgp/la-habra/tree/master/ui_src/ui). It creates two timers (one for the frame and one to refresh the drawing), provides some timing and drawing shortcut functions, and includes some animation helpers that enable me to do terrible things to the stylesheet from the main Clojurescript file. Also built-in are some basic colors and patterns.
 
 I expect the app to evolve as I perform more, but I don’t promise it will ever be helpful to anyone else.
+
+`***NOW AVAILABLE***` [Some more notes on the API and how it works.](./docs/how-to.md)
+
+`***ALSO RELEVANT*** [Snippets for Atom.](https://github.com/sarahgp/la-habra-snippets)`
 
 ### La Habra?
 I like to say the visuals I make are mostly inspired by sheets I had as a kid. La Habra is where we lived when I got those sheets (and my first Nintendo). It also translates to _there will be_, which I think is the promise of live coding. When we start it isn’t yet, but there will be shapes and music — in a few minutes.
@@ -32,4 +36,3 @@ electron .                       # start electron from another terminal
 ```
 
 *This project is built on [a cljs/electron app template from Max Gonzih](https://github.com/Gonzih/cljs-electron)*
-

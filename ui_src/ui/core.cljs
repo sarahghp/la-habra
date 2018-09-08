@@ -264,9 +264,6 @@
 
 
 
-
-
-
 ;; ------------------- DRAWING HELPERS ------------------------
 
 ;; use with (doall (map fn range))
@@ -323,7 +320,19 @@
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
- 
+  
+ (->>
+   (gen-poly mint [100 100 400 400 300 100 200 50])
+   (style {:stroke pink 
+           :stroke-width 10 
+           :stroke-dasharray 20 
+           :stroke-dashoffset 1000
+           :stroke-linecap :round
+           :stroke-linejoin :round})
+   (draw)
+   (when (nth-frame 1 frame)))
+
+
     
   )) ; cx end
   
