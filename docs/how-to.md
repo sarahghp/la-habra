@@ -25,8 +25,7 @@ Everything is drawn into a single SVG via [Reagent](https://reagent-project.gith
 
 To start the application, you must start both Figwheel and Electron.
 
-#### Starting Figwheel
- In one terminal window, start Figwheel with 
+In one terminal window, start Figwheel with 
 ```
 lein cooper
 ```
@@ -37,7 +36,6 @@ npm start
 
 If this fails, try removing the `target` directory.
 
-#### Starting Electron
 
 Start Electron with 
 ```
@@ -119,13 +117,15 @@ To show every frame BUT the fourth, we can use [`when-not`](http://clojuredocs.o
 All of these examples (and snippets) use the Clojurescript [thread-last macro](http://clojuredocs.org/clojure.core/-%3E%3E), which calls each function, from top to bottom, with the result of the previous function being passed as the last argument to the next one. In this case, the basic circle data is passed to draw and then the code representing the circle is passed to `when`, which only adds it to the list of elements in the SVG when the predicate, `(nth-frame 4 frame)`, returns true.
 
 
-### Basic Shapes
+## Basic Shapes
 
 These basic shapes have generator helpers. Each takes a set of mandatory arguments and most an optional `mask` argument. 
 
 Each must be passed to `draw` in order to be rendered.
 
-#### `gen-circ`  
+---
+
+### `gen-circ`  
 arguments: `fill-string x y radius & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba. 
@@ -141,7 +141,9 @@ The optional `mask` argument must be the ID to a mask definition. These can be g
   (draw))       
 ```
 
-#### `gen-rect`  
+---
+
+### `gen-rect`  
 arguments: `fill-string x y w h & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -157,7 +159,9 @@ The optional `mask` argument must be the ID to a mask definition. These can be g
     (draw))
 ```
  
-#### `gen-line`
+---
+ 
+### `gen-line`
 arguments: `first-point second-point color & width`
 
 `first-point` and `second-point` expect vectors representing the start and end points of the line: `[x y]`,
@@ -178,7 +182,9 @@ The optional `width` argument sets the stroke-width. It defaults to `4px` if no 
   (draw))
 ```
 
-#### `gen-poly`
+---
+
+### `gen-poly`
 arguments: `fill-string points & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -194,7 +200,9 @@ The optional `mask` argument must be the ID to a mask definition. These can be g
   (draw))
 ```
 
-#### `gen-shape`
+---
+
+### `gen-shape`
 arguments: `fill-string path & mask`
 
 `fill-string` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -216,13 +224,13 @@ The optional `mask` argument must be the ID to a mask definition. These can be g
   (draw))
 ```
 
-### Changing Styles
+## Changing Styles
 
 What if you want to change the basic shapes? What if you want to adjust the opacity, add an attribute not covered by the basic shape generation functions, or translate, rotate, and scale?
 
 `style` to the rescue!
 
-#### `style`
+### `style`
 arguments: `changes shape`
 
 `changes` is a hashmap of style attributes and values to be added to the `shape`, the map of shape data produced by the `gen-*` functions.
@@ -246,11 +254,15 @@ arguments: `changes shape`
   (draw))
 ```
 
-### Compound Generators
+---
+
+## Compound Generators
 
 These generate more complex sets of shapes.
 
-#### `gen-bg-lines`
+---
+
+### `gen-bg-lines`
 arguments: `color num style`
 
 Generates a number of lines of increasing width.
@@ -268,8 +280,9 @@ The optional `style` argument takes the same sort of styles hashmap one would pa
               {:opacity .5})
 ```
 
+---
 
-#### `gen-cols`
+### `gen-cols`
 arguments: `color stroke-width num-cols offset`
 
 `color` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -282,8 +295,9 @@ arguments: `color stroke-width num-cols offset`
 (gen-cols "#e0f" 4 40 20)
 ```
 
+---
 
-#### `gen-rows`
+### `gen-rows`
 arguments: `color stroke-width num-rows offset`
 
 `color` is any CSS-acceptable color string: hex, hsla, rgba.
@@ -296,8 +310,9 @@ arguments: `color stroke-width num-rows offset`
 (gen-rows "#e0f" 4 40 20)
 ```
 
+---
 
-#### `gen-line-grid`
+### `gen-line-grid`
 arguments: `color stroke-width num-cols num-rows offset`
 
 This function generates the columns returned by `gen-cols` and the rows from `gen-rows` together.
@@ -314,8 +329,9 @@ This function generates the columns returned by `gen-cols` and the rows from `ge
 (gen-line-grid "#e0f" 4 80 40 {:row 20 :col 10})
 ```
 
+---
 
-#### `gen-grid`
+### `gen-grid`
 arguments: `num-cols num-rows offset base-obj`
 
 This function creates a grid from whatever base object is passed to it.
@@ -337,8 +353,9 @@ This function creates a grid from whatever base object is passed to it.
    (map draw))
 ```
 
+---
 
-#### `freak-out`
+### `freak-out`
 arguments: `max-x max-y max-r num color`  
 OR `max-x max-y max-r num color style`  
 OR `min-x max-x min-y max-y max-r num color`  
@@ -373,12 +390,36 @@ The optional `style` argument takes the same sort of styles hashmap one would pa
            {:opacity .5})
 ```
 
+---
 
 ## Fills
+
+As we have seen above, most color arguments take any CSS color string. La Habra includes two types of fill helpers.
+
 ### Solid
-### Patterned
+
+The solid fills, located unsurprisingly in `fills.cljs`, comprise the base palette of La Habra. They are:
+
+- `gray`
+- `mint`
+- `navy`
+- `blue`
+- `midnight`
+- `orange`
+- `br-orange`
+- `pink`
+- `white`
+- `yellow`
+
+---
+
+### Patterns
+
+Patterned fills make use the SVG pattern definition capability. Using Irene Ros's [Patternfills](https://iros.github.io/patternfills/) utility, I generated SVG patterns. Then using the base-64 encoded images and the 
+
+
+---
 
 ## Animating Shapes with Atoms 
-
 ## Groups
 ## Masks 
