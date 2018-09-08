@@ -449,6 +449,98 @@ They are passed in the place of color arguments using the following helpers:
 
 ---
 
-## Animating Shapes with Atoms 
+## Animating Shapes with Atoms
+
+Unlike the shapes seen above, shapes we want to animate with CSS animations cannot be defined directly in the `cx` list. That's because the would then start over every 50ms when the SVG is redrawn.
+
+Fortunately, using the `atom` helper from Reagent, we can define an object that we want to stay the same each time and animate *that*. We add the most updated value of at atom to the draw list by prefixing it's name with `@`.
+
+
+```cljs
+(def my-cool-atom ..) ; define outside the function
+
+(defn cx [frame]
+  @my-cool-atom)      ; add it to the list
+```
+
+---
+
+### `atom`
+arguments: `drawn-element`
+
+`atom` works like the `draw` function, taking a drawn shape and making an atom.
+
+**EXAMPLE**
+```cljs
+(def move-me
+  (->>
+   (gen-shape mint hept)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "10s" "infinite")
+   (draw)
+   (atom)))
+```
+
+---
+
+### `anim`
+arguments `name duration count opts shape`
+
+The `anim` helper is similar to the `styles` function in that it takes a number of configuration arguments and the shape structure and adds the animation to the shape. It must be used inside an `atom`.
+
+`name` is the name of an animation, given as a string. See `make-frames!` and `make-body` for how to create a named animation. A few in-built options are also available:
+- `fade-out`
+- `fade-in`
+- `fade-in-out`
+- `rot`
+- `rev`
+
+`duration` is a string indicating how long an animation should take, with the measurement included, for instance: "10s" or "1000ms".
+
+`count` takes the number of times the animation should repeat or the string "infinite". Note, the count will restart from 0 whenever the code is saved and reloaded.
+
+The optional `opts` takes a hashmap with two possible keys: `timing` and `delay`. The latter takes values similar to `duration`. The former takes any [transition timing function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function), with the default being `ease`.
+
+**EXAMPLE**
+```cljs
+(def move-me
+  (->>
+   (gen-shape mint hept)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "10s" "infinite")
+   (draw)
+   (atom)))
+```
+
+---
+
+### `make-frames!`
+arguments: `name frames bodies`
+
+### `make-body`
+arguments: `att values`
+
+`make-frames!` and `make-body` work together to concatenate animation keyframes and inject them into the stylesheets while La Habra is running, so they are available to used in the `anim` helper.
+
+`make-frames!` takes the name of the animation, a vector of frames, and a vector of bodies. `make-body` takes the attribute to animated and a vector of the values at each of the frame stops. These vectors must be of equal length.
+
+
+**EXAMPLE**
+```cljs
+(make-frames!
+  "woosh"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" ["translate(80%, 50%) rotate(2deg) scale(1.2)"
+                           "translate(604%, 100%) rotate(-200deg) scale(2.4)"
+                           "translate(80%, 450%) rotate(120deg) scale(3.4)"
+                           "translate(604%, 300%) rotate(-210deg) scale(2.2)"
+                           "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+```
+
+---
+
 ## Groups
+
+---
+
 ## Masks 

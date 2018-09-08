@@ -235,7 +235,7 @@
   (->>
    (gen-shape mint hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" "infinite")
+   (anim "woosh" "10s" 2)
    (draw)
    (atom)))
 
@@ -333,7 +333,7 @@
    (when (nth-frame 1 frame)))
 
 
-  
+  @move-me
   
   )) ; cx end
   
