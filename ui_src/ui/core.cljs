@@ -1,7 +1,8 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
-            [ui.shapes :as shapes :refer [tri square pent hex hept oct b1 b2 b3 b4]]
+            [ui.shapes :as shapes :refer [tri square pent hex hept oct 
+                                          b1 b2 b3 b4]]
             [ui.fills :as fills :refer
               [ gray
                 mint
@@ -190,7 +191,31 @@
  [100]
  (make-body "stroke-dashoffset" [0]))
 
-    
+(make-frames!
+ "dashy2"
+ [50 100]
+ (make-body "stroke-dashoffset" [0 650]))
+
+(make-frames!
+ "morph"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"tri"')")
+  (str "path('"square"')")
+  (str "path('"pent"')")
+  (str "path('"hex"')")
+  (str "path('"hept"')")
+  (str "path('"oct"')")
+  (str "path('"tri"')")
+]))   
+
+(make-frames! 
+ "bubbles"
+ [40 100]
+ (make-body "transform"
+            ["translate(80%, 50%) rotate(360deg)"
+             "translate(0%, 0%) rotate(0deg)"]))
+
 
 ;; --------------- ATOMS STORAGE --------------------
 
@@ -248,6 +273,53 @@
     (anim "dashy" "4s" "infinite")
     (draw)
     (atom)))
+
+(def tri-to-oct
+  (atom (gen-group {:style 
+                    {:stroke-dasharray 20 
+                     :stroke-dashoffset 1000
+                     :stroke-linecap :round
+                     :stroke-linejoin :round
+                     :animation "dashy 10s infinite" }}
+                   (gen-group {:style {:transform-origin "center" :animation "bubbles 10s infinite linear" }}
+                   (->>
+                    (gen-shape (pattern (:id white-dots)) tri)
+                    (style {:opacity .7 :fill-opacity .3 :transform "translate(20vw, 20vh) scale(2)"})
+                    (style {:stroke mint 
+                            :stroke-width 10 
+                            :stroke-linejoin :round})
+                    (anim "morph" "6s" "infinite")
+                    (draw))))))
+
+(def blrp
+  (atom
+   (map 
+    #(->>
+      (gen-circ mint 120 120 40)
+      (style {:fill-opacity 0})
+      (style {:transform (str "translateX(" (* 120 %) "px)")})
+      (style {:stroke mint
+              :stroke-width 6  
+              :stroke-dasharray 300 
+              :stroke-dashoffset 300})
+      (anim "dashy2" "10s" "infinite" {:delay (str (* .2 %) "s")})
+      (draw))
+    (range 8))))
+
+(def blrp-2
+  (atom
+   (map 
+    #(->>
+      (gen-circ mint 120 120 40)
+      (style {:fill-opacity 0})
+      (style {:transform (str "translate(" (* 120 %) "px, 200px)")})
+      (style {:stroke mint
+              :stroke-width 6  
+              :stroke-dasharray 300 
+              :stroke-dashoffset 300})
+      (anim "dashy2" "10s" "infinite" {:delay (str (* .3 %) "s")})
+      (draw))
+    (range 8))))
 
 
 
@@ -309,33 +381,14 @@
             (draw)))
  
 
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               3
-               200
-               white))
+
   
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               10
-               400
-               pink))
+  ;@tri-to-oct
   
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               25
-               200
-               (pattern (:id mint-lines))))
+  @blrp
+    @blrp-2
+
   
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               3
-               200
-               white))
   
   #_(->>
     (gen-poly pink [100 100 300 100 500 400 100 600])
@@ -379,39 +432,7 @@
     {:col 40 :row 12}))
     
   
-
-  #_(->>
-    (gen-rect mint 100 100 500 400)
-    (style {:opacity .5})
-    (draw)
-    (when (nth-frame 3 frame)))
   
-  
-  #_(->>
-    (gen-rect mint 100 160 500 400)
-    (style {:opacity .5})
-    (draw)
-    (when (nth-frame 3 frame)))
-  
-  #_(->>
-    (gen-rect mint 300 300 500 400)
-    (style {:opacity .5})
-    (draw)
-    (when (nth-frame 5 frame)))
-  
-  #_(->>
-    (gen-rect mint 400 360 500 400)
-    (style {:opacity .5})
-    (draw)
-    (when (nth-frame 7 frame)))
-  
-  #_(->>
-    (gen-rect mint 300 700 500 400)
-    (style {:opacity .5})
-    (draw)
-    (when (nth-frame 8 frame)))
-  
-  #_(doall (map deref levels))
   
     
   )) ; cx end
