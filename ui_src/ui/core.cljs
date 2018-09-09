@@ -192,6 +192,11 @@
  (make-body "stroke-dashoffset" [0]))
 
 (make-frames!
+ "dashy2"
+ [50 100]
+ (make-body "stroke-dashoffset" [0 650]))
+
+(make-frames!
  "morph"
   [0 15 30 45 60 75 100]
  (make-body "d" [
@@ -203,6 +208,13 @@
   (str "path('"oct"')")
   (str "path('"tri"')")
 ]))   
+
+(make-frames! 
+ "bubbles"
+ [40 100]
+ (make-body "transform"
+            ["translate(80%, 50%) rotate(360deg)"
+             "translate(0%, 0%) rotate(0deg)"]))
 
 
 ;; --------------- ATOMS STORAGE --------------------
@@ -235,7 +247,7 @@
   (->>
    (gen-shape mint hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" 2)
+   (anim "woosh" "10s" "infinite")
    (draw)
    (atom)))
 
@@ -261,6 +273,53 @@
     (anim "dashy" "4s" "infinite")
     (draw)
     (atom)))
+
+(def tri-to-oct
+  (atom (gen-group {:style 
+                    {:stroke-dasharray 20 
+                     :stroke-dashoffset 1000
+                     :stroke-linecap :round
+                     :stroke-linejoin :round
+                     :animation "dashy 10s infinite" }}
+                   (gen-group {:style {:transform-origin "center" :animation "bubbles 10s infinite linear" }}
+                   (->>
+                    (gen-shape (pattern (:id white-dots)) tri)
+                    (style {:opacity .7 :fill-opacity .3 :transform "translate(20vw, 20vh) scale(2)"})
+                    (style {:stroke mint 
+                            :stroke-width 10 
+                            :stroke-linejoin :round})
+                    (anim "morph" "6s" "infinite")
+                    (draw))))))
+
+(def blrp
+  (atom
+   (map 
+    #(->>
+      (gen-circ mint 120 120 40)
+      (style {:fill-opacity 0})
+      (style {:transform (str "translateX(" (* 120 %) "px)")})
+      (style {:stroke mint
+              :stroke-width 6  
+              :stroke-dasharray 300 
+              :stroke-dashoffset 300})
+      (anim "dashy2" "10s" "infinite" {:delay (str (* .2 %) "s")})
+      (draw))
+    (range 8))))
+
+(def blrp-2
+  (atom
+   (map 
+    #(->>
+      (gen-circ mint 120 120 40)
+      (style {:fill-opacity 0})
+      (style {:transform (str "translate(" (* 120 %) "px, 200px)")})
+      (style {:stroke mint
+              :stroke-width 6  
+              :stroke-dasharray 300 
+              :stroke-dashoffset 300})
+      (anim "dashy2" "10s" "infinite" {:delay (str (* .3 %) "s")})
+      (draw))
+    (range 8))))
 
 
 
@@ -320,8 +379,62 @@
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
+ 
+
+
+  
+  @tri-to-oct
+  
+  ;@blrp
+    ;@blrp-2
+
   
   
+  #_(->>
+    (gen-poly pink [100 100 300 100 500 400 100 600])
+    (style {:transform "scale(2)"})
+    (draw)
+    (when (nth-frame 1 frame)))
+  
+  #_(gen-group {:mask (url "poly-flip")}
+             (->>
+               (gen-rect white 0 0 "100%" "100%")
+               (draw)
+               (when (nth-frame 1 frame)))
+             (->>
+               (gen-grid
+                 80 1
+                 {:col 20 :row 1}
+                 (gen-rect pink 0 0 2 @height)) 
+                (map #(style {:opacity .5} %)) 
+                (map draw) 
+                (when (nth-frame 1 frame)))
+             (->>
+               (gen-grid
+                 1 80
+                 {:col 1 :row 20}
+                 (gen-rect pink 0 0 @width 2)) 
+                (map #(style {:opacity .5} %)) 
+                (map draw) 
+                (when (nth-frame 1 frame))))
+
+  
+  #_(->>
+    (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
+    (style {:transform "rotate(-80deg)"})
+    (draw)
+    (when (nth-frame 1 frame)))
+  
+  ;@tri-dash
+
+  #_(gen-group {:style {:opacity .3}}(gen-line-grid white 10 
+    30 70 
+    {:col 40 :row 12}))
+    
+  
+  
+  
+    
   )) ; cx end
   
   
@@ -348,6 +461,18 @@
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
             [:mask { :id "grad-mask" :key (random-uuid)}
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
+            [:mask {:id "poly-flip" :key (random-uuid)}
+               (->>
+                 (gen-poly pink [100 100 300 100 500 400 100 600])
+                 (style {:transform "translate(130%, -15%) scale(-2)"})
+                 (draw))]
+            [:mask {:id "cutout" :key (random-uuid)}
+             (->>
+               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (draw))
+             (->>
+               (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
+               (draw))]
             ])
   
 
