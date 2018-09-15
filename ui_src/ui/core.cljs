@@ -170,6 +170,9 @@
 (make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
+(a-to-b! "sm-scaley" "transform" "translate(40vw, 40vh) scale(.2)" "translate(40vw, 40vh) scale(2)")
+(a-to-b! "sm-scaley-2" "transform" "scale(.2)" "scale(2)")
+
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
@@ -251,6 +254,15 @@
    (draw)
    (atom)))
 
+    
+(def move-me-2
+  (->>
+   (gen-shape (pattern (:id white-dots)) hept)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "6s" "infinite" {:delay ".4s"})
+   (draw)
+   (atom)))
+
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
@@ -275,52 +287,99 @@
     (atom)))
 
 (def tri-to-oct
-  (atom (gen-group {:style 
+  (atom (gen-group {:style {:transform-origin "center"
+                            :animation "sm-scaley-2 12s 1"}}
+                   (gen-group {:style 
                     {:stroke-dasharray 20 
                      :stroke-dashoffset 1000
                      :stroke-linecap :round
                      :stroke-linejoin :round
                      :animation "dashy 10s infinite" }}
-                   (gen-group {:style {:transform-origin "center" :animation "bubbles 10s infinite linear" }}
+                   (gen-group {:style {:transform-origin "center" 
+                                       :animation "bubbles 10s infinite linear" }}
+                     (->>
+                      (gen-shape (pattern (:id white-dots)) tri)
+                      (style {:opacity .7 :fill-opacity .4 :transform "translate(20vw, 20vh) scale(2)"})
+                      (style {:stroke mint 
+                              :stroke-width 10 
+                              :stroke-linejoin :round})
+                      (anim "morph" "3s" "infinite")
+                      (draw)))))))
+
+#_(def fi-tri
+  (->>
+    (gen-shape pink tri)
+    (style {:fill-opacity 0 :transform "translate(40vw, 40vh) scale(2)"})
+    (style {:stroke pink 
+            :stroke-width 10 
+            :stroke-linecap :round
+            :stroke-linejoin :round
+            :stroke-dasharray 200 
+            :stroke-dashoffset 600})
+    (anim "morph" "10s" "1")
+    (draw)
+    (atom)))
+
+(def fi-tri
+  (atom (map #(gen-group {:style {:opacity .6
+                            :transform-origin "center"
+                            ;:transform "translate(40vw, 40vh) scale(2)"
+                            :transform (str "translate(" (+ % 40) "vw, " (+ % 40) "vh) scale(2)")
+                            ;:animation "sm-scaley 12s 1"
+                                  }}
                    (->>
-                    (gen-shape (pattern (:id white-dots)) tri)
-                    (style {:opacity .7 :fill-opacity .3 :transform "translate(20vw, 20vh) scale(2)"})
+                    (gen-shape pink tri)
+                    (style {:fill-opacity 0})
+                    (style {:stroke pink 
+                            :stroke-width 10 
+                            :stroke-linecap :round
+                            :stroke-linejoin :round
+                            :stroke-dasharray 20 
+                            :stroke-dashoffset 600})
+                    (anim "morph" "1.2s" "infinite" {:delay (str (* .4 %) "s")})
+                    (draw)))
+                  (range 1))))
+
+
+(def fi-tri-2
+  (atom (map #(gen-group {:style {:opacity .6
+                            :transform-origin "center"
+                            ;:transform "translate(40vw, 40vh) scale(2)"
+                            :transform (str "translate(" (+ % 20) "vw, " (+ % 20) "vh) scale(2)")
+                            ;:animation "sm-scaley 12s 1"
+                                  }}
+                   (->>
+                    (gen-shape mint tri)
+                    (style {:fill-opacity 0})
                     (style {:stroke mint 
                             :stroke-width 10 
-                            :stroke-linejoin :round})
-                    (anim "morph" "6s" "infinite")
-                    (draw))))))
+                            :stroke-linecap :round
+                            :stroke-linejoin :round
+                            :stroke-dasharray 20 
+                            :stroke-dashoffset 600})
+                    (anim "morph" "1.2s" "infinite" {:delay (str (* .4 %) "s")})
+                    (draw)))
+                  (range 1))))
 
-(def blrp
-  (atom
-   (map 
-    #(->>
-      (gen-circ mint 120 120 40)
-      (style {:fill-opacity 0})
-      (style {:transform (str "translateX(" (* 120 %) "px)")})
-      (style {:stroke mint
-              :stroke-width 6  
-              :stroke-dasharray 300 
-              :stroke-dashoffset 300})
-      (anim "dashy2" "10s" "infinite" {:delay (str (* .2 %) "s")})
-      (draw))
-    (range 8))))
-
-(def blrp-2
-  (atom
-   (map 
-    #(->>
-      (gen-circ mint 120 120 40)
-      (style {:fill-opacity 0})
-      (style {:transform (str "translate(" (* 120 %) "px, 200px)")})
-      (style {:stroke mint
-              :stroke-width 6  
-              :stroke-dasharray 300 
-              :stroke-dashoffset 300})
-      (anim "dashy2" "10s" "infinite" {:delay (str (* .3 %) "s")})
-      (draw))
-    (range 8))))
-
+(def fi-tri-3
+  (atom (map #(gen-group {:style {:opacity .6
+                            :transform-origin "center"
+                            ;:transform "translate(40vw, 40vh) scale(2)"
+                            :transform (str "translate(" (+ % 10) "vw, " (+ % 12) "vh) scale(2)")
+                            :animation "dashy 12s infinite"
+                                  }}
+                   (->>
+                    (gen-shape mint tri)
+                    (style {:fill-opacity 0})
+                    (style {:stroke yellow 
+                            :stroke-width 10 
+                            :stroke-linecap :round
+                            :stroke-linejoin :round
+                            :stroke-dasharray 10 
+                            :stroke-dashoffset 600})
+                    (anim "morph" "1.2s" "infinite" {:delay (str (* .6 %) "s")})
+                    (draw)))
+                  (range 1))))
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -372,35 +431,45 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
         ;navy navy navy navy navy
-        midnight    
+        midnight midnight midnight midnight
+        ;white white white 
+        ;orange   
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
- 
+  
+  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               2
+               400
+               white))
+  
+  ;(gen-bg-lines br-orange (mod (* 4 frame) 80))
+  
+  ;(gen-bg-lines gray (mod (* 1 (+ 10 frame)) 80))
+
+  
+    #_(->>
+      (gen-poly pink [100 100 300 100 500 400 100 600])
+      (style {:opacity .4 :transform "scale(2)"})
+      (draw)
+      (when (nth-frame 3 frame)))
+  
 
 
   
-  @tri-to-oct
-  
-  ;@blrp
-    ;@blrp-2
 
-  
-  
-  #_(->>
-    (gen-poly pink [100 100 300 100 500 400 100 600])
-    (style {:transform "scale(2)"})
-    (draw)
-    (when (nth-frame 1 frame)))
   
   #_(gen-group {:mask (url "poly-flip")}
              (->>
                (gen-rect white 0 0 "100%" "100%")
                (draw)
-               (when (nth-frame 1 frame)))
+               (when (nth-frame 2 frame)))
              (->>
                (gen-grid
                  80 1
@@ -408,7 +477,7 @@
                  (gen-rect pink 0 0 2 @height)) 
                 (map #(style {:opacity .5} %)) 
                 (map draw) 
-                (when (nth-frame 1 frame)))
+                (when (nth-frame 2 frame)))
              (->>
                (gen-grid
                  1 80
@@ -416,10 +485,15 @@
                  (gen-rect pink 0 0 @width 2)) 
                 (map #(style {:opacity .5} %)) 
                 (map draw) 
-                (when (nth-frame 1 frame))))
+                (when (nth-frame 2 frame))))
 
   
-  #_(->>
+    ;@fi-tri
+    ;@fi-tri-2
+    ;@fi-tri-3
+    ;@move-me
+  
+  (->>
     (gen-circ mint (* 0.5 @width) (* 0.5 @height) 260 (url "grad-mask"))
     (style {:transform "rotate(-80deg)"})
     (draw)
@@ -427,10 +501,49 @@
   
   ;@tri-dash
 
-  #_(gen-group {:style {:opacity .3}}(gen-line-grid white 10 
-    30 70 
-    {:col 40 :row 12}))
+  (when (nth-frame 10 frame)(gen-group {:style {:opacity .3}}
+             (gen-line-grid white 10 
+              30 70 
+              {:col 40 :row 12})))
     
+  ;@tri-to-oct
+  
+  
+  #_(doall (map
+          #(->>
+            (gen-circ white (rand-int @width) (rand-int @height) 2)
+            (style {:transform (str "scaleX(" (mod (* frame 10) 160) " )")})
+            (draw)
+            (when (nth-frame 8 frame)))
+          (range 10)))
+  
+    #_(doall (map
+            #(->>
+              (gen-circ white (rand-int @width) (rand-int @height) 2)
+              (style {:transform (str "scaleY(" (mod (* frame 10) 160) " )")})
+              (draw)
+              (when (nth-frame 6 frame)))
+            (range 10)))
+  
+  ;@bg
+  
+  ; @move-me
+  ; @move-me-2
+  
+  #_(when (nth-frame 6 frame)
+    (freak-out @width
+               @height
+               20
+               100
+               pink))
+  
+  #_(when (nth-frame 12 frame)
+    (freak-out @width
+               @height
+               20
+               80
+               (pattern (:id yellow-lines))
+               {:transform "scale(4)"}))
   
   
   
