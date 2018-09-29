@@ -348,6 +348,13 @@
               [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
             [:mask { :id "grad-mask" :key (random-uuid)}
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
+            [:mask {:id "cutout" :key (random-uuid)}
+             (->>
+               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (draw))
+             (->>
+               (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
+                (draw))]
             ])
   
 
