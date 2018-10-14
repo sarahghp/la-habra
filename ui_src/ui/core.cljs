@@ -169,7 +169,7 @@
 
 (make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
-(back-and-forth! "scaley" "scale(1)" "scale(15)")
+(back-and-forth! "scaley" "translate(40vw, 40vh) scale(1)" "translate(40vw, 40vh) scale(15)")
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
@@ -180,11 +180,22 @@
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
-                           "translate(80%, 50%) rotate(2deg) scale(1.2)"
-                           "translate(604%, 100%) rotate(-200deg) scale(2.4)"
-                           "translate(80%, 450%) rotate(120deg) scale(3.4)"
-                           "translate(604%, 300%) rotate(-210deg) scale(2.2)"
+                           "translate(-380%, 50%) rotate(2deg) scale(9.2)"
+                           "translate(80%, 100%) rotate(-200deg) scale(12.4)"
+                           "translate(-380%, 450%) rotate(120deg) scale(15.4)"
+                           "translate(80%, 300%) rotate(-210deg) scale(2.2)"
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+
+(make-frames!
+  "woosh-2"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(80%, 50%) rotate(2deg) scale(1.2)"
+                           "translate(404%, 100%) rotate(-200deg) scale(12.4)"
+                           "translate(80%, 450%) rotate(120deg) scale(13.4)"
+                           "translate(404%, 300%) rotate(-210deg) scale(8.2)"
+                           "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+
 
 (make-frames!
  "dashy"
@@ -233,32 +244,55 @@
     
 (def move-me
   (->>
-   (gen-shape mint hept)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" 2)
+   (gen-shape (pattern (:id yellow-dots)) hept)
+   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "8s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-2
+  (->>
+   (gen-shape (pattern (:id blue-lines)) hept)
+   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "4s" "infinite")
    (draw)
    (atom)))
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
+  (anim "sc-rot" "6s" "infinite" {:timing "linear" :delay "7s"})
   (draw)
   (atom)))
+
+(def bg-2 (->> 
+  (gen-circ (pattern (str "noise-" mint)) (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
+  (anim "sc-rot" "6s" "infinite" {:timing "linear" :delay "3s"})
+  (draw)
+  (atom)))
+
+(def throb
+  (->>
+    (gen-shape (pattern (:id white-lines)) oct)
+    (style {:transform "translate(40vw, 40vh) scale(3)"})
+    (anim "scaley" "4s" "infinite")
+    (draw)
+    (atom)))
 
 (def tri-dash
   (->>
     (gen-shape "hsla(360, 10%, 10%, 0)" oct)
     (style {:transform-origin "center" 
             :transform (str "translate(" 40 "vw," 40 "vh)"
-                            "scale(2)")})
+                            "scale(4)")})
     (style {:stroke pink 
             :stroke-width 10 
             :stroke-dasharray 20 
             :stroke-dashoffset 1000
             :stroke-linecap :round
             :stroke-linejoin :round})
-    (anim "dashy" "4s" "infinite")
+    (anim "morph" "12s" "infinite")
     (draw)
     (atom)))
 
@@ -312,8 +346,8 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        ;navy navy navy navy navy
-        midnight    
+        navy navy navy navy navy
+            
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
@@ -321,6 +355,74 @@
             (style {:opacity .9})
             (draw)))
   
+      (let [colors [ 
+          white white white white 
+          mint mint mint mint
+              
+          ] ; orange navy mint pink gray white
+            n (count colors)]
+            (->>
+              (gen-rect (nth colors (mod frame n)) "50%" 0 "100%" "100%")
+              (style {:opacity .3})
+              (draw)))
+  
+  ;(gen-bg-lines midnight (mod (* 4 frame) 60))
+  #_(gen-bg-lines mint 
+  ;              (mod (+ 4 (* 4 frame)) 60) 
+                {:opacity .7 :transform "translateY(4px)"})
+  ;@bg-2
+  ;@bg
+  
+    #_(->>
+        (gen-rect mint 
+                  (* 0.2 @width) 
+                  (* 0.1 @height) 
+                  (* 0.4 @width) 
+                  (* 0.6 @height))
+        (style {:opacity .7})
+        (draw)
+        (when (nth-frame 4 frame)))
+  
+    #_(->>
+      (gen-rect mint 
+                (* 0.5 @width) 
+                (* 0.2 @height) 
+                (* 0.4 @width) 
+                (* 0.6 @height))
+      (style {:opacity .7})
+      (draw)
+      (when (nth-frame 3 frame)))
+  
+    #_(->>
+      (gen-rect orange 
+                (* 0.1 @width) 
+                (* 0.6 @height) 
+                (* 0.85 @width) 
+                (* 0.3 @height))
+      (style {:opacity .7})
+      (draw)
+      (when (nth-frame 6 frame)))
+  
+  ;@throb
+  ;@move-me
+  ;@move-me-2
+  
+  (gen-bg-lines pink 80)
+  
+  ;@drops
+  ;@drops-2
+  
+
+  (->>
+    (gen-shape (pattern (:id white-lines)) oct)
+      (style {:transform "translate(40vw, 40vh) scale(3)"})
+      (draw)
+      (when (nth-frame 1 frame)))
+  
+  (->>
+    (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 1000)
+    (draw)
+    (when-not (nth-frame 1 frame)))
   
   )) ; cx end
   
