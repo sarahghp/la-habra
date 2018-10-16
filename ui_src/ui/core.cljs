@@ -4,16 +4,16 @@
             [ui.shapes :as shapes :refer [tri square pent hex hept oct 
                                           b1 b2 b3 b4]]
             [ui.fills :as fills :refer
-              [ gray
-                mint
-                midnight
-                navy
-                blue
-                orange
-                br-orange
-                pink
-                white
-                yellow]]
+              [gray
+               white
+               yellow
+               light-green
+               green
+               dark-green
+               light-pink
+               pink
+               dark-pink 
+               mauve]]
             [ui.generators :refer 
              [draw
               freak-out
@@ -210,7 +210,7 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect mint (+ 30 (* % 160)) 10 200 36)
+       (gen-rect green (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (draw))
      (range 10))))
@@ -233,14 +233,14 @@
     
 (def move-me
   (->>
-   (gen-shape mint hept)
+   (gen-shape green hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "10s" 2)
    (draw)
    (atom)))
 
 (def bg (->> 
-  (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
+  (gen-circ (pattern (str "noise-" dark-green)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
   (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
   (draw)
@@ -294,7 +294,7 @@
             (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
             (draw)
             (atom)))
-    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
+    (take 10 (repeatedly #(nth [pink pink white yellow] (rand-int 6))))))
 
 
 
@@ -312,14 +312,21 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        ;navy navy navy navy navy
-        midnight    
-        ] ; orange navy mint pink gray white
+        ;white
+        ;dark-green dark-green dark-green dark-green dark-green
+              gray    
+        ] ; pink dark-green green pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
+  
+   (let [colors ["#8dbcb9" "#00957e"  "#003f3f"  "#826c7a" "#563a4a"  "#7f4d65" "#9e5879" yellow]]
+     (map-indexed #(->>
+       (gen-rect %2 (+ 30 (* % 80)) 100 60 60)
+       (draw))
+       colors))
   
   
   )) ; cx end
@@ -359,7 +366,7 @@
   
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
-(def all-fills [gray mint navy blue orange br-orange pink white yellow])
+(def all-fills [gray white yellow light-green green dark-green light-pink pink dark-pink mauve])
 
 (defn drawing []
   [:svg { :width (:width settings) :height (:height settings) }
