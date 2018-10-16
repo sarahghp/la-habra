@@ -143,12 +143,13 @@
 ;; --------------- ANIMATIONS STORAGE --------------------
 
 (defn back-and-forth!
-  [name start-str finish-str]
+  ([name start-str finish-str] (back-and-forth! name "transform" start-str finish-str))
+  ([name att start-str finish-str]
   (make-frames! name [0 50 100] 
     (make-body "transform" [
       (str start-str)
       (str finish-str)
-      (str start-str)])))
+      (str start-str)]))))
 
 (defn a-to-b!
   [name att start-str finish-str]
@@ -170,6 +171,10 @@
 (make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
+(back-and-forth! "sm-scaley" "scale(1)" "scale(4)")
+(back-and-forth! "big-scaley" "scale(0)" "scale(150)")
+
+(back-and-forth! "op" "fill-opacity" "0" "1")
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
@@ -223,6 +228,31 @@
       (draw))
     (range 10))))
 
+(def drops-3
+ (atom  (map
+    #(->>
+      (gen-rect pink (+ 30 (* % 160)) 10 200 36)
+      (anim "etof" "2.4s" "infinite" {:delay (str (* .7 %) "s")})
+      (draw))
+    (range 10))))
+
+
+(def drops-4
+ (atom  (map
+    #(->>
+      (gen-rect (pattern (:id white-dots)) (+ 30 (* % 50)) 10 36 36)
+      (anim "etof" "2.4s" "infinite" {:delay (str (* .7 %) "s")})
+      (draw))
+    (range 30))))
+
+(def drops-5
+ (atom  (map
+    #(->>
+      (gen-rect (pattern (:id yellow-dots)) (+ 30 (* % 58)) 10 36 36)
+      (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
+      (draw))
+    (range 30))))
+
 (def bloops
   (->>
     (gen-circ white 0 100 40)
@@ -251,18 +281,55 @@
     (gen-shape "hsla(360, 10%, 10%, 0)" oct)
     (style {:transform-origin "center" 
             :transform (str "translate(" 40 "vw," 40 "vh)"
-                            "scale(2)")})
+                            "scale(6)")})
     (style {:stroke pink 
             :stroke-width 10 
-            :stroke-dasharray 20 
+            :stroke-dasharray 60 
             :stroke-dashoffset 1000
             :stroke-linecap :round
             :stroke-linejoin :round})
-    (anim "dashy" "4s" "infinite")
+    (anim "morph" "50s" "infinite")
+    (draw)
+    (atom)))
+
+(def tri-dash-2
+  (->>
+    (gen-shape "hsla(360, 10%, 10%, 0)" oct)
+    (style {:transform-origin "center" 
+            :opacity .4
+            :transform (str "translate(" 42 "vw," 42 "vh)"
+                            "scale(6)")})
+    (style {:stroke pink 
+            :stroke-width 20 
+            :stroke-dasharray 60 
+            :stroke-dashoffset 1000
+            :stroke-linecap :round
+            :stroke-linejoin :round})
+    (anim "morph" "50s" "infinite")
     (draw)
     (atom)))
 
 
+(def at (atom 
+           (gen-group {:style {:animation "big-scaley 120s infinite" :transform-origin "center"}}
+                      (->>
+                       (gen-shape (pattern (:id mint-dots)) oct)
+                        (style {:opacity .5 :transform "translate(40vw, 40vh)"})
+                        (draw)))))
+
+(def at2 (atom 
+           (gen-group {:style {:animation "scaley 12s infinite" :transform-origin "center"}}
+                      (->>
+                       (gen-shape (pattern (:id yellow-lines)) oct)
+                        (style {:opacity .5 :transform "translate(40vw, 20vh)"})
+                        (draw)))))
+
+(def at3 (atom 
+           (gen-group {:style {:animation "scaley 4s infinite" :transform-origin "center"}}
+                      (->>
+                       (gen-shape (pattern (:id gray-dots-lg)) oct)
+                        (style {:opacity .5 :transform "translate(40vw, 60vh)"})
+                        (draw)))))
 
 ;; ------------------- DRAWING HELPERS ------------------------
 
@@ -294,7 +361,7 @@
             (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
             (draw)
             (atom)))
-    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
+    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 3))))))
 
 
 
@@ -321,6 +388,71 @@
             (style {:opacity .9})
             (draw)))
   
+            
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               2
+               500
+               white))
+  @at3
+  @at
+    @at2
+  @tri-dash
+  @tri-dash-2
+  
+#_(->>
+    (gen-shape (pattern (:id yellow-lines)) oct)
+      (style {:transform "translate(20vw, 20vh) scale(2)"})
+      (draw)
+      (when (nth-frame 4 frame)))
+  
+    #_(->>
+      (gen-shape (pattern (:id gray-dots)) oct)
+        (style {:opacity .7 :transform "translate(60vw, 60vh) scale(2)"})
+        (draw)
+        (when (nth-frame 4 (+ 1 frame))))
+  
+  ; (map deref levels)
+  ; 
+  ; @drops
+  ; @drops-2
+  ; @drops-3
+  ; @drops-4
+  ; @drops-5
+  
+  #_(when (nth-frame 2 frame)
+    (freak-out 0 @width
+               (* .5 @height) @height
+               10
+               100
+               white))
+  
+    #_(when-not (nth-frame 2 frame)
+      (freak-out 0 @width
+                 0 (* .5 @height)
+                 10
+                 100
+                 pink))
+  
+    #_(when (nth-frame 3 frame)
+      (freak-out 
+                 (* .5 @width) @width
+                 0 @height
+                 
+                 10
+                 100
+                 orange))
+  
+      #_(when (nth-frame 6 frame)
+        (freak-out 
+                   0 (* .6 @width)
+                   0 @height
+                   10
+                   100
+                   mint))
+  
+
   
   )) ; cx end
   
