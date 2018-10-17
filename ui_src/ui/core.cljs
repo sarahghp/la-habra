@@ -98,18 +98,6 @@
   [seconds]
   (* 2 seconds))
 
-(defonce ran (atom {}))
-
-(defn anim-and-hold
-  [name frame duration fader solid]
-  (let [init-frame (@ran name)
-        ran? (and init-frame (<= (+ init-frame (seconds-to-frames duration)) frame))
-        ret (if ran? solid fader)]
-    (when-not init-frame (swap! ran assoc name frame))
-    ret))
-
-
-              
 
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------
 
@@ -157,39 +145,45 @@
       (str start-str)
       (str finish-str)])))
 
-(defn fade-start!
-  [name op-end]
-  (make-frames! name [0 99 100] 
-    (make-body "fill-opacity" [
-      (str 0)
-      (str 0)
-      (str op-end)])))
-
-(fade-start! "fi" 1)
-
-(make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
-
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
 
-(a-to-b! "new-fi" "fill-opacity" "0" ".5")
+(a-to-b! "new-fi" "fill-opacity" "0" ".8")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
 (a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
-(a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
 
 (make-frames!
   "woosh"
-    [10, 35, 55, 85, 92]
+    [10, 35, 55, 75, 92]
    (make-body "transform" [
-                           "translate(80%, 50%) rotate(2deg) scale(1.2)"
-                           "translate(604%, 100%) rotate(-200deg) scale(2.4)"
-                           "translate(80%, 450%) rotate(120deg) scale(3.4)"
-                           "translate(604%, 300%) rotate(-210deg) scale(2.2)"
-                           "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+                           "translate(10vw, 10vh) rotate(2deg) scale(1)"
+                           "translate(28vw, 12vh) rotate(-20deg) scale(1)"
+                           "translate(36vw, 24vh) rotate(-40deg) scale(6)"
+                           "translate(60vw, 12vh) rotate(60deg) scale(4)"
+                           "translate(90vw, 50vh) rotate(2deg) scale(1)"
+                           ]))
 
 (make-frames!
- "dashy"
- [100]
- (make-body "stroke-dashoffset" [0]))
+  "woosh-2"
+    [10, 35, 55, 75, 92]
+   (make-body "transform" [
+                           "translate(90vw, 80vh) rotate(2deg) scale(1)"
+                           "translate(78vw, 82vh) rotate(-20deg) scale(1)"
+                           "translate(66vw, 64vh) rotate(-40deg) scale(6)"
+                           "translate(40vw, 92vh) rotate(60deg) scale(4)"
+                           "translate(10vw, 50vh) rotate(2deg) scale(1)"
+                           ]))
+
+(make-frames!
+  "woosh-3"
+    [10, 35, 55, 75, 92]
+   (make-body "transform" [
+                           "translate(90vw, 80vh) rotate(2deg) scale(10)"
+                           "translate(78vw, 82vh) rotate(-20deg) scale(10)"
+                           "translate(66vw, 64vh) rotate(-40deg) scale(60)"
+                           "translate(40vw, 92vh) rotate(60deg) scale(40)"
+                           "translate(10vw, 50vh) rotate(2deg) scale(10)"
+                           ]))
+
 
 (make-frames!
  "morph"
@@ -207,37 +201,91 @@
 
 ;; --------------- ATOMS STORAGE --------------------
 
-(def drops
-  (atom  (map
-     #(->>
-       (gen-rect green (+ 30 (* % 160)) 10 200 36)
-       (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (draw))
-     (range 10))))
-     
-(def drops-2
- (atom  (map
-    #(->>
-      (gen-rect white (+ 30 (* % 160)) 10 200 36)
-      (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
-      (draw))
-    (range 10))))
-
-(def bloops
+(def ffa 
   (->>
-    (gen-circ white 0 100 40)
-    (style {:opacity .7})
-    (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
-    (draw)
-    (atom)))
+   (->>
+     (gen-rect light-green 
+               (* 0.1 @width) 
+               (* 0.1 @height)
+               (* 0.4 @width) 
+               (* 0.4 @height)))
+   (anim "new-fi" "2s" "1") draw atom))
+
+(def ffb 
+  (->>
+   (->>
+     (gen-rect mauve
+               (* 0.1 @width) 
+               (* 0.52 @height) 
+               (* 0.6 @width) 
+               (* 0.4 @height)))
+   (anim "new-fi" "2s" "1") draw atom))
+
+(def ffc 
+  (->>
+   (->>
+     (gen-rect green
+               (* 0.52 @width) 
+               (* 0.1 @height) 
+               (* 0.18 @width) 
+               (* 0.4 @height)))
+   (anim "new-fi" "2s" "1") draw atom))
+
+(def ffd 
+  (->>
+   (->>
+     (gen-rect dark-pink
+               (* 0.72 @width) 
+               (* 0.1 @height) 
+               (* 0.18 @width) 
+               (* 0.19 @height)))
+   (anim "new-fi" "2s" "1") draw atom))
+
+(def ffe 
+  (->>
+   (->>
+     (gen-rect yellow
+               (* 0.72 @width) 
+               (* 0.31 @height) 
+               (* 0.18 @width) 
+               (* 0.19 @height)))
+   (anim "new-fi" "2s" "1") draw atom))
+
+(def fff 
+  (->>
+   (->>
+     (gen-rect green
+               (* 0.72 @width) 
+               (* 0.52 @height) 
+               (* 0.18 @width) 
+               (* 0.4 @height)))
+   (anim "new-fi" "2s" "1") draw atom))
+
     
 (def move-me
   (->>
-   (gen-shape green hept)
+   (gen-circ (pattern (:id white-dots)) 100 100 100)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" 2)
+   (anim "woosh" "10s" "infinite")
    (draw)
    (atom)))
+
+(def move-me-2
+  (->>
+   (gen-circ (pattern (:id yellow-lines)) 100 100 100)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "10s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-3
+  (->>
+   (gen-circ (pattern (str "noise-" pink)) 10 10 400)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-3" "4s" "infinite")
+   (draw)
+   (atom)))
+
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" dark-green)) (* .5 @width) (* .5 @height) 1800)
@@ -246,23 +294,33 @@
   (draw)
   (atom)))
 
-(def tri-dash
+(def bgs 
+  (map-indexed 
+    (fn [idx color]
+          (->> 
+            (gen-circ (pattern (str "noise-" color)) (* .5 @width) (* .5 @height) 1800)
+            (style {:opacity .4 :transform-origin "center" :transform "scale(4)"})
+            (anim "sc-rot" (str (rand 32) "s") "1" {:timing "linear" :delay (str (rand 4) "s")})
+            (draw)
+            (atom)))
+    (take 4 (repeatedly #(nth [dark-green dark-green dark-green dark-green] (rand-int 4))))))
+
+
+(def morphy
   (->>
-    (gen-shape "hsla(360, 10%, 10%, 0)" oct)
-    (style {:transform-origin "center" 
-            :transform (str "translate(" 40 "vw," 40 "vh)"
-                            "scale(2)")})
-    (style {:stroke pink 
-            :stroke-width 10 
-            :stroke-dasharray 20 
-            :stroke-dashoffset 1000
-            :stroke-linecap :round
-            :stroke-linejoin :round})
-    (anim "dashy" "4s" "infinite")
+    (gen-shape pink tri)
+    (style {:opacity .4 :transform "translate(400px, 400px) scale(4)"})
+    (anim "morph" "10s" "infinite")
     (draw)
     (atom)))
 
-
+(def morphy-2
+  (->>
+    (gen-shape (pattern (:id gray-dots)) tri)
+    (style {:opacity .4 :transform "translate(400px, 400px) scale(4)"})
+    (anim "morph" "10s" "infinite")
+    (draw)
+    (atom)))
 
 ;; ------------------- DRAWING HELPERS ------------------------
 
@@ -281,20 +339,6 @@
       (= n 44) (= n 45)
       (and (= n 46) (nth-frame 8 frame))))
 
-(def levels 
-  (map-indexed 
-    (fn [idx color]
-          (->>
-            (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
-            (style {:opacity .4 
-                    :transform-origin "center" 
-                    :transform (str
-                                "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
-                                "rotate(" (- 360 (rand-int 720)) "deg)")})
-            (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
-            (draw)
-            (atom)))
-    (take 10 (repeatedly #(nth [pink pink white yellow] (rand-int 6))))))
 
 
 
@@ -313,28 +357,83 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
         ;white
-        ;dark-green dark-green dark-green dark-green dark-green
-              gray    
-        ] ; pink dark-green green pink gray white
+        dark-green dark-green dark-green dark-green dark-green
+        ] ; gray white yellow light-green green dark-green light-pink pink dark-pink  mauve
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
-  
-   (let [colors ["#8dbcb9" "#00957e"  "#003f3f"  "#826c7a" ]]
-     (map-indexed #(->>
-       (gen-rect %2 (+ 30 (* % 80)) 100 60 60)
-       (draw))
-       colors))
-  
-     (let [colors ["#563a4a"  "#7f4d65" "#9e5879" yellow]]
-       (map-indexed #(->>
-         (gen-rect %2 (+ 30 (* % 80)) 200 60 60)
-         (draw))
-         colors))
     
+  ;(doall (map deref bgs))
   
+  ;@ffa
+  #_(->>
+    (gen-rect light-green 
+              (* 0.1 @width) 
+              (* 0.1 @height)
+              (* 0.4 @width) 
+              (* 0.4 @height))
+    (draw)
+    (when-not (nth-frame 0 frame)))
+  
+  ;@ffb
+  #_(->>
+    (gen-rect mauve
+              (* 0.1 @width) 
+              (* 0.52 @height) 
+              (* 0.6 @width) 
+              (* 0.4 @height))
+    (draw)
+    (when-not (nth-frame 0 frame)))
+  
+  ;@ffc
+  #_(->>
+    (gen-rect green
+              (* 0.52 @width) 
+              (* 0.1 @height) 
+              (* 0.18 @width) 
+              (* 0.4 @height))
+  (draw)
+  (when-not (nth-frame 0 frame)))
+
+  ;@ffd
+  #_(->>
+    (gen-rect dark-pink
+              (* 0.72 @width) 
+              (* 0.1 @height) 
+              (* 0.18 @width) 
+              (* 0.19 @height))
+  (draw)
+  (when-not (nth-frame 0 frame)))
+
+  ;@ffe
+  #_(->>
+    (gen-rect yellow
+              (* 0.72 @width) 
+              (* 0.31 @height) 
+              (* 0.18 @width) 
+              (* 0.19 @height))
+  (draw)
+  (when (nth-frame 1 frame)))
+
+  ;@fff
+  #_(->>
+    (gen-rect green
+              (* 0.72 @width) 
+              (* 0.52 @height) 
+              (* 0.18 @width) 
+              (* 0.4 @height))
+    (draw)
+    (when-not (nth-frame 0 frame)))
+  
+  ;@bg
+  ;@morphy
+  ;@morphy-2
+  
+  ;@move-me
+  ;@move-me-2
+  ;@move-me-3
   
   )) ; cx end
   
