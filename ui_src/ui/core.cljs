@@ -322,11 +322,18 @@
             (style {:opacity .9})
             (draw)))
   
-   (let [colors ["#8dbcb9" "#00957e"  "#003f3f"  "#826c7a" "#563a4a"  "#7f4d65" "#9e5879" yellow]]
+   (let [colors ["#8dbcb9" "#00957e"  "#003f3f"  "#826c7a" ]]
      (map-indexed #(->>
        (gen-rect %2 (+ 30 (* % 80)) 100 60 60)
        (draw))
        colors))
+  
+     (let [colors ["#563a4a"  "#7f4d65" "#9e5879" yellow]]
+       (map-indexed #(->>
+         (gen-rect %2 (+ 30 (* % 80)) 200 60 60)
+         (draw))
+         colors))
+    
   
   
   )) ; cx end
