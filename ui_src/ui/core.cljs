@@ -174,6 +174,11 @@
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
 (a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
 (a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
+(a-to-b! "bloop-x" "transform" "translateX(-10vw)" (str "translateX(120vw)") )
+(a-to-b! "bloop-y" "transform" "translateY(-10vh)" (str "translateY(120vh)") )
+(a-to-b! "bloop-x-back" "transform" (str "translateX(120vw)") "translateX(-10vw)")
+(a-to-b! "bloop-y-back" "transform" (str "translateY(120vh)") "translateY(-10vh)")
+
 
 (make-frames!
   "woosh"
@@ -200,33 +205,29 @@
   (str "path('"hex"')")
   (str "path('"hept"')")
   (str "path('"oct"')")
+  (str "path('"tri"')")]))
+
+(make-frames!
+ "short-morph"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"hex"')")
+  (str "path('"oct"')")
+  (str "path('"pent"')")
+  (str "path('"hept"')")
   (str "path('"tri"')")
-]))   
+  (str "path('"oct"')")
+  (str "path('"square"')")]))   
 
 
 ;; --------------- ATOMS STORAGE --------------------
 
-(def drops
-  (atom  (map
-     #(->>
-       (gen-rect purple (+ 30 (* % 160)) 10 200 36)
-       (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (draw))
-     (range 10))))
-     
-(def drops-2
- (atom  (map
-    #(->>
-      (gen-rect gray (+ 30 (* % 160)) 10 200 36)
-      (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
-      (draw))
-    (range 10))))
 
 (def bloops
   (->>
     (gen-circ gray 0 100 40)
     (style {:opacity .7})
-    (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
+    (anim "bloop-x" "20s" "infinite" {:timing "ease-out"})
     (draw)
     (atom)))
     
@@ -234,33 +235,64 @@
   (->>
    (gen-shape purple hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" 2)
+   (anim "woosh" "10s" "infinite")
    (draw)
    (atom)))
 
-(def bg (->> 
-  (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
-  (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
-  (draw)
-  (atom)))
-
-(def tri-dash
+(def morphy
   (->>
-    (gen-shape "hsla(360, 10%, 10%, 0)" oct)
-    (style {:transform-origin "center" 
-            :transform (str "translate(" 40 "vw," 40 "vh)"
-                            "scale(2)")})
-    (style {:stroke pink 
-            :stroke-width 10 
-            :stroke-dasharray 20 
-            :stroke-dashoffset 1000
-            :stroke-linecap :round
-            :stroke-linejoin :round})
-    (anim "dashy" "4s" "infinite")
+    (gen-shape blue tri)
+    (style {:opacity .1 :transform "translate(400px, 400px) scale(4)"})
+    (anim "morph" "100s" "infinite")
     (draw)
     (atom)))
 
+(def move-morphy
+  (->>
+    (gen-shape blue tri)
+    (style {:opacity .1 :transform "translateY(100px) scale(4)"})
+    (anim "morph" "100s" "infinite")
+    (draw)
+    (gen-group {:style {:animation "bloop-x 200s infinite"}})
+    (atom)))
+
+(def move-morphy-2
+  (->>
+    (gen-shape red tri)
+    (style {:opacity .1 :transform "translateX(300px) scale(4)"})
+    (anim "morph" "100s" "infinite")
+    (draw)
+    (gen-group {:style {:animation "bloop-y 30s ease-in infinite"}})
+    (atom)))
+
+(def move-morphy-3
+  (->>
+    (gen-shape light-gray tri)
+    (style {:opacity .1 :transform "translateX(60vh) scale(2)"})
+    (anim "morph" "100s" "infinite")
+    (draw)
+    (gen-group {:style {:animation "woosh 200s ease-in 100s infinite"}})
+    (atom)))
+
+(def morphy-movers
+  (map-indexed 
+   (fn [idx color]
+     (->>
+       (gen-shape color tri)
+       (style {:opacity .1 :transform (str 
+                                       "translate(" 
+                                       (rand-int 100) "vw, " 
+                                       (rand-int 100) "vh) "
+                                       "scale("(rand-int 8)")")})
+       (anim "short-morph" "100s" "infinite")
+       (draw)
+       (gen-group {:style {:animation (str (nth ["bloop-x" "bloop-y" "bloop-x-back" "bloop-y-back"] (rand 3)) 
+                                            "200s" 
+                                            "ease-in" 
+                                            (+ 200 (rand-int 100)) "s" 
+                                            "infinite")}})
+       (atom)))
+   (take 6 (repeatedly #(nth [light-purple red red blue blue purple] (rand-int 6))))))
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -290,10 +322,10 @@
                     :transform (str
                                 "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
                                 "rotate(" (- 360 (rand-int 720)) "deg)")})
-            (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
+            (anim "fade-in-out" "60s" "infinite" {:delay (str (* .1 idx) "s")})
             (draw)
             (atom)))
-    (take 10 (repeatedly #(nth [light-purple pink gray purple] (rand-int 6))))))
+    (take 10 (repeatedly #(nth [light-purple pink gray purple] (rand-int 4))))))
 
 
 
@@ -312,26 +344,39 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
         ;blue blue blue blue blue
-        "0a1017"    
-        ] ; light-purple blue purple pink gray gray
+        dark-gray    
+        ] ;red blue light-purple purple dark-purple light-gray gray dark-gray pink
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
-            (style {:opacity .9})
+            (style {:opacity .98})
             (draw)))
   
-       (let [colors [ "4d1e21" "0a1017" "#826c7a" "533c63" "281d30"]]
-         (map-indexed #(->>
-           (gen-rect %2 (+ 30 (* % 80)) 100 60 60)
-           (draw))
-           colors))
+       (doall (map
+          #(->>
+            (gen-circ dark-gray (rand-int @width) (rand-int @height) 2)
+            (style {:transform (str "scaleX(" (mod (* frame 10) 60) " )")})
+            (draw)
+            (when (nth-frame 1 frame)))
+          (range 10)))
   
-         (let [colors [ gray "2c2c30" "1d1d20" pink]]
-           (map-indexed #(->>
-             (gen-rect %2 (+ 30 (* % 80)) 200 60 60)
-             (draw))
-             colors))
+      ;(doall (map deref levels))
   
+      ;(gen-bg-lines blue (mod (* .5 frame) 80))
+      ;@move-morphy
+      ;@move-morphy-2
+      ;@move-morphy-3
+      
+      ;(doall (map deref morphy-movers))
+  
+      #_(when (nth-frame 1 frame)
+        (freak-out @width
+                   @height
+                   10
+                   100
+                   light-purple))
+  
+  ;@bloops
   
   )) ; cx end
   
