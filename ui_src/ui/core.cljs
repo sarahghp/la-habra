@@ -86,6 +86,7 @@
 ;; -------------------- HELPERS ---------------------------
 
 (defn sin [x] (.sin js/Math x))
+(defn cos [x] (.cos js/Math x))
 
 (defn style
   [changes shape]
@@ -181,11 +182,22 @@
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
-                           "translate(80%, 50%) rotate(2deg) scale(1.2)"
-                           "translate(604%, 100%) rotate(-200deg) scale(2.4)"
-                           "translate(80%, 450%) rotate(120deg) scale(3.4)"
-                           "translate(604%, 300%) rotate(-210deg) scale(2.2)"
-                           "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+                           "translate(80vw, 50vh) rotate(2deg) scale(1.2)"
+                           "translate(60vw, 60vh) rotate(-200deg) scale(2.4)"
+                           "translate(40vw, 40vh) rotate(120deg) scale(3.4)"
+                           "translate(20vw, 30vh) rotate(-210deg) scale(2.2)"
+                           "translate(60vw, 80vh) rotate(400deg) scale(6.2)"]))
+
+(make-frames!
+  "woosh-2"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(80vw, 50vh) rotate(2deg) scale(11.2)"
+                           "translate(60vw, 60vh) rotate(-200deg) scale(12.4)"
+                           "translate(40vw, 40vh) rotate(120deg) scale(13.4)"
+                           "translate(20vw, 30vh) rotate(-210deg) scale(12.2)"
+                           "translate(60vw, 80vh) rotate(400deg) scale(6.2)"]))
+
 
 (make-frames!
  "dashy"
@@ -234,9 +246,25 @@
     
 (def move-me
   (->>
-   (gen-shape green hept)
+   (gen-shape (pattern (:id pink-dots)) hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" 2)
+   (anim "woosh" "10s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-2
+  (->>
+   (gen-shape (pattern (:id pink-dots)) hept)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "10s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-3
+  (->>
+   (gen-shape (pattern (:id orange-lines)) hept)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "10s" "infinite" {:delay "2s"})
    (draw)
    (atom)))
 
@@ -246,23 +274,6 @@
   (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
   (draw)
   (atom)))
-
-(def tri-dash
-  (->>
-    (gen-shape "hsla(360, 10%, 10%, 0)" oct)
-    (style {:transform-origin "center" 
-            :transform (str "translate(" 40 "vw," 40 "vh)"
-                            "scale(2)")})
-    (style {:stroke teal 
-            :stroke-width 10 
-            :stroke-dasharray 20 
-            :stroke-dashoffset 1000
-            :stroke-linecap :round
-            :stroke-linejoin :round})
-    (anim "dashy" "4s" "infinite")
-    (draw)
-    (atom)))
-
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -297,7 +308,89 @@
             (atom)))
     (take 10 (repeatedly #(nth [orange teal white yellow] (rand-int 6))))))
 
+(defn circle-party
+  [frame]
+  (list
+   (->>
+     (gen-circ (pattern (:id white-lines)) 
+               (* 260 (cos 0)) 
+               (* 260 (sin 0)) 
+               80)
+     (style {:transform (str 
+                         "translate(" 
+                         (* 0.5 @width)
+                         "px, " 
+                         (* 0.4 @height) "px)")})
+     (draw)
+     (when (nth-frame 6 frame)))
+   
+     (->>
+       (gen-circ teal 
+                 (* 260 (cos 1)) 
+                 (* 260 (sin 1)) 
+                 80)
+       (style {:transform (str 
+                           "translate(" 
+                           (* 0.5 @width) 
+                           "px, " 
+                           (* 0.4 @height) "px)")})
+       (draw)
+       (when (nth-frame 6 (+ 1 frame))))
 
+
+     (->>
+       (gen-circ (pattern (:id br-orange-lines)) 
+                 (* 260 (cos 2)) 
+                 (* 260 (sin 2)) 
+                 80)
+       (style {:transform (str 
+                           "translate(" 
+                           (* 0.5 @width) 
+                           "px, " 
+                           (* 0.4 @height) "px)")})
+       (draw)
+       (when (nth-frame 6 (+ 2 frame))))
+
+
+     (->>
+       (gen-circ sand 
+                 (* 260 (cos 3)) 
+                 (* 260 (sin 3)) 
+                 80)
+       (style {:transform (str 
+                           "translate(" 
+                           (* 0.5 @width) 
+                           "px, " 
+                           (* 0.4 @height) "px)")})
+       (draw)
+       (when (nth-frame 6 (+ 3 frame))))
+
+     (->>
+       (gen-circ (pattern (:id white-lines)) 
+                 (* 260 (cos 4)) 
+                 (* 260 (sin 4)) 
+                 80)
+       (style {:transform (str 
+                           "translate(" 
+                           (* 0.5 @width) 
+                           "px, " 
+                           (* 0.4 @height) "px)")})
+       (draw)
+       (when (nth-frame 6 (+ 4 frame))))
+
+
+     (->>
+       (gen-circ white 
+                 (* 260 (cos 5)) 
+                 (* 260 (sin 5)) 
+                 80)
+       (style {:transform (str 
+                           "translate(" 
+                           (* 0.5 @width) 
+                           "px, " 
+                           (* 0.4 @height) "px)")})
+       (draw)
+       (when (nth-frame 6 (+ 5 frame))))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
@@ -313,29 +406,49 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        ;navy navy navy navy navy
-       ;midnight
-                  navy
-              ;br-orange    
-        ] ; orange navy green teal gray white
+        navy navy navy navy navy
+        ;midnight
+        ] ; navy blue midnight sand orange br-orange white yellow light-green green teal
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
   
-   (let [colors [ navy blue midnight sand orange br-orange]]
-     (map-indexed #(->>
-       (gen-rect %2 (+ 30 (* % 80)) 100 60 60)
-       (draw))
-       colors))
+  ;(when (nth-frame 6 frame) (gen-bg-lines navy 80))
+  ;(when (nth-frame 8 frame) (gen-bg-lines sand 80))
+
   
-     (let [colors [ white yellow light-green green teal]]
-       (map-indexed #(->>
-         (gen-rect %2 (+ 30 (* % 80)) 200 60 60)
-         (draw))
-         colors))
+  (->>
+    (gen-circ (pattern (str "noise-" green)) (* 0.5 @width) (* 0.5 @height) 10)
+    (style {:transform (str "rotate(" (* frame 30) "deg)" "scale(40)")})
+    (draw)
+    (when (nth-frame 1 frame)))
   
+  (->>
+    (gen-circ (pattern (str "noise-" yellow)) (* 0.5 @width) (* 0.5 @height) 10)
+    (style {:transform "scale(40)"})
+    (draw)
+    (when (nth-frame 2 frame)))
+  
+  (->>
+    (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 10)
+    (style {:transform "scale(40)"})
+    (draw)
+    (when (nth-frame 3 frame)))
+
+  
+  (->>
+    (gen-circ (pattern (str "noise-" light-green)) (* 0.5 @width) (* 0.5 @height) 10)
+    (style {:transform "scale(40)"})
+    (draw)
+    (when (nth-frame 4 frame)))
+
+  @move-me
+  @move-me-2
+  ;@move-me-3
+
+  ;(circle-party frame)
   
   )) ; cx end
   
