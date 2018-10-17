@@ -324,11 +324,17 @@
             (style {:opacity .9})
             (draw)))
   
-   (let [colors [ navy blue midnight sand orange br-orange white yellow light-green green teal]]
+   (let [colors [ navy blue midnight sand orange br-orange]]
      (map-indexed #(->>
        (gen-rect %2 (+ 30 (* % 80)) 100 60 60)
        (draw))
        colors))
+  
+     (let [colors [ white yellow light-green green teal]]
+       (map-indexed #(->>
+         (gen-rect %2 (+ 30 (* % 80)) 200 60 60)
+         (draw))
+         colors))
   
   
   )) ; cx end
