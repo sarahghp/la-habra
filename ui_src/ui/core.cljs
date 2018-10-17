@@ -4,16 +4,15 @@
             [ui.shapes :as shapes :refer [tri square pent hex hept oct 
                                           b1 b2 b3 b4]]
             [ui.fills :as fills :refer
-              [ gray
-                mint
-                midnight
-                navy
-                blue
-                orange
-                br-orange
-                pink
-                white
-                yellow]]
+              [red
+               blue
+               light-purple
+               purple
+               dark-purple
+               light-gray
+               gray
+               dark-gray
+               pink]]
             [ui.generators :refer 
              [draw
               freak-out
@@ -210,7 +209,7 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect mint (+ 30 (* % 160)) 10 200 36)
+       (gen-rect purple (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (draw))
      (range 10))))
@@ -218,14 +217,14 @@
 (def drops-2
  (atom  (map
     #(->>
-      (gen-rect white (+ 30 (* % 160)) 10 200 36)
+      (gen-rect gray (+ 30 (* % 160)) 10 200 36)
       (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
       (draw))
     (range 10))))
 
 (def bloops
   (->>
-    (gen-circ white 0 100 40)
+    (gen-circ gray 0 100 40)
     (style {:opacity .7})
     (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
     (draw)
@@ -233,14 +232,14 @@
     
 (def move-me
   (->>
-   (gen-shape mint hept)
+   (gen-shape purple hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "10s" 2)
    (draw)
    (atom)))
 
 (def bg (->> 
-  (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
+  (gen-circ (pattern (str "noise-" blue)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
   (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
   (draw)
@@ -294,7 +293,7 @@
             (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
             (draw)
             (atom)))
-    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
+    (take 10 (repeatedly #(nth [light-purple pink gray purple] (rand-int 6))))))
 
 
 
@@ -312,14 +311,26 @@
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
-        ;navy navy navy navy navy
-        midnight    
-        ] ; orange navy mint pink gray white
+        ;blue blue blue blue blue
+        "0a1017"    
+        ] ; light-purple blue purple pink gray gray
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
+  
+       (let [colors [ "4d1e21" "0a1017" "#826c7a" "533c63" "281d30"]]
+         (map-indexed #(->>
+           (gen-rect %2 (+ 30 (* % 80)) 100 60 60)
+           (draw))
+           colors))
+  
+         (let [colors [ gray "2c2c30" "1d1d20" pink]]
+           (map-indexed #(->>
+             (gen-rect %2 (+ 30 (* % 80)) 200 60 60)
+             (draw))
+             colors))
   
   
   )) ; cx end
@@ -350,7 +361,7 @@
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
             [:mask {:id "cutout" :key (random-uuid)}
              (->>
-               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (gen-rect gray 10 12 (* 0.94 @width) (* 0.88 @height))
                (draw))
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
@@ -359,7 +370,7 @@
   
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
-(def all-fills [gray mint navy blue orange br-orange pink white yellow])
+(def all-fills [red blue light-purple purple dark-purple light-gray gray dark-gray pink])
 
 (defn drawing []
   [:svg { :width (:width settings) :height (:height settings) }
