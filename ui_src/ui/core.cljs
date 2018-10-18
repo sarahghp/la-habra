@@ -209,7 +209,7 @@
                (* 0.1 @height)
                (* 0.4 @width) 
                (* 0.4 @height)))
-   (anim "new-fi" "2s" "1") draw atom))
+   (anim "new-fi" "4s" "1") draw atom))
 
 (def ffb 
   (->>
@@ -219,7 +219,7 @@
                (* 0.52 @height) 
                (* 0.6 @width) 
                (* 0.4 @height)))
-   (anim "new-fi" "2s" "1") draw atom))
+   (anim "new-fi" "4s" "1") draw atom))
 
 (def ffc 
   (->>
@@ -229,7 +229,7 @@
                (* 0.1 @height) 
                (* 0.18 @width) 
                (* 0.4 @height)))
-   (anim "new-fi" "2s" "1") draw atom))
+   (anim "new-fi" "4s" "1") draw atom))
 
 (def ffd 
   (->>
@@ -239,7 +239,7 @@
                (* 0.1 @height) 
                (* 0.18 @width) 
                (* 0.19 @height)))
-   (anim "new-fi" "2s" "1") draw atom))
+   (anim "new-fi" "4s" "1") draw atom))
 
 (def ffe 
   (->>
@@ -249,7 +249,7 @@
                (* 0.31 @height) 
                (* 0.18 @width) 
                (* 0.19 @height)))
-   (anim "new-fi" "2s" "1") draw atom))
+   (anim "new-fi" "4s" "1") draw atom))
 
 (def fff 
   (->>
@@ -265,15 +265,23 @@
 (def move-me
   (->>
    (gen-circ (pattern (:id white-dots)) 100 100 100)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:opacity .8 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "10s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-4
+  (->>
+   (gen-circ (pattern (:id yellow-dots)) 100 100 100)
+   (style {:opacity .8 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "10s" "infinite" {:delay "1s"})
    (draw)
    (atom)))
 
 (def move-me-2
   (->>
    (gen-circ (pattern (:id yellow-lines)) 100 100 100)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:opacity .8 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh-2" "10s" "infinite")
    (draw)
    (atom)))
@@ -294,6 +302,13 @@
   (draw)
   (atom)))
 
+(def bg-2 (->> 
+  (gen-circ (pattern (str "noise-" mauve)) (* .5 @width) (* .5 @height) 1800)
+  (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
+  (anim "sc-rot" "32s" "infinite" {:timing "linear" :delay "7s"})
+  (draw)
+  (atom)))
+
 (def bgs 
   (map-indexed 
     (fn [idx color]
@@ -310,7 +325,7 @@
   (->>
     (gen-shape pink tri)
     (style {:opacity .4 :transform "translate(400px, 400px) scale(4)"})
-    (anim "morph" "10s" "infinite")
+    (anim "morph" "6s" "infinite")
     (draw)
     (atom)))
 
@@ -318,7 +333,7 @@
   (->>
     (gen-shape (pattern (:id gray-dots)) tri)
     (style {:opacity .4 :transform "translate(400px, 400px) scale(4)"})
-    (anim "morph" "10s" "infinite")
+    (anim "morph" "6s" "infinite")
     (draw)
     (atom)))
 
@@ -364,31 +379,35 @@
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
+  
+  ;@bg-2
     
-  ;(doall (map deref bgs))
+  (doall (map deref bgs))
+  ;(gen-bg-lines dark-green  (mod frame 80))
+
   
   ;@ffa
-  #_(->>
+  (->>
     (gen-rect light-green 
               (* 0.1 @width) 
               (* 0.1 @height)
               (* 0.4 @width) 
               (* 0.4 @height))
     (draw)
-    (when-not (nth-frame 0 frame)))
+    (when-not (nth-frame 8 frame)))
   
-  ;@ffb
-  #_(->>
+;  @ffb
+  (->>
     (gen-rect mauve
               (* 0.1 @width) 
               (* 0.52 @height) 
               (* 0.6 @width) 
               (* 0.4 @height))
     (draw)
-    (when-not (nth-frame 0 frame)))
+    (when-not (nth-frame 12 frame)))
   
   ;@ffc
-  #_(->>
+  (->>
     (gen-rect green
               (* 0.52 @width) 
               (* 0.1 @height) 
@@ -398,42 +417,49 @@
   (when-not (nth-frame 0 frame)))
 
   ;@ffd
-  #_(->>
+  (->>
     (gen-rect dark-pink
               (* 0.72 @width) 
               (* 0.1 @height) 
               (* 0.18 @width) 
               (* 0.19 @height))
   (draw)
-  (when-not (nth-frame 0 frame)))
+  (when-not (nth-frame 10 frame)))
 
   ;@ffe
-  #_(->>
+  (->>
     (gen-rect yellow
               (* 0.72 @width) 
               (* 0.31 @height) 
               (* 0.18 @width) 
               (* 0.19 @height))
   (draw)
-  (when (nth-frame 1 frame)))
+  (when (nth-frame 2 frame)))
 
   ;@fff
-  #_(->>
+  (->>
     (gen-rect green
               (* 0.72 @width) 
               (* 0.52 @height) 
               (* 0.18 @width) 
               (* 0.4 @height))
     (draw)
-    (when-not (nth-frame 0 frame)))
+    (when-not (nth-frame 12 frame)))
+  
+  (gen-bg-lines dark-green  (mod frame 80))
+    (gen-bg-lines light-pink (mod (+ 4 frame) 80) {:transform "translateY(6px)" :opacity .4})
+
+
   
   ;@bg
-  ;@morphy
-  ;@morphy-2
+  @morphy
+  @morphy-2
   
-  ;@move-me
-  ;@move-me-2
-  ;@move-me-3
+  @move-me
+  @move-me-4
+
+  @move-me-2
+  @move-me-3
   
   )) ; cx end
   
