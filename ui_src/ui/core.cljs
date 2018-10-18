@@ -395,24 +395,49 @@
                2
                500
                white))
-  @at3
-  @at
-    @at2
-  @tri-dash
-  @tri-dash-2
+  ;@at3
+  ;@at
+  ;@at2
+  ;@tri-dash
+  ;@tri-dash-2
   
 #_(->>
     (gen-shape (pattern (:id yellow-lines)) oct)
-      (style {:transform "translate(20vw, 20vh) scale(2)"})
+      (style {:transform "translate(20vw, 20vh) scale(1.8)"})
       (draw)
-      (when (nth-frame 4 frame)))
+      (when (nth-frame 3 frame)))
+#_(->>
+  (gen-rect pink (* 0.1 @width) (* 0.53 @height) (* 0.3 @width) (* 0.1 @height))
+  (draw)
+  (when (nth-frame 6 frame)))
   
-    #_(->>
-      (gen-shape (pattern (:id gray-dots)) oct)
-        (style {:opacity .7 :transform "translate(60vw, 60vh) scale(2)"})
-        (draw)
-        (when (nth-frame 4 (+ 1 frame))))
+#_(->>
+  (gen-circ mint (* 0.16 @width) (* 0.8 @height) 100)
+  (draw)
+  (when (nth-frame 9 frame)))
   
+#_(->>
+  (gen-circ mint (* 0.36 @width) (* 0.8 @height) 100)
+  (draw)
+  (when (nth-frame 12 frame)))
+  
+
+#_(->>
+  (gen-circ mint (* 0.76 @width) (* 0.15 @height) 100)
+  (draw)
+  (when (nth-frame 2 frame)))
+  
+#_(->>
+  (gen-rect pink (* 0.6 @width) (* 0.35 @height) (* 0.3 @width) (* 0.1 @height))
+  (draw)
+  (when (nth-frame 4 frame)))
+  
+#_(->>
+  (gen-shape (pattern (:id white-dots)) oct)
+    (style {:opacity .7 :transform "translate(70vw, 60vh) scale(2)"})
+    (draw)
+    (when (nth-frame 8 frame)))
+
   ; (map deref levels)
   ; 
   ; @drops
