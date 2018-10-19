@@ -191,6 +191,16 @@
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
 
 (make-frames!
+  "woosh-2"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(604%, 50%) rotate(2deg) scale(10.2)"
+                           "translate(300%, 100%) rotate(-200deg) scale(12.4)"
+                           "translate(80%, 450%) rotate(120deg) scale(3.4)"
+                           "translate(604%, 300%) rotate(-210deg) scale(8.2)"
+                           "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+
+(make-frames!
  "dashy"
  [100]
  (make-body "stroke-dashoffset" [0]))
@@ -249,7 +259,7 @@
 
 (def move-morphy
   (->>
-    (gen-shape blue tri)
+    (gen-shape light-purple tri)
     (style {:opacity .1 :transform "translateY(100px) scale(4)"})
     (anim "morph" "100s" "infinite")
     (draw)
@@ -258,7 +268,7 @@
 
 (def move-morphy-2
   (->>
-    (gen-shape red tri)
+    (gen-shape purple tri)
     (style {:opacity .1 :transform "translateX(300px) scale(4)"})
     (anim "morph" "100s" "infinite")
     (draw)
@@ -292,7 +302,7 @@
                                             (+ 200 (rand-int 100)) "s" 
                                             "infinite")}})
        (atom)))
-   (take 6 (repeatedly #(nth [light-purple red red blue blue purple] (rand-int 6))))))
+   (take 6 (repeatedly #(nth [light-purple light-purple pink pink blue purple] (rand-int 6))))))
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -354,27 +364,56 @@
   
        (doall (map
           #(->>
-            (gen-circ dark-gray (rand-int @width) (rand-int @height) 2)
+            (gen-circ light-gray (rand-int @width) (rand-int @height) 2)
             (style {:transform (str "scaleX(" (mod (* frame 10) 60) " )")})
             (draw)
             (when (nth-frame 1 frame)))
           (range 10)))
   
-      ;(doall (map deref levels))
+      (doall (map deref levels))
   
-      ;(gen-bg-lines blue (mod (* .5 frame) 80))
-      ;@move-morphy
-      ;@move-morphy-2
-      ;@move-morphy-3
-      
-      ;(doall (map deref morphy-movers))
+      (when-not (nth-frame 20 frame) (gen-bg-lines blue 80))
   
-      #_(when (nth-frame 1 frame)
+        
+    (gen-group {:mask (url "poly-mask")} (when (nth-frame 1 frame)
+      (freak-out @width
+                 @height
+                 50
+                 100
+                 light-purple)))
+  
+      (gen-group {:mask (url "poly-mask-2")} (when (nth-frame 1 frame)
         (freak-out @width
                    @height
-                   10
+                   50
                    100
-                   light-purple))
+                   pink))
+                 (when (nth-frame 1 frame)
+                   (freak-out @width
+                              @height
+                              10
+                              200
+                              gray)))
+  
+        (gen-group {:mask (url "poly-mask-3")} (when (nth-frame 1 frame)
+          (freak-out @width
+                     @height
+                     50
+                     (+100)
+                     light-purple))
+                   (when (nth-frame 1 frame)
+                     (freak-out @width
+                                @height
+                                40
+                                200
+                                purple)))
+  
+      @move-morphy
+      @move-morphy-2
+      @move-morphy-3
+      
+      (doall (map deref morphy-movers))
+
   
   ;@bloops
   
@@ -401,7 +440,11 @@
                  [:stop { :offset "1" :stop-color "white" :stop-opacity "1" }]]])
 
 (def masks [[:mask { :id "poly-mask" :key (random-uuid)}
-              [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-6 20s 2"}}]]
+              [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh 20s infinite"}}]]
+            [:mask { :id "poly-mask-2" :key (random-uuid)}
+                          [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh 10s infinite"}}]]
+            [:mask { :id "poly-mask-3" :key (random-uuid)}
+                          [:path {:d hept :fill "#fff" :style { :transform-origin "center" :animation "woosh-2 20s infinite"}}]]
             [:mask { :id "grad-mask" :key (random-uuid)}
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
             [:mask {:id "cutout" :key (random-uuid)}

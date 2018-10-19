@@ -1,7 +1,7 @@
 (ns ui.fills)
 
 ;; solid colors A
-(def red "4d1e21")
+(def red "6f3f43")
 (def blue "0a1017")
 (def light-purple "#826c7a")
 (def purple "533c63")
