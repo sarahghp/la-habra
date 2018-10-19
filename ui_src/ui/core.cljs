@@ -246,27 +246,36 @@
     
 (def move-me
   (->>
-   (gen-shape (pattern (:id pink-dots)) hept)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" "infinite")
+   (gen-shape (pattern (:id br-orange-dots)) hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "1s" "infinite")
    (draw)
    (atom)))
 
 (def move-me-2
   (->>
-   (gen-shape (pattern (:id pink-dots)) hept)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-2" "10s" "infinite")
+   (gen-shape (pattern (:id mint-dots)) hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "1s" "infinite")
    (draw)
    (atom)))
 
 (def move-me-3
   (->>
-   (gen-shape (pattern (:id orange-lines)) hept)
+   (gen-shape (pattern (:id br-orange-lines)) hept)
    (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" "infinite" {:delay "2s"})
+   (anim "woosh" "1s" "infinite" {:delay "2s"})
    (draw)
    (atom)))
+
+(def move-me-4
+  (->>
+   (gen-shape (pattern (:id pink-dots)) oct)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "1s" "infinite" {:delay "1.2s"})
+   (draw)
+   (atom)))
+
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
@@ -313,9 +322,9 @@
   (list
    (->>
      (gen-circ (pattern (:id white-lines)) 
-               (* 260 (cos 0)) 
-               (* 260 (sin 0)) 
-               80)
+               (* 460 (cos 0)) 
+               (* 460 (sin 0)) 
+               220)
      (style {:transform (str 
                          "translate(" 
                          (* 0.5 @width)
@@ -326,71 +335,71 @@
    
      (->>
        (gen-circ teal 
-                 (* 260 (cos 1)) 
-                 (* 260 (sin 1)) 
-                 80)
+                 (* 460 (cos 1)) 
+                 (* 460 (sin 1)) 
+                 220)
        (style {:transform (str 
                            "translate(" 
                            (* 0.5 @width) 
                            "px, " 
                            (* 0.4 @height) "px)")})
        (draw)
-       (when (nth-frame 6 (+ 1 frame))))
+       (when (nth-frame 2)))
 
 
      (->>
        (gen-circ (pattern (:id br-orange-lines)) 
-                 (* 260 (cos 2)) 
-                 (* 260 (sin 2)) 
-                 80)
+                 (* 460 (cos 2)) 
+                 (* 460 (sin 2)) 
+                 220)
        (style {:transform (str 
                            "translate(" 
                            (* 0.5 @width) 
                            "px, " 
                            (* 0.4 @height) "px)")})
        (draw)
-       (when (nth-frame 6 (+ 2 frame))))
+       (when (nth-frame 2)))
 
 
      (->>
        (gen-circ sand 
-                 (* 260 (cos 3)) 
-                 (* 260 (sin 3)) 
-                 80)
+                 (* 460 (cos 3)) 
+                 (* 460 (sin 3)) 
+                 220)
        (style {:transform (str 
                            "translate(" 
                            (* 0.5 @width) 
                            "px, " 
                            (* 0.4 @height) "px)")})
        (draw)
-       (when (nth-frame 6 (+ 3 frame))))
+       (when (nth-frame 2)))
 
      (->>
        (gen-circ (pattern (:id white-lines)) 
-                 (* 260 (cos 4)) 
-                 (* 260 (sin 4)) 
-                 80)
+                 (* 460 (cos 4)) 
+                 (* 460 (sin 4)) 
+                 220)
        (style {:transform (str 
                            "translate(" 
                            (* 0.5 @width) 
                            "px, " 
                            (* 0.4 @height) "px)")})
        (draw)
-       (when (nth-frame 6 (+ 4 frame))))
+       (when (nth-frame 2)))
 
 
      (->>
        (gen-circ white 
-                 (* 260 (cos 5)) 
-                 (* 260 (sin 5)) 
-                 80)
+                 (* 460 (cos 5)) 
+                 (* 460 (sin 5)) 
+                 220)
        (style {:transform (str 
                            "translate(" 
                            (* 0.5 @width) 
                            "px, " 
                            (* 0.4 @height) "px)")})
        (draw)
-       (when (nth-frame 6 (+ 5 frame))))))
+       (when (nth-frame 2)))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
@@ -415,40 +424,85 @@
             (style {:opacity .9})
             (draw)))
   
-  ;(when (nth-frame 6 frame) (gen-bg-lines navy 80))
+  (let [colors [ 
+      teal teal teal
+      navy navy navy
+      ;midnight
+      ] ; navy blue midnight sand orange br-orange white yellow light-green green teal
+        n (count colors)]
+        (->>
+          (gen-rect (nth colors (mod frame n)) 0 0 "50%" "100%")
+          (style {:opacity .2})
+          (draw)))
+  
+  (when (nth-frame 1 frame)
+    (gen-line-grid navy  2 
+    100 100 
+    {:col 20 :row 20}))
+  
+  ;(when (nth-frame 12 frame)(gen-rows light-green 2 100 20))
+  ;(when-not (nth-frame 12 frame)(gen-cols light-green 2 100 20))
+  
+  ;(gen-bg-lines orange 80)
   ;(when (nth-frame 8 frame) (gen-bg-lines sand 80))
 
   
-  (->>
-    (gen-circ (pattern (str "noise-" green)) (* 0.5 @width) (* 0.5 @height) 10)
-    (style {:transform (str "rotate(" (* frame 30) "deg)" "scale(40)")})
-    (draw)
-    (when (nth-frame 1 frame)))
+  @bg
   
-  (->>
-    (gen-circ (pattern (str "noise-" yellow)) (* 0.5 @width) (* 0.5 @height) 10)
-    (style {:transform "scale(40)"})
-    (draw)
-    (when (nth-frame 2 frame)))
   
-  (->>
-    (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 10)
-    (style {:transform "scale(40)"})
-    (draw)
-    (when (nth-frame 3 frame)))
-
   
-  (->>
+  #_(->>
     (gen-circ (pattern (str "noise-" light-green)) (* 0.5 @width) (* 0.5 @height) 10)
-    (style {:transform "scale(40)"})
+    (style {:transform "scale(45)"})
     (draw)
     (when (nth-frame 4 frame)))
 
   @move-me
   @move-me-2
-  ;@move-me-3
+  @move-me-3
+  @move-me-4
 
-  ;(circle-party frame)
+  (circle-party frame)
+  
+  (when (nth-frame 3 frame)
+    (freak-out @width
+               @height
+               40
+               200
+               teal))
+  
+    (when (nth-frame 4 frame)
+      (freak-out @width
+                 @height
+                 40
+                 200
+                 yellow))
+  
+      (when (nth-frame 2 frame)
+        (freak-out @width
+                   @height
+                   40
+                   200
+                   sand))
+  
+  (->>
+    (gen-circ (pattern (str "noise-" light-green)) (* 0.5 @width) (* 0.5 @height) 10)
+    (style {:transform (str "rotate(" (* frame 30) "deg)" "scale(45)")})
+    (draw)
+    (when (nth-frame 1 frame)))
+  
+  (->>
+    (gen-circ (pattern (str "noise-" yellow)) (* 0.5 @width) (* 0.5 @height) 10)
+    (style {:transform "scale(45)"})
+    (draw)
+    (when (nth-frame 2 frame)))
+  
+  (->>
+    (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 10)
+    (style {:transform "scale(45)"})
+    (draw)
+    (when (nth-frame 3 frame)))
+
   
   )) ; cx end
   
