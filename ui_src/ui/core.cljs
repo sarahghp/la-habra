@@ -180,12 +180,21 @@
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
-                           "translate(80%, 50%) rotate(2deg) scale(1.2)"
-                           "translate(604%, 100%) rotate(-200deg) scale(2.4)"
-                           "translate(80%, 450%) rotate(120deg) scale(3.4)"
-                           "translate(604%, 300%) rotate(-210deg) scale(2.2)"
-                           "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
+                           "translate(80vw, 50vh) rotate(2deg) scale(1.2)"
+                           "translate(60vw, 60vh) rotate(-200deg) scale(2.4)"
+                           "translate(40vw, 40vh) rotate(120deg) scale(3.4)"
+                           "translate(20vw, 30vh) rotate(-210deg) scale(2.2)"
+                           "translate(60vw, 80vh) rotate(400deg) scale(6.2)"]))
 
+(make-frames!
+  "woosh-2"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(80vw, 50vh) rotate(2deg) scale(11.2)"
+                           "translate(60vw, 60vh) rotate(-200deg) scale(12.4)"
+                           "translate(40vw, 40vh) rotate(120deg) scale(13.4)"
+                           "translate(20vw, 30vh) rotate(-210deg) scale(12.2)"
+                           "translate(60vw, 80vh) rotate(400deg) scale(6.2)"]))
 (make-frames!
  "dashy"
  [100]
