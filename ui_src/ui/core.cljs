@@ -195,6 +195,17 @@
                            "translate(40vw, 40vh) rotate(120deg) scale(13.4)"
                            "translate(20vw, 30vh) rotate(-210deg) scale(12.2)"
                            "translate(60vw, 80vh) rotate(400deg) scale(6.2)"]))
+
+
+(make-frames!
+  "woosh-3"
+    [10, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(80vw, 10vh) rotate(2deg) scale(2.2)"
+                           "translate(40vw, 40vh) rotate(120deg) scale(8.4)"
+                           "translate(50vw, 30vh) rotate(0deg) scale(12.2)"
+                           "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
+
 (make-frames!
  "dashy"
  [100]
@@ -242,16 +253,57 @@
     
 (def move-me
   (->>
+   (gen-shape (pattern (:id white-dots)) hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "10s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-2
+  (->>
+   (gen-shape (pattern (:id white-dots)) hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "10s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-3
+  (->>
+   (gen-shape (pattern (:id navy-lines)) hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "6s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-4
+  (->>
+   (gen-shape (pattern (:id navy-lines)) hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-2" "6s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-5
+  (->>
+   (gen-shape navy hept)
+   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-3" "12s" "infinite")
+   (draw)
+   (atom)))
+
+
+(def move-me-6
+  (->>
    (gen-shape mint hept)
-   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" 2)
+   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-3" "6s" "infinite" {:delay ".2s"})
    (draw)
    (atom)))
 
 (def bg (->> 
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
+  (anim "sc-rot" "6s" "infinite" {:timing "linear"})
   (draw)
   (atom)))
 
@@ -270,6 +322,7 @@
     (anim "dashy" "4s" "infinite")
     (draw)
     (atom)))
+
 
 
 
@@ -322,7 +375,9 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (let [colors [ 
         ;navy navy navy navy navy
-        midnight    
+        white white white
+        ;navy
+        ;mint
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
@@ -330,6 +385,140 @@
             (style {:opacity .9})
             (draw)))
   
+      ;@move-me-5
+      ;@move-me-6
+
+      ;@bg
+  
+      (->>
+        (gen-rect (pattern (str "noise-" yellow)) 0 0 @width @height)
+        (style {:transform "scale(50)"})
+        (draw)
+        (when (nth-frame 1 frame)))
+      
+      #_(->>
+        (gen-rect (pattern (str "noise-" mint)) 0 0 @width @height)
+        (style {:transform "scale(50) rotate(200deg)"})
+        (draw)
+        (when (nth-frame 1 frame)))
+    
+      (->>
+        (gen-rect (pattern (str "noise-" pink)) 0 0 @width @height)
+        (style {:transform "scale(50) rotate(240deg)"})
+        (draw)
+        (when (nth-frame 1 frame)))
+    
+  
+  
+        ;(when (nth-frame 2 frame )(gen-bg-lines br-orange 70))
+        ;(when-not (nth-frame 2 frame )(gen-bg-lines navy 70))
+
+        ;(gen-bg-lines br-orange (mod frame 70))
+  
+        ;@move-me-3
+        ;@move-me-4
+
+  
+      #_(->>
+        (gen-circ pink (* 0.75 @width) (* 0.25 @height) 100)
+        (draw)
+        (when (nth-frame 2 frame)))
+  
+      
+  
+      #_(->>
+        (gen-shape mint oct)
+          (style {:transform (str 
+                              "translate("
+                              (* 0.25 @width)"px, "
+                              (* 0.57 @height)"px) scale(1.4)")})
+          (draw)
+          (when (nth-frame 4 frame)))
+  
+  #_(->>
+    (gen-shape (pattern (:id mint-lines)) oct)
+      (style {:transform (str 
+                          "translate("
+                          (* 0.25 @width)"px, "
+                          (* 0.57 @height)"px) scale(1.4)")})
+      (draw)
+      (when-not (nth-frame 4 frame)))
+  
+  #_(->>
+    (gen-shape (pattern (:id navy-dots)) hept)
+      (style {:transform (str 
+                          "translate("
+                          (* 0.57 @width)"px, "
+                          (* 0.57 @height)"px) scale(1.4)")})
+      (draw)
+      (when-not (nth-frame 2 frame)))
+  
+  
+  #_(->>
+    (gen-rect (pattern (:id navy-lines)) (* 0.1 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
+    (draw)
+    (when (nth-frame 3 frame)))
+  #_(->>
+    (gen-rect (pattern (:id blue-lines)) (* 0.32 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
+    (draw)
+    (when (nth-frame 6 frame)))
+  
+  #_(->>
+    (gen-rect (pattern (:id mint-lines)) (* 0.54 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
+    (draw)
+    (when (nth-frame 9 frame)))
+  
+  #_(->>
+    (gen-rect (pattern (:id navy-lines)) (* 0.76 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
+    (draw)
+    (when (nth-frame 12 frame)))
+  
+  #_(when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               10
+               200
+               white))
+  
+  ;@move-me
+  ;@move-me-2
+  
+  
+
+  
+
+  
+  #_(when (nth-frame 10 frame)
+    (freak-out @width
+               @height
+               40
+               100
+               yellow))
+  
+  #_(when (nth-frame 6 frame)
+    (freak-out @width
+               @height
+               20
+               200
+               mint))
+  
+    #_(when (nth-frame 1 frame)
+      (freak-out @width
+                 @height
+                 40
+                 100
+                 (pattern (str "noise-" navy))
+                 {:transform "scale(10)"}))
+  
+  (when (nth-frame 1 frame) (gen-line-grid white 3 
+    80 80 
+    {:col 20 :row 20}))
+
+  
+    #_(->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
+      (draw)
+      (when (nth-frame 8 (+ 1 frame))))
   
   )) ; cx end
   
