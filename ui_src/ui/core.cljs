@@ -474,8 +474,8 @@
     (let [colors [
         ;navy navy navy navy navy
         white white white
-        ;navy navy navy navy
-        ;mint
+        navy navy navy navy
+        mint mint mint mint
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
@@ -631,7 +631,7 @@
   ;@move-me-4
 
   ;; NOISE FREAKOUT — GOOD FOR EARLY
-  #_(when (nth-frame 1 frame)
+  (when (nth-frame 1 frame)
     (freak-out @width
                @height
                100
@@ -700,7 +700,7 @@
                 (when-not (nth-frame 8 frame)))
   
   ;@move-me
-  ;@bb1
+  ;@bb2
 
     #_(->>
       (gen-shape pink hept)
