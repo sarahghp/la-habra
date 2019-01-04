@@ -462,15 +462,15 @@
     (fn [idx color]
           (->>
             (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
-            (style {:opacity .4
+            (style {:opacity .1
                     :transform-origin "center"
                     :transform (str
                                 "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
                                 "rotate(" (- 360 (rand-int 720)) "deg)")})
-            (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
+            (anim "fade-in-out" "50s" "infinite" {:delay (str (* .1 idx) "s")})
             (draw)
             (atom)))
-    (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
+    (take 10 (repeatedly #(nth [yellow (pattern (:id yellow-dots))] (rand-int 6))))))
 
 
 
@@ -491,14 +491,26 @@
     [colors [
             ;navy navy navy navy navy
             ;white white white
-            navy navy navy navy
-            mint mint mint mint
-            yellow yellow yellow white
+            midnight midnight midnight midnight
+            ;navy navy navy navy
+            ;mint mint mint mint
+            ;yellow yellow yellow white
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100%" "100%")
         (style {:opacity .9})
         (draw)))
+  
+  (gen-bg-lines pink (mod (* .25 frame) 80))
+  
+  (doall (map deref levels))
+  
+  #_(->>
+    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
+    (style {:opacity .2})
+    (draw)
+    (when (nth-frame 1 frame)))
+  
   
 )) ; cx end
 
@@ -528,7 +540,8 @@
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
             [:mask {:id "cutout" :key (random-uuid)}
              (->>
-               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               ;(gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (gen-shape white b2)
                (draw))
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
