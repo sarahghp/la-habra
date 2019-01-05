@@ -186,6 +186,11 @@
 (a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
 
 (make-frames!
+  "scaled-rot"
+  [0 100]
+  (make-body "transform" ["rotate(0deg) scale(50)" "rotate(360deg) scale(50)"]))
+
+(make-frames!
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
@@ -272,7 +277,7 @@
   (->>
    (gen-shape (pattern (:id white-dots)) hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" "infinite")
+   (anim "woosh-2" "10s" "infinite")
    (draw)
    (atom)))
 
@@ -363,7 +368,7 @@
              (gen-rect (pattern (str "noise-" pink)) 0 0 @width @height)
              (style {:transform "scale(50) rotate(240deg)"})
              (style {:mix-blend-mode "color-dodge"} )
-             (anim "rot" "6s" "infinite")
+             (anim "scaled-rot" "6s" "infinite")
              (draw)
              (atom)))
 
@@ -506,24 +511,27 @@
       (draw)
       (when (nth-frame 1 frame)))
   
-  ;@scale-me
+  @scale-me
   
-    (->>
+    #_(->>
       (gen-rect (pattern (str "noise-" mint)) 0 0 @width @height)
       (style {:transform "scale(50) rotate(200deg)"})
       (draw)
       (when (nth-frame 1 frame)))
 
-    (->>
+    #_(->>
       (gen-rect (pattern (str "noise-" pink)) 0 0 @width @height)
       (style {:transform "scale(50) rotate(240deg)"})
       (draw)
       (when (nth-frame 1 frame)))
   
-  ;@move-me
+  @move-me
   ;@move-me-2
-  ;@rot-me
+  @rot-me
   ;@bg
+  
+  ;@move-me-4
+
   
   (->>
     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 140 (url "grad-mask"))
@@ -595,7 +603,6 @@
   ;@bb4
   
   ;@move-me-3
-  ;@move-me-4
   
   
 
@@ -631,29 +638,29 @@
         (when (nth-frame 1 frame)))
 
 
-  (when (nth-frame 1 frame)
+  #_(when (nth-frame 1 frame)
     (gen-line-grid midnight 4 
     80 80 
     {:col 20 :row 20}))
   
-  (->>
+  #_(->>
     (gen-rect white (* 0.15 @width) (* 0.15 @height) 200 200)
     (draw)
     (when (nth-frame 1 frame)))
   
-  (->>
+  #_(->>
     (gen-shape (pattern (:id white-lines)) oct)
       (style {:transform "translate(75vw, 15vh) scale(1.2)"})
       (draw)
       (when (nth-frame 1 frame)))
   
-    (->>
+    #_(->>
       (gen-rect (pattern (:id white-lines)) (* 0.75 @width) (* 0.75 @height) 200 200)
       (draw)
       (when (nth-frame 1 frame)))
   
     
-    (->>
+    #_(->>
       (gen-shape (pattern (:id white-dots)) oct)
         (style {:transform "translate(15vw, 75vh) scale(1.2)"})
         (draw)
@@ -675,26 +682,7 @@
        (map #(full-thin pink frame (flicker-test % frame) %) 
             (range 100))))
   
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               10
-               400
-               white))
-  
-    (when (nth-frame 1 frame)
-      (freak-out @width
-                 @height
-                 10
-                 400
-                 gray))
-  
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               10
-               300
-               orange))
+
 
 
   
