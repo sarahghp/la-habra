@@ -13,7 +13,8 @@
                 br-orange
                 pink
                 white
-                yellow]]
+                yellow
+               ps-light-green]]
             [ui.generators :refer
              [draw
               freak-out
@@ -456,13 +457,14 @@
                (map #(thin navy frame (flicker-test % frame) %) 
                     (range 80)))))
 
+
 ;(doall (map deref levels))
 (def levels
   (map-indexed
     (fn [idx color]
           (->>
             (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
-            (style {:opacity .1
+            (style {:opacity .5
                     :transform-origin "center"
                     :transform (str
                                 "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
@@ -470,7 +472,8 @@
             (anim "fade-in-out" "50s" "infinite" {:delay (str (* .1 idx) "s")})
             (draw)
             (atom)))
-    (take 10 (repeatedly #(nth [yellow (pattern (:id yellow-dots))] (rand-int 6))))))
+    (take 10 (repeatedly #(nth [(pattern (:id br-orange-dots)) (pattern (:id yellow-dots))] (rand-int 6))))))
+
 
 
 
@@ -501,9 +504,36 @@
         (style {:opacity .9})
         (draw)))
   
-  (gen-bg-lines pink (mod (* .25 frame) 80))
+  ;; DAWN
+  ;(gen-bg-lines pink (mod (* .25 frame) 80))
+  ;(doall (map deref levels))
+
+  ;; SHAPE
+  #_(->>
+    (gen-rect navy (* 0.45 @width) (* 0.15 @height) 80 (* 0.75 @height))
+    (style {:transform "rotate(-10deg)"})
+    (draw)
+    (when (nth-frame 1 frame)))
   
-  (doall (map deref levels))
+  (->>
+    (gen-shape navy tri)
+      (style {:transform-origin "center" :transform "translate(30vw, 30vh) rotate(-20deg) scale(3)"})
+      (draw)
+      (when (nth-frame 1 frame)))
+  
+  
+   (gen-group {} (->>
+     (gen-rect yellow 10 10 100 40)
+     (draw)
+     (when (nth-frame 1 frame)))
+   
+   (->>
+     (gen-rect ps-light-green 10 60 200 40)
+     (draw)
+     (when (nth-frame 1 frame))))
+  
+  ;; POOL
+  
   
   #_(->>
     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
@@ -511,6 +541,33 @@
     (draw)
     (when (nth-frame 1 frame)))
   
+  #_(->>
+    (gen-line [100 100] [400 400] white 20)
+    (draw)
+    (when (nth-frame 1 frame)))
+  
+    #_(->>
+      (gen-line [100 100] [400 400] (pattern (:id white-lines)) 20)
+      (style {:transform "rotate(40deg)"})
+      (draw)
+      (when (nth-frame 1 frame)))
+  
+    #_(->>
+      (gen-line [100 100] [400 400] (pattern (:id white-dots)) 20)
+      (style {:transform "translate(20vw, 40vh) rotate(60deg)"})
+
+      (draw)
+      (when (nth-frame 1 frame)))
+  
+  #_(doall (map #(->>
+                (gen-line [(rand-int 400) 100] [400 (rand-int 400)] (pattern (:id white-dots)) 20)
+                (style {:transform "translate(20vw, 40vh) rotate(60deg)"})
+                (draw)
+                (when (nth-frame 1 frame)))
+              (range 10)))
+  
+  
+
   
 )) ; cx end
 
@@ -550,7 +607,7 @@
 
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
-(def all-fills [gray mint navy blue orange br-orange pink white yellow])
+(def all-fills [gray mint navy blue orange br-orange pink white yellow ps-light-green])
 
 
 (defn drawing []

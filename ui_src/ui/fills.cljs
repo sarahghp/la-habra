@@ -11,3 +11,7 @@
 (def pink "#fb5d67")
 (def white "#e4e4e7")
 (def yellow "#fff70f")
+
+;; palm springs greens
+(def ps-light-green "#009161")
+(def ps-dark-green "#00693e")

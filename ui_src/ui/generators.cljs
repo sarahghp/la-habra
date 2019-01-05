@@ -43,7 +43,8 @@
 
 (defn gen-rect
   [fill-string x y w h & mask]
-  { :x x
+  { :key (random-uuid)
+    :x x
     :y y
     :width w
     :height h
