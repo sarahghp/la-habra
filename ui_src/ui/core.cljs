@@ -14,7 +14,8 @@
                 pink
                 white
                 yellow
-               ps-light-green]]
+                ps-light-green
+                ps-dark-green]]
             [ui.generators :refer
              [draw
               freak-out
@@ -494,8 +495,8 @@
     [colors [
             ;navy navy navy navy navy
             ;white white white
-            midnight midnight midnight midnight
-            ;navy navy navy navy
+            ;midnight midnight midnight midnight
+            navy navy navy navy
             ;mint mint mint mint
             ;yellow yellow yellow white
              ]]
@@ -505,39 +506,118 @@
         (draw)))
   
   ;; DAWN
-  ;(gen-bg-lines pink (mod (* .25 frame) 80))
+  ;(gen-bg-lines pink (mod (* .25 frame) 80) {:transform-origin "center" :transform "rotate(0deg)"})
   ;(doall (map deref levels))
 
   ;; SHAPE
-  #_(->>
-    (gen-rect navy (* 0.45 @width) (* 0.15 @height) 80 (* 0.75 @height))
-    (style {:transform "rotate(-10deg)"})
-    (draw)
-    (when (nth-frame 1 frame)))
-  
+
+  ;; base
   (->>
     (gen-shape navy tri)
-      (style {:transform-origin "center" :transform "translate(30vw, 30vh) rotate(-20deg) scale(3)"})
+      (style {:transform-origin "center" :transform "translate(30vw, 40vh) rotate(-20deg) scale(3.2)"})
+      (style {:opacity .9})
+      (style {:mix-blend-mode "screen"})
       (draw)
       (when (nth-frame 1 frame)))
   
+  ;; top a
+  (gen-group {:style {:transform-origin "center"
+                      :transform "translate(16vw, 20vh) rotate(-40deg)"}}
+               (->>
+                 (gen-rect pink 5 10 20 20)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-rect ps-light-green 5 40 100 40)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-rect yellow 20 80 140 10)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+             (->>
+               (gen-rect br-orange -30 120 200 60)
+               (style {:opacity .7})
+               (draw)
+               (when (nth-frame 1 frame)))
+             (->>
+               (gen-rect midnight 0 180 220 10)
+               (style {:opacity .7})
+               (draw)
+               (when (nth-frame 1 frame))))
   
-   (gen-group {} (->>
-     (gen-rect yellow 10 10 100 40)
+  ;; right
+  (gen-group {:style {:transform "translate(90vw, 54vh) rotate(100deg)"}}
+               (->>
+                 (gen-circ midnight 100 40 20)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               
+               (->>
+                 (gen-rect yellow 10 140 120 10)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               
+               (->>
+                 (gen-rect pink 70 70 50 50)
+                 (style {:transform "rotate(2deg)"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               
+                 (->>
+                   (gen-rect ps-light-green 20 220 140 10)
+                   (draw)
+                   (when (nth-frame 1 frame)))
+                 
+                 (->>
+                   (gen-rect ps-light-green 10 240 160 10)
+                   (draw)
+                   (when (nth-frame 1 frame)))
+               
+               (->>
+                 (gen-shape midnight tri)
+                   (style {:transform "translate(0px, 160px) scale(.8)"})
+                 (style {:opacity .9})
+                   (draw)
+                   (when (nth-frame 1 frame))))
+  
+
+  
+    ;; lone cross 
+
+  
+  
+  
+   ;; left 
+   (gen-group {:style {:transform "translate(20vw, 65vh) rotate(15deg)"}} (->>
+     (gen-rect yellow 10 70 200 60)
      (draw)
      (when (nth-frame 1 frame)))
    
    (->>
-     (gen-rect ps-light-green 10 60 200 40)
+     (gen-rect ps-light-green 10 10 300 60)
      (draw)
      (when (nth-frame 1 frame))))
   
+  (gen-group {:style {:transform "translate(10vw, 86vh) rotate(10deg)"}}
+             (->>
+               (gen-line [10 10] [40 40] white 5)
+               (draw)
+               (when (nth-frame 1 frame)))
+             (->>
+               (gen-line [10 40] [40 10] white 5)
+               (draw)
+               (when (nth-frame 1 frame))))
+  
   ;; POOL
   
+
+  (gen-line-grid "hsla(360, 0%, 100%, .4)" 2 
+    80 60 
+    {:col 40 :row 20})
   
-  #_(->>
-    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
-    (style {:opacity .2})
+  (->>
+    (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 1000)
     (draw)
     (when (nth-frame 1 frame)))
   
@@ -546,27 +626,26 @@
     (draw)
     (when (nth-frame 1 frame)))
   
-    #_(->>
-      (gen-line [100 100] [400 400] (pattern (:id white-lines)) 20)
-      (style {:transform "rotate(40deg)"})
-      (draw)
-      (when (nth-frame 1 frame)))
+  #_(->>
+    (gen-line [100 100] [400 400] (pattern (:id white-lines)) 20)
+    (style {:transform "rotate(40deg)"})
+    (draw)
+    (when (nth-frame 1 frame)))
   
-    #_(->>
-      (gen-line [100 100] [400 400] (pattern (:id white-dots)) 20)
-      (style {:transform "translate(20vw, 40vh) rotate(60deg)"})
+  #_(->>
+    (gen-line [100 100] [400 400] (pattern (:id white-dots)) 20)
+    (style {:transform "translate(20vw, 40vh) rotate(60deg)"})
+    (draw)
+    (when (nth-frame 1 frame)))
 
-      (draw)
-      (when (nth-frame 1 frame)))
   
-  #_(doall (map #(->>
-                (gen-line [(rand-int 400) 100] [400 (rand-int 400)] (pattern (:id white-dots)) 20)
-                (style {:transform "translate(20vw, 40vh) rotate(60deg)"})
-                (draw)
-                (when (nth-frame 1 frame)))
-              (range 10)))
-  
-  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               4
+               40
+               white
+               {:opacity .5}))
 
   
 )) ; cx end
@@ -607,7 +686,7 @@
 
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
-(def all-fills [gray mint navy blue orange br-orange pink white yellow ps-light-green])
+(def all-fills [gray mint navy blue orange br-orange pink white yellow ps-light-green ps-dark-green])
 
 
 (defn drawing []
