@@ -438,19 +438,19 @@
       (and (= n 46) (nth-frame 8 frame))))
 
 (def slide-lines
- (->>   
-  (gen-group {:style {:filter (url (:id noiz)) 
-                      :transform "translateY(0%)" 
+ (->>
+  (gen-group {:style {:filter (url (:id noiz))
+                      :transform "translateY(0%)"
                       :animation "slide-up 12s 1 ease-in"}}
-             (doall 
-               (map #(thin navy 1 true %) 
+             (doall
+               (map #(thin navy 1 true %)
                     (range 80))))
    (atom)))
 
 (defn hold-lines [frame]
   (gen-group {:style {:transform "translateY(0%)"}}
-             (doall 
-               (map #(thin navy frame (flicker-test % frame) %) 
+             (doall
+               (map #(thin navy frame (flicker-test % frame) %)
                     (range 80)))))
 
 ;(doall (map deref levels))
@@ -484,7 +484,7 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (let  
+  (let
     [colors [
             ;navy navy navy navy navy
             ;white white white
@@ -495,8 +495,8 @@
         (gen-rect (val-cyc frame colors) 0 0 "100%" "100%")
         (style {:opacity .9})
         (draw)))
-  
-  
+
+
   #_(anim-and-hold :lines frame 34
                    @slide-lines
                    (hold-lines frame))
@@ -504,15 +504,15 @@
 
 
     ;; BIG NOISES
-  
+
     (->>
       (gen-rect (pattern (str "noise-" br-orange)) 0 0 @width @height)
       (style {:transform "scale(50)"})
       (draw)
       (when (nth-frame 1 frame)))
-  
+
   @scale-me
-  
+
     #_(->>
       (gen-rect (pattern (str "noise-" mint)) 0 0 @width @height)
       (style {:transform "scale(50) rotate(200deg)"})
@@ -524,21 +524,21 @@
       (style {:transform "scale(50) rotate(240deg)"})
       (draw)
       (when (nth-frame 1 frame)))
-  
+
   @move-me
   ;@move-me-2
   @rot-me
   ;@bg
-  
+
   ;@move-me-4
 
-  
+
   (->>
     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 140 (url "grad-mask"))
     (style {:transform "rotate(135deg) scale(3)"})
     (draw)
     (when (nth-frame 4 frame)))
-  
+
 
   ;; VERTICAL RECTS
   #_(->>
@@ -559,7 +559,7 @@
     (gen-rect (pattern (:id navy-lines)) (* 0.76 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
     (draw)
     (when (nth-frame 12 frame)))
-  
+
   ;; HORIZ RECTS
 
   #_(->>
@@ -591,7 +591,7 @@
                100
                (pattern (str "noise-" mint))
                {:transform "scale(10)"}))
-  
+
     #_(when (nth-frame 1 frame)
       (freak-out @width
                  @height
@@ -599,12 +599,12 @@
                  100
                  (pattern (str "noise-" pink))
                  {:transform "scale(10)"}))
-  
+
   ;@bb4
-  
+
   ;@move-me-3
-  
-  
+
+
 
     ;; MAIN FRIENDS
     #_(->>
@@ -613,7 +613,7 @@
         (style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
       (draw)
       (when (nth-frame 6 frame)))
-  
+
     #_(->>
       (gen-shape mint oct)
         (style {:transform "translate(20vw, 30vh) scale(4)"})
@@ -627,7 +627,7 @@
         (style {:mix-blend-mode "darken" :filter (url (:id noiz))} )
         (draw)
         (when (nth-frame 1 frame)))
-    
+
 
     #_(->>
       (gen-shape pink hept)
@@ -639,53 +639,53 @@
 
 
   #_(when (nth-frame 1 frame)
-    (gen-line-grid midnight 4 
-    80 80 
+    (gen-line-grid midnight 4
+    80 80
     {:col 20 :row 20}))
-  
+
   #_(->>
     (gen-rect white (* 0.15 @width) (* 0.15 @height) 200 200)
     (draw)
     (when (nth-frame 1 frame)))
-  
+
   #_(->>
     (gen-shape (pattern (:id white-lines)) oct)
       (style {:transform "translate(75vw, 15vh) scale(1.2)"})
       (draw)
       (when (nth-frame 1 frame)))
-  
+
     #_(->>
       (gen-rect (pattern (:id white-lines)) (* 0.75 @width) (* 0.75 @height) 200 200)
       (draw)
       (when (nth-frame 1 frame)))
-  
-    
+
+
     #_(->>
       (gen-shape (pattern (:id white-dots)) oct)
         (style {:transform "translate(15vw, 75vh) scale(1.2)"})
         (draw)
         (when (nth-frame 1 frame)))
-  
 
-  
+
+
   #_(when (nth-frame 2 frame)
-    (gen-line-grid white 4 
-    80 80 
+    (gen-line-grid white 4
+    80 80
     {:col 20 :row 20}))
-  
+
   ;(gen-bg-lines midnight (mod frame 80))
-  
-    #_(gen-group 
+
+    #_(gen-group
      {:mask (url "poly-mask-2")
       :style {:mix-blend-mode "difference"}}
-     (doall 
-       (map #(full-thin pink frame (flicker-test % frame) %) 
+     (doall
+       (map #(full-thin pink frame (flicker-test % frame) %)
             (range 100))))
-  
 
 
 
-  
+
+
 
 
   )) ; cx end
@@ -730,8 +730,8 @@
 
 (defn drawing []
   [:svg {
-    :style  {:mix-blend-mode 
-             (val-cyc @frame 
+    :style  {:mix-blend-mode
+             (val-cyc @frame
                       ["multiply" "multiply" "multiply"
                        "difference"]) }
     :width  (:width settings)
