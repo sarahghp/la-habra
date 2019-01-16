@@ -224,6 +224,17 @@
                            "translate(50vw, 30vh) rotate(-300deg) scale(2.2)"
                            "translate(60vw, 80vh) rotate(400deg) scale(1.2)"]))
 
+
+ (make-frames!
+   "loopy"
+     [10, 35, 55, 85, 92]
+    (make-body "transform" [
+                            "translate(90vw, 10vh) rotate(2deg) scale(2.2)"
+                            "translate(80vw, 30vh) rotate(220deg) scale(6.4)"
+                            "translate(60vw, 40vh) rotate(0deg) scale(4.2)"
+                            "translate(30vw, 80vh) rotate(-300deg) scale(2.2)"
+                            "translate(10vw, 90vh) rotate(400deg) scale(3.2)"]))
+
 (make-frames!
  "dashy"
  [100]
@@ -270,6 +281,14 @@
    (draw)
    (atom)))
 
+   (def move-me-3
+     (->>
+      (gen-shape navy oct)
+      (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
+      (anim "loopy" "10s" "infinite")
+      (draw)
+      (atom)))
+
 
 (def bg (->>
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
@@ -302,14 +321,22 @@
           (draw)
           (atom)))
 
+(def scale-me-2
+        (->>
+          (gen-circ (pattern (str "noise-" br-orange)) (* 0.5 @width) (* 0.5 @height) 200)
+          (style {:transform "scale(1)"})
+          (anim "scaley" "8s" "infinite")
+          (draw)
+          (atom)))
 
-(def blep
-  (atom
-    (freak-out @width
-               @height
-               40
-               100
-               mint)))
+(def scale-me-3
+        (->>
+          (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
+          (style {:transform "scale(1) translateY(20vh)"})
+          (anim "scaley" "6s" "infinite")
+          (draw)
+          (atom)))
+
 
 
   (def bb1
@@ -392,116 +419,99 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (let  
+  (let
     [colors [
-            ;navy navy navy navy navy
-            ;white white white
-            ;navy navy navy navy
-            mint mint mint mint
-            ;yellow yellow yellow white
+      mint mint mint mint
+
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100%" "100%")
         (style {:opacity .9})
         (draw)))
-  
-  
-  #_(->>
-    (gen-rect (pattern (:id mint-lines)) 0 0 "100%" "100%" (url "c"))
-    (style {:transform "scale(2)"})
-    (draw)
-    (when (nth-frame 1 frame)))
-  
-    #_(->>
-      (gen-rect (pattern (:id pink-lines)) 0 0 "100%" "100%" (url "r"))
-      (style {:transform "scale(2) translateY(4px)"})
-      (draw)
-      (when (nth-frame 1 frame)))
-  
-    
+
+
+
   #_(->>
     (gen-shape navy pent)
       (style {:transform "translate(-20vw, 50vh) scale(6)"})
       (style {:mix-blend-mode "luminosity" :filter (url (:id noiz))})
       (draw)
-      (when (nth-frame 1 frame)))
-  
+      (when (nth-frame 2 frame)))
+
   #_(->>
     (gen-shape mint pent)
       (style {:transform "translate(50vw, 30vh) scale(8)"})
       (style {:mix-blend-mode "color-burn" :filter (url (:id noiz))})
       (draw)
       (when (nth-frame 1 frame)))
-  
+
     #_(->>
       (gen-shape navy pent)
         (style {:transform (str "translate(50vw, 30vh) scale(" (val-cyc frame [3 7 5 9]) ")")})
         (style {:mix-blend-mode "color-burn" :filter (url (:id noiz))})
         (draw)
         (when (nth-frame 1 frame)))
-  
-  
-  #_(when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               40
-               100
-               white))
-    
 
-  (->>
+
+
+  #_(->>
     (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.4 @width) (* 0.75 @height))
     (style {:opacity .7})
+    (style {:mix-blend-mode "luminosity"})
     (draw)
-    (when (nth-frame 1 frame)))
-  
-  (->>
+    (when (nth-frame 3 frame)))
+
+  #_(->>
     (gen-rect orange (* 0.45 @width) (* 0.2 @height) (* 0.4 @width) (* 0.75 @height))
     (style {:opacity .7})
+    (style {:mix-blend-mode "luminosity"})
     (draw)
-    (when (nth-frame 1 frame)))
-  
-  (->>
+    (when (nth-frame 4 frame)))
+
+  #_(->>
     (gen-rect (pattern (:id gray-dots-lg)) (* 0.05 @width) (* 0.7 @height) (* 0.85 @width) (* 0.3 @height))
     (style {:opacity .7})
     (draw)
     (when-not (nth-frame 8 frame))
     (when (nth-frame 1 frame)))
-  
-  (->>
+
+  #_(->>
     (gen-rect pink (* 0.05 @width) (* 0.7 @height) (* 0.85 @width) (* 0.3 @height))
     (style {:opacity .7})
+    (style {:mix-blend-mode "luminosity"})
     (draw)
-    (when (nth-frame 1 frame)))
+    (when (nth-frame 6 frame)))
 
-  (->>
+  #_(->>
     (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask"))
     (style {:transform "rotate(135deg)"})
+    (style {:mix-blend-mode "luminosity"})
     (draw)
-    (when (nth-frame 1 frame)))
-  
+    (when (nth-frame 2 frame)))
+
   (->>
     (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask"))
     (style {:transform "rotate(135deg)"})
+    (style {:mix-blend-mode "luminosity"})
     (draw)
     (when (nth-frame 1 frame)))
-  
-  ;@move-me
 
 
-  
-  #_(->>
+
+
+  (->>
     (gen-grid
       80 80
       {:col 40 :row 40}
-      (gen-circ white 5 5 5)) 
-     (map #(style {:opacity .5} %)) 
+      (gen-circ white 5 5 5))
+     (map #(style {:opacity .5} %))
      (map draw)
      (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .1)) frame) item))))
 
 
+@move-me-3
 
-  
+
 )) ; cx end
 
 
@@ -544,8 +554,8 @@
 
 (defn drawing []
   [:svg {
-    :style  {:mix-blend-mode 
-             (val-cyc @frame 
+    :style  {:mix-blend-mode
+             (val-cyc @frame
                       ["multiply" "multiply"]) }
     :width  (:width settings)
     :height (:height settings)}
