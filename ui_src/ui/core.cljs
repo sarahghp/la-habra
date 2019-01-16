@@ -226,7 +226,7 @@
 
 
  (make-frames!
-   "loopy"
+   "loopy-left"
      [10, 35, 55, 85, 92]
     (make-body "transform" [
                             "translate(90vw, 10vh) rotate(2deg) scale(2.2)"
@@ -234,6 +234,16 @@
                             "translate(60vw, 40vh) rotate(0deg) scale(4.2)"
                             "translate(30vw, 80vh) rotate(-300deg) scale(2.2)"
                             "translate(10vw, 90vh) rotate(400deg) scale(3.2)"]))
+
+(make-frames!
+   "loopy-right"
+     [10, 35, 55, 85, 92]
+    (make-body "transform" [
+                            "translate(10vw, 10vh) rotate(2deg) scale(2.2)"
+                            "translate(30vw, 80vh) rotate(220deg) scale(6.4)"
+                            "translate(60vw, 40vh) rotate(0deg) scale(4.2)"
+                            "translate(80vw, 30vh) rotate(-300deg) scale(2.2)"
+                            "translate(90vw, 90vh) rotate(400deg) scale(3.2)"]))
 
 (make-frames!
  "dashy"
@@ -283,11 +293,20 @@
 
    (def move-me-3
      (->>
-      (gen-shape navy oct)
+      (gen-shape mint oct)
       (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
-      (anim "loopy" "10s" "infinite")
+      (anim "loopy-left" "8s" "infinite")
       (draw)
       (atom)))
+
+
+      (def move-me-4
+        (->>
+         (gen-shape navy oct)
+         (style {:opacity .6 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
+         (anim "loopy-right" "8s" "infinite")
+         (draw)
+         (atom)))
 
 
 (def bg (->>
@@ -469,13 +488,6 @@
     (when (nth-frame 4 frame)))
 
   #_(->>
-    (gen-rect (pattern (:id gray-dots-lg)) (* 0.05 @width) (* 0.7 @height) (* 0.85 @width) (* 0.3 @height))
-    (style {:opacity .7})
-    (draw)
-    (when-not (nth-frame 8 frame))
-    (when (nth-frame 1 frame)))
-
-  #_(->>
     (gen-rect pink (* 0.05 @width) (* 0.7 @height) (* 0.85 @width) (* 0.3 @height))
     (style {:opacity .7})
     (style {:mix-blend-mode "luminosity"})
@@ -487,17 +499,17 @@
     (style {:transform "rotate(135deg)"})
     (style {:mix-blend-mode "luminosity"})
     (draw)
-    (when (nth-frame 2 frame)))
+    (when (nth-frame 1 frame)))
 
-  (->>
+  #_(->>
     (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask"))
     (style {:transform "rotate(135deg)"})
     (style {:mix-blend-mode "luminosity"})
     (draw)
     (when (nth-frame 1 frame)))
 
-
-
+  @move-me-3
+  @move-me-4
 
   (->>
     (gen-grid
@@ -507,9 +519,6 @@
      (map #(style {:opacity .5} %))
      (map draw)
      (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .1)) frame) item))))
-
-
-@move-me-3
 
 
 )) ; cx end
