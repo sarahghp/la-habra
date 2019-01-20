@@ -428,7 +428,6 @@
         (style {:opacity .9})
         (draw)))
 
-  ;(doall (map deref levels))
 
   #_(->>
     (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.45 @width) (* 0.75 @height))
