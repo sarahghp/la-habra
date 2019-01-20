@@ -351,7 +351,34 @@
       (draw)
       (atom)))
 
+      (def bb1b
+        (->>
+          (gen-shape mint oct)
+            (style {:transform "translate(20vw, 30vh) scale(2)"})
+            (style {:mix-blend-mode "color-dodge" } )
+          (anim "woosh" ".5s" "infinite")
+          (draw)
+          (atom)))
 
+      (def bb1c
+        (->>
+          (gen-shape mint oct)
+            (style {:transform "translate(20vw, 30vh) scale(2)"})
+            (style {:mix-blend-mode "color-burn" } )
+          (anim "woosh" "1s" "infinite")
+          (draw)
+          (atom)))
+
+
+(def dots (atom
+  (->>
+    (gen-grid
+      80 80
+      {:col 40 :row 40}
+      (gen-circ white 5 5 5))
+     (map #(style {:opacity .5} %))
+     (map draw)
+     (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .01)) 1460) item))))))
 
 
 
@@ -393,26 +420,93 @@
   (let
     [colors [
       mint mint mint mint
+      ;yellow yellow
 
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100%" "100%")
         (style {:opacity .9})
         (draw)))
-  
+
+  ;(doall (map deref levels))
+
+  #_(->>
+    (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.45 @width) (* 0.75 @height))
+    (style {:opacity .7})
+    (draw)
+    (when (nth-frame 1 frame)))
+
+    #_(->>
+      (gen-rect orange (* 0.45 @width) (* .2 @height) (* 0.45 @width) (* 0.75 @height))
+      (style {:opacity .7})
+      (draw)
+      (when (nth-frame 1 frame)))
+
+      #_(->>
+        (gen-rect pink (* 0.05 @width) (* .7 @height) (* 0.9 @width) (* 0.3 @height))
+        (style {:opacity .7})
+        (draw)
+        (when (nth-frame 1 frame)))
+
+#_(when-not (nth-frame 3 frame)
+  (gen-bg-lines midnight 80))
 
   (->>
-    (gen-grid
-      80 80
-      {:col 40 :row 40}
-      (gen-circ white 5 5 5))
-     (map #(style {:opacity .5} %))
-     (map draw)
-     (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .1)) frame) item))))
-  
-    
-  
-  
+    (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url
+      "grad-mask"))
+      (style {:transform "rotate(135deg)"})
+    (draw)
+    (when (nth-frame 2 frame)))
+
+    (->>
+      (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200 (url
+        "grad-mask"))
+        (style {:transform "rotate(135deg)"})
+      (draw)
+      (when (nth-frame 2 frame)))
+
+;@dots
+
+
+
+
+
+
+#_(when (nth-frame 2 frame)(gen-line-grid midnight 4
+  80 80
+  {:col 20 :row 20}))
+
+  #_(when-not (nth-frame 2 frame)(gen-line-grid white 4
+    80 80
+    {:col 20 :row 20}))
+
+#_(when (nth-frame 1 frame)
+  (freak-out @width
+             @height
+             30
+             300
+             white))
+
+             #_(when (nth-frame 3 frame)
+               (freak-out @width
+                          @height
+                          60
+                          300
+                          mint))
+
+                          #_(when (nth-frame 4 frame)
+                            (freak-out @width
+                                       @height
+                                       200
+                                       10
+                                       (pattern (str "noise-" white))
+                                       {:transform "scale(10)"}))
+
+                                       ;@bb1
+                                       ;@bb1a
+                                       ;@move-me-4
+                                       ;@move-me-5
+
 
 )) ; cx end
 
@@ -458,7 +552,9 @@
   [:svg {
     :style  {:mix-blend-mode
              (val-cyc @frame
-                      ["multiply" "multiply"]) }
+                      [
+                      "difference" "difference"
+                      ]) }
     :width  (:width settings)
     :height (:height settings)}
      ;; filters
