@@ -463,17 +463,6 @@
         (style {:opacity .9})
         (draw)))
 
-#_(when (nth-frame 4)
-  (gen-line-grid midnight 2
-    80 80
-    {:col 20 :row 20}))
-
-    #_(when-not (nth-frame 4)
-      (gen-line-grid white 2
-        80 80
-        {:col 20 :row 20}))
-
-
 
   #_(->>
     (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.45 @width) (* 0.75 @height))
@@ -493,85 +482,8 @@
         (draw)
         (when (nth-frame 1 frame)))
 
-  (->>
-    (gen-shape midnight tri)
-      (style {:transform (str "translate(20vw, 30vh) scale(" (val-cyc frame [8]) ") rotate(100deg)")})
-      (style {:opacity .6})
-      (draw)
-      (when (nth-frame 1 frame)))
 
-      (->>
-        (gen-shape midnight tri)
-          (style {:transform "translate(60vw, 80vh) scale(2) rotate(-100deg)"})
-          (style {:opacity .6})
-          (draw)
-          (when (nth-frame 1 frame)))
-
- (gen-group {:style {:transform "rotate(30deg)"}}
-
-           (->>
-             (gen-shape orange tri)
-               (style {:transform (str "translate(20vw, -20vh) scale(" (val-cyc frame [4]) ") rotate(100deg)")})
-               (style {:opacity .6})
-               (draw)
-               (when (nth-frame 1 frame)))
-
-               (->>
-                 (gen-shape orange tri)
-                   (style {:transform "translate(60vw, 10vh) scale(2) rotate(-100deg)"})
-                   (style {:opacity .6})
-                   (draw)
-                   (when (nth-frame 1 frame))))
-
-                   ;@bb1
-                   ;@bb1a
-                   ;@bb1b
-                   ;@bb1c
-
-  #_(->>
-    (gen-circ white (* 0.5 @width) (* 0.5 @height) 200 (url
-      "grad-mask"))
-      (style {:transform "rotate(135deg) scale(2)"})
-    (draw)
-    (when (nth-frame 1 frame)))
-
-    #_(->>
-      (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200 (url
-        "grad-mask"))
-        (style {:transform "rotate(135deg) scale(2)"})
-      (draw)
-      (when (nth-frame 1 frame)))
-
-@bg
-
-@drops
-@drops-2
-@drops-3
-
-;@dots
-
-@move-me-3
-@move-me-4
-
-@move-me-3a
-@move-me-4a
-
-(when-not (nth-frame 2 frame)
-  (freak-out @width
-             @height
-             10
-             100
-             white))
-
-             (when (nth-frame 2 frame)
-               (freak-out @width
-                          @height
-                          10
-                          100
-                          pink))
-
-
-#_(->>
+(->>
   (gen-grid
     80 80
     {:col 40 :row 40}
@@ -582,54 +494,7 @@
 
 
 
-  (gen-group {:mask (url "poly-mask-2")}
-    (when (nth-frame 1 frame)
-      (freak-out @width
-                 @height
-                 40
-                 100
-                 midnight))
 
-                 (when (nth-frame 1 frame)
-                   (freak-out @width
-                              @height
-                              20
-                              80
-                              br-orange)))
-
-
-(when (nth-frame 3 frame )
-  (gen-bg-lines white 80))
-
-(when-not (nth-frame 3 frame )
-  (gen-bg-lines pink 80))
-
-;@move-me
-
-(when (nth-frame 5 frame)
-  (freak-out @width
-             @height
-             100
-             200
-             (pattern (str "noise-" gray))
-             {:transform "scale(10)"}))
-
- (when (nth-frame 5 frame)
-   (freak-out @width
-              @height
-              40
-              100
-              gray))
-
-@move-me-4
-@move-me-5
-
-(when (nth-frame 1 frame)
-  (freak-out @width
-             @height
-             60
-             1000
-             white))
 
 
 
