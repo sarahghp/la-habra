@@ -393,22 +393,94 @@
   (let
     [colors [
       mint mint mint mint
+      ;yellow
 
              ]]
       (->>
-        (gen-rect (val-cyc frame colors) 0 0 "100%" "100%")
+        (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .9})
         (draw)))
   
-
   (->>
+    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
+    (draw)
+    (when (nth-frame 3 frame)))
+  
+    
+    (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300)
+      (draw)
+      (when (nth-frame 4 frame)))
+  
+      (->>
+        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 100)
+        (draw)
+        (when (nth-frame 2 frame)))
+  
+  
+  
+  #_(gen-bg-lines orange (mod frame 80))
+  
+  #_(gen-line-grid midnight 2 
+    80 80 
+    {:col 20 :row 20})
+  
+  #_(->>
+    (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200)
+    (style {:transform "rotate(135deg)"})
+    (draw)
+    (when (nth-frame 4 frame)))
+  
+  ;@bb1a
+  ;@bb1
+  ;@move-me-2
+  
+  
+  #_(gen-group {:mask (url "rect-buds") 
+              :style {:transform-origin "center" 
+                      :transform "translate(50vw, 30vh) rotate(135deg)"}}
+             (->>
+               (gen-rect pink 0 0 "100%" "100%")
+               (draw)
+               (when (nth-frame 1 frame)))
+             (when (nth-frame 1 frame)
+              (freak-out @width
+                         @height
+                         20
+                         400
+                         midnight)))
+  
+  #_(gen-group {:mask (url "rect-buds") 
+              :style {:transform-origin "center" :transform "translate(60vw, 60vh) rotate(170deg)"
+                      }}
+             (->>
+               (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) 400)
+               (draw)
+               (when (nth-frame 1 frame)))
+             (->>
+               (gen-rect midnight 0 0 "100%" "100%")
+               (style {:mix-blend-mode "difference"})
+               (draw)
+               (when (nth-frame 1 frame))))
+  
+  
+  #_(gen-group {:mask (url "poly-mask")}(when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               40
+               200
+               yellow
+               {:opacity .5})))
+  
+  
+  #_(->>
     (gen-grid
       80 80
       {:col 40 :row 40}
       (gen-circ white 5 5 5))
      (map #(style {:opacity .5} %))
      (map draw)
-     (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .1)) frame) item))))
+     (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .001)) frame) item))))
   
     
   
@@ -434,20 +506,33 @@
                  [:stop { :offset "0" :stop-color "white" :stop-opacity "0" }]
                  [:stop { :offset "1" :stop-color "white" :stop-opacity "1" }]]])
 
-(def masks [[:mask { :id "poly-mask" :key (random-uuid)}
+
+(def mask-list [
+            [ "poly-mask"
               [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
-            [:mask { :id "poly-mask-2" :key (random-uuid)}
+            [ "poly-mask-2"
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :animation "woosh-3 3s infinite"}}]]
-            [:mask { :id "grad-mask" :key (random-uuid)}
+            [ "grad-mask"
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
-            [:mask {:id "cutout" :key (random-uuid)}
+            [ "cutout"
              (->>
                (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
                (draw))
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
                 (draw))]
+              ["rect-buds" 
+               (->>
+                 (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
+                 (draw))
+                 ]
             ])
+
+(defn gen-mask
+  [id insides]
+  [:mask {:id id :key (random-uuid)} insides])
+
+(def masks (map (fn [[id & rest]] (apply gen-mask id rest)) mask-list))
 
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
@@ -458,7 +543,8 @@
   [:svg {
     :style  {:mix-blend-mode
              (val-cyc @frame
-                      ["multiply" "multiply"]) }
+                      ["multiply" "multiply"
+                       ]) }
     :width  (:width settings)
     :height (:height settings)}
      ;; filters
