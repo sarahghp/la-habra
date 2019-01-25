@@ -454,8 +454,8 @@
   (let
     [colors [
       mint mint mint mint
-      yellow yellow yellow yellow
-      pink pink pink pink
+      ;yellow yellow yellow yellow
+      ;pink pink pink pink
 
              ]]
       (->>
@@ -474,7 +474,6 @@
         {:col 20 :row 20}))
 
 
-  (doall (map deref levels))
 
   #_(->>
     (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.45 @width) (* 0.75 @height))
