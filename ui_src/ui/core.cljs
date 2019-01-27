@@ -474,49 +474,33 @@
 
 
 
-    (->>
-      (gen-rect (pattern (str "noise-" br-orange)) 0 0 @width @height)
-      (style {:transform "scale(50)"})
-      (draw))
-
-      @scale-me
 
 
-      (->>
-        (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
-        (style {:transform "scale(1)"})
-        (anim "scaley" "3s" "infinite")
-        (draw))
 
-        @scale-me-2
 
-        (doall (map deref levels))
 
-        @move-me
-
-  (->>
+  #_(->>
     (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.45 @width) (* 0.75 @height))
     (style {:opacity .7})
     (draw)
     (when (nth-frame 3 frame)))
 
-  (->>
+  #_(->>
     (gen-rect orange (* 0.45 @width) (* .2 @height) (* 0.45 @width) (* 0.75 @height))
     (style {:opacity .7})
     (style {:mix-blend-mode "color-burn"})
     (draw)
     (when (nth-frame 4 frame)))
 
-  (->>
+  #_(->>
     (gen-rect pink (* 0.05 @width) (* .7 @height) (* 0.9 @width) (* 0.3 @height))
     (style {:opacity .7})
     (draw)
     (when (nth-frame 2 frame)))
 
-    @bg
-    @bg2
 
-(->>
+
+#_(->>
   (gen-shape midnight tri)
     (style {:transform "translate(20vw, 60vh) rotate(135deg) scale(2)"})
     (style {:opacity .5})
@@ -524,112 +508,14 @@
     (when (nth-frame 1 frame)))
 
 
-  (->>
+  #_(->>
     (gen-shape br-orange tri)
-      (style {:transform (str "translate(45vw, 10vh) rotate(15deg) scale(" (val-cyc frame [1 1 2 2 4 4 8 8]) ")")})
+      (style {:transform (str "translate(45vw, 10vh) rotate(15deg) scale(" (val-cyc frame [1]) ")")})
       (style {:opacity .5})
       (draw)
       (when (nth-frame 1 frame)))
 
 
-(gen-group {:style {:transform "translate(30vw, 20vh) rotate(2200deg)"}}
-(->>
-  (gen-shape midnight tri)
-    (style {:transform (str "translate(20vw, 60vh) rotate(135deg) scale(" (val-cyc frame [1 2 2 8 4 16]) ")")})
-    (style {:opacity .5})
-    (draw)
-    (when (nth-frame 1 frame)))
-
-
-  (->>
-    (gen-shape br-orange tri)
-      (style {:transform "translate(45vw, 10vh) rotate(15deg) scale(2)"})
-      (style {:opacity .5})
-      (draw)
-      (when (nth-frame 1 frame))))
-
-
-(->>
-  (gen-line [100 100] [400 100] pink 60)
-  (style {:transform "rotate(68deg)"})
-  (draw)
-  (when (nth-frame 1 frame)))
-
-  (->>
-    (gen-line [800 800] [1200 800] navy 60)
-    (style {:transform "rotate(-68deg)"})
-    (draw)
-    (when (nth-frame 1 frame)))
-
-
-    (->>
-      (gen-line [100 100] [400 100] pink 60)
-      (style {:transform "translate(10vw, 40vh) rotate(68deg)"})
-      (draw)
-      (when (nth-frame 1 frame)))
-
-      #_(->>
-        (gen-line [800 800] [1200 800] navy 60)
-        (style {:transform "translate(-10vw, -40vh) rotate(-68deg)"})
-        (draw)
-        (when (nth-frame 1 frame)))
-
-
-@bb1
-@bb1a
-
-;@drops
-@dots
-
-@move-me-3
-@move-me-4
-
-@move-me-3a
-@move-me-4a
-
-(gen-bg-lines midnight (mod (* 10 frame) 80))
-
-(when (nth-frame 1 frame)
-  (freak-out @width
-             @height
-             20
-             200
-             white))
-
-             (when (nth-frame 1 frame)
-               (freak-out @width
-                          @height
-                          30
-                          100
-                          mint))
-
-
-
- (when (nth-frame 1 frame)
-   (freak-out @width
-              @height
-              100
-              100
-              (url (str "noise-" pink))
-              {:transform "scale(30)"}
-              ))
-
-(when (nth-frame 1 frame)
-  (freak-out @width
-             @height
-             60
-             600
-             white
-             {:opacity .6}))
-
-  (when (nth-frame 2 frame)(gen-line-grid white 10
-    80 80
-    {:col 20 :row 20}))
-
-    (->>
-      (gen-circ midnight (* 0.5 @width) (* 0.5 @height) 200)
-      (draw)
-      (when (nth-frame 1 frame)))
 
 #_(->>
   (gen-grid
@@ -694,8 +580,8 @@
                       [
                       "multiply"
                       ;"difference" "difference"
-                      "difference"
-                      "luminosity"
+                      ;"difference"
+                      ;"luminosity"
                       ]) }
     :width  (:width settings)
     :height (:height settings)}
