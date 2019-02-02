@@ -164,16 +164,6 @@
       (str start-str)
       (str finish-str)])))
 
-(defn fade-start!
-  [name op-end]
-  (make-frames! name [0 99 100]
-    (make-body "fill-opacity" [
-      (str 0)
-      (str 0)
-      (str op-end)])))
-
-(fade-start! "fi" 1)
-
 (make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
@@ -216,12 +206,34 @@
                            "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
 (make-frames!
   "woosh-4"
-    [10, 55, 85, 92]
+    [10, 35, 55, 85, 92]
    (make-body "transform" [
                            "translate(80vw, 10vh) rotate(2deg) scale(2.2)"
-                           "translate(40vw, 40vh) rotate(120deg) scale(4.4)"
-                           "translate(50vw, 30vh) rotate(0deg) scale(6.2)"
-                           "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
+                           "translate(40vw, 40vh) rotate(220deg) scale(10.4)"
+                           "translate(50vw, 30vh) rotate(0deg) scale(4.2)"
+                           "translate(50vw, 30vh) rotate(-300deg) scale(2.2)"
+                           "translate(60vw, 80vh) rotate(400deg) scale(1.2)"]))
+
+
+ (make-frames!
+   "loopy-left"
+     [10, 35, 55, 85, 92]
+    (make-body "transform" [
+                            "translate(90vw, 10vh) rotate(2deg) scale(2.2)"
+                            "translate(80vw, 30vh) rotate(220deg) scale(6.4)"
+                            "translate(60vw, 40vh) rotate(0deg) scale(4.2)"
+                            "translate(30vw, 80vh) rotate(-300deg) scale(2.2)"
+                            "translate(10vw, 90vh) rotate(400deg) scale(3.2)"]))
+
+(make-frames!
+   "loopy-right"
+     [10, 35, 55, 85, 92]
+    (make-body "transform" [
+                            "translate(10vw, 10vh) rotate(2deg) scale(2.2)"
+                            "translate(30vw, 80vh) rotate(220deg) scale(6.4)"
+                            "translate(60vw, 40vh) rotate(0deg) scale(4.2)"
+                            "translate(80vw, 30vh) rotate(-300deg) scale(2.2)"
+                            "translate(90vw, 90vh) rotate(400deg) scale(3.2)"]))
 
 (make-frames!
  "dashy"
@@ -247,28 +259,21 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect midnight (+ 30 (* % 160)) 10 200 36)
+       (gen-rect white (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (draw))
      (range 10))))
 
-(def drops-2
- (atom  (map
-    #(->>
-      (gen-rect white (+ 30 (* % 160)) 10 200 36)
-      (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
-      (draw))
-    (range 10))))
-
-(def bloops
-  (->>
-    (gen-circ white 0 100 40)
-    (style {:opacity .7})
-    (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
-    (draw)
-    (atom)))
 
 (def move-me
+  (->>
+   (gen-shape white hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh-4" "6s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-2
   (->>
    (gen-shape (pattern (:id white-dots)) hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
@@ -276,56 +281,32 @@
    (draw)
    (atom)))
 
-(def move-me-2
-  (->>
-   (gen-shape (pattern (:id white-lines)) hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-2" "10s" "infinite")
-   (draw)
-   (atom)))
-
-(def move-me-3
-  (->>
-   (gen-shape (pattern (:id navy-lines)) hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "6s" "infinite")
-   (draw)
-   (atom)))
-
-(def move-me-3a
-  (->>
-   (gen-shape (pattern (:id mint-lines)) hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "4s" "infinite" {:delay ".4s"})
-   (draw)
-   (atom)))
-
-(def move-me-4
-  (->>
-   (gen-shape (pattern (:id navy-lines)) hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-2" "6s" "infinite")
-   (draw)
-   (atom)))
-
-(def move-me-5
-  (->>
-   (gen-shape navy hept)
-   (style {:mix-blend-mode "multiply"})
-   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-4" "3s" "infinite")
-   (draw)
-   (atom)))
+   (def move-me-3
+     (->>
+      (gen-shape midnight oct)
+      (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
+      (anim "loopy-left" "8s" "infinite")
+      (draw)
+      (atom)))
 
 
-(def move-me-6
-  (->>
-   (gen-shape mint hept)
-   (style {:mix-blend-mode "lighten"})
-   (style {:opacity .7 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-4" "4s" "infinite" {:delay ".2s"})
-   (draw)
-   (atom)))
+      (def move-me-4
+        (->>
+         (gen-shape navy oct)
+         (style {:opacity .6 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
+         (anim "loopy-right" "8s" "infinite")
+         (draw)
+         (atom)))
+
+
+      (def move-me-5
+        (->>
+         (gen-shape (pattern (:id orange-lines)) oct)
+         (style {:opacity .9 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
+         (anim "loopy-right" "4s" "infinite")
+         (draw)
+         (atom)))
+
 
 (def bg (->>
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
@@ -334,21 +315,6 @@
   (draw)
   (atom)))
 
-(def tri-dash
-  (->>
-    (gen-shape "hsla(360, 10%, 10%, 0)" oct)
-    (style {:transform-origin "center"
-            :transform (str "translate(" 40 "vw," 40 "vh)"
-                            "scale(2)")})
-    (style {:stroke pink
-            :stroke-width 10
-            :stroke-dasharray 20
-            :stroke-dashoffset 1000
-            :stroke-linecap :round
-            :stroke-linejoin :round})
-    (anim "dashy" "4s" "infinite")
-    (draw)
-    (atom)))
 
 (def scale-me
         (->>
@@ -360,101 +326,38 @@
 
 (def scale-me-2
         (->>
-          (gen-rect (pattern (str "noise-" pink)) 0 0 @width @height)
-          (style {:transform "scale(50)"})
-          (anim "scaley-huge" "10s" "infinite" {:delay ".4s"})
+          (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
+          (style {:transform "scale(1)"})
+          (anim "scaley" "8s" "infinite")
           (draw)
           (atom)))
-
-
-(def rot-me (->>
-             (gen-rect (pattern (str "noise-" pink)) 0 0 @width @height)
-             (style {:transform "scale(50) rotate(240deg)"})
-             (style {:mix-blend-mode "color-dodge"} )
-             (anim "rot" "6s" "infinite")
-             (draw)
-             (atom)))
 
 
   (def bb1
     (->>
       (gen-shape mint oct)
         (style {:transform "translate(20vw, 30vh) scale(2)"})
-        (style {:mix-blend-mode "color-burn" } )
+        (style {:mix-blend-mode "color-dodge" } )
       (anim "woosh" "4s" "infinite")
       (draw)
       (atom)))
 
-      (def bb2
-        (->>
-          (gen-shape mint oct)
-            (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
-            (style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
-            (anim "woosh" "4s" "infinite")
-          (draw)
-          (atom)))
-
-      (def bb4
-        (->>
-          (gen-shape yellow oct)
-            (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
-            (style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
-            (anim "woosh" "6s" "infinite")
-          (draw)
-          (atom)))
+  (def bb1a
+    (->>
+      (gen-shape mint oct)
+        (style {:transform "translate(20vw, 30vh) scale(2)"})
+        (style {:mix-blend-mode "color-burn" } )
+      (anim "woosh" "2s" "infinite")
+      (draw)
+      (atom)))
 
 
-          (def bb3
-            (->>
-              (gen-shape pink hept)
-                (style {:transform "translate(30vw, 44vh) scale(2.4)"})
-                (style {:mix-blend-mode "color-burn"} )
-                (anim "woosh-3" "6s" "infinite")
-              (draw)
-              (atom)))
+
+
+
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
-
-;; use with (doall (map fn range))
-(defn thin
-  [color frame flicker? n]
-  (let [op (if (and (nth-frame 4 frame) flicker?) (rand) 1)]
-    (->>
-     (gen-rect color (* 0.15 @width) (* 0.15 @height) (* 0.7 @width) 3)
-     (style {:transform (str "translateY(" (* n 10) "px)") :opacity op})
-     (draw))))
-
-(defn full-thin
-  [color frame flicker? n]
-  (let [op (if (and (nth-frame 4 frame) flicker?) (rand) 1)]
-    (->>
-     (gen-rect color 0 0 @width 3)
-     (style {:transform (str "translateY(" (* n 10) "px)") :opacity op})
-     (draw))))
-
-
-(defn flicker-test [n frame]
-  (or (and (= n 10) (nth-frame 12 frame))
-      (and (= n 12) (nth-frame 8 frame))
-      (= n 44) (= n 45)
-      (and (= n 46) (nth-frame 8 frame))))
-
-(def slide-lines
- (->>   
-  (gen-group {:style {:filter (url (:id noiz)) 
-                      :transform "translateY(0%)" 
-                      :animation "slide-up 12s 1 ease-in"}}
-             (doall 
-               (map #(thin navy 1 true %) 
-                    (range 80))))
-   (atom)))
-
-(defn hold-lines [frame]
-  (gen-group {:style {:transform "translateY(0%)" :filter (url (:id noiz)) }}
-             (doall 
-               (map #(thin navy frame (flicker-test % frame) %) 
-                    (range 80)))))
 
 ;(doall (map deref levels))
 (def levels
@@ -487,248 +390,103 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (let  
+  (let
     [colors [
-            ;navy navy navy navy navy
-            ;white white white
-            navy navy navy navy
-            mint mint mint mint
-            yellow yellow yellow white
+      mint mint mint mint
+      ;yellow
+
              ]]
       (->>
-        (gen-rect (val-cyc frame colors) 0 0 "100%" "100%")
+        (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .9})
         (draw)))
   
-  
-  #_(anim-and-hold :lines frame 24
-                   @slide-lines
-                   (hold-lines frame))
-
-
-
-    ;; BIG NOISES
-  
-    #_(->>
-      (gen-rect (pattern (str "noise-" br-orange)) 0 0 @width @height)
-      (style {:transform "scale(50)"})
-      (draw)
-      (when (nth-frame 1 frame)))
-  
-  ;@scale-me
-  ;@bg
-  
-  
-    #_(->>
-      (gen-rect (pattern (str "noise-" mint)) 0 0 @width @height)
-      (style {:transform "scale(50) rotate(200deg)"})
-      (draw)
-      (when (nth-frame 3 frame)))
-
-    #_(->>
-      (gen-rect (pattern (str "noise-" pink)) 0 0 @width @height)
-      (style {:transform "scale(50) rotate(240deg)"})
-      (draw)
-      (when (nth-frame 5 frame)))
-  
-
-  
-
-  ;; VERTICAL RECTS
-  #_(->>
-    (gen-rect (pattern (:id navy-lines)) (* 0.1 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
+  (->>
+    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
     (draw)
     (when (nth-frame 3 frame)))
-  #_(->>
-    (gen-rect (pattern (:id blue-lines)) (* 0.32 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
-    (draw)
-    (when (nth-frame 6 frame)))
-
-  #_(->>
-    (gen-rect (pattern (:id mint-dots)) (* 0.54 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
-    (draw)
-    (when (nth-frame 9 frame)))
-
-  #_(->>
-    (gen-rect (pattern (:id navy-lines)) (* 0.76 @width) (* 0.15 @height) (* 0.2 @width) (* 0.7 @height))
-    (draw)
-    (when (nth-frame 12 frame)))
   
-  ;; HORIZ RECTS
-
-  #_(->>
-    (gen-rect (pattern (:id navy-lines)) (* 0.15 @width) (* 0.1 @height) (* 0.7 @width) (* 0.2 @height))
-    (draw)
-    (when (nth-frame 3 frame)))
-  #_(->>
-    (gen-rect (pattern (:id blue-lines)) (* 0.15 @width) (* 0.32 @height) (* 0.7 @width) (* 0.2 @height))
-    (draw)
-    (when (nth-frame 6 frame)))
-
-  #_(->>
-    (gen-rect (pattern (:id mint-lines)) (* 0.15 @width) (* 0.54 @height) (* 0.7 @width) (* 0.2 @height))
-    (draw)
-    (when (nth-frame 9 frame)))
-
-  #_(->>
-    (gen-rect (pattern (:id navy-lines)) (* 0.15 @width) (* 0.76 @height) (* 0.7 @width) (* 0.2 @height))
-    (draw)
-    (when (nth-frame 12 frame)))
-
-  ;@move-me-3
-  
-    #_(->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask"))
-      (style {:transform "rotate(135deg) scale(3)"})
+    
+    (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300)
       (draw)
       (when (nth-frame 4 frame)))
   
-  #_(->>
-    (gen-rect white (* 0.15 @width) (* 0.15 @height) 200 200)
-    (draw)
-    (when (nth-frame 3 frame)))
-  
-    #_(->>
-      (gen-rect (pattern (:id white-dots)) (* 0.75 @width) (* 0.75 @height) 200 200)
-      (draw)
-      (when-not (nth-frame 6 frame)))
-  
-      #_(->>
-        (gen-rect (pattern (:id white-dots)) (* 0.75 @width) (* 0.75 @height) 200 200)
-        (style {:transform "scale(2)"})
+      (->>
+        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 100)
         (draw)
-        (when (nth-frame 6 frame)))
-    
-  
-  #_(->>
-    (gen-shape (pattern (:id white-lines)) oct)
-      (style {:transform "translate(75vw, 15vh) scale(2)"})
-      (draw)
-      (when (nth-frame 2 frame)))
-  
-  #_(->>
-    (gen-shape (pattern (:id white-lines)) oct)
-      (style {:transform "translate(75vw, 15vh) scale(1.2)"})
-      (draw)
-      (when-not (nth-frame 2 frame)))
-  
-  #_(->>
-    (gen-shape (pattern (:id white-lines)) oct)
-      (style {:transform "translate(15vw, 75vh) scale(1.2) rotate(90deg)"})
-      (draw)
-      (when-not (nth-frame 8 frame)))
-  
-    #_(->>
-      (gen-shape (pattern (:id white-lines)) oct)
-        (style {:transform "translate(15vw, 75vh) scale(2) rotate(90deg)"})
-        (draw)
-        (when (nth-frame 8 frame)))
-  
-  ;@move-me-3a
-  ;@move-me-4
-
-  ;; NOISE FREAKOUT — GOOD FOR EARLY
-  #_(when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               100
-               100
-               (pattern (str "noise-" mint))
-               {:transform "scale(10)"}))
-  
-    #_(when (nth-frame 1 frame)
-      (freak-out @width
-                 @height
-                 200
-                 100
-                 (pattern (str "noise-" pink))
-                 {:transform "scale(10)"}))
-  
-  ;@bb4
-  
-  ;@move-me-3
-  ;@move-me-4
+        (when (nth-frame 2 frame)))
   
   
-
-    ;; MAIN FRIENDS
-    #_(->>
-      (gen-shape mint oct)
-        (style {:transform "translate(50vw, 70vh) scale(8) rotate(45deg)"})
-        (style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
-      (draw)
-      (when (nth-frame 6 frame)))
   
-    (->>
-      (gen-shape mint oct)
-        (style {:transform "translate(20vw, 30vh) scale(4)"})
-        (style {:mix-blend-mode "color-burn" :filter (url (:id noiz))} )
-        (draw)
-        (when (nth-frame 1 frame)))
-
-    (->>
-      (gen-shape br-orange oct)
-        (style {:transform "translate(50vw, 30vh) scale(6) rotate(45deg)"})
-        (style {:mix-blend-mode "darken" :filter (url (:id noiz))} )
-        (draw)
-        (when (nth-frame 1 frame)))
-    
-
-    #_(->>
-      (gen-shape pink hept)
-        (style {:transform "translate(40vw, 44vh) scale(2)"})
-        (style {:mix-blend-mode "color-burn"})
-        (style {:filter (url (:id noiz))})
-        (draw)
-        (when (nth-frame 1 frame)))
-
-#_(when (nth-frame 4 frame)(gen-line-grid white 4 
-  80 80 
-  {:col 20 :row 20}))
+  #_(gen-bg-lines orange (mod frame 80))
   
-  #_(when (nth-frame 6 frame)(gen-line-grid midnight 6 
+  #_(gen-line-grid midnight 2 
     80 80 
-    {:col 20 :row 20}))
+    {:col 20 :row 20})
   
-  (doall (map deref levels))
-
-
+  #_(->>
+    (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200)
+    (style {:transform "rotate(135deg)"})
+    (draw)
+    (when (nth-frame 4 frame)))
   
-    #_(gen-group 
-     {:mask (url "poly-mask-2")
-      :style {:mix-blend-mode "difference"}}
-     (doall 
-       (map #(full-thin pink frame (flicker-test % frame) %) 
-            (range 100))))
+  ;@bb1a
+  ;@bb1
+  ;@move-me-2
   
-  #_(when (nth-frame 10 frame)
+  
+  #_(gen-group {:mask (url "rect-buds") 
+              :style {:transform-origin "center" 
+                      :transform "translate(50vw, 30vh) rotate(135deg)"}}
+             (->>
+               (gen-rect pink 0 0 "100%" "100%")
+               (draw)
+               (when (nth-frame 1 frame)))
+             (when (nth-frame 1 frame)
+              (freak-out @width
+                         @height
+                         20
+                         400
+                         midnight)))
+  
+  #_(gen-group {:mask (url "rect-buds") 
+              :style {:transform-origin "center" :transform "translate(60vw, 60vh) rotate(170deg)"
+                      }}
+             (->>
+               (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) 400)
+               (draw)
+               (when (nth-frame 1 frame)))
+             (->>
+               (gen-rect midnight 0 0 "100%" "100%")
+               (style {:mix-blend-mode "difference"})
+               (draw)
+               (when (nth-frame 1 frame))))
+  
+  
+  #_(gen-group {:mask (url "poly-mask")}(when (nth-frame 1 frame)
     (freak-out @width
                @height
-               20
-               100
-               yellow))
+               40
+               200
+               yellow
+               {:opacity .5})))
   
-  #_(when (nth-frame 5 frame)
-      (freak-out @width
-                 @height
-                 40
-                 140
-                 pink))
+  
+  #_(->>
+    (gen-grid
+      80 80
+      {:col 40 :row 40}
+      (gen-circ white 5 5 5))
+     (map #(style {:opacity .5} %))
+     (map draw)
+     (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .001)) frame) item))))
+  
     
-#_(when (nth-frame 3 frame)
-      (freak-out @width
-                 @height
-                 40
-                 140
-                 blue))
-
-  ;@drops
-  ;@drops-2
   
-  ;@bb2
+  
 
-
-  )) ; cx end
+)) ; cx end
 
 
 ;; ----------- LOOP TIMERS ------------------------------
@@ -748,34 +506,45 @@
                  [:stop { :offset "0" :stop-color "white" :stop-opacity "0" }]
                  [:stop { :offset "1" :stop-color "white" :stop-opacity "1" }]]])
 
-(def masks [[:mask { :id "poly-mask" :key (random-uuid)}
+
+(def mask-list [
+            [ "poly-mask"
               [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
-            [:mask { :id "poly-mask-2" :key (random-uuid)}
+            [ "poly-mask-2"
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :animation "woosh-3 3s infinite"}}]]
-            [:mask { :id "grad-mask" :key (random-uuid)}
+            [ "grad-mask"
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
-            [:mask {:id "cutout" :key (random-uuid)}
+            [ "cutout"
              (->>
                (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
                (draw))
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
                 (draw))]
+              ["rect-buds" 
+               (->>
+                 (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
+                 (draw))
+                 ]
             ])
+
+(defn gen-mask
+  [id insides]
+  [:mask {:id id :key (random-uuid)} insides])
+
+(def masks (map (fn [[id & rest]] (apply gen-mask id rest)) mask-list))
 
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
-(def all-fills [gray mint navy blue orange br-orange pink white yellow])
+(def all-fills [gray mint navy blue orange br-orange pink white yellow midnight])
 
 
 (defn drawing []
   [:svg {
-    :style  {:mix-blend-mode 
-             (val-cyc @frame 
-                      ["multiply" "multiply" "multiply"
-                       "difference" "difference" "difference"
-                       "multiply" "multiply" "multiply"
-                       "difference"]) }
+    :style  {:mix-blend-mode
+             (val-cyc @frame
+                      ["multiply" "multiply"
+                       ]) }
     :width  (:width settings)
     :height (:height settings)}
      ;; filters
