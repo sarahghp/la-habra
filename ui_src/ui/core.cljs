@@ -285,7 +285,7 @@
   (->>
    (gen-shape white hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-4" "6s" "infinite")
+   (anim "woosh-4" "2s" "infinite")
    (draw)
    (atom)))
 
@@ -345,13 +345,13 @@
 (def bg (->>
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "13s" "infinite" {:timing "linear"})
+  (anim "sc-rot" "4s" "infinite" {:timing "linear"})
   (draw)
   (atom)))
 
 
   (def bg2 (->>
-    (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
+    (gen-circ (pattern (str "noise-" midnight)) (* .5 @width) (* .5 @height) 1800)
     (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
     (anim "sc-rot" "8s" "infinite" {:timing "linear" :delay "2s"})
     (draw)
@@ -381,7 +381,7 @@
       (gen-shape mint oct)
         (style {:transform "translate(20vw, 30vh) scale(2)"})
         (style {:mix-blend-mode "color-dodge" } )
-      (anim "woosh" "8s" "infinite")
+      (anim "woosh" "4s" "infinite")
       (draw)
       (atom)))
 
@@ -390,7 +390,7 @@
       (gen-shape mint oct)
         (style {:transform "translate(20vw, 30vh) scale(2)"})
         (style {:mix-blend-mode "color-burn" } )
-      (anim "woosh" "12s" "infinite")
+      (anim "woosh" "8s" "infinite")
       (draw)
       (atom)))
 
@@ -424,6 +424,12 @@
      (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .01)) 1460) item))))))
 
 
+(def wee-oo (->>
+  (gen-circ white (* 0.5 @width) (* 0.5 @height) 100 (url "grad-mask"))
+  (style {:transform "rotate(135deg)"})
+  (anim "scaley" "4s" "infinite")
+  (draw)
+  (atom)))
 
 
 
@@ -443,7 +449,7 @@
             (anim "fade-in-out" "10s" "infinite" {:delay (str (* .1 idx) "s")})
             (draw)
             (atom)))
-    (take 10 (repeatedly #(nth [orange pink white yellow white white mint navy midnight] (rand-int 12))))))
+    (take 10 (repeatedly #(nth [orange pink white yellow yellow] (rand-int 4))))))
 
 
 
@@ -463,8 +469,8 @@
   (let
     [colors [
       mint mint mint mint
-      ;yellow yellow yellow yellow
-      ;pink pink pink pink
+      yellow yellow yellow yellow
+      pink pink pink pink
 
              ]]
       (->>
@@ -476,31 +482,52 @@
 
 
 
+(doall (map deref levels))
 
 
-
-  #_(->>
+  (->>
     (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.45 @width) (* 0.75 @height))
     (style {:opacity .7})
     (draw)
-    (when (nth-frame 3 frame)))
+    (when (nth-frame 1 frame)))
 
-  #_(->>
+  (->>
     (gen-rect orange (* 0.45 @width) (* .2 @height) (* 0.45 @width) (* 0.75 @height))
     (style {:opacity .7})
     (style {:mix-blend-mode "color-burn"})
     (draw)
-    (when (nth-frame 4 frame)))
+    (when (nth-frame 1 frame)))
 
-  #_(->>
+  (->>
     (gen-rect pink (* 0.05 @width) (* .7 @height) (* 0.9 @width) (* 0.3 @height))
     (style {:opacity .7})
     (draw)
-    (when (nth-frame 2 frame)))
+    (when (nth-frame 1 frame)))
 
 
 
-#_(->>
+(->>
+  (gen-shape midnight tri)
+    (style {:transform (str "translate(20vw, 60vh) rotate(" (val-cyc frame [110]) "deg) scale(2)")})
+    (style {:opacity .5})
+    (draw)
+    (when (nth-frame 1 frame)))
+
+
+  (->>
+    (gen-shape br-orange tri)
+      (style {:transform (str "translate(45vw, 10vh) rotate(15deg) scale(" (val-cyc frame [8]) ")")})
+      (style {:opacity .5})
+      (draw)
+      (when (nth-frame 1 frame)))
+
+
+@bg
+@bg2
+
+(gen-group {:style {:transform "translate(20vw, 40vh) rotate(-60deg)"}}
+
+(->>
   (gen-shape midnight tri)
     (style {:transform "translate(20vw, 60vh) rotate(135deg) scale(2)"})
     (style {:opacity .5})
@@ -508,14 +535,82 @@
     (when (nth-frame 1 frame)))
 
 
-  #_(->>
+  (->>
     (gen-shape br-orange tri)
       (style {:transform (str "translate(45vw, 10vh) rotate(15deg) scale(" (val-cyc frame [1]) ")")})
       (style {:opacity .5})
       (draw)
-      (when (nth-frame 1 frame)))
+      (when (nth-frame 1 frame))))
 
 
+
+      #_(->>
+        (gen-circ white (* 0.5 @width) (* 0.5 @height) 400 (url "grad-mask"))
+        (style {:transform "rotate(135deg)"})
+        (draw)
+        (when (nth-frame 1 frame)))
+
+
+        #_(->>
+          (gen-circ gray (* 0.5 @width) (* 0.5 @height) 400 (url "grad-mask"))
+          (style {:transform "rotate(135deg)"})
+          (draw)
+          (when-not (nth-frame 2 frame)))
+
+          ;@wee-oo
+
+;@move-me
+
+(when (nth-frame 3 frame )(gen-group {:style {:mix-blend-mode "color-dodge"}}
+  (gen-bg-lines orange 80)))
+
+
+  (when-not (nth-frame 3 frame )(gen-group {:style {:mix-blend-mode "color-dodge"}}
+    (gen-bg-lines pink 80)))
+
+
+
+(when (nth-frame 8 frame)
+  (freak-out @width
+             @height
+             300
+             30
+             (pattern (str "noise-" pink))
+             {:transform "scale(20)"}))
+
+
+(when (nth-frame 2 frame)
+  (freak-out @width
+             @height
+             10
+             400
+             orange))
+
+ (when-not (nth-frame 2 frame)
+   (freak-out @width
+              @height
+              (val-cyc frame [10 10 40 40])
+              400
+              white))
+
+
+(when (nth-frame 4 frame)
+  (freak-out @width
+             @height
+             (val-cyc frame [20 20 20 20 40 40 80 80])
+             400
+             pink))
+
+
+
+@dots
+; @bb1
+; @bb1a
+;
+; @move-me-2
+; @move-me-3
+; @move-me-3a
+; @move-me-4a
 
 #_(->>
   (gen-grid
@@ -527,8 +622,26 @@
    (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx (val-cyc frame [.01 .001 .1]))) frame) item))))
 
 
+(->>
+  (gen-shape mint pent)
+    (style {:transform "translate(50vw, 50vh) scale(10)"})
+    (style {:mix-blend-mode "luminosity" :opacity .4})
+    (style {:filter (url (:id noiz))})
+    (draw)
+    (when (nth-frame 1 frame)))
+
+    (->>
+      (gen-shape pink pent)
+        (style {:transform "translate(20vw, 50vh) scale(10)"})
+        (style {:mix-blend-mode "luminosity" :opacity .4})
+        (style {:filter (url (:id noiz))})
+        (draw)
+        (when (nth-frame 1 frame)))
 
 
+#_(when (nth-frame  frame )(gen-line-grid midnight 4
+  80 80
+  {:col 20 :row 20}))
 
 
 
@@ -578,8 +691,8 @@
     :style  {:mix-blend-mode
              (val-cyc @frame
                       [
-                      "multiply"
-                      ;"difference" "difference"
+                      "multiply" "multiply"
+                      "difference" "difference"
                       ;"difference"
                       ;"luminosity"
                       ]) }
