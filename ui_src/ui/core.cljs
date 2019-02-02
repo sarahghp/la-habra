@@ -28,7 +28,8 @@
               gen-grid
               gen-line-grid
               gen-cols
-              gen-rows]]
+              gen-rows
+              gen-mask]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
              [ gen-color-noise
@@ -87,6 +88,7 @@
 ;; -------------------- HELPERS ---------------------------
 
 (defn sin [x] (.sin js/Math x))
+(defn cos [x] (.cos js/Math x))
 
 (defn style
   [changes shape]
@@ -114,8 +116,6 @@
         ret (if ran? solid fader)]
     (when-not init-frame (swap! ran assoc name frame))
     ret))
-
-
 
 
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------
@@ -174,6 +174,16 @@
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
 (a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
 (a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
+
+(defn fade-start!
+  [name op-end]
+  (make-frames! name [0 99 100]
+    (make-body "fill-opacity" [
+      (str 0)
+      (str 0)
+      (str op-end)])))
+
+(fade-start! "fi" 1)
 
 (make-frames!
   "woosh"
@@ -281,31 +291,31 @@
    (draw)
    (atom)))
 
-   (def move-me-3
-     (->>
-      (gen-shape midnight oct)
-      (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
-      (anim "loopy-left" "8s" "infinite")
-      (draw)
-      (atom)))
+(def move-me-3
+ (->>
+  (gen-shape midnight oct)
+  (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
+  (anim "loopy-left" "8s" "infinite")
+  (draw)
+  (atom)))
 
 
-      (def move-me-4
-        (->>
-         (gen-shape navy oct)
-         (style {:opacity .6 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
-         (anim "loopy-right" "8s" "infinite")
-         (draw)
-         (atom)))
+(def move-me-4
+  (->>
+   (gen-shape navy oct)
+   (style {:opacity .6 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
+   (anim "loopy-right" "8s" "infinite")
+   (draw)
+   (atom)))
 
 
-      (def move-me-5
-        (->>
-         (gen-shape (pattern (:id orange-lines)) oct)
-         (style {:opacity .9 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
-         (anim "loopy-right" "4s" "infinite")
-         (draw)
-         (atom)))
+(def move-me-5
+  (->>
+   (gen-shape (pattern (:id orange-lines)) oct)
+   (style {:opacity .9 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
+   (anim "loopy-right" "4s" "infinite")
+   (draw)
+   (atom)))
 
 
 (def bg (->>
@@ -324,14 +334,6 @@
           (draw)
           (atom)))
 
-(def scale-me-2
-        (->>
-          (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
-          (style {:transform "scale(1)"})
-          (anim "scaley" "8s" "infinite")
-          (draw)
-          (atom)))
-
 
   (def bb1
     (->>
@@ -341,20 +343,6 @@
       (anim "woosh" "4s" "infinite")
       (draw)
       (atom)))
-
-  (def bb1a
-    (->>
-      (gen-shape mint oct)
-        (style {:transform "translate(20vw, 30vh) scale(2)"})
-        (style {:mix-blend-mode "color-burn" } )
-      (anim "woosh" "2s" "infinite")
-      (draw)
-      (atom)))
-
-
-
-
-
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -400,91 +388,10 @@
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .9})
         (draw)))
-  
-  (->>
-    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
-    (draw)
-    (when (nth-frame 3 frame)))
-  
-    
-    (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300)
-      (draw)
-      (when (nth-frame 4 frame)))
-  
-      (->>
-        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 100)
-        (draw)
-        (when (nth-frame 2 frame)))
-  
-  
-  
-  #_(gen-bg-lines orange (mod frame 80))
-  
-  #_(gen-line-grid midnight 2 
-    80 80 
-    {:col 20 :row 20})
-  
-  #_(->>
-    (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200)
-    (style {:transform "rotate(135deg)"})
-    (draw)
-    (when (nth-frame 4 frame)))
-  
-  ;@bb1a
-  ;@bb1
-  ;@move-me-2
-  
-  
-  #_(gen-group {:mask (url "rect-buds") 
-              :style {:transform-origin "center" 
-                      :transform "translate(50vw, 30vh) rotate(135deg)"}}
-             (->>
-               (gen-rect pink 0 0 "100%" "100%")
-               (draw)
-               (when (nth-frame 1 frame)))
-             (when (nth-frame 1 frame)
-              (freak-out @width
-                         @height
-                         20
-                         400
-                         midnight)))
-  
-  #_(gen-group {:mask (url "rect-buds") 
-              :style {:transform-origin "center" :transform "translate(60vw, 60vh) rotate(170deg)"
-                      }}
-             (->>
-               (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) 400)
-               (draw)
-               (when (nth-frame 1 frame)))
-             (->>
-               (gen-rect midnight 0 0 "100%" "100%")
-               (style {:mix-blend-mode "difference"})
-               (draw)
-               (when (nth-frame 1 frame))))
-  
-  
-  #_(gen-group {:mask (url "poly-mask")}(when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               40
-               200
-               yellow
-               {:opacity .5})))
-  
-  
-  #_(->>
-    (gen-grid
-      80 80
-      {:col 40 :row 40}
-      (gen-circ white 5 5 5))
-     (map #(style {:opacity .5} %))
-     (map draw)
-     (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .001)) frame) item))))
-  
-    
-  
-  
+
+
+
+
 
 )) ; cx end
 
@@ -521,16 +428,14 @@
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
                 (draw))]
-              ["rect-buds" 
+              ["rect-buds"
                (->>
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
                  (draw))
                  ]
             ])
 
-(defn gen-mask
-  [id insides]
-  [:mask {:id id :key (random-uuid)} insides])
+
 
 (def masks (map (fn [[id & rest]] (apply gen-mask id rest)) mask-list))
 
