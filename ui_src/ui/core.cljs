@@ -283,41 +283,6 @@
    (draw)
    (atom)))
 
-(def move-me-2
-  (->>
-   (gen-shape (pattern (:id white-dots)) hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "10s" "infinite")
-   (draw)
-   (atom)))
-
-(def move-me-3
- (->>
-  (gen-shape midnight oct)
-  (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
-  (anim "loopy-left" "8s" "infinite")
-  (draw)
-  (atom)))
-
-
-(def move-me-4
-  (->>
-   (gen-shape navy oct)
-   (style {:opacity .6 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
-   (anim "loopy-right" "8s" "infinite")
-   (draw)
-   (atom)))
-
-
-(def move-me-5
-  (->>
-   (gen-shape (pattern (:id orange-lines)) oct)
-   (style {:opacity .9 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
-   (anim "loopy-right" "4s" "infinite")
-   (draw)
-   (atom)))
-
-
 (def bg (->>
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
@@ -326,23 +291,6 @@
   (atom)))
 
 
-(def scale-me
-        (->>
-          (gen-rect (pattern (str "noise-" br-orange)) 0 0 @width @height)
-          (style {:transform "scale(50)"})
-          (anim "scaley-huge" "8s" "infinite")
-          (draw)
-          (atom)))
-
-
-  (def bb1
-    (->>
-      (gen-shape mint oct)
-        (style {:transform "translate(20vw, 30vh) scale(2)"})
-        (style {:mix-blend-mode "color-dodge" } )
-      (anim "woosh" "4s" "infinite")
-      (draw)
-      (atom)))
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
