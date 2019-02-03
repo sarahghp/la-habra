@@ -247,8 +247,8 @@
 
 (make-frames!
  "dashy"
- [100]
- (make-body "stroke-dashoffset" [0]))
+ [0 50 100]
+ (make-body "stroke-dashoffset" ["60%" 0 "6s0%"]))
 
 (make-frames!
  "morph"
@@ -264,6 +264,29 @@
 ]))
 
 
+(make-frames!
+ "morph-2"
+  [0 30 45 75 100]
+ (make-body "d" [
+  (str "path('"b1"')")
+  (str "path('"b4"')")
+  (str "path('"b1"')")
+  (str "path('"b4"')")
+  (str "path('"b1"')")
+]))
+
+
+(make-frames!
+ "morph-3"
+  [0 30 45 75 100]
+ (make-body "d" [
+  (str "path('"b3"')")
+  (str "path('"b2"')")
+  (str "path('"b3"')")
+  (str "path('"b2"')")
+  (str "path('"b3"')")
+]))
+
 ;; --------------- ATOMS STORAGE --------------------
 
 (def drops
@@ -273,6 +296,14 @@
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (draw))
      (range 10))))
+
+     (def drops-2
+       (atom  (map
+          #(->>
+            (gen-rect mint (+ 30 (* % 160)) 10 200 36)
+            (anim "etof" "1.2s" "infinite" {:delay (str (* .7 %) "s")})
+            (draw))
+          (range 10))))
 
 
 (def move-me
@@ -293,7 +324,7 @@
 
 (def move-me-3
  (->>
-  (gen-shape midnight oct)
+  (gen-shape (pattern (:id navy-lines)) oct)
   (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
   (anim "loopy-left" "8s" "infinite")
   (draw)
@@ -302,7 +333,7 @@
 
 (def move-me-4
   (->>
-   (gen-shape navy oct)
+   (gen-shape (pattern (:id navy-dots)) oct)
    (style {:opacity .6 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
    (anim "loopy-right" "8s" "infinite")
    (draw)
@@ -340,9 +371,94 @@
       (gen-shape mint oct)
         (style {:transform "translate(20vw, 30vh) scale(2)"})
         (style {:mix-blend-mode "color-dodge" } )
-      (anim "woosh" "4s" "infinite")
+      (anim "woosh" "2s" "infinite")
       (draw)
       (atom)))
+
+      (def bb1a
+        (->>
+          (gen-shape mint oct)
+            (style {:transform "translate(20vw, 30vh) scale(2)"})
+            (style {:mix-blend-mode "color-burn" } )
+          (anim "woosh" "2s" "infinite" {:delay ".4s"})
+          (draw)
+          (atom)))
+
+(def beano
+  (->>
+    (gen-shape (pattern (:id white-dots)) b1)
+    (style {:transform "translate(30vw, 20vh) scale(4)"})
+    (anim "morph-2" "6s" "infinite")
+    (draw)
+    (atom)))
+
+
+    (def beano-7
+      (->>
+        (gen-shape (pattern (:id gray-dots-lg)) b1)
+        (style {:transform "translate(40vw, 40vh) scale(5)"})
+        (anim "morph-2" "4s" "infinite")
+        (draw)
+        (atom)))
+
+  (def beano-2
+    (->>
+      (gen-shape pink b1)
+      (style {:transform "translate(20vw, 20vh) scale(2)"})
+      (anim "morph-3" "5s" "infinite")
+      (draw)
+      (atom)))
+
+
+      (def beano-4
+        (->>
+          (gen-shape br-orange b1)
+          (style {:transform "translate(25vw, 30vh) scale(3)"})
+          (style {:mix-blend-mode "color-burn"})
+          (anim "morph-3" "4s" "infinite")
+          (draw)
+          (atom)))
+
+(def beano-3
+  (->>
+    (gen-shape "rgba(100, 100, 100, 0)" b3)
+      (style {:transform "translate(600px, 400px) scale(3)"})
+      (style {:stroke mint
+              :stroke-width 10
+              :stroke-dasharray 40
+              :stroke-dashoffset 600
+              :stroke-linecap "round"})
+              (anim "dashy" "10s" "infinite")
+      (draw)
+      (atom)))
+
+
+  (def beano-5
+    (->>
+      (gen-shape "rgba(100, 100, 100, 0)" b3)
+        (style {:transform "translate(800px, 700px) scale(4)"})
+        (style {:stroke yellow
+                :stroke-width 10
+                :stroke-dasharray 40
+                :stroke-dashoffset 600
+                :stroke-linecap "round"})
+                (anim "dashy" "6s" "infinite")
+        (draw)
+        (atom)))
+
+
+        #_(def beano-6
+          (->>
+            (gen-shape "rgba(100, 100, 100, 0)" b3)
+              (style {:transform "translate(800px, 700px) scale(4)"})
+              (style {:stroke yellow
+                      :stroke-width 10
+                      :stroke-dasharray 40
+                      :stroke-dashoffset 600
+                      :stroke-linecap "round"})
+                      (anim "dashy" "6s" "infinite")
+              (draw)
+              (atom)))
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -380,9 +496,10 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (let
     [colors [
-      mint mint mint mint
-      ;yellow
-
+      midnight midnight
+      yellow yellow
+      mint mint
+      pink pink
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
@@ -390,8 +507,76 @@
         (draw)))
 
 
+(doall (map deref levels))
 
 
+;@beano-2
+;@beano
+;@beano-4
+@beano-7
+
+;@move-me-3
+;@move-me-4
+
+;@beano-3
+;@beano-5
+
+(when (nth-frame 1 frame)
+  (freak-out @width
+             @height
+             4
+             1000
+             white))
+
+
+
+
+
+  #_(when (nth-frame 3 frame)
+    (freak-out @width
+               @height
+               40
+               100
+               br-orange))
+
+               #_(when (nth-frame 4 frame)
+                 (freak-out @width
+                            @height
+                            20
+                            200
+                            gray))
+
+
+                            #_(when (nth-frame 5 frame)
+                              (freak-out @width
+                                         @height
+                                         40
+                                         100
+                                         yellow))
+
+                                         #_(when (nth-frame 6 frame)
+                                           (freak-out @width
+                                                      @height
+                                                      20
+                                                      200
+                                                      mint))
+
+  ;(gen-bg-lines midnight (mod frame 80))
+
+  ;@drops
+  ;@drops-2
+
+
+  #_(when (nth-frame 2 frame)(gen-line-grid white 4
+    100 100
+    {:col 20 :row 20}))
+
+    #_(when (nth-frame 3 frame)(gen-line-grid pink 4
+      100 100
+      {:col 20 :row 20}))
+
+;@bb1
+;@bb1a
 
 )) ; cx end
 
@@ -448,7 +633,10 @@
   [:svg {
     :style  {:mix-blend-mode
              (val-cyc @frame
-                      ["multiply" "multiply"
+                      [
+                      "multiply"
+                      "difference"
+                      "luminosity"
                        ]) }
     :width  (:width settings)
     :height (:height settings)}
