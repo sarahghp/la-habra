@@ -1,7 +1,7 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
-            [ui.shapes :as shapes :refer [tri square pent hex hept oct 
+            [ui.shapes :as shapes :refer [tri square pent hex hept oct
                                           b1 b2 b3 b4]]
             [ui.fills :as fills :refer
               [gray
@@ -12,9 +12,9 @@
                dark-green
                light-pink
                pink
-               dark-pink 
+               dark-pink
                mauve]]
-            [ui.generators :refer 
+            [ui.generators :refer
              [draw
               freak-out
               gen-circ
@@ -98,6 +98,11 @@
   [seconds]
   (* 2 seconds))
 
+  (defn val-cyc
+    [frame vals]
+    (let [n (count vals)]
+      (nth vals (mod frame n))))
+
 
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------
 
@@ -132,7 +137,7 @@
 
 (defn back-and-forth!
   [name start-str finish-str]
-  (make-frames! name [0 50 100] 
+  (make-frames! name [0 50 100]
     (make-body "transform" [
       (str start-str)
       (str finish-str)
@@ -140,7 +145,7 @@
 
 (defn a-to-b!
   [name att start-str finish-str]
-  (make-frames! name [0 100] 
+  (make-frames! name [0 100]
     (make-body att [
       (str start-str)
       (str finish-str)])))
@@ -196,76 +201,77 @@
   (str "path('"hept"')")
   (str "path('"oct"')")
   (str "path('"tri"')")
-]))   
+]))
 
 
 ;; --------------- ATOMS STORAGE --------------------
 
-(def ffa 
+(def ffa
   (->>
    (->>
-     (gen-rect light-green 
-               (* 0.1 @width) 
+     (gen-rect light-green
+               (* 0.1 @width)
                (* 0.1 @height)
-               (* 0.4 @width) 
+               (* 0.4 @width)
                (* 0.4 @height)))
    (anim "new-fi" "4s" "1") draw atom))
 
-(def ffb 
+(def ffb
   (->>
    (->>
      (gen-rect mauve
-               (* 0.1 @width) 
-               (* 0.52 @height) 
-               (* 0.6 @width) 
+               (* 0.1 @width)
+               (* 0.52 @height)
+               (* 0.6 @width)
                (* 0.4 @height)))
    (anim "new-fi" "4s" "1") draw atom))
 
-(def ffc 
+(def ffc
   (->>
    (->>
      (gen-rect green
-               (* 0.52 @width) 
-               (* 0.1 @height) 
-               (* 0.18 @width) 
+               (* 0.52 @width)
+               (* 0.1 @height)
+               (* 0.18 @width)
                (* 0.4 @height)))
    (anim "new-fi" "4s" "1") draw atom))
 
-(def ffd 
+(def ffd
   (->>
    (->>
      (gen-rect dark-pink
-               (* 0.72 @width) 
-               (* 0.1 @height) 
-               (* 0.18 @width) 
+               (* 0.72 @width)
+               (* 0.1 @height)
+               (* 0.18 @width)
                (* 0.19 @height)))
    (anim "new-fi" "4s" "1") draw atom))
 
-(def ffe 
+(def ffe
   (->>
    (->>
      (gen-rect yellow
-               (* 0.72 @width) 
-               (* 0.31 @height) 
-               (* 0.18 @width) 
+               (* 0.72 @width)
+               (* 0.31 @height)
+               (* 0.18 @width)
                (* 0.19 @height)))
    (anim "new-fi" "4s" "1") draw atom))
 
-(def fff 
+(def fff
   (->>
    (->>
      (gen-rect green
-               (* 0.72 @width) 
-               (* 0.52 @height) 
-               (* 0.18 @width) 
+               (* 0.72 @width)
+               (* 0.52 @height)
+               (* 0.18 @width)
                (* 0.4 @height)))
    (anim "new-fi" "2s" "1") draw atom))
 
-    
+
 (def move-me
   (->>
    (gen-circ (pattern (:id white-dots)) 100 100 100)
    (style {:opacity .8 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:mix-blend-mode "difference"})
    (anim "woosh" "10s" "infinite")
    (draw)
    (atom)))
@@ -295,24 +301,24 @@
    (atom)))
 
 
-(def bg (->> 
+(def bg (->>
   (gen-circ (pattern (str "noise-" dark-green)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
+  (anim "sc-rot" "32s" "infinite" {:timing "linear" :delay "1s"})
   (draw)
   (atom)))
 
-(def bg-2 (->> 
+(def bg-2 (->>
   (gen-circ (pattern (str "noise-" mauve)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "32s" "infinite" {:timing "linear" :delay "7s"})
+  (anim "sc-rot" "32s" "infinite" {:timing "linear" :delay ".5s"})
   (draw)
   (atom)))
 
-(def bgs 
-  (map-indexed 
+(def bgs
+  (map-indexed
     (fn [idx color]
-          (->> 
+          (->>
             (gen-circ (pattern (str "noise-" color)) (* .5 @width) (* .5 @height) 1800)
             (style {:opacity .4 :transform-origin "center" :transform "scale(4)"})
             (anim "sc-rot" (str (rand 32) "s") "1" {:timing "linear" :delay (str (rand 4) "s")})
@@ -333,9 +339,46 @@
   (->>
     (gen-shape (pattern (:id gray-dots)) tri)
     (style {:opacity .4 :transform "translate(400px, 400px) scale(4)"})
-    (anim "morph" "6s" "infinite")
+    ; (anim "morph" "6s" "infinite")
     (draw)
     (atom)))
+
+
+(def morphy-3
+  (->>
+    (gen-shape (pattern (:id gray-dots)) tri)
+    (style {:opacity .4 :transform "translate(700px, 300px) scale(5)"})
+    (style {:mix-blend-mode "color-burn"})
+    ; (anim "morph" "4s" "infinite")
+    (draw)
+    (atom)))
+
+    (def morphy-4
+      (->>
+        (gen-shape (pattern (:id gray-dots)) tri)
+        (style {:opacity .4 :transform "translate(900px, 400px) scale(4)"})
+        ; (anim "morph" "6s" "infinite")
+        (draw)
+        (atom)))
+
+        (def morphy-5
+          (->>
+            (gen-shape (pattern (:id gray-dots)) tri)
+            (style {:opacity .4 :transform "translate(1200px, 500px) scale(8)"})
+            (style {:mix-blend-mode "color-burn"})
+            ;(anim "morph" "1s" "infinite")
+            (draw)
+            (atom)))
+
+
+            (def morphy-6
+              (->>
+                (gen-shape (pattern (:id gray-dots)) tri)
+                (style {:opacity .4 :transform "translate(200px, 600px) scale(8)"})
+                (style {:mix-blend-mode "color-burn"})
+                ;(anim "morph" "1.4s" "infinite")
+                (draw)
+                (atom)))
 
 ;; ------------------- DRAWING HELPERS ------------------------
 
@@ -370,7 +413,7 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (let [colors [ 
+    (let [colors [
         ;white
         dark-green dark-green dark-green dark-green dark-green
         ] ; gray white yellow light-green green dark-green light-pink pink dark-pink  mauve
@@ -379,39 +422,41 @@
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .9})
             (draw)))
-  
-  ;@bg-2
-    
-  (doall (map deref bgs))
-  ;(gen-bg-lines dark-green  (mod frame 80))
 
-  
+  ;@bg-2
+
+  #_(doall (map deref bgs))
+
+
   ;@ffa
   (->>
-    (gen-rect light-green 
-              (* 0.1 @width) 
+    (gen-rect light-green
+              (* 0.1 @width)
               (* 0.1 @height)
-              (* 0.4 @width) 
+              (* 0.4 @width)
               (* 0.4 @height))
+    (style {:transform (str "scale(" (val-cyc frame [2]) ")")})
     (draw)
-    (when-not (nth-frame 8 frame)))
-  
-;  @ffb
-  (->>
+    (when-not (nth-frame 0 frame)))
+
+ ;@ffb
+(->>
     (gen-rect mauve
-              (* 0.1 @width) 
-              (* 0.52 @height) 
-              (* 0.6 @width) 
+              (* 0.1 @width)
+              (* 0.52 @height)
+              (* 0.6 @width)
               (* 0.4 @height))
+              (style {:transform (str "scale(" (val-cyc frame [1.4]) ")")})
+
     (draw)
-    (when-not (nth-frame 12 frame)))
-  
+    (when-not (nth-frame 0 frame)))
+
   ;@ffc
   (->>
     (gen-rect green
-              (* 0.52 @width) 
-              (* 0.1 @height) 
-              (* 0.18 @width) 
+              (* 0.52 @width)
+              (* 0.1 @height)
+              (* 0.18 @width)
               (* 0.4 @height))
   (draw)
   (when-not (nth-frame 0 frame)))
@@ -419,51 +464,58 @@
   ;@ffd
   (->>
     (gen-rect dark-pink
-              (* 0.72 @width) 
-              (* 0.1 @height) 
-              (* 0.18 @width) 
+              (* 0.72 @width)
+              (* 0.1 @height)
+              (* 0.18 @width)
               (* 0.19 @height))
   (draw)
-  (when-not (nth-frame 10 frame)))
+  (when-not (nth-frame 0 frame)))
 
   ;@ffe
   (->>
     (gen-rect yellow
-              (* 0.72 @width) 
-              (* 0.31 @height) 
-              (* 0.18 @width) 
+              (* 0.72 @width)
+              (* 0.31 @height)
+              (* 0.18 @width)
               (* 0.19 @height))
+              (style {:transform (str "scale(" (val-cyc frame [8]) ")")})
+              (style {:mix-blend-mode "color-burn"})
   (draw)
-  (when (nth-frame 2 frame)))
+  (when (nth-frame 1 frame)))
 
   ;@fff
   (->>
     (gen-rect green
-              (* 0.72 @width) 
-              (* 0.52 @height) 
-              (* 0.18 @width) 
+              (* 0.72 @width)
+              (* 0.52 @height)
+              (* 0.18 @width)
               (* 0.4 @height))
     (draw)
-    (when-not (nth-frame 12 frame)))
-  
-  (gen-bg-lines dark-green  (mod frame 80))
-    (gen-bg-lines light-pink (mod (+ 4 frame) 80) {:transform "translateY(6px)" :opacity .4})
+    (when-not (nth-frame 0 frame)))
+
+    ;@bg
+    ;@bg-2
+
+    ;(gen-bg-lines dark-green  (mod frame 80))
 
 
-  
-  ;@bg
-  @morphy
-  @morphy-2
-  
+    @morphy-2
+    @morphy-3
+    @morphy-4
+    @morphy-5
+    @morphy-6
+
+
+  ;(gen-bg-lines dark-green  (mod frame 80))
+    ;(gen-bg-lines light-pink (mod (+ 4 frame) 80) {:transform "translateY(6px)" :opacity .4})
+
+
   @move-me
   @move-me-4
 
-  @move-me-2
-  @move-me-3
-  
   )) ; cx end
-  
-  
+
+
 ;; ----------- LOOP TIMERS ------------------------------
 
 (defonce frame (atom 0))
@@ -475,7 +527,7 @@
 (defonce start-frame-timer
   (js/setInterval
     #(swap! frame inc) 500))
-    
+
 
 ;; ----------- DEFS AND DRAW ------------------------------
 
@@ -495,7 +547,7 @@
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
                 (draw))]
             ])
-  
+
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
 (def all-fills [gray white yellow light-green green dark-green light-pink pink dark-pink mauve])
@@ -505,7 +557,7 @@
      ;; filters
     (map #(:def %) all-filters)
     ;; masks and patterns
-    [:defs 
+    [:defs
      noise
      (map identity gradients)
      (map identity masks)
@@ -534,7 +586,7 @@
                         shadow ])]
 
     ;; then here dereference a state full of polys
-    @collection 
+    @collection
     ])
 
 (reagent/render-component [drawing]
