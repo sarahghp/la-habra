@@ -2,12 +2,14 @@
 
 ;; solid colors A
 (def gray "#53535c")
-(def mint "#00baa9")
+(def mint "#00b7b1")
 (def navy "#161f93")
-(def blue "#001752")
+(def blue "#0090e4")
 (def midnight "#05061f")
 (def orange "#ffaa37")
 (def br-orange "#f80")
-(def pink "#fb5d67")
+(def pink "#ff2392")
 (def white "#e4e4e7")
-(def yellow "#fff70f")
+(def yellow "#ffaf00")
+(def red "#ff0000")
+(def purple "#46009e")

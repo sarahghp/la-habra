@@ -1,7 +1,8 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
-            [ui.shapes :as shapes :refer [tri square pent hex hept oct
+            [ui.shapes :as shapes :refer [tri square pent hex hept oct 
+                                          arc-half
                                           b1 b2 b3 b4]]
             [ui.fills :as fills :refer
               [ gray
@@ -13,7 +14,9 @@
                 br-orange
                 pink
                 white
-                yellow]]
+                yellow
+                red
+                purple ]]
             [ui.generators :refer
              [draw
               freak-out
@@ -366,90 +369,271 @@
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
-        ;(style {:filter (url (:id noiz))})
-        ;(style {:transform "scale(11)"})
-        (style {:opacity .9})
+        (style {:filter (url (:id noiz))})
+        (style {:transform "scale(11)"})
+        (style {:opacity .5})
         (draw)))
 
-        #_(doall (map #(->>
-          (gen-line [0 (* 12 %)] [100 (* 12 %)] white (+ .3 %))
-          (draw))
-                    (range 10)))
+
+  ;; As
+  
+  (gen-group {}
+             (gen-group {:style {:transform "translate(2vw, 5vh)"}}
+                        (->>
+                          (gen-shape yellow tri)
+                            (style {:transform "rotateY(35deg) scale(.7)"})
+                            (draw)
+                            (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line ["8.5vw" "12vh"] ["8.5vw" "16.5vh"] red 8)
+                          (draw)
+                          (when (nth-frame 1 frame))))
+             
+             (gen-group {:style {:transform "translate(16vw, 5vh)"}}
+                        (->>
+                          (gen-shape mint tri)
+                            (style {:transform "rotateY(35deg) scale(.7)"})
+                            (draw)
+                            (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line ["8.5vw" "12vh"] ["8.5vw" "16.5vh"] yellow 8)
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-circ midnight "8.5vw" "12vh" 14)
+                          (style {:transform "translate(-1px, -1px)"})
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-circ pink "8.5vw" "12vh" 14)
+                          (draw)
+                          (when (nth-frame 1 frame))))
+             
+             (gen-group {:style {:transform "translate(30vw, 5vh)"}}
+                        (->>
+                          (gen-shape red tri)
+                            (style {:transform "rotateY(35deg) scale(.7)"})
+                            (draw)
+                            (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line ["8.5vw" "12vh"] ["8.5vw" "16.5vh"] yellow 8)
+                          (draw)
+                          (when (nth-frame 1 frame)))))
+  
+  ;; Bs
+  #_(gen-group {:style {:transform "translateY(200px)"}}
+             
+             (gen-group {:style {:transform "translate(5vw, 5vh)"}}
+              (->>
+                (gen-rect blue 10 10 120 120 (url "b"))
+                (draw)
+                (when (nth-frame 1 frame)))
+                        
+              (->>
+                (gen-rect (pattern (:id navy-lines)) 10 10 120 120 (url "b"))
+                (draw)
+                (when (nth-frame 1 frame)))
+                  
+              (->>
+                (gen-line [10 30] [50 30] yellow 8)
+                (style {:transform "translate(1px, 2px)"})
+                (style {:mix-blend-mode "color-burn"})
+                (draw)
+                (when (nth-frame 1 frame)))
+                        
+              (->>
+                (gen-line [10 30] [50 30] yellow 8)
+                (draw)
+                (when (nth-frame 1 frame)))
+                        
+              (->>
+                (gen-line [8 70] [50 70] yellow 8)
+                (style {:transform "translate(3px, 3px)"})
+                (style {:mix-blend-mode "color-burn"})
+                (draw)
+                (when (nth-frame 1 frame)))
+
+              (->>
+                (gen-line [10 70] [50 70] yellow 8)
+                (draw)
+                (when (nth-frame 1 frame))))
+             
+             
+             
+              (gen-group {:style {:transform "translate(20vw, 5vh)"}}
+               (->>
+                 (gen-rect pink 10 10 120 120 (url "b"))
+                 (draw)
+                 (when (nth-frame 1 frame)))
+                         
+                   
+               (->>
+                 (gen-line [10 30] [50 30] mint 8)
+                 (style {:transform "translate(1px, 2px)"})
+                 (style {:mix-blend-mode "color-burn"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+                         
+               (->>
+                 (gen-line [10 30] [50 30] mint 8)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+                         
+               (->>
+                 (gen-line [8 70] [50 70] mint 8)
+                 (style {:transform "translate(3px, 3px)"})
+                 (style {:mix-blend-mode "color-burn"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+
+               (->>
+                 (gen-line [10 70] [50 70] mint 8)
+                 (draw)
+                 (when (nth-frame 1 frame))))
+             
+             
+             (gen-group {:style {:transform "translate(35vw, 5vh)"}}
+              (->>
+                (gen-rect yellow 10 10 120 120 (url "b"))
+                (draw)
+                (when (nth-frame 1 frame)))
+                        
+                
+                        
+              (->>
+                (gen-line [10 30] [50 30] red 8)
+                (draw)
+                (when (nth-frame 1 frame)))
+
+
+              (->>
+                (gen-line [10 70] [50 70] red 8)
+                (draw)
+                (when (nth-frame 1 frame))))
+             
+             
+             
+             )
+  
+  
+  ;; Cs
+  (gen-group {:style {:transform "translateY(200px)"}}
+
+             
+    (gen-group {}
+               (->>
+                 (gen-shape purple arc-half)
+                   (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
+                   (draw)
+                   (when (nth-frame 1 frame)))
+              
+              (->>
+                (gen-shape mint arc-half)
+                  (style {:transform-origin "center" :transform "translate(120px, 68px) scale(1) rotateZ(-65deg)"})
+                  (draw)
+                  (when (nth-frame 1 frame)))
+              
+                (->>
+                  (gen-shape pink arc-half)
+                    (style {:transform-origin "center" :transform "translate(100px, 40px) scale(1)"})
+                    (draw)
+                    (when (nth-frame 1 frame))))
+             
+             
+    (gen-group {:style {:transform "translate(15vw)"}}
+                             (->>
+                               (gen-shape red arc-half)
+                                 (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
+                                 (draw)
+                                 (when (nth-frame 1 frame)))
+                            
+                            (->>
+                              (gen-shape red arc-half)
+                                (style {:transform-origin "center" :transform "translate(120px, 68px) scale(1) rotateZ(-65deg)"})
+                                (draw)
+                                (when (nth-frame 1 frame)))
+                            
+                              (->>
+                                (gen-shape red arc-half)
+                                  (style {:transform-origin "center" :transform "translate(100px, 40px) scale(1)"})
+                                  (draw)
+                                  (when (nth-frame 1 frame))))
+               
+               
+   (gen-group {:style {:transform "translate(30vw)"}}
+                            (->>
+                              (gen-shape blue arc-half)
+                                (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
+                                (draw)
+                                (when (nth-frame 1 frame)))
+                           
+                           (->>
+                             (gen-shape blue arc-half)
+                               (style {:transform-origin "center" :transform "translate(120px, 68px) scale(1) rotateZ(-65deg)"})
+                               (draw)
+                               (when (nth-frame 1 frame)))
+                           
+                             (->>
+                               (gen-shape blue arc-half)
+                                 (style {:transform-origin "center" :transform "translate(100px, 40px) scale(1)"})
+                                 (draw)
+                                 (when (nth-frame 1 frame))))
+               
+             
+             
+             
+             )
+  
+  ;; Ns
+  #_(gen-group {:style {:transform "translateY(200px)"}}
+             (gen-group {:style {:transform "translate(5vw, 5vh)"}}
+                        (->>
+                          (gen-poly yellow [10 10 
+                                          68 46 
+                                          68 10 
+                                          100 10
+                                          100 120 
+                                          10 120])
+                          (draw))
+                        (->>
+                          (gen-line [38 90] [38 120] red 8)
+                          (draw)
+                          (when (nth-frame 1 frame))))
+             
+             (gen-group {:style {:transform "translate(19vw, 5vh)"} 
+                         :mask (url "n")}
+                        (->>
+                          (gen-rect purple 10 10 100 110)
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                       
+                          (freak-out 10 100
+                                     10 110
+                                     10
+                                     14
+                                     mint)
+                        (->>
+                          (gen-line [38 90] [38 120] red 8)
+                          (draw)
+                          (when (nth-frame 1 frame))))
+             
+               (gen-group {:style {:transform "translate(34vw, 5vh)"}}
+                          (->>
+                            (gen-poly pink [10 10 
+                                            68 46 
+                                            68 10 
+                                            100 10
+                                            100 120 
+                                            10 120])
+                            (draw))
+                          (->>
+                            (gen-line [38 90] [38 120] yellow 8)
+                            (draw)
+                            (when (nth-frame 1 frame)))))
 
   
-        #_(doall (map 
-                #(->>
-                  (gen-circ white 19 (+ 10 (* % 19)) (+ 2 (- 4 %)))
-                  (draw))
-                (range 10)))
-    ;@move-me
-    ;@move-me-2
-    ;@move-me-3
-  
-
-  (->>
-    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-    (draw)
-    (when (nth-frame 1 frame)))
-  
-    (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-      (style {:transform "translate(10vw, 10vh)"})
-      (style {:mix-blend-mode "screen"})
-      (draw)
-      (when (nth-frame 1 frame)))
-    
-  
-    (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-      (style {:transform "translate(30vw, -20vh) rotate(100deg)"})
-
-      (draw)
-      (when (nth-frame 1 frame)))
-    
-  
-    (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-            (style {:transform "translate(40vw, 60vh) rotate(200deg)"})
-      (draw)
-      (when (nth-frame 1 frame)))
-    
-  
 
   
-  
-    #_(->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-      (style {:transform "translate(20vw, -10vh)"})
-      (draw)
-      (when (nth-frame 1 frame)))
-    
-  
-      #_(->>
-        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-        (style {:transform "translate(20vw, -10vh) rotate(120deg)"})
-        (draw)
-        (when (nth-frame 1 frame)))
-  
-  
-      #_(->>
-        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-        (style {:transform "translate(-20vw, -20vh) scale(3) rotate(200deg)"})
-        (draw)
-        (when (nth-frame 1 frame)))
-      
-      
-  
-  
-
-
-  #_(when (nth-frame 2 frame)
-    (freak-out @width
-               @height
-               20
-               40
-               mint
-               {:mix-blend-mode "screen"}))
 
 )) ; cx end
 
@@ -495,7 +679,37 @@
                  (draw))
                  ]
                 
+              
                 ["nn" [ :image {:key (random-uuid) :x "100" :y "200" :width "100%" :height "100%" :xlinkHref "img/blop.png" :style {:transform-origin "center" :transform "scale(10)" :animation "woosh 6s infinite"} }]]
+                
+                
+                ;; ALPHA MASKS
+                ["b"
+                  (gen-group {}(->>
+                    (gen-circ white 63 36 26)
+                    (style {:opacity 1})
+                    (draw))
+                  (->>
+                    (gen-rect white 10 10 60 50)
+                    (draw))
+                  (->>
+                    (gen-circ white 68 74 26)
+                    (style {:opacity 1})
+                    (draw))
+                  (->>
+                    (gen-rect white 10 50 60 50)
+                    (draw)))
+                  ]
+                ["n"
+                 (->>
+                   (gen-poly white [10 10 
+                                   68 46 
+                                   68 10 
+                                   100 10
+                                   100 120 
+                                   10 120])
+                   (draw))]
+
             ])
 
 
