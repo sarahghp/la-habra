@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 100 100"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+  <rect x="0" y="0" width="200" height="200" fill="<%= background %>"  />
+  <line stroke="<%= foreground %>" y1="0" stroke-width="0.3" x1="0" y2="0" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="12" stroke-width="1.3" x1="0" y2="12" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="24" stroke-width="2.3" x1="0" y2="24" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="36" stroke-width="3.3" x1="0" y2="36" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="48" stroke-width="4.3" x1="0" y2="48" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="60" stroke-width="5.3" x1="0" y2="60" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="72" stroke-width="6.3" x1="0" y2="72" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="84" stroke-width="7.3" x1="0" y2="84" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="96" stroke-width="8.3" x1="0" y2="96" x2="100" /> 
+  <line stroke="<%= foreground %>" y1="108" stroke-width="9.3" x1="0" y2="108" x2="100" />
+</svg>

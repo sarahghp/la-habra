@@ -68,6 +68,11 @@
                   :image-link "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSdoc2xhKDM2MCwgMTAwJSwgMTAwJSwgMCknIC8+CiAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzMnIGhlaWdodD0nMTAnIGZpbGw9JyNmODAnIC8+Cjwvc3ZnPg==" })
 
 
+(def pink-scale-dots {:id "pink-scale-dots"
+                      :image-link "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTA1IiB2aWV3Qm94PSIwIDAgMjAgMTA1IgogICAgdmVyc2lvbj0iMS4xIgogICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICAgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJoc2xhKDM1NiwgOTUlLCA2NyUsIDApIiAgLz4KICA8Y2lyY2xlIGN4PSIxOSIgY3k9IjEwIiByPSI2IiBmaWxsPSJoc2xhKDM1NiwgOTUlLCA2NyUsIDEpIiAvPgogIDxjaXJjbGUgY3g9IjE5IiBjeT0iMjkiIHI9IjUiIGZpbGw9ImhzbGEoMzU2LCA5NSUsIDY3JSwgMSkiIC8+CiAgPGNpcmNsZSBjeD0iMTkiIGN5PSI0OCIgcj0iNCIgZmlsbD0iaHNsYSgzNTYsIDk1JSwgNjclLCAxKSIgLz4KICA8Y2lyY2xlIGN4PSIxOSIgY3k9IjY3IiByPSIzIiBmaWxsPSJoc2xhKDM1NiwgOTUlLCA2NyUsIDEpIiAvPgogIDxjaXJjbGUgY3g9IjE5IiBjeT0iODYiIHI9IjIiIGZpbGw9ImhzbGEoMzU2LCA5NSUsIDY3JSwgMSkiIC8+CiAgPGNpcmNsZSBjeD0iMTkiIGN5PSIxMDUiIHI9IjEiIGZpbGw9ImhzbGEoMzU2LCA5NSUsIDY3JSwgMSkiIC8+Cjwvc3ZnPgo=" })
+
+(def pink-scale-lines {:id "pink-scale-lines"
+                       :image-link "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiCiAgICB2ZXJzaW9uPSIxLjEiCiAgICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgICB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9ImhzbGEoMzU2LCA5NSUsIDY3JSwgMCkiICAvPgogIDxsaW5lIHN0cm9rZT0iaHNsYSgzNTYsIDk1JSwgNjclLCAxKSIgeTE9IjAiIHN0cm9rZS13aWR0aD0iMC4zIiB4MT0iMCIgeTI9IjAiIHgyPSIxMDAiIC8+IAogIDxsaW5lIHN0cm9rZT0iaHNsYSgzNTYsIDk1JSwgNjclLCAxKSIgeTE9IjEyIiBzdHJva2Utd2lkdGg9IjEuMyIgeDE9IjAiIHkyPSIxMiIgeDI9IjEwMCIgLz4gCiAgPGxpbmUgc3Ryb2tlPSJoc2xhKDM1NiwgOTUlLCA2NyUsIDEpIiB5MT0iMjQiIHN0cm9rZS13aWR0aD0iMi4zIiB4MT0iMCIgeTI9IjI0IiB4Mj0iMTAwIiAvPiAKICA8bGluZSBzdHJva2U9ImhzbGEoMzU2LCA5NSUsIDY3JSwgMSkiIHkxPSIzNiIgc3Ryb2tlLXdpZHRoPSIzLjMiIHgxPSIwIiB5Mj0iMzYiIHgyPSIxMDAiIC8+IAogIDxsaW5lIHN0cm9rZT0iaHNsYSgzNTYsIDk1JSwgNjclLCAxKSIgeTE9IjQ4IiBzdHJva2Utd2lkdGg9IjQuMyIgeDE9IjAiIHkyPSI0OCIgeDI9IjEwMCIgLz4gCiAgPGxpbmUgc3Ryb2tlPSJoc2xhKDM1NiwgOTUlLCA2NyUsIDEpIiB5MT0iNjAiIHN0cm9rZS13aWR0aD0iNS4zIiB4MT0iMCIgeTI9IjYwIiB4Mj0iMTAwIiAvPiAKICA8bGluZSBzdHJva2U9ImhzbGEoMzU2LCA5NSUsIDY3JSwgMSkiIHkxPSI3MiIgc3Ryb2tlLXdpZHRoPSI2LjMiIHgxPSIwIiB5Mj0iNzIiIHgyPSIxMDAiIC8+IAogIDxsaW5lIHN0cm9rZT0iaHNsYSgzNTYsIDk1JSwgNjclLCAxKSIgeTE9Ijg0IiBzdHJva2Utd2lkdGg9IjcuMyIgeDE9IjAiIHkyPSI4NCIgeDI9IjEwMCIgLz4gCiAgPGxpbmUgc3Ryb2tlPSJoc2xhKDM1NiwgOTUlLCA2NyUsIDEpIiB5MT0iOTYiIHN0cm9rZS13aWR0aD0iOC4zIiB4MT0iMCIgeTI9Ijk2IiB4Mj0iMTAwIiAvPiAKICA8bGluZSBzdHJva2U9ImhzbGEoMzU2LCA5NSUsIDY3JSwgMSkiIHkxPSIxMDgiIHN0cm9rZS13aWR0aD0iOS4zIiB4MT0iMCIgeTI9IjEwOCIgeDI9IjEwMCIgLz4KPC9zdmc+Cg==" })
 
 ;; gen pattern string to use patterns as colors
 (defn pattern 
@@ -87,6 +92,21 @@
               :y "0"
               :width "10"
               :height "10"
+              :key (random-uuid) }]])
+
+
+(defn sized-pattern-def
+  [{ :keys [id image-link] } w h]
+  [:pattern { :id id
+              :patternUnits "userSpaceOnUse"
+              :width w
+              :height h
+              :key (random-uuid)}
+    [:image { :xlinkHref image-link
+              :x "0"
+              :y "0"
+              :width w
+              :height h
               :key (random-uuid) }]])
 
 ;; noise pattern for now — TODO: replace me

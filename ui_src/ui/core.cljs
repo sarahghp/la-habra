@@ -35,6 +35,7 @@
              [ gen-color-noise
                pattern
                pattern-def
+               sized-pattern-def
                blue-dots
                blue-lines
                pink-dots
@@ -57,7 +58,9 @@
                white-dots-lg
                white-lines
                shadow
-               noise]]
+               noise
+               pink-scale-dots
+               pink-scale-lines]]
             [ui.animations :as animations :refer
               [ make-body
                 splice-bodies
@@ -279,7 +282,27 @@
   (->>
    (gen-shape white hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:filter (url (:id noiz))})
+   (anim "woosh-4" "3s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-2
+  (->>
+   (gen-shape pink hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:filter (url (:id noiz))})
    (anim "woosh-4" "6s" "infinite")
+   (draw)
+   (atom)))
+
+(def move-me-3
+  (->>
+   (gen-shape (pattern (:id mint-dots)) hept)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:filter (url (:id noiz))})
+   (style {:mix-blend-mode "exclusion"})
+   (anim "woosh-4" "4s" "infinite")
    (draw)
    (atom)))
 
@@ -289,6 +312,8 @@
   (anim "sc-rot" "3s" "infinite" {:timing "linear"})
   (draw)
   (atom)))
+
+
 
 
 
@@ -316,6 +341,12 @@
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 
+#_(println (doall (map 
+        #(->>
+          (gen-circ white 19 (+ 10 (* % 19)) (+ 2 (- 4 %)))
+          (draw))
+        (range 10))))
+
 (defonce collection (atom (list)))
 ;(reset! ran {})
 
@@ -330,18 +361,100 @@
     [colors [
       mint mint mint mint
       ;yellow
+             ;"#000"
 
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+        ;(style {:filter (url (:id noiz))})
+        ;(style {:transform "scale(11)"})
         (style {:opacity .9})
         (draw)))
 
+        #_(doall (map #(->>
+          (gen-line [0 (* 12 %)] [100 (* 12 %)] white (+ .3 %))
+          (draw))
+                    (range 10)))
+
+  
+        #_(doall (map 
+                #(->>
+                  (gen-circ white 19 (+ 10 (* % 19)) (+ 2 (- 4 %)))
+                  (draw))
+                (range 10)))
+    ;@move-me
+    ;@move-me-2
+    ;@move-me-3
+  
+
+  (->>
+    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+    (draw)
+    (when (nth-frame 1 frame)))
+  
+    (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+      (style {:transform "translate(10vw, 10vh)"})
+      (style {:mix-blend-mode "screen"})
+      (draw)
+      (when (nth-frame 1 frame)))
+    
+  
+    (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+      (style {:transform "translate(30vw, -20vh) rotate(100deg)"})
+
+      (draw)
+      (when (nth-frame 1 frame)))
+    
+  
+    (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+            (style {:transform "translate(40vw, 60vh) rotate(200deg)"})
+      (draw)
+      (when (nth-frame 1 frame)))
+    
+  
+
+  
+  
+    #_(->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+      (style {:transform "translate(20vw, -10vh)"})
+      (draw)
+      (when (nth-frame 1 frame)))
+    
+  
+      #_(->>
+        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+        (style {:transform "translate(20vw, -10vh) rotate(120deg)"})
+        (draw)
+        (when (nth-frame 1 frame)))
+  
+  
+      #_(->>
+        (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+        (style {:transform "translate(-20vw, -20vh) scale(3) rotate(200deg)"})
+        (draw)
+        (when (nth-frame 1 frame)))
+      
+      
+  
+  
 
 
-
+  #_(when (nth-frame 2 frame)
+    (freak-out @width
+               @height
+               20
+               40
+               mint
+               {:mix-blend-mode "screen"}))
 
 )) ; cx end
+
+;(defonce collection (atom (list (cx 1))))
+
 
 
 ;; ----------- LOOP TIMERS ------------------------------
@@ -381,6 +494,8 @@
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
                  (draw))
                  ]
+                
+                ["nn" [ :image {:key (random-uuid) :x "100" :y "200" :width "100%" :height "100%" :xlinkHref "img/blop.png" :style {:transform-origin "center" :transform "scale(10)" :animation "woosh 6s infinite"} }]]
             ])
 
 
@@ -399,7 +514,10 @@
                       ["multiply" "multiply"
                        ]) }
     :width  (:width settings)
-    :height (:height settings)}
+    :height (:height settings)
+         ;:width 100
+         ;:height 100
+         }
      ;; filters
     (map #(:def %) all-filters)
     ;; masks and patterns
@@ -408,6 +526,8 @@
      (map identity gradients)
      (map identity masks)
      (map gen-color-noise all-fills)
+     (sized-pattern-def pink-scale-dots 20 105)
+     (sized-pattern-def pink-scale-lines 200 200)
      (map pattern-def [ blue-dots
                         blue-lines
                         pink-dots
@@ -429,10 +549,13 @@
                         white-dots
                         white-dots-lg
                         white-lines
-                        shadow ])]
+                        shadow
+                        pink-scale-dots
+                        pink-scale-lines ])]
 
     ;; then here dereference a state full of polys
     @collection
+
     ])
 
 (reagent/render-component [drawing]
