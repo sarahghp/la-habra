@@ -377,7 +377,7 @@
 
   ;; As
   
-  (gen-group {}
+  #_(gen-group {}
              (gen-group {:style {:transform "translate(2vw, 5vh)"}}
                         (->>
                           (gen-shape yellow tri)
@@ -517,7 +517,7 @@
   
   
   ;; Cs
-  (gen-group {:style {:transform "translateY(200px)"}}
+  (gen-group {:style {:transform "translateY(166px)"}}
 
              
     (gen-group {}
@@ -540,7 +540,7 @@
                     (when (nth-frame 1 frame))))
              
              
-    (gen-group {:style {:transform "translate(15vw)"}}
+    #_(gen-group {:style {:transform "translate(15vw)"}}
                              (->>
                                (gen-shape red arc-half)
                                  (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
@@ -560,7 +560,7 @@
                                   (when (nth-frame 1 frame))))
                
                
-   (gen-group {:style {:transform "translate(30vw)"}}
+   #_(gen-group {:style {:transform "translate(30vw)"}}
                             (->>
                               (gen-shape blue arc-half)
                                 (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
@@ -583,6 +583,129 @@
              
              
              )
+  
+  
+  ;; Ds
+  (gen-group {:style {:transform "translateY(190px)"}}
+             
+             (gen-group {:style {:transform "translateX(28vw)"}
+                         :mask (url "d") }
+            
+                (->>
+                  (gen-rect yellow 10 10 120 120)
+                  (draw)
+                  (when (nth-frame 1 frame)))
+                        
+                  (freak-out 10 120
+                             10 120
+                             10
+                             20
+                             red)
+                        
+                (->>
+                  (gen-line [10 70] [80 70] mint 8)
+                  (draw)
+                  (when (nth-frame 1 frame))))
+             
+             
+            #_(gen-group {:style {:transform "translateX(19vw)"}
+                        :mask (url "d") }
+           
+               (->>
+                 (gen-rect purple 10 10 120 120)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+                       
+               (->>
+                 (gen-line [10 70] [80 70] pink 8)
+                 (draw)
+                 (when (nth-frame 1 frame))))
+             
+           #_(gen-group {:style {:transform "translateX(35vw)"}
+                       :mask (url "d") }
+          
+              (->>
+                (gen-rect blue 10 10 120 120)
+                (draw)
+                (when (nth-frame 1 frame)))
+                      
+                (->>
+                  (gen-rect (pattern (:id navy-lines)) -10 -10 140 180)
+                  (style {:transform "rotate(15deg)"})
+                  (draw)
+                  (when (nth-frame 1 frame)))
+                      
+              (->>
+                (gen-line [10 70] [80 70] pink 8)
+                (draw)
+                (when (nth-frame 1 frame))))
+             
+             )
+  
+  
+  ;; Es
+  (gen-group {:style {:transform "translateY(200px)"}}
+             
+             (gen-group {:style {:transform "translateX(48vw)"}}
+                        (->>
+                          (gen-rect pink 10 10 120 120 (url "e"))
+                          (draw))
+                        (->>
+                          (gen-line [60 42] [96 42] yellow 8)
+                          (style {:transform "translate(-1px, 6px)"})
+                          (style {:mix-blend-mode "color-burn"})
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line [60 42] [96 42] yellow 8)
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line [60 66] [96 66] yellow 8)
+                          (style {:transform "translate(-1px, 6px)"})
+                          (style {:mix-blend-mode "color-burn"})
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line [60 66] [96 66] yellow 8)
+                          (draw)
+                          (when (nth-frame 1 frame)))))
+  
+  ;; Is
+  (gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(40vw)"}}
+               
+               (->>
+                 (gen-rect mint 10 10 50 110)
+                 (draw))
+               
+               (->>
+                 (gen-rect blue 10 10 50 20)
+                 (draw))
+  
+               ))
+  
+  ;; Os
+  (gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(16vw)"}}
+               
+               (->>
+                 (gen-circ blue 60 60 60)
+                 (draw))
+               
+               (->>
+                 (gen-circ purple 60 60 8)
+                 (draw)))
+             
+     #_(gen-group {:style {:transform "translateX(44vw)"}}
+                
+                (->>
+                  (gen-circ red 60 60 60)
+                  (draw))
+                
+                (->>
+                  (gen-circ yellow 60 60 8)
+                  (draw))))
   
   ;; Ns
   #_(gen-group {:style {:transform "translateY(200px)"}}
@@ -700,6 +823,25 @@
                     (gen-rect white 10 50 60 50)
                     (draw)))
                   ]
+                ["d" 
+                  (gen-group {}(->>
+                    (gen-circ white 66 67 60)
+                    (style {:opacity 1})
+                    (draw))
+                  (->>
+                    (gen-rect white 10 10 69 117)
+                    (draw)))]
+                ["e"
+                 (->>
+                   (gen-poly white [10 10 
+                                   110 10
+                                   110 40
+                                   95 40
+                                   95 70
+                                   110 70
+                                   110 120
+                                   10 120])
+                   (draw))]
                 ["n"
                  (->>
                    (gen-poly white [10 10 
