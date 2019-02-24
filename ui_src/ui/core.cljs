@@ -1116,7 +1116,7 @@
                           (draw))))
   
   ;; Ms
-  (gen-group {:style {:transform "translateY(200px)"}}
+  #_(gen-group {:style {:transform "translateY(200px)"}}
              (gen-group {:style {:transform "translate(5vw)"}
                          :mask (url "m")}
                         (->>
@@ -1248,7 +1248,73 @@
                   (gen-circ yellow 60 60 8)
                   (draw))))
   
+  ;; Ps
+  (gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(5vw)"}}
+               (->>
+                 (gen-rect pink 10 10 50 110)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-rect pink 60 10 20 68)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-shape pink arc-half)
+                   (style {:transform "translate(120px, -16px) rotate(180deg) scale(.57)"})
+                   (draw)
+                   (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [10 40] [50 40] midnight 8)
+                 (style {:transform "translate(2px, 2px)"})
+                 (draw))
+               (->>
+                 (gen-line [10 40] [50 40] mint 6)
+                 (draw)))
 
+   (gen-group {:style {:transform "translateX(19vw)"}}
+              (->>
+                (gen-rect yellow 10 10 50 110)
+                (draw)
+                (when (nth-frame 1 frame)))
+              (->>
+                (gen-rect yellow 60 10 20 68)
+                (draw)
+                (when (nth-frame 1 frame)))
+              (->>
+                (gen-shape yellow arc-half)
+                  (style {:transform "translate(120px, -16px) rotate(180deg) scale(.57)"})
+                  (draw)
+                  (when (nth-frame 1 frame)))
+              (->>
+                (gen-circ red 50 40 14)
+                (draw))
+              (->>
+                (gen-line [10 40] [50 40] midnight 9)
+                (style {:transform "translate(2px, 0px)"})
+                (draw))
+              (->>
+                (gen-line [10 40] [50 40] mint 8)
+                (draw)))
+             
+     (gen-group {:style {:transform "translateX(34vw)"}}
+                (->>
+                  (gen-rect purple 10 10 50 110)
+                  (draw)
+                  (when (nth-frame 1 frame)))
+                (->>
+                  (gen-rect purple 60 10 20 68)
+                  (draw)
+                  (when (nth-frame 1 frame)))
+                (->>
+                  (gen-shape purple arc-half)
+                    (style {:transform "translate(120px, -16px) rotate(180deg) scale(.57)"})
+                    (draw)
+                    (when (nth-frame 1 frame)))
+                (->>
+                  (gen-line [10 40] [50 40] pink 8)
+                  (draw)))
+     )
   
 
   
