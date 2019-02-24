@@ -74,8 +74,12 @@
 
 (defn gen-group
   ([internals] (gen-group {} internals))
-  ([{ :keys [style mask] :or { style {} mask "" } } & internals]
-    [:g { :key (random-uuid) :style style :mask mask } internals ]))
+  ([{ :keys [style mask transform] :or { style {} mask "" transform "" } } & internals]
+    [:g {:key (random-uuid) 
+         :style style 
+         :mask mask 
+         :transform transform } 
+     internals ]))
 
 (defn gen-offset-lines
   [f h space-btw line-num]
