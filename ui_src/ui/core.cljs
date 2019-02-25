@@ -1340,7 +1340,7 @@
                   (when (nth-frame 1 frame)))
                 
                 (->>
-                  (gen-line [65 65] [116 120] purple 12)
+                  (gen-line [65 65] [118 122] purple 13)
                   (draw)
                   (when (nth-frame 1 frame)))
                 (->>
