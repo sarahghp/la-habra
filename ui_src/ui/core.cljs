@@ -2,7 +2,7 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct 
-                                          arc-half arc-bottom 
+                                          arc-half arc-bottom-j arc-bottom-u
                                           b1 b2 b3 b4]]
             [ui.fills :as fills :refer
               [ gray
@@ -968,7 +968,7 @@
   #_(gen-group {:style {:transform "translateY(200px)"}}
              (gen-group {:style {:transform "translateX(5vw)"}}
                         (->>
-                          (gen-shape pink arc-bottom)
+                          (gen-shape pink arc-bottom-j)
                             (style {:transform "translateY(80px)"})
                             (draw))
                         (->>
@@ -987,13 +987,13 @@
              
              (gen-group {:style {:transform "translateX(19vw)"}}
                         (->>
-                          (gen-shape blue arc-bottom)
+                          (gen-shape blue arc-bottom-j)
                             (style {:transform "translateY(80px)"})
                             (draw))
                         
                         (gen-group {:mask (url "j")}
                                    (->>
-                                     (gen-shape red arc-bottom)
+                                     (gen-shape red arc-bottom-j)
                                        (style {:transform "translateY(80px)"})
                                        (draw))
                                    (->>
@@ -1315,9 +1315,8 @@
                   (gen-line [10 40] [50 40] pink 8)
                   (draw))))
   
-  
   ;; Qs 
-  (gen-group {:style {:transform "translateY(200px)"}}
+  #_(gen-group {:style {:transform "translateY(200px)"}}
     (gen-group {:style {:transform "translateX(5vw)"}}
                
                (->>
@@ -1463,7 +1462,100 @@
      )
   
 
+  ;; Ts
+  #_(gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(5vw)"}
+                :mask (url "t")}
+               (->>
+                 (gen-rect yellow 0 0 120 120)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               
+               (freak-out 0 120
+                          0 120
+                          10
+                          20
+                          red))
+      (gen-group {:style {:transform "translateX(19vw)"}
+                  :mask (url "t")}
+                 (->>
+                   (gen-rect blue 0 0 120 120)
+                   (draw)
+                   (when (nth-frame 1 frame))))
+      
+     (gen-group {:style {:transform "translateX(34vw)"}
+          :mask (url "t")}
+         (->>
+           (gen-rect mint 0 0 120 120)
+           (draw)
+           (when (nth-frame 1 frame)))
+        (->>
+          (gen-rect red 0 0 46 120)
+          (draw)
+          (when (nth-frame 1 frame)))
+        (->>
+          (gen-rect yellow 46 0 10 120)
+          (draw)
+          (when (nth-frame 1 frame))))
+     )
   
+  
+  ;; Us
+  (gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(5vw)"}}
+               (->>
+                 (gen-shape pink arc-bottom-u)
+                   (style {:transform "translateY(80px)"})
+                   (draw))
+               (->>
+                 (gen-rect pink 0 10 100 78)
+                 (draw))
+               
+               
+               (->>
+                 (gen-line [50 10] [50 68] midnight 13)
+                 (style {:opacity .6})
+                 (style {:transform "translate(1px, 2px)"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               
+               (->>
+                 (gen-line [50 10] [50 68] mint 8)
+                 (draw)
+                 (when (nth-frame 1 frame))))
+             
+             (gen-group {:style {:transform "translateX(19vw)"}}
+                        (->>
+                          (gen-shape purple arc-bottom-u)
+                            (style {:transform "translateY(80px)"})
+                            (draw))
+                        (->>
+                          (gen-rect purple 0 10 100 78)
+                          (draw))
+                        
+                        (gen-group {:mask (url "u")}
+                                   (->>
+                                     (gen-shape red arc-bottom-u)
+                                       (style {:transform "translateY(80px)"})
+                                       (draw))
+                                   (->>
+                                     (gen-rect red 50 10 50 80)
+                                     (draw)))
+
+                        (->>
+                          (gen-line [50 10] [50 68] yellow 8)
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line [46 10] [46 68] midnight 3)
+                          (style {:opacity .6})
+                          (draw)
+                          (when (nth-frame 1 frame)))
+                        (->>
+                          (gen-line [50 68] [50 128] midnight 3)
+                          (style {:opacity .6})
+                          (draw)
+                          (when (nth-frame 1 frame)))))
 )) ; cx end
 
 ;(defonce collection (atom (list (cx 1))))
@@ -1620,6 +1712,21 @@
                                               85 75
                                               120 120])
                               (draw)))]
+                ["t"
+                 (->>
+                   (gen-poly white [10 10
+                                     100 10
+                                     100 50
+                                     76 50
+                                     76 120
+                                     34 120
+                                     34 50
+                                     10 50])
+                   (draw))]
+                ["u"
+                 (->>
+                   (gen-rect white 50 10 55 140)
+                   (draw))]
 
             ])
 
