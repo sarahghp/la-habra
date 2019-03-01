@@ -1501,7 +1501,7 @@
   
   
   ;; Us
-  (gen-group {:style {:transform "translateY(200px)"}}
+  #_(gen-group {:style {:transform "translateY(200px)"}}
     (gen-group {:style {:transform "translateX(5vw)"}}
                (->>
                  (gen-shape pink arc-bottom-u)
@@ -1556,6 +1556,192 @@
                           (style {:opacity .6})
                           (draw)
                           (when (nth-frame 1 frame)))))
+
+  ;; Vs
+  #_(gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(5vw)"}}
+               (->>
+                 (gen-poly yellow [10 10
+                                   120 10
+                                   65 120])
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [65 10] [65 50] purple 8)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-circ red 65 50 14)
+                 (draw)))
+     (gen-group {:style {:transform "translateX(19vw)"}}
+               (->>
+                 (gen-poly red [10 10
+                                   120 10
+                                   65 120])
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [65 10] [65 50] midnight 11)
+                 (style {:transform "translate(1px, 1px)"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [65 10] [65 50] mint 8)
+                 (draw)
+                 (when (nth-frame 1 frame)))))
+  
+  ;; Ws
+  #_(gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(5vw)"}
+                :mask (url "w")}
+               (->>
+                 (gen-rect mint 0 0 160 120)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (gen-group {:style {:transform "translateX(-3px)"}}
+                          (gen-cols purple 8 10 16))
+               (->>
+                 (gen-line [70 10] [70 50] midnight 10)
+                 (style {:transform "translate(0px, 2px)"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [70 10] [70 50] yellow 8)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [100 10] [100 50] midnight 10)
+                 (style {:transform "translate(0px, 2px)"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [100 10] [100 50] yellow 8)
+                 (draw)
+                 (when (nth-frame 1 frame))))
+      (gen-group {:style {:transform "translateX(25vw)"}
+                  :mask (url "w")}
+                 (->>
+                   (gen-rect pink 0 0 160 120)
+                   (draw)
+                   (when (nth-frame 1 frame)))
+                 
+                 (->>
+                   (gen-line [70 10] [70 40] midnight 12)
+                   (style {:transform "translate(1px, 2px)"})
+                   (draw)
+                   (when (nth-frame 1 frame)))
+                 (->>
+                   (gen-line [70 10] [70 40] mint 8)
+                   (draw)
+                   (when (nth-frame 1 frame)))
+                 (->>
+                   (gen-line [100 10] [100 40] midnight 12)
+                   (style {:transform "translate(1px, 2px)"})
+                   (draw)
+                   (when (nth-frame 1 frame)))
+                 (->>
+                   (gen-line [100 10] [100 40] mint 8)
+                   (draw)
+                   (when (nth-frame 1 frame))))
+     )
+  
+  ;; Xs
+  #_(gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(5vw)"}}
+               (->>
+                 (gen-poly purple [10 10
+                                   120 10
+                                   65 120])
+                 (draw)
+                 (when (nth-frame 1 frame)))
+              (->>
+                (gen-poly purple [10 10
+                                  120 10
+                                  65 120])
+                (style {:transform "rotate(180deg)"})
+                (draw)
+                (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [65 10] [65 40] pink 8)
+                 (draw)
+                 (when (nth-frame 1 frame)))
+               (->>
+                 (gen-line [65 90] [65 120] pink 8)
+                 (draw)
+                 (when (nth-frame 1 frame))))
+
+       (gen-group {:style {:transform "translateX(19vw)"}}
+                  (->>
+                    (gen-poly red [10 10
+                                      120 10
+                                      65 120])
+                    (draw))
+                  (->>
+                    (gen-poly red [10 10
+                                      120 10
+                                      65 120])
+                    (style {:transform "rotate(180deg)"})
+                    (draw))
+
+                  (gen-group {:mask (url "x")}
+                             (->>
+                               (gen-poly pink [10 10
+                                                 120 10
+                                                 65 120])
+                               (draw))
+                             (->>
+                               (gen-poly pink [10 10
+                                                 120 10
+                                                 65 120])
+                               (style {:transform "rotate(180deg)"})
+                               (draw)))
+                  
+          
+                   (->>
+                     (gen-line [65 10] [65 40] yellow 8)
+                     (draw)
+                     (when (nth-frame 1 frame)))
+                   (->>
+                     (gen-line [65 90] [65 120] yellow 8)
+                     (draw)
+                     (when (nth-frame 1 frame)))
+                  (->>
+                    (gen-circ midnight 64 66 15)
+                    (draw))
+                  (->>
+                    (gen-circ mint 65 65 14)
+                    (draw))
+                  
+                 ))
+
+  ;; Ys
+  
+  (gen-group {:style {:transform "translateY(200px)"}}
+    (gen-group {:style {:transform "translateX(5vw)"}}
+               (gen-group {:mask (url "y")}
+                          (->>
+                            (gen-rect yellow 0 0 120 120)
+                            (draw))
+                          (gen-rows red 6 30 12))
+               (->>
+                 (gen-line [65 10] [65 35] blue 8)
+                 (draw)
+                 (when (nth-frame 1 frame))))
+    (gen-group {:style {:transform "translateX(19vw)"}}
+               (gen-group {:mask (url "y")}
+                          (->>
+                            (gen-rect blue 0 0 120 120)
+                            (draw)))
+               (->>
+                 (gen-line [65 7] [65 35] midnight 13)
+                 (style {:transform "translate(-1px, 3px)"})
+                 (draw))
+               (->>
+                 (gen-line [65 10] [65 35] red 8)
+                 (draw)
+                 (when (nth-frame 1 frame)))))
+  
+  
 )) ; cx end
 
 ;(defonce collection (atom (list (cx 1))))
@@ -1622,13 +1808,14 @@
                     (draw)))
                   ]
                 ["d" 
-                  (gen-group {}(->>
-                    (gen-circ white 66 67 60)
-                    (style {:opacity 1})
-                    (draw))
-                  (->>
-                    (gen-rect white 10 10 69 117)
-                    (draw)))]
+                  (gen-group {}
+                             (->>
+                              (gen-circ white 66 67 60)
+                              (style {:opacity 1})
+                              (draw))
+                            (->>
+                              (gen-rect white 10 10 69 117)
+                              (draw)))]
                 ["e"
                  (->>
                    (gen-poly white [10 10 
@@ -1727,6 +1914,32 @@
                  (->>
                    (gen-rect white 50 10 55 140)
                    (draw))]
+                ["w"
+                 (gen-group {}
+                            (->>
+                              (gen-poly white [10 10
+                                             120 10
+                                             65 120])
+                              (draw))
+                            (->>
+                              (gen-poly white [45 10
+                                             155 10
+                                             110 120])
+                              (draw)))]
+                ["x"
+                 (->>
+                   (gen-rect white 70 10 75 140)
+                   (draw))]
+                ["y"
+                 (gen-group {}
+                            (->>
+                              (gen-poly white [10 10
+                                                120 10
+                                                65 100])
+                              (draw))
+                            (->>
+                              (gen-rect white 45 50 38 70)
+                              (draw)))]
 
             ])
 
