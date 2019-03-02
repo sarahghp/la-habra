@@ -2,7 +2,8 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct 
-                                          arc-half arc-bottom-j arc-bottom-u s-half
+                                          arc-half arc-bottom-j arc-bottom-u 
+                                          s-half s-curve
                                           b1 b2 b3 b4]]
             [ui.fills :as fills :refer
               [ gray
@@ -1501,7 +1502,7 @@
   
   
   ;;Ss
-  (gen-group {:style {:transform "translateY(200px)"}}
+  #_(gen-group {:style {:transform "translateY(200px)"}}
              (gen-group {:style {:transform "translateX(5vw)"}}
                         (gen-group {:style {:transform "rotate(-2deg)"}}
                                    (->>
@@ -1519,7 +1520,26 @@
                                      (draw))
                                    (gen-group {:style {:transform "translateX(-64px) rotate(-45deg)"}}
                                               (gen-rows purple 10 10 18))))
-             )
+             (gen-group {:style {:transform "translateX(33vw)"}}
+                        (gen-group {:mask (url "s")}
+                         (->>
+                           (gen-rect yellow 0 0 120 120)
+                           (draw))
+                          (->>
+                            (gen-shape "hsla(360, 100%, 100%, 0)" s-curve)
+                              (style {:stroke red 
+                                      :stroke-width 8})
+                              (style {:transform "translate(64px, 30px) scale(1)"})
+                              (draw))
+                          (->>
+                            (gen-shape "hsla(360, 100%, 100%, 0)" s-curve)
+                              (style {:stroke red 
+                                      :stroke-width 8})
+                              (style {:transform "translate(34px, 73px) rotate(188deg) scale(1)"})
+                              (draw)))))
+                        
+                        
+             
   
   ;; Us
   #_(gen-group {:style {:transform "translateY(200px)"}}

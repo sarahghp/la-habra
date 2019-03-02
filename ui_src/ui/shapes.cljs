@@ -32,3 +32,4 @@
 (def arc-bottom-j "M0 0 A 30 38 0 0 0 100 0 Z")
 (def arc-bottom-u "M0 0 A 32 32 0 0 0 100 0 Z")
 (def s-half "M0 0 A 35 35 0 1 1 4.5 66.5 Z")
+(def s-curve "M 0 0 C 12 -1 5 -1 20 4")
