@@ -6,6 +6,20 @@
 ;; --------------------- ANIMATIONS --------------------- ;;
 ;; ------------------------------------------------------ ;;
 
+;; -------------------- SHAPE ANIMATION HELPER ---------------------------
+
+(defn anim
+  ([name duration count shape] (anim name duration count {} shape))
+  ([name duration count opts shape]
+  (let [animations
+    { :animation-name name
+      :animation-fill-mode "forwards"
+      :animation-duration duration
+      :animation-iteration-count count
+      :animation-delay (or (:delay opts) 0)
+      :animation-timing-function (or (:timing opts) "ease")}]
+          (update-in shape [:style] #(merge % animations)))))
+
 ;; -------------------- CSS MANIP HELPERS ------------------
 
 (defn make-body
