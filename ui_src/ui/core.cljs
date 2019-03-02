@@ -2,7 +2,7 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
             [ui.helpers :refer [style url val-cyc]]
-            [ui.letters :refer [alpha-shapes alpha-mask-list]]
+            [ui.letters :refer [alpha-shapes alpha-mask-list letter-defs]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct 
                                           arc-half arc-bottom-j arc-bottom-u 
                                           s-half s-curve
@@ -23,6 +23,7 @@
             [ui.generators :refer
              [draw
               freak-out
+              gen-use
               gen-circ
               gen-group
               gen-line
@@ -301,6 +302,21 @@
     (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
 
 
+(def alpha-keys (apply concat (map (fn [[_ letter-val]]
+                     (map name (keys letter-val))) 
+                   alpha-shapes)))
+
+
+(def alpha-display (map-indexed (fn [idx l-key]
+                                  (let [num-horiz (.floor js/Math (/ (- @width 120) 160))
+                                        row (.floor js/Math (/ idx num-horiz))
+                                        col (mod idx num-horiz)]
+                                  (gen-use {:href (str "#" l-key) 
+                                            :x (+ 40 (* 150 col)) 
+                                            :y (+ 30 (* 160 row))})))
+                                (sort alpha-keys)))
+
+
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
@@ -317,8 +333,8 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (let
     [colors [
-      mint 
-      ;yellow
+      ;mint 
+      midnight
              ;"#000"
 
              ]]
@@ -328,14 +344,50 @@
         (style {:transform "scale(11)"})
         (style {:opacity .5})
         (draw)))
-
-
   
+  
+  (gen-group {:transform "scale(1)"}
+             (doall alpha-display))
+  
+  (gen-group {:mask (url "d") :style {:transform "translate(490px, 190px)"}}
+             (freak-out 10 120
+                          10 120
+                          10
+                          20
+                          red))
+  
+  (gen-group {:mask (url "f") :style {:transform "translate(640px, 350px)"}}
+             (freak-out 10 120
+                       10 120
+                       10
+                       10
+                       blue
+                       {:stroke purple 
+                        :stroke-width 1 }))
+  
+  (gen-group {:mask (url "m")
+              :transform "scale(1.1)"
+              :style {:transform "translate(790px, 830px)"}}
+              (freak-out 0 110
+                        0 120
+                        10
+                        20
+                        yellow))
+  
+  (gen-group {:mask (url "n")
+              :style {:transform "translate(340px, 990px)"}}
+              (freak-out 10 100
+                          10 110
+                          10
+                          14
+                          mint))
+  
+
   
   
 )) ; cx end
 
-;(defonce collection (atom (list (cx 1))))
+#_(defonce collection (atom (list (cx 1))))
 
 
 
@@ -400,10 +452,8 @@
                       ["multiply" "multiply"
                        ]) }
     :width  (:width settings)
-    :height (:height settings)
-         ;:width 100
-         ;:height 100
-         }
+    :height 2000}
+    ;:height (:height settings)}
      ;; filters
     (map #(:def %) all-filters)
     ;; masks and patterns
@@ -413,6 +463,7 @@
      (map identity masks)
      (map identity alpha-masks)
      (map gen-color-noise all-fills)
+     (map deref (letter-defs alpha-shapes))
      (sized-pattern-def pink-scale-dots 20 105)
      (sized-pattern-def pink-scale-lines 200 200)
      (map pattern-def [ blue-dots

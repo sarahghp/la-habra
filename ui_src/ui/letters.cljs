@@ -1,5 +1,6 @@
 (ns ui.letters
   (:require 
+   [reagent.core :as reagent :refer [atom]]
    [ui.helpers :refer [style url]]
    [ui.shapes :as shapes :refer [arc-half arc-bottom-j arc-bottom-u 
                                  s-half s-curve tri]]
@@ -13,7 +14,6 @@
        red
        purple
        yellow ]]
-   [ui.patterns :as patterns :refer [pattern navy-lines]]
    [ui.generators :refer
     [draw
      freak-out
@@ -27,49 +27,60 @@
      gen-poly]]))
 
 
-;; create shapes object and import into core
+;; create shapes object and import into core ✔
 ;; iterate through double-depth to create defs with :id from the inner label (eg :id "a1")
 ;;    and a map of the id strings for each letter {:a ["a1" "a2" "a3"]}
 ;; create a pick helper that takes an array and gives a random pick from that array
 ;; create a letter function that takes a letter and emits a <use> with picked def 
 
+(defn letter-defs [letter-map] 
+  (apply concat (map (fn [[_ letter-val]]
+                       (map (fn [[var-key var-val]]
+                              (atom (gen-group {:id var-key} var-val)))
+                            letter-val)) 
+                     letter-map)))
+         
 (def alpha-shapes {:a {:a1 
                        (gen-group {}
                                   (->>
-                                    (gen-shape yellow tri)
-                                      (style {:transform "rotateY(35deg) scale(.7)"})
-                                      (draw))
+                                    (gen-poly yellow [10 130
+                                                      120 130
+                                                      65 10])
+                                    (draw))
                                   (->>
-                                    (gen-line [93 90] [93 130] red 8)
+                                    (gen-line [65 90] [65 130] red 8)
                                     (draw)))
                        :a2 
                        (gen-group {}
                                   (->>
-                                    (gen-shape mint tri)
-                                      (style {:transform "rotateY(35deg) scale(.7)"})
-                                      (draw))
-                                  (->>
-                                    (gen-line [93 90] [93 130] yellow 8)
+                                    (gen-poly mint [10 130
+                                                    120 130
+                                                    65 10])
                                     (draw))
                                   (->>
-                                    (gen-circ midnight 93 90 14)
+                                    (gen-line [65 90] [65 130] yellow 8)
+                                    (draw))
+                                  (->>
+                                    (gen-circ midnight 65 90 14)
                                     (style {:transform "translate(-1px, -1px)"})
                                     (draw))
                                   (->>
-                                    (gen-circ pink 93 90 14)
+                                    (gen-circ pink 65 90 14)
                                     (draw)))
                        :a3 
-                       (gen-group {:style {:transform "translate(30vw, 5vh)"}}
+                       (gen-group {}
+                                (->>
+                                  (gen-poly red [10 130
+                                                 120 130
+                                                 65 10])
+                                  (draw))
                                   (->>
-                                    (gen-shape red tri)
-                                      (style {:transform "rotateY(35deg) scale(.7)"})
-                                      (draw))
-                                  (->>
-                                    (gen-line [93 90] [93 130] yellow 8)
+                                    (gen-line [65 90] [65 130] yellow 8)
                                     (draw)))}
                    ;; Bs
                    :b {:b1 
-                       (gen-group {:mask (url "b")}
+                       (gen-group {:mask (url "b")
+                                   :transform "scale(1.25)"}
                                   (->>
                                     (gen-rect blue 10 10 120 120)
                                     (draw))
@@ -96,7 +107,7 @@
                                     (gen-line [10 70] [50 70] yellow 8)
                                     (draw)))
                        :b2
-                       (gen-group {}
+                       (gen-group {:transform "scale(1.25)"}
                                   (->>
                                     (gen-rect pink 10 10 120 120 (url "b"))
                                     (draw))
@@ -120,7 +131,7 @@
                                     (gen-line [10 70] [50 70] mint 8)
                                     (draw)))
                        :b3
-                       (gen-group {}
+                       (gen-group {:transform "scale(1.25)"}
                                   (->>
                                     (gen-rect yellow 10 10 120 120 (url "b"))
                                     (draw))          
@@ -132,7 +143,7 @@
                                     (draw)))}
                     ;; Cs
                    :c {:c1
-                       (gen-group {}
+                       (gen-group {:style {:transform "translate(-30px, -30px)"}}
                                   (->>
                                     (gen-shape purple arc-half)
                                       (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
@@ -148,7 +159,7 @@
                                        (style {:transform-origin "center" :transform "translate(100px, 40px) scale(1)"})
                                        (draw)))
                        :c2
-                       (gen-group {}
+                       (gen-group {:style {:transform "translate(-30px, -30px)"}}
                                   (->>
                                     (gen-shape red arc-half)
                                       (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
@@ -164,7 +175,7 @@
                                        (style {:transform-origin "center" :transform "translate(100px, 40px) scale(1)"})
                                        (draw)))
                        :c3
-                       (gen-group {}
+                       (gen-group {:style {:transform "translate(-30px, -30px)"}}
                                   (->>
                                     (gen-shape blue arc-half)
                                       (style {:transform-origin "center" :transform "translate(120px, 12px) scale(1) rotateZ(65deg)"})
@@ -184,7 +195,7 @@
                                     (gen-rect yellow 10 10 120 120)
                                     (draw))
                                           
-                                    (freak-out 10 120
+                                    #_(freak-out 10 120
                                                10 120
                                                10
                                                20
@@ -207,10 +218,8 @@
                                     (gen-rect blue 10 10 120 120)
                                     (draw))
                                           
-                                    (->>
-                                      (gen-rect (pattern (:id navy-lines)) -10 -10 140 180)
-                                      (style {:transform "rotate(15deg)"})
-                                      (draw))
+                                    (gen-group {:style {:transform "translateX(0px) rotate(8deg)"}}
+                                               (gen-cols purple 10 10 26))
                                   (->>
                                     (gen-line [10 70] [80 70] pink 8)
                                     (draw)))}
@@ -300,7 +309,7 @@
                                     (gen-rect pink 10 10 120 120)
                                     (draw))
 
-                                 (freak-out 10 120
+                                 #_(freak-out 10 120
                                             10 120
                                             10
                                             10
@@ -455,7 +464,7 @@
                                     (gen-rect blue 10 10 40 20)
                                     (draw)))}
                    :j {:j1
-                       (gen-group {}
+                       (gen-group {:transform "scale(.88)"}
                                   (->>
                                     (gen-shape pink arc-bottom-j)
                                       (style {:transform "translateY(80px)"})
@@ -471,7 +480,7 @@
                                     (gen-line [50 80] [50 100] yellow 10)
                                     (draw)))
                        :j2
-                       (gen-group {}
+                       (gen-group {:transform "scale(.88)"}
                                   (->>
                                     (gen-shape blue arc-bottom-j)
                                       (style {:transform "translateY(80px)"})
@@ -490,26 +499,28 @@
                                     (style {:opacity .6})
                                     (draw)))}
                    :k {:k1
-                       (gen-group {:mask (url "k")}
+                       (gen-group {:mask (url "k")
+                                   :transform "scale(1.1)"}
                                   (->>
                                     (gen-rect yellow 10 10 90 110)
                                     (draw))
                                   (->>
-                                    (gen-line [55 10] [55 42] midnight 9)
+                                    (gen-line [45 10] [45 42] midnight 9)
                                     (style {:transform "translate(1px, 1px)"})
                                     (draw))
                                   (->>
-                                    (gen-line [55 10] [55 40] mint 8)
+                                    (gen-line [45 10] [45 40] mint 8)
                                     (draw))
                                   (->>
-                                    (gen-line [55 80] [55 120] midnight 9)
+                                    (gen-line [45 80] [45 120] midnight 9)
                                     (style {:transform "translate(1px, -1px)"})
                                     (draw))
                                   (->>
-                                    (gen-line [55 80] [55 120] mint 8)
+                                    (gen-line [45 80] [45 120] mint 8)
                                     (draw)))
                        :k2
-                       (gen-group {:mask (url "k")}
+                       (gen-group {:mask (url "k")
+                                   :transform "scale(1.1)"}
                                   (->>
                                     (gen-rect purple 10 10 90 110)
                                     (draw))
@@ -566,11 +577,12 @@
                                                     10 120])
                                     (draw)))}
                    :m {:m1
-                       (gen-group {:mask (url "m")}
+                       (gen-group {:mask (url "m")
+                                   :transform "scale(1.1)"}
                                   (->>
                                     (gen-rect red 0 0 110 110)
                                     (draw))                    
-                                  (freak-out 0 110
+                                  #_(freak-out 0 110
                                              0 120
                                              10
                                              20
@@ -592,7 +604,8 @@
                                     (gen-line [70 75] [70 120] mint 8)
                                     (draw)))
                        :m2
-                       (gen-group {:mask (url "m")}
+                       (gen-group {:mask (url "m")
+                                   :transform "scale(1.08)"}
                                   (->>
                                     (gen-rect purple 0 0 110 110)
                                     (draw))                    
@@ -631,7 +644,7 @@
                                     (gen-rect purple 10 10 100 110)
                                     (draw))
                                  
-                                    (freak-out 10 100
+                                    #_(freak-out 10 100
                                                10 110
                                                10
                                                14
@@ -851,7 +864,7 @@
                                     (gen-line [50 90] [50 120] blue 8)
                                     (draw)))}
                    :s {:s1
-                       (gen-group {}
+                       (gen-group {:transform "scale(1.22)"}
                                   (gen-group {:style {:transform "rotate(-2deg)"}}
                                              (->>
                                                (gen-shape pink s-half)
@@ -862,7 +875,7 @@
                                                  (style {:transform "translate(40px, 50px) rotate(50deg) scale(1)"})
                                                  (draw))))
                        :s2
-                       (gen-group {}
+                       (gen-group {:transform "scale(1.22)"}
                                   (gen-group {:mask (url "s")}
                                              (->>
                                                (gen-rect blue 0 0 120 120)
@@ -870,7 +883,7 @@
                                              (gen-group {:style {:transform "translateX(-64px) rotate(-45deg)"}}
                                                         (gen-rows purple 10 10 18))))
                        :s3
-                       (gen-group {}
+                       (gen-group {:transform "scale(1.22)"}
                                   (gen-group {:mask (url "s")}
                                    (->>
                                      (gen-rect yellow 0 0 120 120)
@@ -978,8 +991,8 @@
                        (gen-group {}
                                  (->>
                                    (gen-poly red [10 10
-                                                     120 10
-                                                     65 120])
+                                                  120 10
+                                                  65 120])
                                    (draw))
                                  (->>
                                    (gen-line [65 10] [65 50] midnight 11)
@@ -1128,29 +1141,30 @@
 
 (def alpha-mask-list
   [["b"
-    (gen-group {}(->>
-      (gen-circ white 63 36 26)
-      (style {:opacity 1})
-      (draw))
-    (->>
-      (gen-rect white 10 10 60 50)
-      (draw))
-    (->>
-      (gen-circ white 68 74 26)
-      (style {:opacity 1})
-      (draw))
-    (->>
-      (gen-rect white 10 50 60 50)
-      (draw)))
+    (gen-group {}
+               (->>
+                (gen-circ white 63 36 26)
+                (style {:opacity 1})
+                (draw))
+              (->>
+                (gen-rect white 10 10 60 50)
+                (draw))
+              (->>
+                (gen-circ white 68 74 26)
+                (style {:opacity 1})
+                (draw))
+              (->>
+                (gen-rect white 10 50 60 50)
+                (draw)))
     ]
   ["d" 
-    (gen-group {}
+    (gen-group {:transform "scale(.95)"}
                (->>
                 (gen-circ white 66 67 60)
                 (style {:opacity 1})
                 (draw))
               (->>
-                (gen-rect white 10 10 69 117)
+                (gen-rect white 10 10 68 116)
                 (draw)))]
   ["e"
    (->>

@@ -69,16 +69,20 @@
       [type (merge attrs {:key (random-uuid)})]
       '())))
 
+;; -------------------------- DRAW ----------------------------
+
+(defn gen-use [attrs]
+  [:use (merge {:key (random-uuid)} attrs)])
+
 
 ;; ------------------- COMPOUND GENERATORS ---------------------
 
 (defn gen-group
   ([internals] (gen-group {} internals))
-  ([{ :keys [style mask transform] :or { style {} mask "" transform "" } } & internals]
-    [:g {:key (random-uuid) 
-         :style style 
-         :mask mask 
-         :transform transform } 
+  ([ attrs & internals]
+    [:g (merge {:key (random-uuid)}
+               attrs)
+                  
      internals ]))
 
 (defn gen-offset-lines
