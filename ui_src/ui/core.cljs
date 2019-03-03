@@ -326,6 +326,29 @@
         (draw))
 )))
 
+(def spins
+  (atom (gen-group {:style {:transform (str "translate("
+                            (* 0.55 @width) "px, "
+                            (* 0.25 @height) "px) "
+                            "scale(1.5)")}}
+                   (->>
+                     (gen-shape white oct)
+                     (style {:opacity .7})
+                     (anim "rot" "3s" "infinite")
+                     (draw)))))
+
+
+
+(->>
+  (gen-shape white oct)
+    (style {:transform (str "translate("
+                            (* 0.25 @width) "px, "
+                            (* 0.3 @height) "px) "
+                            "scale(1.5)")})
+
+    (style {:opacity .7})
+    (draw)
+    (when (nth-frame 1 frame)))
 
 
 
@@ -368,7 +391,8 @@
     [colors [
       ;mint mint mint mint
         pink
-    ;  yellow
+        yellow
+        orange
       ;white
       ;"#000"
 
@@ -379,7 +403,89 @@
 
         (draw)))
 
-      (gen-bg-lines pink 80)
+        (gen-bg-lines pink 80)
+
+        (when (nth-frame 6 frame)
+          (freak-out (* 0.5 @width) @width
+                     0 @height
+                     16
+                     60
+                     gray
+                     {:opacity .8}))
+
+
+       (when (nth-frame 12 frame)
+         (freak-out 0 (* 0.5 @width)
+                    0 @height
+                    20
+                    60
+                    mint
+                    {:opacity .8}))
+
+
+
+
+      @spins
+
+      (gen-group {:style {:isolation "isolate"
+                          :mask (url "nf")}}
+                 (->>
+                   (gen-shape white oct)
+                     (style {:transform (str "translate("
+                                             (* 0.25 @width) "px, "
+                                             (* 0.3 @height) "px) "
+                                             "scale("
+                                             (val-cyc frame [1.2 2 1.4 1.4 2 1 4])
+                                             ")")})
+
+                     (style {:opacity .7})
+                     (draw)
+                     (when (nth-frame 1 frame)))
+
+                  (->>
+                    (gen-shape pink hept)
+                      (style {:transform (str "translate("
+                                              (* 0.15 @width) "px, "
+                                              (* 0.20 @height) "px) "
+                                              "scale("
+                                              (val-cyc (/ frame 3) [1.2 1.3 1.4 1.4 1.2 1.4])
+                                              ")")})
+                     (style {:mix-blend-mode "exclusion"})
+                      (style {:opacity .7})
+                      (draw)
+                      (when (nth-frame 2 frame)))
+                 (->>
+                   (gen-shape navy hept)
+                     (style {:transform (str "translate("
+                                             (* 0.35 @width) "px, "
+                                             (* 0.40 @height) "px) "
+                                             "scale(1.3)")})
+                    (style {:mix-blend-mode "color-burn"})
+                     (style {:opacity .7})
+                     (draw)
+                     (when (nth-frame 3 frame)))
+                 (->>
+                   (gen-shape (pattern (:id navy-lines)) hept)
+                     (style {:transform (str "translate("
+                                             (* 0.35 @width) "px, "
+                                             (* 0.40 @height) "px) "
+                                             "scale(1.3)")})
+                    (style {:mix-blend-mode "color-burn"})
+                     (style {:opacity .7})
+                     (draw)
+                     (when (nth-frame 5 frame)))
+
+
+
+
+                 )
+
+
+
+
+
+
+
 
         #_(->>
           (gen-rect mint 400 400 40 40)
@@ -433,7 +539,6 @@
                 (when (nth-frame 1 frame)))
 
 
-                @blorp
 
 
 
@@ -451,6 +556,8 @@
                      (gen-shape "#000" hept)
                        (style {:transform "translate(50vw, 30vh) scale(3) rotate(60deg)"})
                        (draw))
+
+
 
 
 
@@ -494,11 +601,15 @@
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
                  (draw))
                  ]
+              ["nn"
+               [ :image {:key (random-uuid) :x "100" :y "200" :width "100%" :height "100%" :xlinkHref "img/blop.png" :style {:transform-origin "center" :transform "scale(10)"} }]]
+              ["nm"
+               [ :image {:key (random-uuid) :x "100" :y "200" :width "100%" :height "100%" :xlinkHref "img/blop.png" :style {:transform-origin "center" :transform "scale(1)"} }]]
               ["nf"
               (->>
-                (gen-rect mint 100 100 4 4)
+                (gen-rect white 100 100 4000 4000)
                 (style {:filter (url (:id noiz))})
-                (style {:transform "scale(1000)"})
+                (style {:transform "scale(1)"})
                 (draw))]
 
                 ["bite"
