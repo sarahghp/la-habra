@@ -39,7 +39,10 @@
                               (atom (gen-group {:id var-key} var-val)))
                             letter-val)) 
                      letter-map)))
-         
+
+
+#_(def punc-shapes {:amp {:amp1 
+                        (gen-group)}})
 (def alpha-shapes {:a {:a1 
                        (gen-group {}
                                   (->>

@@ -302,9 +302,9 @@
     (take 10 (repeatedly #(nth [orange pink white yellow] (rand-int 6))))))
 
 
-(def alpha-keys (apply concat (map (fn [[_ letter-val]]
+(def alpha-keys (doall (apply concat (map (fn [[_ letter-val]]
                      (map name (keys letter-val))) 
-                   alpha-shapes)))
+                   alpha-shapes))))
 
 
 (def alpha-display (map-indexed (fn [idx l-key]
@@ -316,6 +316,20 @@
                                             :y (+ 30 (* 160 row))})))
                                 (sort alpha-keys)))
 
+
+
+(defn gen-letter [letter attrs]
+  (let [l-key (->>
+               (alpha-shapes letter)
+               keys
+               rand-nth
+               name)]
+    (gen-use (merge {:href (str "#" l-key)
+                     :x 10
+                     :y 10}
+                    attrs))))
+
+(def L (atom (gen-letter :l {:x 200})))
 
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
@@ -346,17 +360,57 @@
         (draw)))
   
   
-  (gen-group {:transform "scale(1)"}
+  #_(gen-group {:transform "scale(1)"}
              (doall alpha-display))
   
-  (gen-group {:mask (url "d") :style {:transform "translate(490px, 190px)"}}
+(gen-group {:style {:transform "translate(200px, 200px)"}}
+           (gen-letter :p {:x 10})
+           (gen-letter :r {:x 130})
+           (gen-letter :e {:x 250})
+           (gen-letter :s {:x 370})
+           (gen-letter :e {:x 490})
+           (gen-letter :n {:x 610})
+           (gen-letter :t {:x 730})
+             
+           (gen-group {:style {:transform "translateX(850px)"}}
+                      (->>
+                        (gen-circ yellow 60 44 30)
+                        (draw))
+                      (->>
+                        (gen-circ mint 60 44 6)
+                        (style {:stroke midnight 
+                                :stroke-width 3 
+                                :stroke-opacity .3})
+                        (draw))
+                      (gen-group {:mask (url "q")
+                                  :style {:transform "translate(20px, 60px) scale(.7)"}}
+                                 (->>
+                                   (gen-rect yellow 0 0 120 120)
+                                   (draw))
+                                 
+                                 (->>
+                                   (gen-circ mint 60 60 10)
+                                   (style {:stroke midnight 
+                                           :stroke-width 3 
+                                           :stroke-opacity .3})
+                                   (draw))))
+             
+             (gen-letter :c {:x 0 :y 140})
+             (gen-letter :o {:x 130 :y 140})
+             (gen-letter :r {:x 250 :y 140})
+             (gen-letter :r {:x 370 :y 140})
+             (gen-letter :e {:x 490 :y 140})
+             (gen-letter :c {:x 610 :y 140})
+             (gen-letter :t {:x 730 :y 140}))
+  
+  #_(gen-group {:mask (url "d") :style {:transform "translate(490px, 190px)"}}
              (freak-out 10 120
                           10 120
                           10
                           20
                           red))
   
-  (gen-group {:mask (url "f") :style {:transform "translate(640px, 350px)"}}
+  #_(gen-group {:mask (url "f") :style {:transform "translate(640px, 350px)"}}
              (freak-out 10 120
                        10 120
                        10
@@ -365,7 +419,7 @@
                        {:stroke purple 
                         :stroke-width 1 }))
   
-  (gen-group {:mask (url "m")
+  #_(gen-group {:mask (url "m")
               :transform "scale(1.1)"
               :style {:transform "translate(790px, 830px)"}}
               (freak-out 0 110
@@ -374,7 +428,7 @@
                         20
                         yellow))
   
-  (gen-group {:mask (url "n")
+  #_(gen-group {:mask (url "n")
               :style {:transform "translate(340px, 990px)"}}
               (freak-out 10 100
                           10 110
@@ -463,7 +517,7 @@
      (map identity masks)
      (map identity alpha-masks)
      (map gen-color-noise all-fills)
-     (map deref (letter-defs alpha-shapes))
+     (doall (map deref (letter-defs alpha-shapes)))
      (sized-pattern-def pink-scale-dots 20 105)
      (sized-pattern-def pink-scale-lines 200 200)
      (map pattern-def [ blue-dots
