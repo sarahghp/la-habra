@@ -5,5 +5,8 @@
   "scripts": {
     "start": "lein cooper",
     "server": "electron ."
+  },
+  "dependencies": {
+    "cljs": "^1.2.0"
   }
 }
