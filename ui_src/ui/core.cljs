@@ -6,6 +6,7 @@
             [ui.fills :as fills :refer
               [ gray
                 mint
+                forest
                 midnight
                 navy
                 blue
@@ -30,7 +31,8 @@
               gen-cols
               gen-rows
               gen-mask]]
-            [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
+            [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur
+                                            turbulence-1 turbulence-2 turbulence-3 turbulence-4 turbulence-5]]
             [ui.patterns :as patterns :refer
              [ gen-color-noise
                pattern
@@ -169,6 +171,10 @@
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
 (back-and-forth! "scaley-huge" "scale(20)" "scale(50)")
 
+(back-and-forth! "rx" "rotateX(0deg) scale(10)" "rotateX(360deg) scale(10)")
+(back-and-forth! "ry" "rotateY(0deg)" "rotateY(360deg)")
+(back-and-forth! "rp" "rotate(0deg)" "rotate(360deg)")
+
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
@@ -277,9 +283,10 @@
 
 (def move-me
   (->>
-   (gen-shape white hept)
+   (gen-shape (pattern (:id white-lines)) hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-4" "6s" "infinite")
+   (style {:mix-blend-mode "exclusion"})
+   (anim "loopy-left" "6s" "infinite")
    (draw)
    (atom)))
 
@@ -289,6 +296,36 @@
   (anim "sc-rot" "3s" "infinite" {:timing "linear"})
   (draw)
   (atom)))
+
+
+(def blorp
+  (atom (gen-group {:style {:isolation ""}}
+
+
+    (->>
+      (gen-rect forest 100 100 600 600 (url "bite"))
+      ;(style {:mix-blend-mode "color-burn"})
+      (anim "squiggle" ".4s" "infinite")
+      (draw))
+
+
+
+    #_(->>
+      (gen-rect pink 400 200 400 400)
+      (style {:mix-blend-mode "color-burn"})
+      (style {:transform "rotate(20deg)"})
+      (anim "rp" "6s" "infinite")
+      (draw))
+
+      #_(->>
+        (gen-rect (pattern (str "noise-" navy)) 500 500 40 40)
+        ; (style {:mix-blend-mode "color-burn"})
+        (style {:opacity .8 :transform "scale(10)"})
+        ;(anim "rx" "4s" "infinite")
+        (style {:filter (url (:id noiz))})
+        (draw))
+)))
+
 
 
 
@@ -320,6 +357,7 @@
 ;(reset! ran {})
 
 
+
 (defn cx [frame]
   (list
 
@@ -328,16 +366,91 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (let
     [colors [
-      mint mint mint mint
-      ;yellow
+      ;mint mint mint mint
+        pink
+    ;  yellow
+      ;white
+      ;"#000"
 
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
-        (style {:opacity .9})
+        (style {:opacity .9 })
+
         (draw)))
 
+      (gen-bg-lines pink 80)
 
+        #_(->>
+          (gen-rect mint 400 400 40 40)
+          (style {:filter (url (:id noiz))})
+          (style {:transform "scale(10)"})
+          (draw))
+
+          #_(->>
+            (gen-rect mint 200 200 400 400)
+            (style {:filter (url (:id noiz))})
+            (style {:transform "scale(1)"})
+            (draw))
+
+          #_(->>
+            (gen-rect (pattern (str "noise-" mint)) 200 200 400 400)
+            (style {:transform "scale(1)"})
+            (draw))
+
+
+
+    (gen-group {:style {:isolation "isolate"}}
+
+      #_(->>
+        (gen-rect mint 100 100 400 400)
+        (style {:mix-blend-mode "color-burn"})
+        (style {:perspective "550px" :transform-style "preserve-3d"})
+        (draw)
+        (when (nth-frame 12 frame)))
+
+
+        #_(->>
+          (gen-rect pink 400 200 400 400)
+          (style {:mix-blend-mode "color-burn"})
+          (style {:transform "rotate(20deg)"})
+          (draw)
+          (when (nth-frame 4 frame)))
+
+
+        #_(->>
+          (gen-rect navy 300 300 400 400)
+          (style {:mix-blend-mode "color-burn"})
+          ;(style {:filter (url (:id noiz))})
+          (draw)
+          (when (nth-frame 1 frame))))
+
+
+            #_(->>
+              (gen-circ (pattern (:id yellow-lines)) (* 0.5 @width) (* 0.5 @height) 240)
+                (style {:filter (url (:id turbulence-5))})
+                (draw)
+                (when (nth-frame 1 frame)))
+
+
+                @blorp
+
+
+
+                #_(->>
+                  (gen-rect forest -100 -100 "120%" "120%" (url "bite"))
+                  ;(style {:mix-blend-mode "color-burn"})
+                  ;(anim "squiggle" ".4s" "infinite")
+                  (draw))
+
+                  #_(->>
+                    (gen-rect white 100 100 600 600)
+                    (draw))
+
+                   #_(->>
+                     (gen-shape "#000" hept)
+                       (style {:transform "translate(50vw, 30vh) scale(3) rotate(60deg)"})
+                       (draw))
 
 
 
@@ -381,22 +494,47 @@
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
                  (draw))
                  ]
+              ["nf"
+              (->>
+                (gen-rect mint 100 100 4 4)
+                (style {:filter (url (:id noiz))})
+                (style {:transform "scale(1000)"})
+                (draw))]
+
+                ["bite"
+                  (gen-group {} (->>
+                    (gen-rect white 100 100 600 600)
+                    (draw))
+
+                   (->>
+                     (gen-shape "#000" hept)
+                       (style {:transform "translate(40vw, 20vh) scale(3) rotate(60deg)"})
+                       (draw)))
+                       ]
             ])
 
 
+;(def collection (atom (cx @frame)))
 
 (def masks (map (fn [[id & rest]] (apply gen-mask id rest)) mask-list))
 
 
-(def all-filters [turb noiz soft-noiz disappearing splotchy blur])
+(def all-filters [turb noiz soft-noiz disappearing splotchy blur
+                  turbulence-1 turbulence-2 turbulence-3 turbulence-4 turbulence-5])
 (def all-fills [gray mint navy blue orange br-orange pink white yellow midnight])
 
 
 (defn drawing []
   [:svg {
     :style  {:mix-blend-mode
-             (val-cyc @frame
-                      ["multiply" "multiply"
+              (val-cyc @frame
+                      [
+                      ; "overlay"
+                       ;"hard-light"
+                       ;"color-dodge"
+                      ;"difference"
+                      "normal"
+                      ;"screen"
                        ]) }
     :width  (:width settings)
     :height (:height settings)}

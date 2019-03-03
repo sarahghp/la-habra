@@ -20,7 +20,8 @@
     :mask mask
     :type :circle
     :style {:fill fill-string
-            :transform-origin "center"}})
+            :transform-origin "center"
+            :mix-blend-mode "inherit"}})
 
 (defn gen-line
   [first-point second-point color & width]
@@ -31,7 +32,8 @@
     :stroke color
     :stroke-width (or width 4)
     :type :line
-    :style {:transform-origin "center"}})
+    :style {:transform-origin "center"
+    :mix-blend-mode "inherit"}})
 
 (defn gen-poly
   [fill-string points & mask]
@@ -39,7 +41,8 @@
     :mask mask
     :type :polygon
     :style {:fill fill-string
-            :transform-origin "center"}})
+            :transform-origin "center"
+            :mix-blend-mode "inherit"}})
 
 (defn gen-rect
   [fill-string x y w h & mask]
@@ -50,7 +53,8 @@
     :mask mask
     :type :rect
     :style {:fill fill-string
-            :transform-origin "center"}})
+            :transform-origin "center"
+            :mix-blend-mode "inherit"}})
 
 (defn gen-shape
   [fill-string path & mask]
@@ -58,7 +62,8 @@
     :mask mask
     :type :path
     :style {:fill fill-string
-            :transform-origin "center"}})
+            :transform-origin "center"
+            :mix-blend-mode "inherit"}})
 
 
 ;; -------------------------- DRAW ----------------------------
