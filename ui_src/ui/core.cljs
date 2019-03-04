@@ -289,9 +289,9 @@
 
 (def move-me-2
   (->>
-   (gen-shape pink hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (style {:filter (url (:id noiz))})
+   (gen-shape (pattern (:id white-dots)) hept)
+   (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
+   ;(style {:filter (url (:id noiz))})
    (anim "woosh-4" "6s" "infinite")
    (draw)
    (atom)))
@@ -300,7 +300,7 @@
   (->>
    (gen-shape (pattern (:id mint-dots)) hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (style {:filter (url (:id noiz))})
+   ;(style {:filter (url (:id noiz))})
    (style {:mix-blend-mode "exclusion"})
    (anim "woosh-4" "4s" "infinite")
    (draw)
@@ -341,7 +341,7 @@
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 
-#_(println (doall (map 
+#_(println (doall (map
         #(->>
           (gen-circ white 19 (+ 10 (* % 19)) (+ 2 (- 4 %)))
           (draw))
@@ -359,9 +359,7 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (let
     [colors [
-      mint mint mint mint
-      ;yellow
-             ;"#000"
+      midnight
 
              ]]
       (->>
@@ -376,8 +374,8 @@
           (draw))
                     (range 10)))
 
-  
-        #_(doall (map 
+
+        #_(doall (map
                 #(->>
                   (gen-circ white 19 (+ 10 (* % 19)) (+ 2 (- 4 %)))
                   (draw))
@@ -385,62 +383,91 @@
     ;@move-me
     ;@move-me-2
     ;@move-me-3
-  
+
 
   (->>
     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
     (draw)
     (when (nth-frame 1 frame)))
-  
+
     (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+      (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
       (style {:transform "translate(10vw, 10vh)"})
       (style {:mix-blend-mode "screen"})
       (draw)
       (when (nth-frame 1 frame)))
-    
-  
+
+
     (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+      (gen-circ mint (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
       (style {:transform "translate(30vw, -20vh) rotate(100deg)"})
 
       (draw)
       (when (nth-frame 1 frame)))
-    
-  
+
+
     (->>
       (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
             (style {:transform "translate(40vw, 60vh) rotate(200deg)"})
       (draw)
       (when (nth-frame 1 frame)))
-    
-  
 
-  
-  
+
+  (gen-group {:style {:transform "translate(-800px, -400px) rotate(10deg)"}}
+             (->>
+               (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+               (draw)
+               (when (nth-frame 1 frame)))
+
+               (->>
+                 (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+                 (style {:transform "translate(10vw, 10vh)"})
+                 (style {:mix-blend-mode "screen"})
+                 (draw)
+                 (when (nth-frame 1 frame)))
+
+
+               (->>
+                 (gen-circ mint (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+                 (style {:transform "translate(30vw, -20vh) rotate(100deg)"})
+
+                 (draw)
+                 (when (nth-frame 1 frame)))
+
+
+               (->>
+                 (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
+                       (style {:transform "translate(40vw, 60vh) rotate(200deg)"})
+                 (draw)
+                 (when (nth-frame 1 frame))))
+
+
+      @move-me-2
+
+
     #_(->>
       (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
       (style {:transform "translate(20vw, -10vh)"})
       (draw)
       (when (nth-frame 1 frame)))
-    
-  
+
+
       #_(->>
         (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
         (style {:transform "translate(20vw, -10vh) rotate(120deg)"})
         (draw)
         (when (nth-frame 1 frame)))
-  
-  
+
+
       #_(->>
         (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
         (style {:transform "translate(-20vw, -20vh) scale(3) rotate(200deg)"})
         (draw)
         (when (nth-frame 1 frame)))
-      
-      
-  
-  
+
+
+
+
 
 
   #_(when (nth-frame 2 frame)
@@ -494,7 +521,7 @@
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
                  (draw))
                  ]
-                
+
                 ["nn" [ :image {:key (random-uuid) :x "100" :y "200" :width "100%" :height "100%" :xlinkHref "img/blop.png" :style {:transform-origin "center" :transform "scale(10)" :animation "woosh 6s infinite"} }]]
             ])
 
