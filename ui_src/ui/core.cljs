@@ -234,6 +234,16 @@
                            "translate(50vw, 30vh) rotate(-300deg) scale(2.2)"
                            "translate(60vw, 80vh) rotate(400deg) scale(1.2)"]))
 
+(make-frames!
+  "woosh-5"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(80vw, 10vh) rotate(2deg) scale(2.2)"
+                           "translate(40vw, 40vh) rotate(220deg) scale(1.4)"
+                           "translate(50vw, 30vh) rotate(0deg) scale(4.2)"
+                           "translate(50vw, 30vh) rotate(-300deg) scale(2.2)"
+                           "translate(60vw, 80vh) rotate(400deg) scale(1.2)"]))
+
 
  (make-frames!
    "loopy-left"
@@ -254,6 +264,26 @@
                             "translate(60vw, 40vh) rotate(0deg) scale(4.2)"
                             "translate(80vw, 30vh) rotate(-300deg) scale(2.2)"
                             "translate(90vw, 90vh) rotate(400deg) scale(3.2)"]))
+
+(make-frames!
+  "loopy-left-2"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(90vw, 10vh) rotate(2deg) scale(2.2)"
+                           "translate(80vw, 30vh) rotate(220deg) scale(1.4)"
+                           "translate(60vw, 40vh) rotate(0deg) scale(3.2)"
+                           "translate(30vw, 80vh) rotate(-300deg) scale(2.2)"
+                           "translate(10vw, 90vh) rotate(400deg) scale(1.2)"]))
+
+(make-frames!
+  "loopy-right-2"
+    [10, 35, 55, 85, 92]
+   (make-body "transform" [
+                           "translate(10vw, 10vh) rotate(2deg) scale(2.2)"
+                           "translate(30vw, 80vh) rotate(220deg) scale(1.4)"
+                           "translate(60vw, 40vh) rotate(0deg) scale(4.2)"
+                           "translate(80vw, 30vh) rotate(-300deg) scale(2.2)"
+                           "translate(90vw, 90vh) rotate(400deg) scale(1.2)"]))
 
 (make-frames!
  "dashy"
@@ -302,12 +332,20 @@
   (atom)))
 
 
+(def wobbles
+  (->>
+    (gen-rect forest 100 100 600 600)
+    ;(style {:mix-blend-mode "color-burn"})
+    (anim "squiggle" ".4s" "infinite")
+    (draw)
+    (atom)))
+
 (def blorp
   (atom (gen-group {:style {:isolation ""}}
 
 
     (->>
-      (gen-rect forest 100 100 600 600 (url "bite"))
+      (gen-rect forest 100 100 600 600)
       ;(style {:mix-blend-mode "color-burn"})
       (anim "squiggle" ".4s" "infinite")
       (draw))
@@ -540,7 +578,92 @@
         (draw)))
 
 
+      #_(gen-bg-lines midnight (mod (- frame 1) 58))
 
+
+
+      #_(->>
+        (gen-rect
+         (val-cyc frame (flatten
+                         (conj '[]
+                               (repeat 58 white)
+                               (repeat 58 yellow)
+                               (repeat 58 mint)
+                               (repeat 58 forest))))
+         0 0 1000 1000 (url "wobs"))
+        (draw))
+
+
+  #_(->>
+    (gen-rect
+     (val-cyc frame (flatten
+                     (conj '[]
+                           (repeat 1 (pattern (:id white-dots)))
+                           (repeat 1 (pattern (:id yellow-dots)))
+                           (repeat 1 (pattern (:id mint-dots)))
+                           (repeat 1 (pattern (:id navy-dots))))))
+     0 0 1000 1000 (url "wobs"))
+    (draw))
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;; SM NUMBER THREE ;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(let
+  [colors [
+    mint mint
+    ]]
+    (->>
+      (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+      (style {:opacity .7 })
+
+      (draw)))
+
+
+  (->>
+    (gen-rect (pattern (:id white-dots)) 0 0 @width @height)
+    (style {:opacity .3})
+    (draw))
+
+  (gen-group {:mask (url "poly-mask")}
+             (->>
+              (gen-rect (pattern (str "noise-" white)) 0 0 "100%" "100%")
+              (style {:transform "scale(5)"})
+              (style {:opacity .3})
+              (draw)))
+
+  (gen-group {:mask (url "poly-mask-3")}
+             (->>
+              (gen-rect (pattern (str "noise-" midnight)) 0 0 "100%" "100%")
+              (style {:transform "scale(5)"})
+              (style {:opacity .3})
+              (draw)))
+
+  (gen-group {:mask (url "poly-mask-4")}
+             (->>
+              (gen-rect (pattern (str "noise-" gray)) 0 0 "100%" "100%")
+              (style {:transform "scale(5)"})
+              (style {:opacity .3})
+              (draw)))
+
+
+
+
+
+
+
+
+
+
+  (->>
+    (gen-circ white (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+    (style {:opacity .7 :transform "rotate(30deg)"})
+    (draw))
 
 
         #_(->>
@@ -640,7 +763,11 @@
 
 (def mask-list [
             [ "poly-mask"
-              [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
+              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "loopy-left-2 32s infinite"}}]]
+            [ "poly-mask-3"
+              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "loopy-right-2 36s infinite"}}]]
+            [ "poly-mask-4"
+              [:path {:d oct :fill "#fff" :style { :transform-origin "center" :animation "woosh-5 40s infinite"}}]]
             [ "poly-mask-2"
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :animation "woosh-3 3s infinite"}}]]
             [ "grad-mask"
@@ -678,6 +805,12 @@
                        (style {:transform "translate(40vw, 20vh) scale(3) rotate(60deg)"})
                        (draw)))
                        ]
+
+                ["wobs"
+                 (->>
+                   (gen-rect white 100 100 600 600)
+                   (style {:animation "squiggle .4s infinite"})
+                   (draw))]
             ])
 
 
