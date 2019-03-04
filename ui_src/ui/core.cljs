@@ -542,11 +542,11 @@
       (draw)
       (when (nth-frame 1 frame)))
 
-@bg
-
-@drops
-@drops-2
-@drops-3
+; @bg
+;
+; @drops
+; @drops-2
+; @drops-3
 
 ;@dots
 
@@ -556,7 +556,7 @@
 @move-me-3a
 @move-me-4a
 
-(when-not (nth-frame 2 frame)
+#_(when-not (nth-frame 2 frame)
   (freak-out @width
              @height
              10
@@ -582,7 +582,7 @@
 
 
 
-  (gen-group {:mask (url "poly-mask-2")}
+  #_(gen-group {:mask (url "poly-mask-2")}
     (when (nth-frame 1 frame)
       (freak-out @width
                  @height
@@ -598,15 +598,15 @@
                               br-orange)))
 
 
-(when (nth-frame 3 frame )
+#_(when (nth-frame 3 frame )
   (gen-bg-lines white 80))
 
-(when-not (nth-frame 3 frame )
+#_(when-not (nth-frame 3 frame )
   (gen-bg-lines pink 80))
 
 ;@move-me
 
-(when (nth-frame 5 frame)
+#_(when (nth-frame 5 frame)
   (freak-out @width
              @height
              100
@@ -614,17 +614,17 @@
              (pattern (str "noise-" gray))
              {:transform "scale(10)"}))
 
- (when (nth-frame 5 frame)
+ #_(when (nth-frame 5 frame)
    (freak-out @width
               @height
               40
               100
               gray))
 
-@move-me-4
-@move-me-5
+;@move-me-4
+;@move-me-5
 
-(when (nth-frame 1 frame)
+#_(when (nth-frame 1 frame)
   (freak-out @width
              @height
              60
