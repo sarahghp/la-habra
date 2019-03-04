@@ -550,11 +550,11 @@
 
 ;@dots
 
-@move-me-3
-@move-me-4
-
-@move-me-3a
-@move-me-4a
+; @move-me-3
+; @move-me-4
+;
+; @move-me-3a
+; @move-me-4a
 
 #_(when-not (nth-frame 2 frame)
   (freak-out @width
@@ -563,7 +563,7 @@
              100
              white))
 
-             (when (nth-frame 2 frame)
+             #_(when (nth-frame 2 frame)
                (freak-out @width
                           @height
                           10
