@@ -496,7 +496,7 @@
 (def pframe 0) ;   0  6 4 1
 (def yframe 0) ;  0 12 3 1
 (def broframe 0) ; 0  7 5 1
-(def lgframe 0) ;  0  8 8 1
+ (def lgframe 0) ;  0  8 8 1
 (def mframe 0) ;    0  4 4 1
 
 ; (def yframe 12)
@@ -542,10 +542,10 @@
 
 
 
-  #_(when (nth-frame 12 frame)
+  #_(when (nth-frame 1 frame)
     (gen-rows pink 1 60 40))
 
-  #_(when (nth-frame 9 frame)
+  #_(when (nth-frame 1 frame)
       (gen-cols pink 1 60 40))
 
 
@@ -566,7 +566,7 @@
       (when (nth-frame 1 frame)))
 
   ;; lone cross
-  #_(gen-group {:style {:transform "translate(10vw, 86vh) rotate(10deg)"}}
+  (gen-group {:style {:transform "translate(10vw, 86vh) rotate(10deg)"}}
              (->>
                (gen-line [10 10] [40 40] white 5)
                (draw)
@@ -574,7 +574,7 @@
              (->>
                (gen-line [10 40] [40 10] white 5)
                (draw)
-               (when (nth-frame 1 frame))))
+               (when (nth-frame 2 frame))))
 
   ;; top a
   (gen-group {:style {:transform-origin "center"
@@ -660,10 +660,6 @@
 
   ;; POOL
 
-
-  #_(gen-line-grid "hsla(360, 0%, 100%, .4)" 2
-    80 60
-    {:col 40 :row 40})
 
 
   (->>
