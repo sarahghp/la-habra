@@ -45,13 +45,13 @@
 (make-frames!
   "fade-in-out"
   [0 4 8 50 54 94]
-  (make-body "fill-opacity" [1 0.7 0.5 0.2 0 1]))
+  (make-body "fill-opacity" [0.5 0.5 0.3 0.2 0 0.4]))
 
 (make-frames!
   "fade-out"
   [0 100]
   (make-body "fill-opacity" [1 0]))
-  
+
 (make-frames!
   "fade-in"
   [0 30 80 90 100]
@@ -71,7 +71,7 @@
     "rot"
     [0 100]
     (make-body "transform" ["rotate(0deg)" "rotate(360deg)"]))
-    
+
   (make-frames!
     "cent-rot"
     [0 100]
