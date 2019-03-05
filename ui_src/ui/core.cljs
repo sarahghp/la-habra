@@ -345,7 +345,7 @@
 (def bg (->>
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-  (anim "sc-rot" "13s" "infinite" {:timing "linear"})
+  (anim "sc-rot" "7s" "infinite" {:timing "linear"})
   (draw)
   (atom)))
 
@@ -353,7 +353,7 @@
   (def bg2 (->>
     (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
     (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
-    (anim "sc-rot" "8s" "infinite" {:timing "linear" :delay "2s"})
+    (anim "sc-rot" "3s" "infinite" {:timing "linear" :delay "2s"})
     (draw)
     (atom)))
 
@@ -381,16 +381,16 @@
       (gen-shape mint oct)
         (style {:transform "translate(20vw, 30vh) scale(2)"})
         (style {:mix-blend-mode "color-dodge" } )
-      (anim "woosh" "8s" "infinite")
+      (anim "woosh" "6s" "infinite")
       (draw)
       (atom)))
 
   (def bb1a
     (->>
-      (gen-shape mint oct)
+      (gen-shape (pattern (:id mint-lines)) oct)
         (style {:transform "translate(20vw, 30vh) scale(2)"})
-        (style {:mix-blend-mode "color-burn" } )
-      (anim "woosh" "12s" "infinite")
+        (style {:mix-blend-mode "color-dodge" } )
+      (anim "woosh" "3s" "infinite")
       (draw)
       (atom)))
 
@@ -422,6 +422,30 @@
      (map #(style {:opacity .5} %))
      (map draw)
      (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx .01)) 1460) item))))))
+
+
+(def lines
+  (atom (gen-group {}
+             (->>
+               (gen-line [100 100] [400 100] pink 60)
+               (style {:transform "rotate(68deg)"})
+               (anim "rot" "1s" "infinite" {:timing "linear"})
+               (draw))
+
+             (->>
+               (gen-line [800 800] [1200 800] navy 60)
+               (anim "rot" "1s" "infinite" {:timing "ease-in-out"})
+               (style {:transform "rotate(-68deg)"})
+               (draw))
+
+
+
+
+             (->>
+               (gen-line [1200 100] [1500 100] pink 60)
+               (style {:transform "translate(70vw, 10vh) rotate(-68deg)"})
+               (anim "rot" "1s" "infinite" {:timing "linear"})
+               (draw)))))
 
 
 
@@ -462,9 +486,10 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (let
     [colors [
-      mint mint mint mint
+      ;mint mint mint mint
       ;yellow yellow yellow yellow
       ;pink pink pink pink
+      navy navy navy navy
 
              ]]
       (->>
@@ -474,68 +499,60 @@
 
 
 
-    #_(->>
-      (gen-rect (pattern (str "noise-" br-orange)) 0 0 @width @height)
-      (style {:transform "scale(50)"})
-      (draw))
+  (gen-group {:style {:transform "translateX(400px) rotate(-10deg)"}}
 
-      ;@scale-me
+             (->>
+               (gen-shape midnight tri)
+                 (style {:transform (str "translate(20vw, 30vh) scale(" (val-cyc frame [8 8 2 4 4 2]) ") rotate(100deg)")})
+                 (style {:opacity .6})
+                 (draw)
+                 (when (nth-frame 0 frame)))
 
+                 (->>
+                   (gen-shape midnight tri)
+                     (style {:transform "translate(60vw, 80vh) scale(2) rotate(-100deg)"})
+                     (style {:opacity .6})
+                     (draw)
+                     (when (nth-frame 1 frame)))
 
-      #_(->>
-        (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
-        (style {:transform "scale(1)"})
-        (anim "scaley" "3s" "infinite")
-        (draw))
+            (gen-group {:style {:transform "rotate(30deg)"}}
 
-        ;@scale-me-2
+                      (->>
+                        (gen-shape orange tri)
+                          (style {:transform (str "translate(40vw, -20vh) scale(" (val-cyc frame [4]) ") rotate(-210deg)")})
+                          (style {:opacity .6})
+                          (draw)
+                          (when (nth-frame 3 frame)))
 
-        ;(doall (map deref levels))
-
-        ;@move-me
-
-  #_(->>
-    (gen-rect navy (* 0.15 @width) (* 0.15 @height) (* 0.45 @width) (* 0.75 @height))
-    (style {:opacity .7})
-    (draw)
-    (when (nth-frame 3 frame)))
-
-  #_(->>
-    (gen-rect orange (* 0.45 @width) (* .2 @height) (* 0.45 @width) (* 0.75 @height))
-    (style {:opacity .7})
-    (style {:mix-blend-mode "color-burn"})
-    (draw)
-    (when (nth-frame 4 frame)))
-
-  #_(->>
-    (gen-rect pink (* 0.05 @width) (* .7 @height) (* 0.9 @width) (* 0.3 @height))
-    (style {:opacity .7})
-    (draw)
-    (when (nth-frame 2 frame)))
-
-    ;@bg
-    ;@bg2
-
-(->>
-  (gen-shape midnight tri)
-    (style {:transform "translate(20vw, 60vh) rotate(135deg) scale(2)"})
-    (style {:opacity .5})
-    (draw)
-    (when (nth-frame 1 frame)))
+                          (->>
+                            (gen-shape orange tri)
+                              (style {:transform "translate(60vw, 10vh) scale(2) rotate(-100deg)"})
+                              (style {:opacity .6})
+                              (draw)
+                              (when (nth-frame 1 frame)))))
 
 
-  (->>
-    (gen-shape br-orange tri)
-      (style {:transform (str "translate(45vw, 10vh) rotate(15deg) scale(" (val-cyc frame [1 1 2 2 4 4 8 8]) ")")})
-      (style {:opacity .5})
-      (draw)
-      (when (nth-frame 1 frame)))
-
-
-(gen-group {:style {:transform "translate(30vw, 20vh) rotate(2200deg)"}}
+(gen-group {}
            (->>
              (gen-shape midnight tri)
-               (style {:transform (str "translate(20vw, 60vh) rotate(135deg) scale(" (val-cyc frame [1 2 2 8 4 16]) ")")})
+               (style {:transform "translate(20vw, 60vh) rotate(135deg) scale(2)"})
+               (style {:opacity .5})
+               (draw)
+               (when (nth-frame 2 frame)))
+
+
+             (->>
+               (gen-shape br-orange tri)
+                 (style {:transform (str "translate(45vw, 10vh) rotate(15deg) scale(" (val-cyc frame [1 1 2 2 4 4 8 8]) ")")})
+                 (style {:opacity .5})
+                 (draw)
+                 (when (nth-frame 1 frame))))
+
+
+ (gen-group {:style {:transform "translate(30vw, 20vh) rotate(2200deg)"}}
+           (->>
+             (gen-shape midnight tri)
+               (style {:transform (str "translate(20vw, 60vh) rotate(135deg) scale(" (val-cyc frame [1 2 2 8 4 4 16 16]) ")")})
                (style {:opacity .5})
                (draw)
                (when (nth-frame 1 frame)))
@@ -546,58 +563,121 @@
                  (style {:transform "translate(45vw, 10vh) rotate(15deg) scale(2)"})
                  (style {:opacity .5})
                  (draw)
-                 (when (nth-frame 1 frame))))
+                 (when (nth-frame 2 frame))))
 
-
-
-#_(->>
-  (gen-line [100 100] [400 100] pink 60)
-  (style {:transform "rotate(68deg)"})
-  (draw)
-  (when (nth-frame 1 frame)))
 
   #_(->>
-    (gen-line [800 800] [1200 800] navy 60)
-    (style {:transform "rotate(-68deg)"})
-    (draw)
-    (when (nth-frame 1 frame)))
+    (gen-grid
+      80 80
+      {:col 40 :row 40}
+      (gen-circ white 5 5 5))
+     (map #(style {:opacity .5} %))
+     (map draw)
+     (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx (val-cyc frame [.01 .001 .1]))) frame) item))))
+
+  @bg
+  @bg2
+
+  @dots
+
+  #_(when (nth-frame 2 frame)
+    (gen-line-grid white 4
+                   100 80
+                   {:col 20 :row 20}))
 
 
-    #_(->>
-      (gen-line [100 100] [400 100] pink 60)
-      (style {:transform "translate(10vw, 40vh) rotate(68deg)"})
-      (draw)
-      (when (nth-frame 1 frame)))
-
-      #_(->>
-        (gen-line [800 800] [1200 800] navy 60)
-        (style {:transform "translate(-10vw, -40vh) rotate(-68deg)"})
-        (draw)
-        (when (nth-frame 1 frame)))
+  #_(when-not (nth-frame 2 frame)
+    (gen-line-grid midnight 4
+      100 80
+      {:col 20 :row 20}))
 
 
-;@bb1
-;@bb1a
 
-;@drops
-;@dots
+  @bb1
+  @bb1a
 
-;@move-me-3
-;@move-me-4
 
-;@move-me-3a
-;@move-me-4a
+  @lines
 
-#_(gen-bg-lines midnight (mod (* 10 frame) 80))
 
-#_(when (nth-frame 1 frame)
+  (gen-group {}
+             (->>
+               (gen-line [100 100] [400 100] pink 60)
+               (style {:transform "rotate(68deg)"})
+               (draw)
+               (when (nth-frame 9 frame)))
+
+             (->>
+               (gen-line [800 800] [1200 800] navy 60)
+               (style {:transform "rotate(-68deg)"})
+               (draw)
+               (when (nth-frame 3 frame)))
+
+
+             (->>
+               (gen-line [100 100] [400 100] pink 60)
+               (style {:transform "translate(10vw, 40vh) rotate(68deg)"})
+               (draw)
+               (when (nth-frame 5 frame)))
+
+             (->>
+               (gen-line [800 800] [1200 800] navy 60)
+               (style {:transform "translate(-10vw, -40vh) rotate(-68deg)"})
+               (draw)
+               (when (nth-frame 3 frame)))
+
+             (->>
+               (gen-line [100 100] [400 100] pink 60)
+               (style {:transform "translate(70vw, 10vh) rotate(-68deg)"})
+               (draw)
+               (when (nth-frame 7 frame)))
+
+             (->>
+               (gen-line [800 800] [1200 800] navy 60)
+               (style {:transform "translate(15vw, -5vh) rotate(68deg)"})
+               (draw)
+               (when (nth-frame 9 frame))))
+
+
+
+        (doall (map deref levels))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@move-me-3
+@move-me-4
+
+;@move-me
+
+(when (nth-frame 5 frame)
+  (gen-line-grid midnight 4
+    100 80
+    {:col 20 :row 20}))
+
+@move-me-3a
+@move-me-4a
+
+
+(when (nth-frame 10 frame)
   (freak-out @width
              @height
              20
              200
              white))
 
-  #_(when (nth-frame 1 frame)
+(when (nth-frame 3 frame)
      (freak-out @width
                 @height
                 30
@@ -606,7 +686,7 @@
 
 
 
- #_(when (nth-frame 1 frame)
+ (when (nth-frame 12 frame)
    (freak-out @width
               @height
               100
@@ -615,7 +695,9 @@
               {:transform "scale(30)"}
               ))
 
-#_(when (nth-frame 1 frame)
+
+
+(when (nth-frame 1 frame)
   (freak-out @width
              @height
              60
@@ -623,25 +705,28 @@
              white
              {:opacity .6}))
 
-  #_(when (nth-frame 2 frame)(gen-line-grid white 10
-    80 80
-    {:col 20 :row 20}))
 
-    #_(->>
-      (gen-circ midnight (* 0.5 @width) (* 0.5 @height) 200)
+
+
+  (->>
+      (gen-circ midnight (* 0.5 @width) (* 0.5 @height) 400)
       (draw)
       (when (nth-frame 1 frame)))
 
+
+  #_(->>
+      (gen-circ midnight (* 0.5 @width) (* 0.5 @height) 400 (url "hexo"))
+      (draw)
+      (when (nth-frame 1 frame)))
+
+
 #_(->>
-  (gen-grid
-    80 80
-    {:col 40 :row 40}
-    (gen-circ white 5 5 5))
-   (map #(style {:opacity .5} %))
-   (map draw)
-   (map-indexed (fn [idx item] (when (nth-frame (js/Math.floor (* idx (val-cyc frame [.01 .001 .1]))) frame) item))))
-
-
+  (gen-shape midnight oct)
+    (style {:transform "translate(44.5vw, 40vh) scale(3)"})
+    (style {:opacity (val-cyc frame [1 1 1 .9 .8 .7 .5 .7 .7 .7 .8. .8 .9])})
+    (anim "fi" "10s" "infinite")
+    (draw)
+    (when-not (nth-frame 100 frame)))
 
 
 
@@ -681,6 +766,15 @@
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
                 (draw))]
+            [:mask {:id "hexo" :key (random-uuid)}
+             (gen-group {}
+                        (->>
+                          (gen-rect "#fff" 0 0 "100%" "100%")
+                          (draw))
+                        (->>
+                         (gen-shape "#000" oct)
+                           (style {:transform "translate(44.5vw, 40vh) scale(3)"})
+                           (draw)))]
             ])
 
 
@@ -693,10 +787,10 @@
     :style  {:mix-blend-mode
              (val-cyc @frame
                       [
-                      "multiply"
+                      ;"multiply"
                       ;"difference" "difference"
                       ;"difference"
-                      ;"luminosity"
+                      "luminosity"
                       ]) }
     :width  (:width settings)
     :height (:height settings)}
