@@ -429,169 +429,169 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;; SM NUMBER ONE ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (let
-    [colors [
-      pink pink
-      yellow yellow
-      orange orange
-
-             ]]
-      (->>
-        (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
-        (style {:opacity .9 })
-
-        (draw)))
-
-        (gen-bg-lines pink 80)
-
-
-        (anim-and-hold :gf frame (frames-to-seconds 90)
-                       '()
-                       (when (nth-frame 6 frame)
-                         (freak-out (* 0.5 @width) @width
-                                    0 @height
-                                    16
-                                    60
-                                    gray
-                                    {:opacity .8})))
-
-        (anim-and-hold :mf frame (frames-to-seconds 157)
-                       '()
-                       (when (nth-frame 12 frame)
-                         (freak-out 0 (* 0.5 @width)
-                                    0 @height
-                                    20
-                                    60
-                                    mint
-                                    {:opacity .8})))
-
-
-      @spins
-
-      (gen-group {:style {:isolation "isolate"
-                          :mask (url "nf")}}
-
-                 (anim-and-hold :lo frame (frames-to-seconds 48)
-                                '()
-                                (->>
-                                  (gen-shape white oct)
-                                    (style {:transform (str "translate("
-                                                            (* 0.25 @width) "px, "
-                                                            (* 0.3 @height) "px) "
-                                                            "scale("
-                                                            (val-cyc frame [1.2 2 1.4 1.4 2 1 4])
-                                                            ")")})
-
-                                    (style {:opacity .7})
-                                    (draw)
-                                    (when (nth-frame 1 frame))))
-
-                 (anim-and-hold :ph frame (frames-to-seconds 90)
-                                '()
-                                (->>
-                                  (gen-shape pink hept)
-                                    (style {:transform (str "translate("
-                                                            (* 0.15 @width) "px, "
-                                                            (* 0.20 @height) "px) "
-                                                            "scale("
-                                                            (val-cyc (/ frame 3) [1.2 1.3 1.4 1.4 1.2 1.4])
-                                                            ")")})
-                                   (style {:mix-blend-mode "exclusion"})
-                                    (style {:opacity .7})
-                                    (draw)
-                                    (when (nth-frame 2 frame))))
-
-                 (anim-and-hold :nh frame (frames-to-seconds 97)
-                                '()
-                                (->>
-                                  (gen-shape navy hept)
-                                    (style {:transform (str "translate("
-                                                            (* 0.35 @width) "px, "
-                                                            (* 0.40 @height) "px) "
-                                                            "scale(1.3)")})
-                                   (style {:mix-blend-mode "color-burn"})
-                                    (style {:opacity .7})
-                                    (draw)
-                                    (when (nth-frame 3 frame))))
-
-
-                 (anim-and-hold :nhl frame (frames-to-seconds 157)
-                                '()
-                                (->>
-                                  (gen-shape (pattern (:id navy-lines)) hept)
-                                    (style {:transform (str "translate("
-                                                            (* 0.35 @width) "px, "
-                                                            (* 0.40 @height) "px) "
-                                                            "scale("
-                                                            (val-cyc (/ frame 5) [1.2 2 1.4 1.4 2 1 4])
-                                                            ")")})
-                                   (style {:mix-blend-mode "color-burn"})
-                                    (style {:opacity .7})
-                                    (draw)
-                                    (when (nth-frame 5 frame))))
-
-                 )
-
-
-
-                 (when (nth-frame 24 frame)
-                   (freak-out @width
-                              @height
-                              8
-                              200
-                              white))
-
-
-              (anim-and-hold :dots frame (frames-to-seconds 217)
-                             '()
-                              (gen-group {}
-                                         (freak-out @width
-                                                    @height
-                                                    8
-                                                    200
-                                                    white)
-                                         (freak-out @width
-                                                    @height
-                                                    6
-                                                    200
-                                                    mint)
-                                         (freak-out @width
-                                                    @height
-                                                    4
-                                                    200
-                                                    pink)))
+  ; (let
+  ;   [colors [
+  ;     pink pink
+  ;     yellow yellow
+  ;     orange orange
+  ;
+  ;            ]]
+  ;     (->>
+  ;       (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+  ;       (style {:opacity .9 })
+  ;
+  ;       (draw)))
+  ;
+  ;       (gen-bg-lines pink 80)
+  ;
+  ;
+  ;       (anim-and-hold :gf frame (frames-to-seconds 90)
+  ;                      '()
+  ;                      (when (nth-frame 6 frame)
+  ;                        (freak-out (* 0.5 @width) @width
+  ;                                   0 @height
+  ;                                   16
+  ;                                   60
+  ;                                   gray
+  ;                                   {:opacity .8})))
+  ;
+  ;       (anim-and-hold :mf frame (frames-to-seconds 157)
+  ;                      '()
+  ;                      (when (nth-frame 12 frame)
+  ;                        (freak-out 0 (* 0.5 @width)
+  ;                                   0 @height
+  ;                                   20
+  ;                                   60
+  ;                                   mint
+  ;                                   {:opacity .8})))
+  ;
+  ;
+  ;     @spins
+  ;
+  ;     (gen-group {:style {:isolation "isolate"
+  ;                         :mask (url "nf")}}
+  ;
+  ;                (anim-and-hold :lo frame (frames-to-seconds 48)
+  ;                               '()
+  ;                               (->>
+  ;                                 (gen-shape white oct)
+  ;                                   (style {:transform (str "translate("
+  ;                                                           (* 0.25 @width) "px, "
+  ;                                                           (* 0.3 @height) "px) "
+  ;                                                           "scale("
+  ;                                                           (val-cyc frame [1.2 2 1.4 1.4 2 1 4])
+  ;                                                           ")")})
+  ;
+  ;                                   (style {:opacity .7})
+  ;                                   (draw)
+  ;                                   (when (nth-frame 1 frame))))
+  ;
+  ;                (anim-and-hold :ph frame (frames-to-seconds 90)
+  ;                               '()
+  ;                               (->>
+  ;                                 (gen-shape pink hept)
+  ;                                   (style {:transform (str "translate("
+  ;                                                           (* 0.15 @width) "px, "
+  ;                                                           (* 0.20 @height) "px) "
+  ;                                                           "scale("
+  ;                                                           (val-cyc (/ frame 3) [1.2 1.3 1.4 1.4 1.2 1.4])
+  ;                                                           ")")})
+  ;                                  (style {:mix-blend-mode "exclusion"})
+  ;                                   (style {:opacity .7})
+  ;                                   (draw)
+  ;                                   (when (nth-frame 2 frame))))
+  ;
+  ;                (anim-and-hold :nh frame (frames-to-seconds 97)
+  ;                               '()
+  ;                               (->>
+  ;                                 (gen-shape navy hept)
+  ;                                   (style {:transform (str "translate("
+  ;                                                           (* 0.35 @width) "px, "
+  ;                                                           (* 0.40 @height) "px) "
+  ;                                                           "scale(1.3)")})
+  ;                                  (style {:mix-blend-mode "color-burn"})
+  ;                                   (style {:opacity .7})
+  ;                                   (draw)
+  ;                                   (when (nth-frame 3 frame))))
+  ;
+  ;
+  ;                (anim-and-hold :nhl frame (frames-to-seconds 157)
+  ;                               '()
+  ;                               (->>
+  ;                                 (gen-shape (pattern (:id navy-lines)) hept)
+  ;                                   (style {:transform (str "translate("
+  ;                                                           (* 0.35 @width) "px, "
+  ;                                                           (* 0.40 @height) "px) "
+  ;                                                           "scale("
+  ;                                                           (val-cyc (/ frame 5) [1.2 2 1.4 1.4 2 1 4])
+  ;                                                           ")")})
+  ;                                  (style {:mix-blend-mode "color-burn"})
+  ;                                   (style {:opacity .7})
+  ;                                   (draw)
+  ;                                   (when (nth-frame 5 frame))))
+  ;
+  ;                )
+  ;
+  ;
+  ;
+  ;                (when (nth-frame 24 frame)
+  ;                  (freak-out @width
+  ;                             @height
+  ;                             8
+  ;                             200
+  ;                             white))
+  ;
+  ;
+  ;             (anim-and-hold :dots frame (frames-to-seconds 217)
+  ;                            '()
+  ;                             (gen-group {}
+  ;                                        (freak-out @width
+  ;                                                   @height
+  ;                                                   8
+  ;                                                   200
+  ;                                                   white)
+  ;                                        (freak-out @width
+  ;                                                   @height
+  ;                                                   6
+  ;                                                   200
+  ;                                                   mint)
+  ;                                        (freak-out @width
+  ;                                                   @height
+  ;                                                   4
+  ;                                                   200
+  ;                                                   pink)))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;; SM NUMBER TWO ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (let
-    [colors [
-      pink pink
-      ;yellow yellow
-      ;orange orange
-
-             ]]
-      #_(->>
-        (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
-        (style {:opacity .9 })
-
-        (draw)))
-
-
-      #_(gen-bg-lines midnight (mod (- frame 1) 58))
-
-
-
-      #_(->>
-        (gen-rect
-         (val-cyc frame (flatten
-                         (conj '[]
-                               (repeat 58 white)
-                               (repeat 58 yellow)
-                               (repeat 58 mint)
-                               (repeat 58 forest))))
-         0 0 1000 1000 (url "wobs"))
-        (draw))
+  ; (let
+  ;   [colors [
+  ;     pink pink
+  ;     ;yellow yellow
+  ;     ;orange orange
+  ;
+  ;            ]]
+  ;     (->>
+  ;       (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+  ;       (style {:opacity .9 })
+  ;
+  ;       (draw)))
+  ;
+  ;
+  ;     (gen-bg-lines midnight (mod (- frame 1) 58))
+  ;
+  ;
+  ;
+  ;     (->>
+  ;       (gen-rect
+  ;        (val-cyc frame (flatten
+  ;                        (conj '[]
+  ;                              (repeat 58 white)
+  ;                              (repeat 58 yellow)
+  ;                              (repeat 58 mint)
+  ;                              (repeat 58 forest))))
+  ;        0 0 1000 1000 (url "wobs"))
+  ;       (draw))
 
 
   #_(->>
