@@ -12,7 +12,7 @@
                 pink
                 white
                 yellow]]
-            [ui.generators :refer 
+            [ui.generators :refer
              [circ
               line
               polygon
@@ -109,7 +109,7 @@
     ret))
 
 
-              
+
 
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------
 
@@ -144,7 +144,7 @@
 
 (defn back-and-forth!
   [name start-str finish-str]
-  (make-frames name [0 50 100] 
+  (make-frames name [0 50 100]
     (make-body "transform" [
       (str start-str)
       (str finish-str)
@@ -152,14 +152,14 @@
 
 (defn a-to-b!
   [name att start-str finish-str]
-  (make-frames name [0 100] 
+  (make-frames name [0 100]
     (make-body att [
       (str start-str)
       (str finish-str)])))
 
 (defn fade-start!
   [name op-end]
-  (make-frames name [0 99 100] 
+  (make-frames name [0 99 100]
     (make-body "fill-opacity" [
       (str 0)
       (str 0)
@@ -169,7 +169,7 @@
 
 (make-frames "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
-(back-and-forth! "scaley" "scale(1)" "scale(8)")
+(back-and-forth! "scaley" "scale(1)" "scale(12)")
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
@@ -187,7 +187,13 @@
                            "translate(604%, 300%) rotate(-210deg) scale(2.2)"
                            "translate(80%, 50%) rotate(400deg) scale(6.2)"]))
 
-    
+
+(make-frames
+  "colors"
+    [0 70 100]
+   (make-body "fill" [navy orange pink]))
+
+
 
 ;; --------------- ATOMS STORAGE --------------------
 
@@ -198,7 +204,7 @@
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (rect))
      (range 10))))
-     
+
 (def drops-2
  (atom  (map
     #(->>
@@ -230,33 +236,9 @@
     (anim "bloop-x" "1s" "infinite" {:timing "ease-out"})
     (circ)
     (atom)))
-                
-    
-(def move-me
-  (->>
-   (gen-shape (pattern (:id orange-lines)) hept)
-   (style {:opacity .8 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "4s" "infinite")
-   (shape)
-   (atom)))
 
-   (def move-me-2
-     (->>
-      (gen-shape white hept)
-      (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-      (anim "woosh" "4s" "infinite")
-      (shape)
-      (atom)))
 
-      (def move-me-3
-        (->>
-         (gen-shape (pattern (:id navy-lines)) hept)
-         (style {:opacity .5 :transform-origin "center" :transform "scale(4.4)"})
-         (anim "woosh" "2s" "infinite" {:delay ".4s"})
-         (shape)
-         (atom)))
-
-(def bg (->> 
+(def bg (->>
   (gen-circ (pattern (str "noise-" navy)) (* .5 @width) (* .5 @height) 1800)
   (style {:opacity 1 :transform-origin "center" :transform "scale(4)"})
   (anim "sc-rot" "32s" "1" {:timing "linear" :delay "7s"})
@@ -267,8 +249,8 @@
 (def fi-1
   (->>
     (gen-rect white 0 0 "100%" "100%")
-    (style {:opacity .2})
-    (anim "fade-in-out-2" "6s" "infinite")
+    (style {:opacity .6})
+    (anim "colors" "20s" "infinite" {:delay "3s"})
     (rect)
     (atom)))
 
@@ -276,7 +258,7 @@
   (->>
     (gen-rect orange 0 0 "100%" "100%")
     (style {:opacity .8})
-    (anim "fade-in-out-2" "6s" "infinite" {:delay "3s"})
+    (anim "fade-in-out-2" "20s" "infinite" {:delay "3s"})
     (rect)
     (atom)))
 
@@ -284,7 +266,7 @@
   (->>
     (gen-rect navy 0 0 "100%" "100%")
     (style {:opacity .8})
-    (anim "fade-in-out-2" "36s" "infinite" {:delay "2s" :timing "linear"})
+    (anim "fade-in-out-2" "36s" "infinite" {})
     (rect)
     (atom)))
 
@@ -298,11 +280,11 @@
 
 (def fade-circ
   (->>
-    (gen-circ 
-     (pattern (:id br-orange-lines)) 
-     (* 0.5 @width) 
-     (* 0.4 @height) 
-     260 
+    (gen-circ
+     (pattern (:id br-orange-lines))
+     (* 0.5 @width)
+     (* 0.4 @height)
+     260
      (url "grad-mask"))
      (style {:transform-origin "center" :transform "rotate(-70deg)"})
     (anim "fade-in" "4s" "1")
@@ -311,9 +293,9 @@
 
 (def throb
   (->>
-    (gen-circ white (* 0.5 @width) (* 0.3 @height) 100)
-    (style {:opacity .4 :transform-origin "center"})
-    (anim "scaley" "10s" "infinite")
+    (gen-circ white (* 0.5 @width) (* 0.5 @height) 100)
+    (style {:opacity .5 :transform-origin "center"})
+    (anim "scaley" "8s" "infinite")
     (circ)
     (atom)))
 
@@ -325,15 +307,23 @@
     (circ)
     (atom)))
 
-(def sworj 
+(def throb-3
   (->>
-    (gen-circ (pattern (str "noise-" br-orange)) (* 0.5 @width) (* 0.5 @height) 500)
-    (style {:transform-origin "center" :transform "translateY(1000px) scale(100)"})
-    (anim "sc-rot-2" "4s" "infinite")
+    (gen-circ orange (* 0.5 @width) (* 0.3 @height) 100)
+    (style {:opacity .4 :transform-origin "center"})
+    (anim "scaley" "10s" "infinite" {:delay ".2s"})
     (circ)
     (atom)))
 
-    (def sworj-2 
+(def sworj
+  (->>
+    (gen-circ (pattern (str "noise-" br-orange)) (* 0.5 @width) (* 0.5 @height) 500)
+    (style {:transform-origin "center" :transform "translateY(1000px) scale(100)"})
+    (anim "sc-rot-2" "1.4s" "infinite" {:timing "linear"})
+    (circ)
+    (atom)))
+
+    (def sworj-2
       (->>
         (gen-circ (pattern (str "noise-" navy)) (* 0.5 @width) (* 0.5 @height) 500)
         (style {:transform-origin "center" :transform "translateY(1000px) scale(100)"})
@@ -342,43 +332,23 @@
         (atom)))
 
 
-(def levels 
-  (map-indexed 
+(def levels
+  (map-indexed
     (fn [idx color]
           (->>
-            (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
-            (style {:opacity .4 
-                    :transform-origin "center" 
+            (gen-rect color -100 -100 "150%" "150%" (url "cutout"))
+            (style {:opacity .4
+                    :transform-origin "center"
                     :transform (str
                                 "translate(" (- (rand-int 200) 100) "px, " (- (rand-int 300) 100) "px)"
                                 "rotate(" (- 360 (rand-int 720)) "deg)")})
             (anim "fade-in-out" "40s" "infinite" {:delay (str (* .1 idx) "s")})
             (rect)
             (atom)))
-    (take 10 (repeatedly #(nth [navy mint white] (rand-int 6))))))
+    (take 20 (repeatedly #(nth [orange yellow orange yellow white] (rand-int 6))))))
 
-(def gg-row 
-  (atom
-   (->>
-    (gen-grid
-      1 80
-      {:col 40 :row 20}
-      (gen-rect white 0 0 @width 2)) 
-     (map #(style {:opacity .5} %))
-     (map #(anim "boop" "40s" "infinite" %))
-     (map rect))))
 
-(def gg-col 
- (atom
-  (->>
-   (gen-grid
-     40 1
-     {:col 40 :row 20}
-     (gen-rect white 5 0 2 @height)) 
-    (map #(style {:opacity .5} %))
-    (map #(anim "boop" "40s" "infinite" {:delay "2s"} %))
-    (map rect))))
-    
+
 
 ;; ------------------- DRAWING HELPERS ------------------------
 
@@ -401,7 +371,7 @@
 (defn arc
   [color style]
   [:path {:key (random-uuid)
-          :fill "none" 
+          :fill "none"
           :stroke color
           :stroke-width "20"
           :d "M 250 150 A 100 100 0 0 0 50 150"
@@ -421,125 +391,110 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (let [colors [ 
+    (let [colors [
         ;mint mint mint mint mint
         navy navy navy navy navy
-        ;white white white white white  
+        ;white white white white white
         ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .7})
             (rect)))
-  
+
   ;@fi-1
   ;@fi-2
+
   @fi-3
   @fi-4
 
-  ;(doall (map deref levels))
+  (doall (map deref levels))
 
-  
-  ;@gg-col
-  ;@gg-row
-  
 
-  (fade-and-hold "center" frame 10 
-                 @fade-circ 
+
+  (fade-and-hold "center" frame 10
+                 @fade-circ
                  (->>
-                   (gen-circ br-orange (* 0.5 @width) (* 0.4 @height) 260 (url "grad-mask")) 
+                   (gen-circ br-orange (* 0.5 @width) (* 0.4 @height) 260 (url "grad-mask"))
                    (style {:transform-origin "center" :transform "rotate(-70deg)"})
                    (circ)
-                   (when (nth-frame 2 frame))))
-  
+                   (when (nth-frame 1 frame))))
+
                    (->>
-                     (gen-circ (pattern (:id pink-dots)) (* 0.5 @width) (* 0.4 @height) 260 (url "grad-mask")) 
+                     (gen-circ (pattern (:id pink-dots)) (* 0.5 @width) (* 0.4 @height) 260 (url "grad-mask"))
                      (style {:transform-origin "center" :transform "rotate(-70deg)"})
                      (circ)
-                     (when (nth-frame 4 frame)))
-  
+                     (when (nth-frame 1 frame)))
+
                      (->>
-                       (gen-circ br-orange (* 0.5 @width) (* 0.4 @height) 260 (url "grad-mask")) 
+                       (gen-circ br-orange (* 0.5 @width) (* 0.4 @height) 260 (url "grad-mask"))
                        (style {:transform-origin "center" :transform "rotate(-70deg)"})
                        (circ)
-                       (when (nth-frame 4 frame)))
-  
-                       
-  
-  ; (->>
-  ;   (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 100)
-  ;   (style {:opacity .7 :transform-origin "center" :transform "scale(100) rotate(30deg)"})
-  ;   (circ)
-  ;   (when (nth-frame 1 frame)))
-  ; 
-  ;   (->>
-  ;     (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 100)
-  ;     (style {:opacity .7 :transform-origin "center" :transform "scale(100) translateY(100px) rotate(80deg)"})
-  ;     (circ)
-  ;     (when (nth-frame 3 frame)))
-  ; 
-  ;     (->>
-  ;       (gen-circ (pattern (str "noise-" yellow)) (* 0.5 @width) (* 0.5 @height) 100)
-  ;       (style {:opacity 1 :transform-origin "center" :transform "scale(100) translateY(-100px) rotate(80deg)"})
-  ;       (circ)
-  ;       (when (nth-frame 6 frame)))
-  
-  
-    
-  
-  ;@sworj
-  
-  ;(gen-bg-lines navy (mod (* 4 frame) 80))
+                       (when (nth-frame 1 frame)))
 
-  
-  ;@drops
-  ;@drops-2
-  ;@drops-3
-  ;@drops-4
-  
-  
-  
-  ; @throb
-  ;@sworj-2
-  
-  (->>
-    (gen-circ orange (* 0.5 @width) (* 0.4 @height) 260) 
-    (style {:transform-origin "center" :transform "rotate(-70deg)"})
-    (circ)
-    (when (nth-frame 1 frame)))
-  
-  
 
-  
-  ; @move-me-2
-  ; @move-me
-  ; @move-me-3
-  
-  ; (when (nth-frame 12 frame)
-  ;   (freak-out @width
-  ;              @height
-  ;              20
-  ;              100
-  ;              pink))
-  ; 
-  ;              (when (nth-frame 6 frame)
-  ;                (freak-out @width
-  ;                           @height
-  ;                           10
-  ;                           200
-  ;                           yellow))
-  ; 
-  ;                           (when (nth-frame 2 frame)
-  ;                             (freak-out @width
-  ;                                        @height
-  ;                                        30
-  ;                                        200
-  ;                                        navy))
 
-    
+
+
+
+(fade-and-hold "two" frame 20
+    '()
+    (gen-group {}
+               (gen-bg-lines orange (mod (* 6 frame) 80))))
+
+
+
+
+  @sworj
+  (gen-bg-lines orange 80)
+
+  @throb
+  @throb-2
+
+
+
+
+
+
+
+
+  #_(->>
+   (gen-circ br-orange (* 0.5 @width) (* 0.4 @height) 260)
+   (style {:transform-origin "center" :transform "rotate(-70deg)"})
+   (circ)
+   (when (nth-frame 1 frame)))
+
+  @throb-3
+
+
+
+
+
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               10
+               400
+               yellow))
+
+ (when (nth-frame 1 frame)
+   (freak-out @width
+              @height
+              10
+              200
+              br-orange))
+
+  (when (nth-frame 9 frame)
+    (freak-out @width
+               @height
+               10
+               200
+               white))
+
+
   )) ; cx end
-  
-  
+
+
 ;; ----------- LOOP TIMERS ------------------------------
 
 (defonce frame (atom 0))
@@ -551,7 +506,7 @@
 (defonce start-frame-timer
   (js/setInterval
     #(swap! frame inc) 500))
-    
+
 
 ;; ----------- DEFS AND DRAW ------------------------------
 
@@ -565,13 +520,13 @@
               [:circle { :cx (* 0.5 @width) :cy (* 0.4 @height) :r 260 :fill "url(#grad)" }]]
             [:mask {:id "cutout" :key (random-uuid)}
              (->>
-               (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
+               (gen-rect white 10 12 (* 1 @width) (* 1 @height))
                (rect))
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
                (circ))]
             ])
-  
+
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
 (def all-fills [gray mint navy blue orange br-orange pink white yellow])
@@ -581,7 +536,7 @@
      ;; filters
     (map #(:def %) all-filters)
     ;; masks and patterns
-    [:defs 
+    [:defs
      noise
      (map identity gradients)
      (map identity masks)
@@ -610,7 +565,7 @@
                         shadow ])]
 
     ;; then here dereference a state full of polys
-    @collection 
+    @collection
     ])
 
 (reagent/render-component [drawing]
