@@ -85,7 +85,7 @@
     :h h
     :style {
       :fill fill-string }})
-      
+
 (defn gen-sr
   [fill]
   (partial gen-rect fill))
@@ -100,7 +100,7 @@
     :y y
     :r radius
     :style { :fill fill-string }})
-    
+
 (defn gen-nc
   [filter-id x y radius]
   { :x x
@@ -150,25 +150,25 @@
 ;;(defn gen-offsets)
 
 (defn gen-grid
-  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj)) 
+  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj))
   ([cols rows offset base-obj]
-    (let [x (base-obj :x) 
+    (let [x (base-obj :x)
           y (base-obj :y)
           a-off (offset :col)
           b-off (offset :row)]
             (set (for [a (range cols) b (range rows)]
               (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))}))))))
-              
+
 #_(defn gen-grid
-  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj)) 
+  ;;([offset base-obj] (gen-grid (gen-offsets offset base-obj) offset base-obj))
   ([cols rows offset base-obj]
-    (let [x (base-obj :x) 
+    (let [x (base-obj :x)
           y (base-obj :y)
           a-off (offset :col)
           b-off (offset :row)]
-            (map (fn [a b] (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))})) (range cols) (range rows)) 
+            (map (fn [a b] (merge base-obj {:x (+ x (* a a-off))} {:y (+ y (* b b-off))})) (range cols) (range rows))
             )))
-  
+
   (defn gen-shadow
     [offset base-obj]
     (let [x (base-obj :x)
@@ -176,8 +176,8 @@
           x-off (offset :x)
           y-off (offset :y)
           fill-id (:id shadow)
-          shadow-obj (merge base-obj 
-            {:x (+ x x-off)} 
+          shadow-obj (merge base-obj
+            {:x (+ x x-off)}
             {:y (+ y y-off)}
             {:style {:opacity .7 :fill (str "url(#" fill-id ") #fff")}})]
       (list shadow-obj base-obj)))
@@ -240,7 +240,7 @@
     (anim "wee-oo" "4s" "infinite")
     (circ)
     (atom)))
-    
+
 (def rot-rect
   (->>
     (gen-rect mint 60 500 360 60)
@@ -248,7 +248,7 @@
     (anim "rot" "1s" "infinite")
     (rect)
     (atom)))
-    
+
 (def rot-rect-2
   (->>
     (gen-rect mint 560 700 360 60)
@@ -256,7 +256,7 @@
     (anim "rot" "1s" "infinite")
     (rect)
     (atom)))
-    
+
 (def rot-rect-3
   (->>
     (gen-rect mint 160 200 360 60)
@@ -264,7 +264,7 @@
     (anim "rot" "1s" "infinite")
     (rect)
     (atom)))
-    
+
 (def rot-rect-4
   (->>
     (gen-rect mint 460 100 360 60)
@@ -272,7 +272,7 @@
     (anim "rot" "1s" "infinite")
     (rect)
     (atom)))
-    
+
 (def rot-o
   (->>
     ((gen-ps (:id blue-circs)) oct)
@@ -295,7 +295,7 @@
      "translate(80%, 50%) rotate(-210deg) scale(5.2)"
      "translate(80%, 50%) rotate(400deg) scale(1)"
      ]))
-     
+
      (make-frames
        "woosh-2"
          [10, 35, 55, 85, 92]
@@ -306,7 +306,7 @@
           "translate(210%, 50%) rotate(210deg) scale(5.2)"
           "translate(210%, 50%) rotate(400deg) scale(1)"
           ]))
-          
+
       (make-frames
         "woosh-4"
           [10, 35, 55, 85, 92]
@@ -317,7 +317,7 @@
            "translate(810%, 100%) rotate(-210deg) scale(5.2)"
            "translate(810%, 100%) rotate(400deg) scale(1)"
            ]))
-          
+
 (make-frames
   "creep"
   [10, 25, 40, 80, 91]
@@ -336,7 +336,7 @@
    (anim "woosh" "4s" "infinite")
    (poly)
    (atom)))
-   
+
    (def move-me-3
      (->>
       ((gen-ps (:id pink-circs)) hept)
@@ -344,7 +344,7 @@
       (anim "woosh" "8s" "infinite" {:delay "1s"})
       (poly)
       (atom)))
-   
+
    (def move-me-2
      (->>
       ((gen-ps (:id pink-lines)) hept)
@@ -352,8 +352,8 @@
       (anim "woosh-2" "2s" "infinite")
       (poly)
       (atom)))
-      
-      
+
+
       (def move-me-4
         (->>
          ((gen-ps (:id pink-lines)) hept)
@@ -361,9 +361,9 @@
          (anim "woosh-4" "2s" "infinite")
          (poly)
          (atom)))
-      
-   
-   
+
+
+
 (def creepy (->>
   ((gen-ps (:id gray-lines)) hex)
   (style {:transform-origin "center" :transform "translate(280%, 750%)"})
@@ -373,179 +373,299 @@
 
 (defn cx [frame]
   (list
-    
-    (when (nth-frame 12 frame)
+
+    #_(when (nth-frame 1 frame)
       (freak-out @width
                  @height
                  40
                  100
                  white))
 
-    (let [colors [ orange orange orange orange orange ] ; orange navy mint pink gray white
+    (let [colors [
+                  ;orange orange orange orange orange
+                  gray gray gray gray gray
+                  ] ; orange navy mint pink gray white
           n (count colors)]
           (->>
             (gen-rect (nth colors (mod frame n)) 0 0 "100%" "100%")
             (style {:opacity .7})
             (rect)
           ))
-          
-    (->>
+
+    #_(->>
      ((gen-sc white) (* @width .5) (* @height .5) 200)
      (circ)
      (when (nth-frame 4 frame)))
-     
-     
-     (->>
+
+
+     #_(->>
       ((gen-sc pink) (* @width .75) (* @height .15) 40)
       (circ)
       (when (nth-frame 2 frame)))
-      
+
       #_@move-me
-      
+
      #_(when (nth-frame 5 frame) (gen-bg-lines navy 80))
-                 
+
       #_@move-me-3
-      
+
       #_@move-me-2
-      
+
       #_(when (nth-frame 10 frame)
         (freak-out @width
                    @height
                    40
                    200
                    white))
-     
-     
+
+
                    #_(when (nth-frame 12 frame)
                      (freak-out @width
                                 @height
                                 20
                                 200
                                 mint))
-                                
+
      #_(when (nth-frame 16 frame) (gen-bg-lines white 80))
-     
-    #_(->> 
+
+    #_(->>
        (gen-nc "noise" (* .5 @width) (* .5 @height) 1000)
        (style {:opacity .5})
        (circ)
        (when (nth-frame 5 frame) ))
 
 
-   #_(->>
+   (->>
      (gen-grid
-       40 1
+       60 1
        {:col 40 :row 40}
-       (gen-rect navy 10 0 2 @height)) 
-      (map #(style {:opacity .5} %)) 
-      (map rect) 
-      (when (nth-frame 2 frame)))
-      
-    #_(->>
+       (gen-rect navy 10 0 2 @height))
+      (map #(style {:opacity .5} %))
+      (map rect)
+      (when (nth-frame 1 frame)))
+
+    (->>
       (gen-grid
         1 40
         {:col 40 :row 40}
-        (gen-rect navy 10 0 @width 2)) 
-       (map #(style {:opacity .5} %)) 
-       (map rect) 
-       (when (nth-frame 2 frame)))
-       
+        (gen-rect navy 10 0 @width 2))
+       (map #(style {:opacity .5} %))
+       (map rect)
+       (when (nth-frame 1 frame)))
+
        ;@move-me
        ;@move-me-3
        ;@move-me-4
-       
+
       #_(when (nth-frame 2 frame) (gen-bg-lines white 80))
-       
+
       #_(when (nth-frame 8 frame)
         (freak-out @width
                    @height
                    20
                    200
                    white))
-                   
+
         ;(when (nth-frame 2 frame) @rot-rect-3)
         ;(when (nth-frame 3 frame) @rot-rect-2)
         ;(when (nth-frame 4 frame) @rot-rect-4)
-        
-        #_(->>
+
+        (->>
           ((gen-ps (:id blue-circs)) oct)
-            (style {:transform "translate(100px, 100px) scale(.5)"})
+            (style {:transform "translate(10vw, 100px) scale(1)"})
             (poly)
-            (when (nth-frame 4 frame)))
-            
-        #_(->>
+            (when-not (nth-frame 4 frame)))
+
+        (->>
           ((gen-ps (:id blue-circs)) hex)
-            (style {:transform "translate(600px, 100px) scale(.5)"})
+            (style {:transform "translate(80vw, 100px) scale(1)"})
             (poly)
-            (when (nth-frame 6 frame)))
-            
-        #_(->>
+            (when-not (nth-frame 6 frame)))
+
+        (->>
           ((gen-ps (:id blue-circs)) oct)
-            (style {:transform "translate(100px, 100px) scale(.5)"})
+            (style {:transform "translate(10vw, 100px) scale(1)"})
             (poly)
-            (when (nth-frame 4 frame)))
-            
-            
-        #_(->>
+            (when-not (nth-frame 4 frame)))
+
+
+        (->>
           ((gen-ps (:id gray-lines)) hex)
-            (style {:transform "translate(600px, 700px) scale(.5)"})
+            (style {:transform "translate(80vw, 700px) scale(1)"})
             (poly)
-            (when (nth-frame 3 frame)))
-            
-        #_(->>
+            (when-not (nth-frame 3 frame)))
+
+        (->>
           ((gen-ps (:id gray-lines)) oct)
-            (style {:transform "translate(100px, 700px) scale(.5)"})
+            (style {:transform "translate(10vw, 700px) scale(1)"})
             (poly)
-            (when (nth-frame 2 frame)))
-            
-            
+            (when-not (nth-frame 2 frame)))
+
+
         #_(->>
           ((gen-ps (:id blue-circs)) hex)
             (style {:transform "translate(600px, 400px) scale(2.5)"})
             (poly)
             (when (nth-frame 12 frame)))
-            
+
         #_(->>
           ((gen-ps (:id blue-circs)) oct)
             (style {:transform "translate(100px, 100px) scale(2.5)"})
             (poly)
             (when (nth-frame 8 frame)))
-                   
-        #_(->>
-         ((gen-sc gray) (* .5 @width) (* .5 @height) 200)
+
+        (->>
+         ((gen-sc gray) (* .5 @width) (* .5 @height) 400)
          (anim "rot" "10s" "infinite")
          (circ)
-         (when (or (nth-frame 7 frame) (nth-frame 4 frame))))
-         
-         
-        #_(->>
-          ((gen-sc navy) (* .5 @width) (* .5 @height) 200)
+         (when (nth-frame 7 frame)))
+
+
+        (->>
+          ((gen-sc navy) (* .5 @width) (* .5 @height) 400)
           (style {:opacity .4})
-          (anim "rot" "10s" "infinite")
+          ; (anim "rot" "10s" "infinite")
           (circ)
-          (when (or (nth-frame 7 frame) (nth-frame 6 frame))))
-        
+          (when-not (nth-frame 7 frame)))
+
+
+    ;; INTRO
+
+    ; [:text {:key (random-uuid)
+    ;         :x (* 0.5 @width)
+    ;         :y (* 0.45 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "bold 148px monospace"
+    ;                 :fill white}}
+    ;  "{ TIME, NOTES }"]
+    ;
+    ; [:text {:key (random-uuid)
+    ;         :x (* 0.5 @width)
+    ;         :y (* 0.65 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "88px monospace"
+    ;                 :fill white}}
+    ;  "Sarah Groff Hennigh-Palermo"]
+    ;
+    ; [:text {:key (random-uuid)
+    ;         :x (* 0.5 @width)
+    ;         :y (* 0.75 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "68px monospace"
+    ;                 :fill white}}
+    ;  "music by Melody Loveless"]
+
+
+    ; ; Tangara
+    ;   [:text {:key (random-uuid)
+    ;           :x (* 0.5 @width)
+    ;           :y (* 0.45 @height)
+    ;           :text-anchor "middle"
+    ;           :style {:font "bold 148px monospace"
+    ;                   :fill white}}
+    ;    "TANGARA"]
+    ;
+    ; [:text {:key (random-uuid)
+    ;         :x (* 0.5 @width)
+    ;         :y (* 0.55 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "bold 148px monospace"
+    ;                 :fill white}}
+    ;  "FASTUOSA"]
+
+    ;; SUMMERS
+
+    ; [:text {:key (random-uuid)
+    ;         :x (* 0.5 @width)
+    ;         :y (* 0.45 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "bold 148px monospace"
+    ;                 :fill white}}
+    ;  "SUMMER"]
+
+  ; [:text {:key (random-uuid)
+  ;         :x (* 0.5 @width)
+  ;         :y (* 0.6 @height)
+  ;         :text-anchor "middle"
+  ;         :style {:font "bold 148px monospace"
+  ;                 :fill white}}
+  ;  "01"]
+
+    ; [:text {:key (random-uuid)
+    ;         :x (* 0.5 @width)
+    ;         :y (* 0.6 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "bold 148px monospace"
+    ;                 :fill white}}
+    ;  "02"]
+  ;
+  ;
+    ; [:text {:key (random-uuid)
+    ;         :x (* 0.5 @width)
+    ;         :y (* 0.6 @height)
+    ;         :text-anchor "middle"
+    ;         :style {:font "bold 148px monospace"
+    ;                 :fill white}}
+    ;  "03"]
+
+
+; Space
+;   [:text {:key (random-uuid)
+;           :x (* 0.5 @width)
+;           :y (* 0.45 @height)
+;           :text-anchor "middle"
+;           :style {:font "bold 148px monospace"
+;                   :fill white}}
+;    "JETS TO"]
+;
+; [:text {:key (random-uuid)
+;         :x (* 0.5 @width)
+;         :y (* 0.6 @height)
+;         :text-anchor "middle"
+;         :style {:font "bold 148px monospace"
+;                 :fill white}}
+;  "CODIE"]
+
+    ;; solent shorts
+
+  ;   [:text {:key (random-uuid)
+  ;           :x (* 0.5 @width)
+  ;           :y (* 0.45 @height)
+  ;           :text-anchor "middle"
+  ;           :style {:font "bold 148px monospace"
+  ;                   :fill white}}
+  ;    "SILENT"]
+  ;
+  ; [:text {:key (random-uuid)
+  ;         :x (* 0.5 @width)
+  ;         :y (* 0.6 @height)
+  ;         :text-anchor "middle"
+  ;         :style {:font "bold 148px monospace"
+  ;                 :fill white}}
+  ;  "SHORTS"]
+
+
         #_(gen-bg-lines white (mod (* 10 frame) 80))
 
-        
+
         #_(when (nth-frame 1 frame)
           (freak-out @width
                      @height
                      100
                      20
                      white))
-                     
-                     
+
+
          #_(when (nth-frame 1 frame)
            (freak-out @width
                       @height
                       20
                       100
                       navy))
-         
 
-           
-       
+
+
+
   )) ; cx end
 
 ;; ----------- LOOP AND DRAW ------------------------------
