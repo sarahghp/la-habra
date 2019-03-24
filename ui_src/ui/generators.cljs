@@ -200,6 +200,21 @@
      style
      num)))
 
+(defn new-freakout
+  [x y scale num item]
+    (repeatedly num
+     (fn []
+       (let [sc (+ 1 (rand-int scale))
+             ex (rand-int x)
+             why (rand-int y)]
+         ;(println sc ex why (/ ex sc) (/ why sc))
+         [:use {:key (random-uuid)
+                :x          ex
+                :y          why
+                :xlinkHref  (str "#" item)
+                :transform  (str "scale("
+                                 sc
+                                 ")")}]))))
 (defn gen-mask
  [id insides]
  [:mask {:id id :key (random-uuid)} insides])
