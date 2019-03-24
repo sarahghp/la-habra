@@ -208,10 +208,9 @@
        (let [sc (+ 1 (rand-int scale))
              ex (rand-int x)
              why (rand-int y)]
-         ;(println sc ex why (/ ex sc) (/ why sc))
          [:use {:key (random-uuid)
-                :x          ex
-                :y          why
+                :x          (/ ex sc)
+                :y          (/ why sc)
                 :xlinkHref  (str "#" item)
                 :transform  (str "scale("
                                  sc

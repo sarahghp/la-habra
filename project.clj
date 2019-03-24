@@ -4,9 +4,9 @@
   :source-paths ["src"]
   :description "A hello world application for electron"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.542"]
+                 [org.clojure/clojurescript "1.10.312"]
                  [figwheel "0.5.10"]
-                 [reagent "0.6.1"]
+                 [reagent "0.8.1"]
                  [ring/ring-core "1.6.1"]]
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-figwheel "0.5.10"]
