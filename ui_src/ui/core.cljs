@@ -18,6 +18,7 @@
             [ui.generators :refer
              [draw
               freak-out
+              new-freakout
               gen-circ
               gen-group
               gen-line
@@ -503,8 +504,10 @@
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
+(def DEBUG false)
 
-(defonce collection (atom (list)))
+(when-not DEBUG
+  (defonce collection (atom (list))))
 ;(reset! ran {})
 
 
@@ -634,13 +637,16 @@
     (when (nth-frame 3 frame)))
 
   ;; NOISE FREAKOUT
-  (when (nth-frame 1 frame)
+  #_(when (nth-frame 1 frame)
     (freak-out @width
                @height
                100
                100
                (pattern (str "noise-" white))
                {:transform "scale(10)"}))
+
+  (new-freakout @width @height 10 30 "testCirc")
+
 
   ;; POLY MASKS
   #_(gen-group
@@ -742,7 +748,7 @@
 
     (gen-bg-lines br-orange (mod frame 80))
 
-  (when (nth-frame 1 frame)
+  #_(when (nth-frame 1 frame)
     (freak-out @width
                @height
                10
@@ -753,17 +759,25 @@
   )) ; cx end
 
 
+(when DEBUG
+  (defonce collection (atom (cx 1))))
+
+
 ;; ----------- LOOP TIMERS ------------------------------
 
 (defonce frame (atom 0))
 
-(defonce start-cx-timer
-  (js/setInterval
-    #(reset! collection (cx @frame)) 50))
+(when-not DEBUG
+  (defonce start-cx-timer
+    (js/setInterval
+      #(reset! collection (cx @frame)) 50))
 
-(defonce start-frame-timer
-  (js/setInterval
-    #(swap! frame inc) 500))
+  (defonce start-frame-timer
+    (js/setInterval
+      #(swap! frame inc) 500)))
+
+
+
 
 
 ;; ----------- DEFS AND DRAW ------------------------------
@@ -801,15 +815,16 @@
          :style  {:mix-blend-mode
                   (val-cyc @frame
                            [
-                            "difference"
+                            ;"difference"
                             "multiply"
-                            "luminosity"
+                            ;"luminosity"
                             ])}}
      ;; filters
     (map #(:def %) all-filters)
     ;; masks and patterns
     [:defs
      noise
+     [:circle {:id "testCirc" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" white))}]
      (map identity gradients)
      (map identity masks)
      (map gen-color-noise all-fills)
