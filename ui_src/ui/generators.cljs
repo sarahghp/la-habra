@@ -200,7 +200,6 @@
      style
      num)))
 
-
 (defn new-freakout
   [x y scale num item]
     (repeatedly num
@@ -216,3 +215,6 @@
                 :transform  (str "scale("
                                  sc
                                  ")")}]))))
+(defn gen-mask
+ [id insides]
+ [:mask {:id id :key (random-uuid)} insides])
