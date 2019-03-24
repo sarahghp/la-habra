@@ -446,7 +446,15 @@
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
                  (draw))
                  ]
-                ["nn" [ :image {:key (random-uuid) :x "100" :y "200" :width "100%" :height "100%" :xlinkHref "img/blop.png" :style {:transform-origin "center" :transform "scale(10)" :animation "woosh 6s infinite"} }]]
+                ["nn" [ :image {:key (random-uuid)
+                                :x "100"
+                                :y "200"
+                                :width "100%"
+                                :height "100%"
+                                :xlinkHref "img/blop.png"
+                                :style {:transform-origin "center"
+                                        :transform "scale(10)"
+                                        :animation "woosh 6s infinite"} }]]
             ])
 
 
