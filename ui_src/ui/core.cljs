@@ -14,32 +14,17 @@
               gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
-             [ gen-color-noise
-               pattern
-               pattern-def
-               blue-dots
-               blue-lines
-               pink-dots
-               pink-lines
-               gray-dots
-               gray-dots-lg
-               gray-lines
-               gray-patch
-               mint-dots
-               mint-lines
-               navy-dots
-               navy-lines
-               orange-dots
-               orange-lines
-               br-orange-dots
-               br-orange-lines
-               yellow-dots
-               yellow-lines
-               white-dots
-               white-dots-lg
-               white-lines
-               shadow
-               noise]]
+             [ gen-color-noise pattern pattern-def
+               blue-dots blue-lines
+               pink-dots pink-lines
+               gray-dots gray-dots-lg gray-lines gray-patch
+               mint-dots mint-lines
+               navy-dots navy-lines
+               orange-dots orange-lines
+               br-orange-dots br-orange-lines
+               yellow-dots yellow-lines
+               white-dots white-dots-lg white-lines
+               shadow noise]]
             [ui.animations :as animations :refer
               [ make-body splice-bodies make-frames!
                 nth-frame even-frame odd-frame
@@ -297,7 +282,6 @@
     (take 10 (repeatedly #(nth [mint navy navy mint] (rand-int 6))))))
 
 
-
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 (def DEBUG false)
@@ -325,7 +309,6 @@
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .9})
         (draw)))
-
 
 )) ; cx end
 
