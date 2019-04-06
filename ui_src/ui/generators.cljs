@@ -164,7 +164,7 @@
     (@positions id)))
 
 (defn generate-and-add-positions
-  [{:keys [min-x min-y max-x max-y max-r] :as min-maxes} color style num]
+  [{:keys [min-x min-y max-x max-y min-r max-r] :as min-maxes} color style num]
   (let [drawing [:g { :key (random-uuid)
                       :style style }
                     (map
@@ -172,7 +172,7 @@
                               color
                               (+ min-x (rand (- max-x min-x)))
                               (+ min-y (rand (- max-y min-y)))
-                              (rand max-r)))
+                              (+ min-r (rand (- max-r min-r)))))
                       (range num))]]
   (swap! positions
          assoc
@@ -186,15 +186,17 @@
     (generate-and-add-positions min-maxes color style num)))
 
 (defn freak-out
-  ([x y r num color] (freak-out x 0 y 0 r num color {}))
-  ([x y r num color style] (freak-out 0 x 0 y r num color style))
-  ([min-x max-x min-y max-y r num color] (freak-out min-x max-x min-y max-y r num color {}))
-  ([min-x max-x min-y max-y max-r num color style]
+  ([x y r num color] (freak-out 0 x 0 y 0 r num color {}))
+  ([x y r num color style] (freak-out 0 x 0 y 0 r num color style))
+  ([min-x max-x min-y max-y min-r max-r num color]
+   (freak-out min-x max-x min-y max-y min-r max-r num color {}))
+  ([min-x max-x min-y max-y min-r max-r num color style]
     (add-and-retrieve!
      {:min-x min-x
       :max-x max-x
       :min-y min-y
       :max-y max-y
+      :min-r min-r
       :max-r max-r}
      color
      style
