@@ -1,4 +1,7 @@
-(ns ui.generators)
+(ns ui.generators
+  (:require [ui.helpers :refer [style]]))
+
+
 
 ;; ------------------------ SETTINGS  ---------------------
 
@@ -141,7 +144,15 @@
           a-off (offset :col)
           b-off (offset :row)]
             (set (for [a (range cols) b (range rows)]
-              (merge base-obj {x-key (+ x (* a a-off))} {y-key (+ y (* b b-off))}))))))
+                   (let [x-trans (+ x (* a a-off))
+                         y-trans (+ y (* b b-off))]
+                     (style {:transform-origin "center"
+                             :transform (str
+                                         "translate("
+                                         x-trans "px, "
+                                         y-trans "px"
+                                         ")")}
+                            base-obj)))))))
 
 (def gen-grid (memoize gen-grid-raw))
 
