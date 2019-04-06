@@ -40,6 +40,41 @@
         (.insertRule sheet keyframes sheet-length)
           name ))
 
+(defn seconds-to-frames
+  [seconds]
+  (* 2 seconds))
+
+(defn frames-to-seconds
+  [frames]
+  (* 0.5 frames))
+
+;; -------------------- SHAPE ANIMATION SWITCHER ---------------------------
+
+(defonce ran (atom {}))
+
+(defn anim-and-hold
+  [name frame duration fader solid]
+  (let [init-frame (@ran name)
+        ran? (and init-frame (<= (+ init-frame (seconds-to-frames duration)) frame))
+        ret (if ran? solid fader)]
+    (when-not init-frame (swap! ran assoc name frame))
+    ret))
+
+
+;; -------------------- SHAPE ANIMATION HELPER ---------------------------
+
+(defn anim
+  ([name duration count shape] (anim name duration count {} shape))
+  ([name duration count opts shape]
+  (let [animations
+    { :animation-name name
+      :animation-fill-mode "forwards"
+      :animation-duration duration
+      :animation-iteration-count count
+      :animation-delay (or (:delay opts) 0)
+      :animation-timing-function (or (:timing opts) "ease")}]
+          (update-in shape [:style] #(merge % animations)))))
+
 ;; -------------------- SOME BASE KEYFRAMES ---------------------------
 
 (make-frames!
@@ -51,7 +86,7 @@
   "fade-out"
   [0 100]
   (make-body "fill-opacity" [1 0]))
-  
+
 (make-frames!
   "fade-in"
   [0 30 80 90 100]
@@ -71,7 +106,7 @@
     "rot"
     [0 100]
     (make-body "transform" ["rotate(0deg)" "rotate(360deg)"]))
-    
+
   (make-frames!
     "cent-rot"
     [0 100]

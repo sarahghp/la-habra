@@ -1,36 +1,17 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
             [clojure.string :as string :refer [split-lines split join]]
+            [ui.helpers :refer [cos sin style url val-cyc]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct
                                           b1 b2 b3 b4]]
             [ui.fills :as fills :refer
-              [ gray
-                mint
-                midnight
-                navy
-                blue
-                orange
-                br-orange
-                pink
-                white
-                yellow]]
+              [gray mint midnight navy blue orange
+                br-orange pink white yellow]]
             [ui.generators :refer
-             [draw
-              freak-out
-              new-freakout
-              gen-circ
-              gen-group
-              gen-line
-              gen-poly
-              gen-rect
-              gen-shape
-              gen-offset-lines
-              gen-bg-lines
-              gen-grid
-              gen-line-grid
-              gen-cols
-              gen-rows
-              gen-mask]]
+             [freak-out new-freakout
+              gen-circ gen-line gen-poly gen-rect gen-shape draw
+              gen-group gen-offset-lines gen-bg-lines gen-mask
+              gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
              [ gen-color-noise
@@ -60,12 +41,11 @@
                shadow
                noise]]
             [ui.animations :as animations :refer
-              [ make-body
-                splice-bodies
-                make-frames!
-                nth-frame
-                even-frame
-                odd-frame]]))
+              [ make-body splice-bodies make-frames!
+                nth-frame even-frame odd-frame
+                seconds-to-frames frames-to-seconds
+                anim anim-and-hold
+                ]]))
 
 (enable-console-print!)
 
@@ -84,52 +64,6 @@
 (def settings {:width @width
                :height @height })
 
-;; -------------------- HELPERS ---------------------------
-
-(defn sin [x] (.sin js/Math x))
-(defn cos [x] (.cos js/Math x))
-
-(defn style
-  [changes shape]
-  (update-in shape [:style] #(merge % changes)))
-
-(defn url
-  ([ fill-id ]
-    (str "url(#" fill-id ")")))
-
-(defn val-cyc
-  [frame vals]
-  (let [n (count vals)]
-    (nth vals (mod frame n))))
-
-(defn seconds-to-frames
-  [seconds]
-  (* 2 seconds))
-
-(defonce ran (atom {}))
-
-(defn anim-and-hold
-  [name frame duration fader solid]
-  (let [init-frame (@ran name)
-        ran? (and init-frame (<= (+ init-frame (seconds-to-frames duration)) frame))
-        ret (if ran? solid fader)]
-    (when-not init-frame (swap! ran assoc name frame))
-    ret))
-
-
-;; -------------------- SHAPE ANIMATION HELPER ---------------------------
-
-(defn anim
-  ([name duration count shape] (anim name duration count {} shape))
-  ([name duration count opts shape]
-  (let [animations
-    { :animation-name name
-      :animation-fill-mode "forwards"
-      :animation-duration duration
-      :animation-iteration-count count
-      :animation-delay (or (:delay opts) 0)
-      :animation-timing-function (or (:timing opts) "ease")}]
-          (update-in shape [:style] #(merge % animations)))))
 
 ;; ----------- ANIMATIONS ----------------
 
@@ -392,15 +326,6 @@
         (style {:opacity .9})
         (draw)))
 
-   (->>
-    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 400 (url "nn"))
-    (draw)
-    (when (nth-frame 1 frame)))
-
-  #_(->>
-    (gen-circ white (* 0.5 @width) (* 0.5 @height) 200)
-    (draw)
-    (when (nth-frame 1 frame)))
 
 )) ; cx end
 
@@ -446,6 +371,14 @@
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
                  (draw))
                  ]
+                ["na" [ :image {:key (random-uuid)
+                                :x "100"
+                                :y "200"
+                                :width "100%"
+                                :height "100%"
+                                :xlinkHref "img/blop.png"
+                                :style {:transform-origin "center"
+                                        :transform "scale(10)"} }]]
                 ["nn" [ :image {:key (random-uuid)
                                 :x "100"
                                 :y "200"
