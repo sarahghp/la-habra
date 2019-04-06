@@ -231,3 +231,20 @@
 (defn gen-mask
  [id insides]
  [:mask {:id id :key (random-uuid)} insides])
+
+(defn scatter
+  ([num item] (scatter 0 @width 0 @height 0 1 num item))
+  ([num max-scale item] (scatter 0 @width 0 @height 0 max-scale num item))
+  ([min-x max-x min-y max-y min-scale max-scale num item]
+    (let [a (atom
+             (map #(gen-group {:style {:transform (str
+                                                   "translate("
+                                                   (+ min-x (rand (- max-x min-x))) "px, "
+                                                   (+ min-y (rand (- max-y min-y))) "px"
+                                                   ")"
+                                                   "scale("
+                                                   (+ min-scale (rand (- max-scale min-scale)))
+                                                   ")")}}
+                              item)
+                  (range num)))]
+      a)))
