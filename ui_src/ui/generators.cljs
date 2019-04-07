@@ -248,3 +248,17 @@
                               item)
                   (range num)))]
       a)))
+
+(defn gen-lerp [atcount atframe]
+  (fn [start end dur frame & no-repeat]
+    (let [step        (/ (- end start) dur)
+          frame-count (if no-repeat @atcount (mod @atcount dur))
+          frame-num   @atframe]
+      (when (nil? frame-num) (reset! atframe frame))
+      (when (not= @atframe frame)
+        (when (< frame-count dur)
+          (swap! atcount inc)
+          (swap! atframe inc)))
+      (+ start (* step frame-count)))))
+
+(defn lerp [] (gen-lerp (atom 1) (atom nil)))
