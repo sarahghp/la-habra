@@ -8,7 +8,7 @@
               [gray mint midnight navy blue orange
                 br-orange pink white yellow]]
             [ui.generators :refer
-             [freak-out new-freakout
+             [freak-out new-freakout scatter lerp
               gen-circ gen-line gen-poly gen-rect gen-shape draw
               gen-group gen-offset-lines gen-bg-lines gen-mask
               gen-grid gen-line-grid gen-cols gen-rows]]
@@ -16,7 +16,7 @@
             [ui.patterns :as patterns :refer
              [ gen-color-noise pattern pattern-def
                blue-dots blue-lines
-               pink-dots pink-lines
+               pink-dots pink-lines pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
                gray-dots gray-dots-lg gray-lines gray-patch
                mint-dots mint-lines
                navy-dots navy-lines
@@ -100,11 +100,17 @@
 
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
+(a-to-b! "bbll" "fill" pink white)
 (a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
 (a-to-b! "slide-up" "transform" "translateY(125%)" (str "translateY("(* 0.15 @height)")"))
 (a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
 
 (fade-start! "fi" 1)
+
+(make-frames!
+  "supercolor"
+    [10, 35, 55, 85, 92]
+   (make-body "fill" [pink pink yellow midnight midnight]))
 
 (make-frames!
   "woosh"
@@ -199,7 +205,7 @@
   (->>
    (gen-shape white hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh-4" "6s" "infinite")
+   (anim "woosh" "6s" "infinite")
    (draw)
    (atom)))
 
@@ -282,6 +288,39 @@
     (take 10 (repeatedly #(nth [mint navy navy mint] (rand-int 6))))))
 
 
+
+(def bb
+  (->>
+   (->>
+    (gen-grid
+      40 28
+      {:col 40 :row 40}
+      (->>
+      (gen-shape mint oct)))
+      (map #(style {:mix-blend-mode "difference"}  %))
+      (map #(anim "supercolor" (str (rand-int 20) "s") "infinite" %))
+      (map draw)
+      (map #(gen-group {:style {:transform-origin "center"
+                                :transform (str
+                                            "rotate(" (rand-int 360) "deg)"
+                                            "scale(4) translate(-20vh, -20vh)")}} %)))
+   (atom)))
+
+(defonce b
+  (scatter 10 (->>
+   (gen-circ navy 10 10 60)
+   (draw))))
+
+(defonce c
+  (scatter 10 (->>
+   (gen-circ navy 10 10 60)
+   (draw))))
+
+(defonce d
+  (scatter 10 (->>
+   (gen-circ navy 10 10 60)
+   (draw))))
+
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 (def DEBUG false)
@@ -291,6 +330,9 @@
 
 ;(reset! ran {})
 
+
+
+(def l1 (lerp))
 
 (defn cx [frame]
   (list
@@ -309,6 +351,19 @@
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .9})
         (draw)))
+
+
+
+  ; (when (nth-frame 4 frame) @b)
+  ; (when (nth-frame 6 frame) @c)
+  ; (when (nth-frame 7 frame) @d)
+
+  @bb
+  ;@move-me
+  ;@bb2
+
+    ;(println (testtt))
+
 
 )) ; cx end
 
@@ -355,13 +410,13 @@
                  (draw))
                  ]
                 ["na" [ :image {:key (random-uuid)
-                                :x "100"
-                                :y "200"
+                                :x "0"
+                                :y "0"
                                 :width "100%"
                                 :height "100%"
                                 :xlinkHref "img/blop.png"
                                 :style {:transform-origin "center"
-                                        :transform "scale(10)"} }]]
+                                        :transform "scale(2)"} }]]
                 ["nn" [ :image {:key (random-uuid)
                                 :x "100"
                                 :y "200"
@@ -400,7 +455,7 @@
      (map gen-color-noise all-fills)
      (map pattern-def [ blue-dots
                         blue-lines
-                        pink-dots
+                        pink-dots pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
                         pink-lines
                         gray-dots
                         gray-dots-lg

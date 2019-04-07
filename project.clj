@@ -5,11 +5,11 @@
   :description "A hello world application for electron"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.10.312"]
-                 [figwheel "0.5.10"]
+                 [figwheel "0.5.17"]
                  [reagent "0.8.1"]
                  [ring/ring-core "1.6.1"]]
   :plugins [[lein-cljsbuild "1.1.5"]
-            [lein-figwheel "0.5.10"]
+            [lein-figwheel "0.5.17"]
             [lein-cooper "1.2.2"]]
 
   :clean-targets ^{:protect false} ["resources/main.js"
