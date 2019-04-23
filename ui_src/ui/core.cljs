@@ -221,7 +221,8 @@
   (->>
     (gen-shape mint oct)
       (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
-      (style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
+      ;(style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
+      (style {:mix-blend-mode "luminosity"} )
       (anim "woosh" "4s" "infinite")
     (draw)
     (atom)))
@@ -230,8 +231,10 @@
   (->>
     (gen-shape yellow oct)
       (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
-      (style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
-      (anim "woosh" "4s" "infinite")
+      ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+          (style {:mix-blend-mode "color-dodge"} )
+
+      (anim "woosh" "2s" "infinite")
     (draw)
     (atom)))
 
@@ -252,6 +255,14 @@
           (anim "scaley-huge" "5s" "infinite")
           (draw)
           (atom)))
+
+(def new-scale
+  (->>
+   (gen-circ white 0 0 100)
+   (style {:opacity .7})
+   (style {:transform "translate(10vh, 60vh)"})
+   (gen-group {:style {:animation "scaley 10s infinite"}})
+   (atom)))
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -298,12 +309,12 @@
       (->>
       (gen-shape mint oct)))
       (map #(style {:mix-blend-mode "difference"}  %))
-      (map #(anim "supercolor" (str (rand-int 20) "s") "infinite" %))
+      (map #(anim "supercolor" (str (rand-int 100) "s") "infinite" %))
       (map draw)
       (map #(gen-group {:style {:transform-origin "center"
                                 :transform (str
                                             "rotate(" (rand-int 360) "deg)"
-                                            "scale(4) translate(-20vh, -20vh)")}} %)))
+                                            "scale(60) translate(-20vh, -20vh)")}} %)))
    (atom)))
 
 (defonce b
@@ -318,7 +329,26 @@
 
 (defonce d
   (scatter 10 (->>
-   (gen-circ navy 10 10 60)
+   (gen-circ yellow 10 10 60)
+      (style {:mix-blend-mode "screen"})
+   (draw))))
+
+(defonce e
+  (scatter 10 (->>
+   (gen-circ yellow 10 10 60)
+      (style {:mix-blend-mode "overlay"})
+   (draw))))
+
+(defonce f
+  (scatter 10 (->>
+   (gen-circ pink 10 10 60)
+   (style {:mix-blend-mode "multiply"})
+   (draw))))
+
+(defonce g
+  (scatter 20 (->>
+   (gen-circ pink 10 10 60)
+   (style {:mix-blend-mode "multiply"})
    (draw))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
@@ -343,7 +373,9 @@
 
   (let
     [colors [
-      mint mint mint mint
+      midnight midnight midnight midnight
+             yellow yellow
+             white white
       ;yellow
 
              ]]
@@ -352,18 +384,67 @@
         (style {:opacity .9})
         (draw)))
 
+    (when-not (nth-frame 8 frame)
+      (gen-line-grid midnight 4
+      80 80
+      {:col 20 :row 20}))
+
+  @new-scale
+
+  (->>
+   (gen-circ white (* 0.5 @width) (* 0.5 @height) (val-cyc frame [100 100 100 100 200 200 200 200 200 50 50 50 50 50 200 200 200 200  200 200 200 200 100 100 100 100]))
+   (draw)
+   (when (nth-frame 4 frame)))
+
+  (->>
+   (gen-shape (pattern (:id navy-lines)) oct)
+   (style {:transform (str "translate(70vw, 10vh) scale("(val-cyc frame [.5 .5 .5 .5 .5 .5 1 1 1 1 1 1 .9 .9 .9 .9 .9 .9])")")})
+   (draw)
+   (when (nth-frame 6 frame)))
+
+  ;@bb2
+  ;@bb4
+
+(when (nth-frame 12 frame)
+  (freak-out @width
+             @height
+             4
+             1000
+             gray))
+
+  ;(when (nth-frame 6 frame) @b)
+    ;(when (nth-frame 3 frame) @c)
+
+  ;(when (nth-frame 8 frame) @d)
+  ;(when (nth-frame 6 frame) @e)
+  ;(when (nth-frame 6 frame) @f)
+    (when (nth-frame 7 frame) @g)
 
 
+  #_(->>
+   (gen-circ (pattern (:id white-dots)) (* 0.5 @width) (* 0.5 @height) 200)
+   (draw)
+   (when (nth-frame 1 frame)))
+
+  #_(->>
+   (gen-shape pink b2)
+   (style {:transform "translate(20vw, 30vh) scale(2)"})
+   (draw))
   ; (when (nth-frame 4 frame) @b)
   ; (when (nth-frame 6 frame) @c)
   ; (when (nth-frame 7 frame) @d)
 
-  @bb
+  ;@bb
+
   ;@move-me
   ;@bb2
 
-    ;(println (testtt))
+  ;(doall (map deref levels))
 
+  (when (nth-frame 8 frame)
+    (gen-line-grid midnight 4
+    80 80
+    {:col 20 :row 20}))
 
 )) ; cx end
 
@@ -441,6 +522,7 @@
     :style  {:mix-blend-mode
              (val-cyc @frame
                       ["multiply" "multiply"
+
                        ]) }
     :width  (:width settings)
     :height (:height settings)}
