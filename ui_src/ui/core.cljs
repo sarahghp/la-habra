@@ -113,6 +113,11 @@
    (make-body "fill" [pink pink yellow midnight midnight]))
 
 (make-frames!
+  "colorcolor"
+    [10, 35, 55, 85, 92]
+   (make-body "fill" [pink yellow br-orange white midnight]))
+
+(make-frames!
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
@@ -200,10 +205,60 @@
        (draw))
      (range 10))))
 
+(def big-line
+  (->>
+   (gen-line ["0vw" "10vh"] ["100vw" "10vh"] navy 60)
+   (style {:mix-blend-mode "multiply"})
+   (anim "etof" "2s" "infinite")
+   (draw)
+   (atom)))
+
+
+(def big-line-2
+  (->>
+   (gen-line ["0vw" "10vh"] ["100vw" "10vh"] gray 40)
+   (style {:mix-blend-mode "multiply"})
+   (anim "etof" "4s" "infinite")
+   (draw)
+   (atom)))
+
+(def big-line-3
+  (->>
+   (gen-line ["0vw" "10vh"] ["100vw" "10vh"] pink 20)
+   (style {:mix-blend-mode "multiply"})
+   (anim "etof" "1s" "infinite")
+   (draw)
+   (atom)))
+
+(def big-line-4
+  (->>
+   (gen-line ["0vw" "10vh"] ["100vw" "10vh"] navy 60)
+   (style {:mix-blend-mode "multiply"})
+   (anim "etof" "1s" "infinite" {:delay ".6s"})
+   (draw)
+   (atom)))
+
+
+(def big-line-5
+  (->>
+   (gen-line ["0vw" "10vh"] ["100vw" "10vh"] gray 40)
+   (style {:mix-blend-mode "multiply"})
+   (anim "etof" "3s" "infinite" {:delay ".2s"})
+   (draw)
+   (atom)))
+
+(def big-line-6
+  (->>
+   (gen-line ["0vw" "10vh"] ["100vw" "10vh"] pink 20)
+   (style {:mix-blend-mode "multiply"})
+   (anim "etof" "2s" "infinite" {:delay ".4s"})
+   (draw)
+   (atom)))
+
 
 (def move-me
   (->>
-   (gen-shape white hept)
+   (gen-shape (pattern (:id white-lines)) hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "6s" "infinite")
    (draw)
@@ -222,7 +277,7 @@
     (gen-shape mint oct)
       (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
       ;(style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
-      (style {:mix-blend-mode "luminosity"} )
+      (style {:mix-blend-mode "difference"} )
       (anim "woosh" "4s" "infinite")
     (draw)
     (atom)))
@@ -232,9 +287,31 @@
     (gen-shape yellow oct)
       (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
-          (style {:mix-blend-mode "color-dodge"} )
+          ;(style {:mix-blend-mode "difference"} )
 
-      (anim "woosh" "2s" "infinite")
+      (anim "woosh" "6s" "infinite")
+    (draw)
+    (atom)))
+
+(def bb6
+  (->>
+    (gen-shape pink oct)
+      (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
+      ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+          (style {:mix-blend-mode "difference"} )
+
+      (anim "loopy-right" "3s" "infinite")
+    (draw)
+    (atom)))
+
+(def bb6s
+  (->>
+    (gen-shape (pattern (:id pink-dots))  oct)
+      (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
+      ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+          (style {:mix-blend-mode "difference"} )
+
+      (anim "loopy-left" "8s" "infinite")
     (draw)
     (atom)))
 
@@ -243,7 +320,7 @@
   (->>
     (gen-shape orange hept)
       (style {:transform "translate(30vw, 44vh) scale(2.4)"})
-      (style {:mix-blend-mode "color-burn"} )
+      (style {:mix-blend-mode "difference"} )
       (anim "woosh-3" "3s" "infinite")
     (draw)
     (atom)))
@@ -256,13 +333,8 @@
           (draw)
           (atom)))
 
-(def new-scale
-  (->>
-   (gen-circ white 0 0 100)
-   (style {:opacity .7})
-   (style {:transform "translate(10vh, 60vh)"})
-   (gen-group {:style {:animation "scaley 10s infinite"}})
-   (atom)))
+
+
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -318,38 +390,51 @@
    (atom)))
 
 (defonce b
-  (scatter 10 (->>
+  (scatter 20 (->>
+   (gen-circ navy 10 10 60)
+   (style {:mix-blend-mode "color-dodge"})
+   (draw))))
+
+
+(defonce b10
+  (scatter 20 (->>
    (gen-circ navy 10 10 60)
    (draw))))
 
 (defonce c
-  (scatter 10 (->>
-   (gen-circ navy 10 10 60)
+  (scatter 20 (->>
+   (gen-circ white 10 10 60)
+      (style {:mix-blend-mode "color-dodge"})
+
    (draw))))
 
 (defonce d
-  (scatter 10 (->>
+  (scatter 20 (->>
    (gen-circ yellow 10 10 60)
-      (style {:mix-blend-mode "screen"})
+      (style {:mix-blend-mode "color-dodge"})
+
    (draw))))
 
 (defonce e
-  (scatter 10 (->>
+  (scatter 20 (->>
    (gen-circ yellow 10 10 60)
-      (style {:mix-blend-mode "overlay"})
    (draw))))
 
 (defonce f
-  (scatter 10 (->>
+  (scatter 20 (->>
    (gen-circ pink 10 10 60)
-   (style {:mix-blend-mode "multiply"})
    (draw))))
 
 (defonce g
   (scatter 20 (->>
    (gen-circ pink 10 10 60)
-   (style {:mix-blend-mode "multiply"})
    (draw))))
+
+(def bbr (atom (gen-group {:style {:transform-origin "center" :animation "rot 2s infinite"}} @b10)))
+
+(def bbr2 (atom (gen-group {:style {:transform-origin "center" :animation "rot 3s infinite"}} @f)))
+
+(def bbr3 (atom (gen-group {:style {:transform-origin "center" :animation "rot 1s infinite"}} @d)))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
@@ -358,11 +443,48 @@
 (when-not DEBUG
   (defonce collection (atom (list))))
 
+(when-not DEBUG
+  (defonce collection2 (atom (list))))
+
 ;(reset! ran {})
 
+(def rr (atom
+         (->>
+          (gen-grid
+            20 30
+            {:col 100 :row 150}
+            (->>
+             (gen-shape mint tri)))
+            ;(map #(style styles %))
+            ;(map #(anim "rot" "10s" "infinte" %))
+            (map draw)
+          (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
+            (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center" :animation "rot 10s infinite" }} %)))))
 
+(def rr2 (atom
+         (->>
+          (gen-grid
+            20 30
+            {:col 100 :row 150}
+            (->>
+             (gen-shape yellow tri)))
+              (map #(style {:opacity 1 :mix-blend-mode "difference"} %))
+
+            (map #(anim "morph" "10s" "infinite" %))
+            (map draw)
+                  (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
+          (map #(gen-group {:style {:transform-origin "center" :transform "translate(-200px, 100px)"}} %))
+            (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center"  :animation "rot 10s infinite" }} %)))))
 
 (def l1 (lerp))
+
+(defn cx2 [frame]
+  (list
+    @bb4
+    @bb6
+    @bb2
+    @bb6s
+   ))
 
 (defn cx [frame]
   (list
@@ -373,9 +495,10 @@
 
   (let
     [colors [
-      midnight midnight midnight midnight
-             yellow yellow
-             white white
+            midnight midnight midnight midnight
+             ;yellow yellow yellow yellow yellow yellow yellow yellow
+             ;white white white white white white white white
+             ;pink pink  pink pink pink pink pink pink pink pink
       ;yellow
 
              ]]
@@ -384,67 +507,107 @@
         (style {:opacity .9})
         (draw)))
 
-    (when-not (nth-frame 8 frame)
-      (gen-line-grid midnight 4
-      80 80
-      {:col 20 :row 20}))
 
-  @new-scale
+
+        ; (doall (map deref levels))
+
+        ; (gen-bg-lines gray (mod (* 4 frame) 80) {:mix-blend-mode "difference"})
+
+
+  #_(when (nth-frame 5 frame)
+    (gen-line-grid pink 4
+    80 80
+    {:col 20 :row 20}))
+
+    #_(->>
+     (gen-shape pink b2)
+     (style {:transform "translate(20vw, 30vh) scale(2)"})
+     (draw)
+     (when (nth-frame 2 frame)))
+
+
+    #_(->>
+     (gen-circ white (* 0.5 @width) (* 0.5 @height) 200)
+     ;(style {:transform (str "scale(" (val-cyc frame [1 2 4 6 8 20 8 6 4 2 1]) ")")})
+     (draw)
+     (when (nth-frame 4 frame)))
+
+
+     ; (when (nth-frame 1 frame) @b10)
+     ; (when (nth-frame 7 frame) @e)
+     ;   (when (nth-frame 7 frame) @d)
+     ;
+     ;   (when (nth-frame 3 frame) @f)
+     ;
+     ;   (when (nth-frame 2 frame) @g)
+
+
+     #_(->>
+      (gen-shape midnight hex)
+      (style {:transform "translate(80vw, 10vh) scale(.5)"})
+      (draw)
+      (when (nth-frame 6 frame)))
+
+      #_(->>
+       (gen-shape midnight hex)
+       (style {:transform "translate(80vw, 10vh) scale(.5)"})
+       (draw)
+       (when (nth-frame 6 frame)))
+
+     #_(->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
+        (style {:transform (str "scale(" (val-cyc frame [1 20 4 16 8 10]) ")")})
+
+      (draw)
+      (when (nth-frame 4 frame)))
+
 
   (->>
-   (gen-circ white (* 0.5 @width) (* 0.5 @height) (val-cyc frame [100 100 100 100 200 200 200 200 200 50 50 50 50 50 200 200 200 200  200 200 200 200 100 100 100 100]))
-   (draw)
-   (when (nth-frame 4 frame)))
-
-  (->>
-   (gen-shape (pattern (:id navy-lines)) oct)
-   (style {:transform (str "translate(70vw, 10vh) scale("(val-cyc frame [.5 .5 .5 .5 .5 .5 1 1 1 1 1 1 .9 .9 .9 .9 .9 .9])")")})
-   (draw)
-   (when (nth-frame 6 frame)))
-
-  ;@bb2
-  ;@bb4
-
-(when (nth-frame 12 frame)
-  (freak-out @width
-             @height
-             4
-             1000
-             gray))
-
-  ;(when (nth-frame 6 frame) @b)
-    ;(when (nth-frame 3 frame) @c)
-
-  ;(when (nth-frame 8 frame) @d)
-  ;(when (nth-frame 6 frame) @e)
-  ;(when (nth-frame 6 frame) @f)
-    (when (nth-frame 7 frame) @g)
-
-
-  #_(->>
    (gen-circ (pattern (:id white-dots)) (* 0.5 @width) (* 0.5 @height) 200)
+   (style {:transform (str "scale(" (val-cyc frame [1 2 4 6 8 20]) ")")})
    (draw)
    (when (nth-frame 1 frame)))
 
-  #_(->>
-   (gen-shape pink b2)
-   (style {:transform "translate(20vw, 30vh) scale(2)"})
-   (draw))
-  ; (when (nth-frame 4 frame) @b)
-  ; (when (nth-frame 6 frame) @c)
-  ; (when (nth-frame 7 frame) @d)
+  (->>
+   (gen-circ (pattern (:id orange-lines)) (* 0.5 @width) (* 0.5 @height) 200)
+   (style {:transform (str "scale(" (val-cyc frame [10 12]) ")")})
+   (draw)
+   (when (nth-frame 1 frame)))
 
-  ;@bb
+  (->>
+   (gen-circ (pattern (:id mint-lines)) (* 0.5 @width) (* 0.5 @height) 200)
+   (style {:transform (str "rotate(90deg) scale(" (val-cyc frame [10 12 14 18 8]) ")")})
+   (draw)
+   (when (nth-frame 1 frame)))
 
+
+
+  ;@bbr
+  ;  ;@bbr2
+    ;@bbr3
+
+  ;@bb4
   ;@move-me
   ;@bb2
 
-  ;(doall (map deref levels))
-
-  (when (nth-frame 8 frame)
+  (when (nth-frame 12 frame)
     (gen-line-grid midnight 4
-    80 80
-    {:col 20 :row 20}))
+      60 60
+      {:col 30 :row 30}))
+
+  (when (nth-frame 7 frame)
+    (gen-line-grid pink 4
+      60 60
+      {:col 30 :row 30}))
+
+
+  ;(new-freakout @width @height 40 100 "testCirc")
+
+  ;@scale-me
+  ;@bb
+
+
+
 
 )) ; cx end
 
@@ -459,6 +622,10 @@
   (defonce start-cx-timer
     (js/setInterval
       #(reset! collection (cx @frame)) 50))
+
+  (defonce start-cx-timer-2
+    (js/setInterval
+      #(reset! collection2 (cx2 @frame)) 50))
 
   (defonce start-frame-timer
     (js/setInterval
@@ -476,6 +643,11 @@
               [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
             [ "poly-mask-2"
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :animation "woosh-3 3s infinite"}}]]
+            ["bitey"
+               (->>
+                (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 1000)
+                (style {:opacity 1 :transform "scale(.3)"})
+                (draw))]
             [ "grad-mask"
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
             [ "cutout"
@@ -521,8 +693,11 @@
   [:svg {
     :style  {:mix-blend-mode
              (val-cyc @frame
-                      ["multiply" "multiply"
-
+                      [
+                      "luminosity"
+                       ;"multiply" "multiply" "multiply" "multiply" ;"multiply" "multiply" "multiply" "multiply"
+                       ;"difference" "difference" "difference" "difference"
+                       ;"difference" "difference" "difference" "difference"
                        ]) }
     :width  (:width settings)
     :height (:height settings)}
@@ -531,6 +706,9 @@
     ;; masks and patterns
     [:defs
      noise
+     [:circle {:id "weeCirc" :cx 0 :cy 0 :r 4
+               :style {:animation "colorcolor 100s infinite"
+                       :opacity .6}}]
      [:circle {:id "testCirc" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" white))}]
      (map identity gradients)
      (map identity masks)
@@ -562,7 +740,63 @@
     @collection
     ])
 
-(reagent/render-component [drawing]
+
+    (defn drawing2 []
+      [:svg {
+        :style  {:mix-blend-mode
+                 (val-cyc @frame
+                          [
+                          ;"luminosity"
+                           "multiply" "multiply" "multiply" "multiply" ;"multiply" "multiply" "multiply" "multiply"
+                           ;"difference" "difference" "difference" "difference"
+                           ;"difference" "difference" "difference" "difference"
+                           ]) }
+        :width  (:width settings)
+        :height (:height settings)}
+         ;; filters
+        (map #(:def %) all-filters)
+        ;; masks and patterns
+        [:defs
+         noise
+         [:circle {:id "weeCirc" :cx 0 :cy 0 :r 4
+                   :style {:animation "colorcolor 100s infinite"
+                           :opacity .6}}]
+         [:circle {:id "testCirc" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" white))}]
+         (map identity gradients)
+         (map identity masks)
+         (map gen-color-noise all-fills)
+         (map pattern-def [ blue-dots
+                            blue-lines
+                            pink-dots pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
+                            pink-lines
+                            gray-dots
+                            gray-dots-lg
+                            gray-lines
+                            gray-patch
+                            mint-dots
+                            mint-lines
+                            navy-dots
+                            navy-lines
+                            orange-dots
+                            orange-lines
+                            br-orange-dots
+                            br-orange-lines
+                            yellow-dots
+                            yellow-lines
+                            white-dots
+                            white-dots-lg
+                            white-lines
+                            shadow ])]
+
+        ;; then here dereference a state full of polys
+        @collection2
+        ])
+
+#_(reagent/render [:div
+                 [:div {:style {:position "absolute" :top 0 :left 0}} [drawing]] [:div {:style {:position "absolute" :top 0 :left 0}} [drawing2]]]
+                          (js/document.getElementById "app-container"))
+
+(reagent/render [drawing]
                           (js/document.getElementById "app-container"))
 
 ;(hide-display)
