@@ -430,6 +430,7 @@
    (gen-circ pink 10 10 60)
    (draw))))
 
+
 (def bbr (atom (gen-group {:style {:transform-origin "center" :animation "rot 2s infinite"}} @b10)))
 
 (def bbr2 (atom (gen-group {:style {:transform-origin "center" :animation "rot 3s infinite"}} @f)))
@@ -499,7 +500,6 @@
              ;yellow yellow yellow yellow yellow yellow yellow yellow
              ;white white white white white white white white
              ;pink pink  pink pink pink pink pink pink pink pink
-      ;yellow
 
              ]]
       (->>
@@ -507,103 +507,59 @@
         (style {:opacity .9})
         (draw)))
 
+  (let
+    [colors [
+            midnight midnight midnight midnight
+             ;yellow yellow yellow yellow yellow yellow yellow yellow
+             ;white white white white white white white white
+             ;pink pink  pink pink pink pink pink pink pink pink
+
+             ]]
+      (->>
+        (gen-rect (val-cyc frame colors) "50vw" 0 "100vw" "100%")
+        (style {:opacity .9})
+        (draw)
+        (when (nth-frame 4 frame))))
 
 
-        ; (doall (map deref levels))
 
-        ; (gen-bg-lines gray (mod (* 4 frame) 80) {:mix-blend-mode "difference"})
+    ; (doall (map deref levels))
 
+  #_(doall (map
+          #(->>
+           (gen-shape orange tri)
+           (style {:transform (str "
+                               translate("(* % 40)"vw, "(+ % 20)"vh)
+                               rotate(" (val-cyc (+ % frame) [100 30 40 220 140 6]) "deg)
+                               scale(" (val-cyc (+ % frame) [1 2 4 2 4 6])
+                               ")")})
+           (draw)
+           (when (nth-frame (+ % 3) frame)))
+          (range 1)))
 
-  #_(when (nth-frame 5 frame)
-    (gen-line-grid pink 4
-    80 80
-    {:col 20 :row 20}))
-
-    #_(->>
-     (gen-shape pink b2)
-     (style {:transform "translate(20vw, 30vh) scale(2)"})
-     (draw)
-     (when (nth-frame 2 frame)))
-
-
-    #_(->>
-     (gen-circ white (* 0.5 @width) (* 0.5 @height) 200)
-     ;(style {:transform (str "scale(" (val-cyc frame [1 2 4 6 8 20 8 6 4 2 1]) ")")})
-     (draw)
-     (when (nth-frame 4 frame)))
-
-
-     ; (when (nth-frame 1 frame) @b10)
-     ; (when (nth-frame 7 frame) @e)
-     ;   (when (nth-frame 7 frame) @d)
-     ;
-     ;   (when (nth-frame 3 frame) @f)
-     ;
-     ;   (when (nth-frame 2 frame) @g)
-
-
-     #_(->>
-      (gen-shape midnight hex)
-      (style {:transform "translate(80vw, 10vh) scale(.5)"})
-      (draw)
-      (when (nth-frame 6 frame)))
-
-      #_(->>
-       (gen-shape midnight hex)
-       (style {:transform "translate(80vw, 10vh) scale(.5)"})
-       (draw)
-       (when (nth-frame 6 frame)))
-
-     #_(->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200)
-        (style {:transform (str "scale(" (val-cyc frame [1 20 4 16 8 10]) ")")})
-
-      (draw)
-      (when (nth-frame 4 frame)))
-
-
-  (->>
+  #_(->>
    (gen-circ (pattern (:id white-dots)) (* 0.5 @width) (* 0.5 @height) 200)
-   (style {:transform (str "scale(" (val-cyc frame [1 2 4 6 8 20]) ")")})
+   #_(style {:transform (str "scale("
+                           (val-cyc frame (concat
+                                           (repeat 4 1)
+                                           (repeat 4 2)
+                                           (repeat 4 4)
+                                           (repeat 4 6)
+                                           (repeat 4 8)
+                                           (repeat 4 20)))
+                           ")")})
    (draw)
-   (when (nth-frame 1 frame)))
-
-  (->>
-   (gen-circ (pattern (:id orange-lines)) (* 0.5 @width) (* 0.5 @height) 200)
-   (style {:transform (str "scale(" (val-cyc frame [10 12]) ")")})
-   (draw)
-   (when (nth-frame 1 frame)))
-
-  (->>
-   (gen-circ (pattern (:id mint-lines)) (* 0.5 @width) (* 0.5 @height) 200)
-   (style {:transform (str "rotate(90deg) scale(" (val-cyc frame [10 12 14 18 8]) ")")})
-   (draw)
-   (when (nth-frame 1 frame)))
+   (when (nth-frame 4 frame)))
 
 
 
-  ;@bbr
-  ;  ;@bbr2
-    ;@bbr3
-
-  ;@bb4
-  ;@move-me
-  ;@bb2
-
-  (when (nth-frame 12 frame)
-    (gen-line-grid midnight 4
-      60 60
-      {:col 30 :row 30}))
-
-  (when (nth-frame 7 frame)
-    (gen-line-grid pink 4
-      60 60
-      {:col 30 :row 30}))
 
 
-  ;(new-freakout @width @height 40 100 "testCirc")
 
-  ;@scale-me
+
+
+
+
   ;@bb
 
 
@@ -695,7 +651,8 @@
              (val-cyc @frame
                       [
                       "luminosity"
-                       ;"multiply" "multiply" "multiply" "multiply" ;"multiply" "multiply" "multiply" "multiply"
+                       ;"multiply" "multiply" "multiply" "multiply"
+                       ;"multiply" "multiply" "multiply" "multiply"
                        ;"difference" "difference" "difference" "difference"
                        ;"difference" "difference" "difference" "difference"
                        ]) }

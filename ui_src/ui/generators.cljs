@@ -235,6 +235,8 @@
 (defn scatter
   ([num item] (scatter 0 @width 0 @height 0 1 num item))
   ([num max-scale item] (scatter 0 @width 0 @height 0 max-scale num item))
+  ([num min-scale max-scale item]
+   (scatter 0 @width 0 @height min-scale max-scale num item))
   ([min-x max-x min-y max-y min-scale max-scale num item]
     (let [a (atom
              (map #(gen-group {:style {:transform (str
