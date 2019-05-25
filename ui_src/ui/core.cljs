@@ -371,6 +371,30 @@
     (take 10 (repeatedly #(nth [mint navy navy mint] (rand-int 6))))))
 
 
+(defonce rex
+  (scatter (* 0.25 @width) (* 0.75 @width)
+            (* 0.15 @height) (* 0.65 @height) 1 1.2
+           10 (->>
+   (gen-rect (pattern (:id white-lines))
+             0 0 (rand-nth [100 200]) 200)
+   (draw))))
+
+
+(defonce rex2
+  (scatter (* 0.25 @width) (* 0.75 @width)
+            (* 0.15 @height) (* 0.65 @height) 1.4 2
+           10 (->>
+   (gen-rect (pattern (:id white-dots))
+             0 0 200 (rand-nth [100 200]))
+   (draw))))
+
+(defonce rex3
+  (scatter (* 0.25 @width) (* 0.75 @width)
+            (* 0.15 @height) (* 0.65 @height) 1 6
+           10 (->>
+   (gen-rect (pattern (:id white-dots))
+             0 0 200 (rand-nth [100 200]))
+   (draw))))
 
 (def bb
   (->>
@@ -404,14 +428,14 @@
 (defonce c
   (scatter 20 (->>
    (gen-circ white 10 10 60)
-      (style {:mix-blend-mode "color-dodge"})
+      ;(style {:mix-blend-mode "color-dodge"})
 
    (draw))))
 
 (defonce d
   (scatter 20 (->>
    (gen-circ yellow 10 10 60)
-      (style {:mix-blend-mode "color-dodge"})
+      ;(style {:mix-blend-mode "color-dodge"})
 
    (draw))))
 
@@ -428,6 +452,18 @@
 (defonce g
   (scatter 20 (->>
    (gen-circ pink 10 10 60)
+   (draw))))
+
+(defonce fa
+  (scatter 20 (->>
+   (gen-circ pink 10 10 60)
+   (style {:mix-blend-mode "overlay"})
+   (draw))))
+
+(defonce ga
+  (scatter 20 (->>
+   (gen-circ pink 10 10 60)
+   (style {:mix-blend-mode "difference"})
    (draw))))
 
 
@@ -462,6 +498,19 @@
           (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
             (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center" :animation "rot 10s infinite" }} %)))))
 
+(def rra (atom
+         (->>
+          (gen-grid
+            20 30
+            {:col 100 :row 150}
+            (->>
+             (gen-shape mint tri)))
+            ;(map #(style styles %))
+            ;(map #(anim "rot" "10s" "infinte" %))
+            (map draw)
+          (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
+            (map #(gen-group {:mask (url "bitey")} %)))))
+
 (def rr2 (atom
          (->>
           (gen-grid
@@ -476,6 +525,21 @@
                   (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
           (map #(gen-group {:style {:transform-origin "center" :transform "translate(-200px, 100px)"}} %))
             (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center"  :animation "rot 10s infinite" }} %)))))
+
+(def rr2a (atom
+         (->>
+          (gen-grid
+            20 30
+            {:col 100 :row 150}
+            (->>
+             (gen-shape yellow tri)))
+              (map #(style {:opacity 1 :mix-blend-mode "difference"} %))
+
+            (map #(anim "morph" "10s" "infinite" %))
+            (map draw)
+                  (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
+          (map #(gen-group {:style {:transform-origin "center" :transform "translate(-200px, 100px)"}} %))
+            (map #(gen-group {:mask (url "bitey")} %)))))
 
 (def l1 (lerp))
 
@@ -496,10 +560,10 @@
 
   (let
     [colors [
-            midnight midnight midnight midnight
-             ;yellow yellow yellow yellow yellow yellow yellow yellow
+            ;midnight midnight
+            yellow yellow yellow yellow
              ;white white white white white white white white
-             ;pink pink  pink pink pink pink pink pink pink pink
+             ;pink pink  pink pink
 
              ]]
       (->>
@@ -507,7 +571,7 @@
         (style {:opacity .9})
         (draw)))
 
-  (let
+  #_(let
     [colors [
             midnight midnight midnight midnight
              ;yellow yellow yellow yellow yellow yellow yellow yellow
@@ -525,6 +589,16 @@
 
     ; (doall (map deref levels))
 
+  (when (nth-frame 1 frame)
+    (gen-line-grid white 4
+    80 80
+    {:col 20 :row 20}))
+
+    #_(when (nth-frame 2 frame)
+      (gen-line-grid midnight 4
+      80 80
+      {:col 20 :row 20}))
+
   #_(doall (map
           #(->>
            (gen-shape orange tri)
@@ -535,32 +609,189 @@
                                ")")})
            (draw)
            (when (nth-frame (+ % 3) frame)))
-          (range 1)))
+          (range 8)))
 
-  #_(->>
-   (gen-circ (pattern (:id white-dots)) (* 0.5 @width) (* 0.5 @height) 200)
+
+    #_(doall (map
+            #(->>
+             (gen-shape pink hept)
+             (style {:transform (str "
+                                 translate("(* % 40)"vw, "(+ % 60)"vh)
+                                 rotate(" (val-cyc (+ % frame) [100 30 40 220 140 6]) "deg)
+                                 scale(" (val-cyc (+ % frame)
+                                                  [1 2 2 4 3])
+                                 ")")})
+             (draw)
+             (when (nth-frame (+ % 3) frame)))
+            (range 4)))
+
+  (->>
+   (gen-circ (pattern (:id white-dots))
+             (* 0.5 @width) (* 0.5 @height) 300)
+   (style {:opacity .5})
    #_(style {:transform (str "scale("
                            (val-cyc frame (concat
-                                           (repeat 4 1)
-                                           (repeat 4 2)
-                                           (repeat 4 4)
-                                           (repeat 4 6)
-                                           (repeat 4 8)
-                                           (repeat 4 20)))
+                                           (repeat 1 1)
+                                           (repeat 1 2)
+                                           (repeat 1 4)
+                                           (repeat 1 6)
+                                           (repeat 1 80)
+                                           (repeat 1 20)))
                            ")")})
    (draw)
-   (when (nth-frame 4 frame)))
+   (when (nth-frame 1 frame)))
+
+    #_(->>
+     (gen-circ (pattern (:id br-orange-lines))
+               (* 0.5 @width) (* 0.5 @height) 300)
+     (style {:opacity .5})
+     (style {:transform (str "scale("
+                             (val-cyc frame (concat
+                                             (repeat 2 10)
+                                             (repeat 2 8)
+                                             (repeat 2 12)
+                                             (repeat 2 6)
+                                             (repeat 2 8)
+                                             (repeat 2 20)))
+                             ")")})
+     (draw)
+     (when (nth-frame 2 frame)))
+
+  #_(->>
+   (gen-circ (pattern (:id navy-lines))
+             (* 0.5 @width) (* 0.5 @height) 300)
+   (style {:opacity .5})
+   (style {:transform (str "scale("
+                           (val-cyc frame (concat
+                                           (repeat 2 4)
+                                           (repeat 2 18)
+                                           (repeat 2 20)
+                                           (repeat 2 36)
+                                           (repeat 2 8)
+                                           (repeat 2 2)))
+                           ")")})
+   (draw)
+   (when-not (nth-frame 12 frame)))
+
+  (new-freakout @width @height 40 140 "testCirc")
+
+
+     (when-not (nth-frame 10 (+ 1 frame)) @d)
+    (when-not (nth-frame 12 (+ 1 frame)) @e)
+  ;(when-not (nth-frame 20 frame) @fa)
+  ;(when-not (nth-frame 8 frame) @ga)
 
 
 
 
 
+  ;@rr
+  ;@rr2
+  ;(when (nth-frame 3 frame) @rra)
+;  (when (nth-frame 1 frame) @rr2a)
 
 
+  ;@move-me
+  ;@bb6
+  ;@bb6s
+  ;@bb4
+
+  ;(gen-bg-lines gray (mod frame 80) {:mix-blend-mode "color-burn"})
 
 
+  #_(->>
+   (gen-circ white (* 0.5 @width) (* 0.5 @height) 200)
+   (style {:opacity .5})
+   (style {:transform (str "scale("
+                           (val-cyc frame (concat
+                                           (repeat 2 4)
+                                           (repeat 2 8)
+                                           (repeat 2 2)
+                                           (repeat 2 6)
+                                           (repeat 2 8)
+                                           (repeat 2 2)))
+                           ")")})
+   (draw))
+
+  ;@scale-me
 
   ;@bb
+
+  [:text {:key (random-uuid)
+          :x (* 0.5 @width)
+          :y (* 0.5 @height)
+          :text-anchor "middle"
+          :style {:font-size "80px"
+                  :font-family "monospace"
+                  :font-weight "bold"
+                  :fill mint }}
+   "THANK YOU, SHEFFIELD!"]
+
+    #_[:text {:key (random-uuid)
+            :x (* 0.5 @width)
+            :y (* 0.35 @height)
+            :text-anchor "middle"
+            :style {:font-size "70px"
+                    :font-family "monospace"
+                    :fill mint }}
+     "Sorry I couldn't come 😕"]
+
+  #_[:text {:key (random-uuid)
+          :x (* 0.5 @width)
+          :y (* 0.45 @height)
+          :text-anchor "middle"
+          :style {:font-size "70px"
+                  :font-family "monospace"
+                  :fill mint }}
+   "Miss u all!"]
+
+  #_[:text {:key (random-uuid)
+          :x (* 0.5 @width)
+          :y (* 0.55 @height)
+          :text-anchor "middle"
+          :style {:font-size "70px"
+                  :font-family "monospace"
+                  :fill mint }}
+   "At least you have"]
+
+  #_[:text {:key (random-uuid)
+          :x (* 0.5 @width)
+          :y (* 0.65 @height)
+          :text-anchor "middle"
+          :style {:font-size "70px"
+                  :font-family "monospace"
+                  :fill mint }}
+   "the best half of us"]
+
+    #_(when (nth-frame 2 frame)
+      [:text {:key (random-uuid)
+            :x (* 0.5 @width)
+            :y (* 0.4 @height)
+            :text-anchor "middle"
+            :style {:font-size "160px"
+                    :font-family "monospace"
+                    :font-weight "bold"
+                    :fill mint }}
+     "KAAAAAAATE"])
+
+    #_[:text {:key (random-uuid)
+            :x (* 0.5 @width)
+            :y (* 0.55 @height)
+            :text-anchor "middle"
+            :style {:font-size "70px"
+                    :font-family "monospace"
+                    :fill mint }}
+     "ok let's get down"]
+
+    #_[:text {:key (random-uuid)
+            :x (* 0.5 @width)
+            :y (* 0.65 @height)
+            :text-anchor "middle"
+            :style {:font-size "70px"
+                    :font-family "monospace"
+                    :fill mint }}
+     "but like, chill"]
+
 
 
 
@@ -650,10 +881,11 @@
     :style  {:mix-blend-mode
              (val-cyc @frame
                       [
-                      "luminosity"
+                      ;"luminosity" "luminosity" "luminosity" "luminosity" ;"luminosity"
+                       ;"multiply"
+                       ;";multiply" "multiply" "multiply" "multiply"
                        ;"multiply" "multiply" "multiply" "multiply"
-                       ;"multiply" "multiply" "multiply" "multiply"
-                       ;"difference" "difference" "difference" "difference"
+                       "difference" "difference" "difference" "difference"
                        ;"difference" "difference" "difference" "difference"
                        ]) }
     :width  (:width settings)
