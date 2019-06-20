@@ -48,6 +48,12 @@ or
 npm server
 ```
 
+If you do not have electron installed run
+```
+npm install -g electron
+```
+and then try the above step again.
+
 ### Where to Put the Code
 
 All the relevant code is  in [`ui_src/ui`](https://github.com/sarahgp/la-habra/tree/master/ui_src/ui). In particular, `core.cljs` is the only file you will need at performance time. It imports all the necessary dependencies.
