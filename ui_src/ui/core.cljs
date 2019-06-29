@@ -404,6 +404,7 @@
   (->>
    (gen-shape (pattern (:id white-lines)) oct)
    (style {:opacity .6 :transform-origin "center" :transform "translate(120vw, -10vh)"})
+   (style {:mix-blend-mode "color-burn"})
    (anim "loopy-left" "12s" "infinite")
    (draw)
    (atom)))
@@ -413,6 +414,7 @@
      (->>
       (gen-shape (pattern (:id white-lines)) oct)
       (style {:opacity .6 :transform-origin "center" :transform "translate(-100vw, -10vh)"})
+         (style {:mix-blend-mode "color-burn"})
       (anim "loopy-right" "16s" "infinite")
       (draw)
       (atom)))
@@ -659,7 +661,7 @@
                   (when (nth-frame 3 frame)))));
 
 
-  (add-remove "triangles" frame 15 65
+  (add-remove "triangles" frame 15 45
               (gen-group {}
                          (->>
                            (gen-shape navy tri)
@@ -696,7 +698,7 @@
                              (when (nth-frame 1 frame))))))
   
   
-  (add-remove "lines" frame 30 120 
+  (add-remove "lines" frame 22 120 
               (gen-group {}
                 (->>
                   (gen-line [100 100] [400 100] navy 60)
@@ -724,19 +726,7 @@
                   (when (nth-frame 3 frame)))))
 
 
-    (add-remove "snims" frame 45 120 
-                (list 
-                  (add-remove "biggo" frame 60 120 @move-me-2)
 
-                  @bb1
-                  @bb1aa
-                  @bb1aaa
-                  
-                  @move-me-3
-                  @move-me-4
-                  
-                  @move-me-3a
-                  @move-me-4a))
   
     (add-remove "fo-yo-flash" frame 72 108
                 (list
@@ -833,7 +823,6 @@
                                  (map draw)
                                  (map #(gen-group {:style {:transform-origin "center" }} %)))))
                  
-                 
                  (gen-group {:style {:transform "translate(-10vh, -10vh)"}}
                             (when (nth-frame 7 frame)
                               (->>
@@ -846,8 +835,21 @@
                                  ;(map #(anim animations %))
                                  (map draw)
                                  (map #(gen-group {:style {:transform-origin "center" }} %)))))))
-
   
+   
+  (add-remove "snims" frame 55 120 
+               (list 
+                 (add-remove "biggo" frame 65 120 @move-me-2)
+
+                 @bb1
+                 @bb1aa
+                 @bb1aaa
+                 
+                 @move-me-3
+                 @move-me-4
+                 
+                 @move-me-3a
+                 @move-me-4a))  
 
   (add-remove "orange shapes" frame 98 180
               (when (nth-frame 3 frame)
@@ -888,22 +890,23 @@
                               (map #(gen-group {:style {:transform-origin "center" :transform "scale(1.2)" }} %)))))))
   
 
-  (add-remove "giant lines" frame 106 126
+  (add-remove "giant lines" frame 106 138
               (->>
                  (gen-circ (pattern (:id 
                                      
                                       white-lines
                                      )) (* 0.5 @width) (* 0.5 @height) 200)
-                 (style {:transform (str "scale("
+                 (style {:transform (str
+                                     "scale("
                                          (val-cyc frame (concat
                                                          (repeat 12 0)
-                                                         (repeat 3 8)
-                                                         (repeat 3 10)
-                                                         (repeat 3 12)
-                                                         (repeat 3 16)
-                                                         (repeat 3 20)))
+                                                         (repeat 1 6)
+                                                         (repeat 1 8)
+                                                         (repeat 1 12)
+                                                         (repeat 1 14)
+                                                         (repeat 1 20)))
                                          ")")})
-                 (style {:mix-blend-mode "difference"})
+                 (style {:mix-blend-mode "exclusion"})
                  (draw)
                  (when (nth-frame 1 frame))))
   
@@ -920,10 +923,21 @@
               (new-freakout @width @height 100 100 "testCirc4"))
   
   (add-remove "griddo" frame 144 180
-              (when (nth-frame 2 frame)
+              (when (nth-frame 3 frame)
                 (gen-line-grid midnight 3
                   120 80
                   {:col 20 :row 20})))
+  
+  (add-remove "griddo-o" frame 144 180
+              (when (nth-frame 3 (+ 1 frame))
+                (gen-line-grid white 3
+                  120 80
+                  {:col 20 :row 20})))
+  
+  (add-remove "END" frame 170 300
+              (->>
+               (gen-rect "#000" 0 0 @width @height)
+               (draw)))
   
 
   ;; ------------------------------------END ACCEPTABLE SECTION -------------------------------------------------------
