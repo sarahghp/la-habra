@@ -25,7 +25,7 @@
 (println "Loaded.")
 
 ;; hides heads up display for performance
-(let [heads-up-display (.getElementById js/document "figwheel-heads-up-container")]
+#_(let [heads-up-display (.getElementById js/document "figwheel-heads-up-container")]
   (.setAttribute heads-up-display "style" "display: none")
 )
 
@@ -281,13 +281,13 @@
    (circ)
    (when (nth-frame 6 frame)))
 
-  ;(gen-bg-lines mint (mod frame 60))
+  (gen-bg-lines mint (mod frame 60))
 
-  ;@move-me-3
-  ;@move-me
-  ;@move-me-2
+  @move-me-3
+  @move-me
+  @move-me-2
 
-  ;(gen-bg-lines navy (mod (+ frame 10) 60))
+  (gen-bg-lines navy (mod (+ frame 10) 60))
 
 
 
