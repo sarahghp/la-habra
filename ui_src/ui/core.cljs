@@ -517,10 +517,14 @@
 
   (let
     [colors [
-             midnight midnight
-             ;yellow 
-             ;white white white
-             ;pink pink pink
+             midnight 
+             ;midnight midnight midnight 
+             yellow 
+             ;yellow yellow yellow
+             white 
+             ;white white
+             pink 
+             ;pink pink
              
              ;navy
 
@@ -530,12 +534,75 @@
         (style {:opacity .9})
         (draw)))
 
-
-        (when (nth-frame 10 frame) @move-me)
-          (when (nth-frame 8 frame) @move-me)
+  
 
 
 
+  #_(->>
+    (gen-rect mint 0 0 400 600)
+    (style {:mix-blend-mode "difference" :opacity .6})
+   (style {:transform (str "scale("
+                           (val-cyc frame (concat
+                                           (repeat 3 1)
+                                           (repeat 3 2)
+                                           (repeat 3 4)
+                                           (repeat 3 6)
+                                           (repeat 3 8)
+                                           (repeat 3 20)))
+                           ")")})
+   (style {:mix-blend-mode "difference"})
+   (draw)
+   (when (nth-frame 1 frame)))
+  
+  
+    #_(->>
+      (gen-rect white 400 400 400 200)
+      (style {:mix-blend-mode "difference" :opacity .6})
+     (style {:transform (str "scale("
+                             (val-cyc frame (concat
+                                             (repeat 3 1)
+                                             (repeat 3 .5)
+                                             (repeat 3 14)
+                                             (repeat 3 2)
+                                             (repeat 3 3)
+                                             (repeat 3 20)))
+                             ")")})
+     (draw)
+     (when (nth-frame 1 frame)))
+  
+  
+      (->>
+        (gen-rect orange 100 600 400 400)
+        (style {:mix-blend-mode "color-dodge" :opacity .6})
+       (style {:transform (str "scale("
+                               (val-cyc frame (concat
+                                               (repeat 3 10)
+                                               (repeat 3 .5)
+                                               (repeat 3 2)
+                                               (repeat 3 2.5)
+                                               (repeat 3 3)
+                                               (repeat 3 12)))
+                               ")")})
+       (draw)
+       (when (nth-frame 1 frame)))
+  
+    (when (nth-frame 2 (+ 1 frame)) (gen-bg-lines midnight 80))
+
+
+(when (nth-frame 4 frame)
+  (gen-line-grid pink 2
+  40 40
+  {:col 40 :row 40}))
+  
+  (when (nth-frame 2 frame)
+    (gen-line-grid orange 4
+    80 100
+    {:col 10 :row 10}))
+  
+  ;@move-me
+    ;@bb6
+    ;@bb6s
+    
     
   
   
@@ -611,7 +678,7 @@
           (range 4)))
 
 
-    ;@rr2
+    @rr2
   
   #_(new-freakout @width @height 100 100 "testCirc")
     #_(new-freakout @width @height 100 100 "testCirc2")
@@ -651,18 +718,44 @@
   ;@bb6
   ;@bb6s
   
+  
+         ;(when (nth-frame 4 frame) @b)
+      ;(when (nth-frame 2 frame) @c)
+      ;(when (nth-frame 3 frame) @d)
+      
 #_(->>
- (gen-shape midnight tri)
+ (gen-shape yellow tri)
  (style {:transform-origin "center" :transform (str "translate(40vw, 40vh) rotate("
          (val-cyc frame [80 80 80 80 120 120 120 120 -60 -60 -60 -60 245 245 245 245])
          "deg) scale(3)")})
  (style {:mix-blend-mode "overlay"})
  (draw)
  (when (nth-frame 4 frame)))
+  
+  #_(gen-group {:style {:transform "translateX(80vw) rotate(30deg)"}}
+             (->>
+              (gen-shape midnight tri)
+              (style {:transform-origin "center" :transform (str "translate(40vw, 40vh) rotate("
+                      (val-cyc frame [10 10 10 10 120 120 120 120 -60 -60 -60 -60 245 245 245 245])
+                      "deg) scale(3)")})
+              (style {:mix-blend-mode "overlay"})
+              (draw)
+              (when (nth-frame 5 frame))))
+
+    #_(gen-group {:style {:transform "translate(-30vw, -10vw)"}}
+
+        (->>
+         (gen-shape pink tri)
+         (style {:transform-origin "center" :transform (str "translate(40vw, 40vh) rotate("
+                 (val-cyc frame [80 80 80 80 120 120 120 120 -60 -60 -60 -60 245 245 245 245])
+                 "deg) scale(4)")})
+         (style {:mix-blend-mode "overlay"})
+         (draw)
+         (when (nth-frame 2 frame))))
+    
 
 
-
-
+;(new-freakout @width @height 5 1000 "weeCirc")
 
 )) ; cx end
 
@@ -756,8 +849,9 @@
              (val-cyc @frame
                       [
                       ;"luminosity" "luminosity"
-                       ;"difference"
+                       "difference"
                       "multiply"
+                       
                        ;"multiply" "multiply" "multiply" ;"multiply"
                        ;"multiply" "multiply" "multiply" "multiply"
                       ;"difference" "difference" "difference" ;"difference"
