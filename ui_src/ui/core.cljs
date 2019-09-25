@@ -209,7 +209,7 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect pink (+ 30 (* % 160)) 10 200 36)
+       (gen-rect midnight (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "1.2s" "infinite" {:delay (str (* .5 %) "s")})
        (draw))
      (range 10))))
@@ -238,6 +238,24 @@
    (atom)))
 
 
+(def bnz
+  (->>
+   (gen-shape yellow b1)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:mix-blend-mode "difference"})
+   (anim "woosh-2" "16s" "infinite")
+   (draw)
+   (atom)))
+
+
+(def bnz-2
+  (->>
+   (gen-shape yellow b2)
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:mix-blend-mode "difference"})
+   (anim "woosh-2" "16s" "infinite")
+   (draw)
+   (atom)))
 
 (def bb2
   (->>
@@ -278,9 +296,33 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "difference"} )
 
-      (anim "loopy-left" "8s" "infinite")
+      (anim "loopy-left" "3s" "infinite")
     (draw)
     (atom)))
+
+
+(def bb7
+  (->>
+    (gen-shape mint oct)
+      (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
+      ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+          (style {:mix-blend-mode "color-dodge"} )
+
+      (anim "loopy-right" "4s" "infinite")
+    (draw)
+    (atom)))
+
+(def bb7s
+  (->>
+    (gen-shape (pattern (:id mint-lines))  oct)
+      (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
+      ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+          (style {:mix-blend-mode "color-dodge"} )
+
+      (anim "loopy-left" "1s" "infinite")
+    (draw)
+    (atom)))
+
 
 
 (def bb3
@@ -411,34 +453,33 @@
    (draw))))
 
 
-(defonce d
-  (scatter 20 (->>
+
+(defonce k
+  (scatter 40 
+           (->>
+            (gen-line [10 10] [200 100] white 4)
+            (draw))))
+
+
+(defonce m
+  (scatter 20 
+           (->>
+            (gen-line [100 100] [300 60] white 2)
+            (draw))))
+
+
+(defonce y
+  (scatter 300 (->>
+   (gen-circ yellow 10 10 20)
+   (style {:mix-blend-mode "color-dodge"})
+   (draw))))
+
+
+(defonce z
+  (scatter 30 (->>
    (gen-circ yellow 10 10 60)
-   (style {:mix-blend-mode "color-dodge"})
+   ;(style {:mix-blend-mode "color-dodge"})
    (draw))))
-
-(defonce e
-  (scatter 20 (->>
-   (gen-circ navy 10 10 60)
-   (style {:mix-blend-mode "color-dodge"})
-   (draw))))
-
-(defonce f
-  (scatter 20 (->>
-   (gen-circ pink 10 10 60)
-   (style {:mix-blend-mode "color-dodge"})
-   (draw))))
-
-
-(defonce g
-  (scatter 20 (->>
-   (gen-circ yellow 10 10 60)
-   (style {:mix-blend-mode "color-dodge"})
-   (draw))))
-
-
-
-
 
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
@@ -517,16 +558,16 @@
 
   (let
     [colors [
-             midnight 
+             ;midnight 
              ;midnight midnight midnight 
-             yellow 
-             ;yellow yellow yellow
-             white 
+             ;yellow 
+             yellow yellow yellow
+             ;white 
              ;white white
-             pink 
+             ;pink 
              ;pink pink
              
-             ;navy
+             navy navy navy
 
              ]]
       (->>
@@ -539,7 +580,7 @@
 
 
   #_(->>
-    (gen-rect mint 0 0 400 600)
+    (gen-rect mint 0 0 100 300)
     (style {:mix-blend-mode "difference" :opacity .6})
    (style {:transform (str "scale("
                            (val-cyc frame (concat
@@ -552,26 +593,49 @@
                            ")")})
    (style {:mix-blend-mode "difference"})
    (draw)
-   (when (nth-frame 1 frame)))
+   (when (nth-frame 2 frame)))
   
   
     #_(->>
+      (gen-rect pink 100 200 60 400)
+      (style {:mix-blend-mode "difference" :opacity .4})
+     (style {:transform (str "scale("
+                             (val-cyc frame (concat
+                                             (repeat 4 1)
+                                             (repeat 3 2)
+                                             (repeat 4 4)
+                                             (repeat 4 6)
+                                             (repeat 4 8)
+                                             (repeat 4 20)))
+                             ")")})
+     (style {:mix-blend-mode "difference"})
+     (draw)
+     (when (nth-frame 4 frame)))
+  
+  
+    
+
+
+  
+  
+  
+    (->>
       (gen-rect white 400 400 400 200)
       (style {:mix-blend-mode "difference" :opacity .6})
      (style {:transform (str "scale("
                              (val-cyc frame (concat
                                              (repeat 3 1)
                                              (repeat 3 .5)
-                                             (repeat 3 14)
                                              (repeat 3 2)
-                                             (repeat 3 3)
-                                             (repeat 3 20)))
+                                             (repeat 3 2)
+                                             (repeat 3 .75)
+                                             (repeat 3 4)))
                              ")")})
      (draw)
      (when (nth-frame 1 frame)))
   
   
-      (->>
+      #_(->>
         (gen-rect orange 100 600 400 400)
         (style {:mix-blend-mode "color-dodge" :opacity .6})
        (style {:transform (str "scale("
@@ -586,23 +650,68 @@
        (draw)
        (when (nth-frame 1 frame)))
   
-    (when (nth-frame 2 (+ 1 frame)) (gen-bg-lines midnight 80))
+    #_(when (nth-frame 2 (+ 1 frame)) (gen-bg-lines midnight 80))
 
+  
+  ;@mf
 
 (when (nth-frame 4 frame)
   (gen-line-grid pink 2
   40 40
   {:col 40 :row 40}))
   
-  (when (nth-frame 2 frame)
+
+  
+  #_(when (nth-frame 3 frame)
     (gen-line-grid orange 4
     80 100
     {:col 10 :row 10}))
   
   ;@move-me
-    ;@bb6
+    @bb6
     ;@bb6s
+  
+      ;@bb7
+      ;@bb7s
+      
+  
+  #_(->>
+   (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 100)
+   (draw)
+   (when (nth-frame 2 frame)))
+  
+  #_(->>
+   (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 200)
+   (draw)
+   (when (nth-frame 3 frame)))
+  
+    (->>
+     (gen-circ white (* 0.5 @width) (* 0.5 @height) 200)
+     (draw)
+     (when (nth-frame 6 frame)))
+  
+  @z
+  
+  @y
+  
+  (when (nth-frame 6 frame) @y)
+  
+    (when (nth-frame 12 frame)
+      (gen-line-grid navy 2
+      40 40
+      {:col 40 :row 40}))
+  
+      (->>
+       (gen-circ white (* 0.5 @width) (* 0.5 @height) 200)
+       (draw)
+       (when (nth-frame 8 frame)))
     
+  
+  (->>
+   (gen-circ (pattern (:id mint-lines)) (* 0.5 @width) (* 0.5 @height) 200)
+   (style {:transform "rotate(136deg)"})
+   (draw)
+   (when (nth-frame 2 frame)))
     
   
   
@@ -639,7 +748,7 @@
        (map draw)
        (map #(gen-group {:style {:transform-origin "center" }} %))))
   
-  #_(when (nth-frame 6 frame)
+  (when (nth-frame 6 frame)
     (->>
      (gen-grid
        10 20
@@ -678,12 +787,12 @@
           (range 4)))
 
 
-    @rr2
+    ;@rr2
   
-  #_(new-freakout @width @height 100 100 "testCirc")
-    #_(new-freakout @width @height 100 100 "testCirc2")
-      #_(new-freakout @width @height 100 100 "testCirc3")
-  
+  (new-freakout @width @height 100 100 "testCirc")
+    (new-freakout @width @height 100 100 "testCirc2")
+      (new-freakout @width @height 100 100 "testCirc3")
+
   #_(when (nth-frame 3 frame)(gen-line-grid midnight 3
     80 80
     {:col 20 :row 20}))
@@ -706,7 +815,25 @@
                            ")")})
    (style {:mix-blend-mode "difference"})
    (draw)
-   (when (nth-frame 3 frame)))
+   (when (nth-frame 1 frame)))
+  
+    #_(->>
+     (gen-circ (pattern (:id 
+                         
+                          white-lines
+                         )) (* 0.55 @width) (* 0.55 @height) 500)
+     (style {:transform (str "scale("
+                             (val-cyc frame (concat
+                                             (repeat 3 10)
+                                             (repeat 3 20)
+                                             (repeat 3 4)
+                                             (repeat 3 6)
+                                             (repeat 3 8)
+                                             (repeat 3 1)))
+                             ")")})
+     (style {:mix-blend-mode "difference"})
+     (draw)
+     (when (nth-frame 1 frame)))
 
 
 
@@ -719,8 +846,8 @@
   ;@bb6s
   
   
-         ;(when (nth-frame 4 frame) @b)
-      ;(when (nth-frame 2 frame) @c)
+         #_(when (nth-frame 4 frame) @b)
+      #_(when (nth-frame 2 frame) @c)
       ;(when (nth-frame 3 frame) @d)
       
 #_(->>
@@ -742,7 +869,7 @@
               (draw)
               (when (nth-frame 5 frame))))
 
-    #_(gen-group {:style {:transform "translate(-30vw, -10vw)"}}
+    (gen-group {:style {:transform "translate(-30vw, -10vw)"}}
 
         (->>
          (gen-shape pink tri)
@@ -752,10 +879,21 @@
          (style {:mix-blend-mode "overlay"})
          (draw)
          (when (nth-frame 2 frame))))
+  
+  (->>
+   (gen-circ pink 0 0 2000 (url "nn"))
+   (draw)
+   (when (nth-frame 2 frame)))
+  
+    (->>
+     (gen-circ pink 0 0 1000 (url "nn"))
+     (draw)
+     (when (nth-frame 4 frame)))
+  
+  ;@bnz
+  ;@bnz-2
     
 
-
-;(new-freakout @width @height 5 1000 "weeCirc")
 
 )) ; cx end
 
@@ -827,7 +965,7 @@
                                 :xlinkHref "img/blop.png"
                                 :style {:transform-origin "center"
                                         :transform "scale(10)"
-                                        :animation "woosh 6s infinite"} }]]
+                                        } }]]
             ])
 
 
@@ -849,12 +987,13 @@
              (val-cyc @frame
                       [
                       ;"luminosity" "luminosity"
-                       "difference"
-                      "multiply"
+                      ;"difference"
+                      ;"multiply"
                        
-                       ;"multiply" "multiply" "multiply" ;"multiply"
+                      ; "multiply" "multiply" "multiply" ;"multiply"
                        ;"multiply" "multiply" "multiply" "multiply"
-                      ;"difference" "difference" "difference" ;"difference"
+                      ;"difference" "difference" "difference" 
+                       "difference"
                        ;"difference" "difference" "difference" "difference"
                        ]) }
     :width  (:width settings)
