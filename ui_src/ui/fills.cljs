@@ -2,6 +2,7 @@
 
 ;; solid colors A
 (def gray "#53535c")
+(def charcoal "1a1a1c")
 (def mint "#00baa9")
 (def navy "#161f93")
 (def blue "#001752")
