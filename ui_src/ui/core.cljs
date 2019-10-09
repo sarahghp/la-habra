@@ -29,7 +29,7 @@
               [ make-body splice-bodies make-frames!
                 nth-frame even-frame odd-frame
                 seconds-to-frames frames-to-seconds
-                anim anim-and-hold
+                anim anim-and-hold add-remove
                 ]]))
 
 (enable-console-print!)
@@ -96,7 +96,7 @@
 (make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
 
 (back-and-forth! "scaley" "scale(1)" "scale(15)")
-(back-and-forth! "scaley-huge" "scale(20)" "scale(50)")
+(back-and-forth! "scaley-huge" "scale(20)" "scale(100)")
 
 
 (a-to-b! "new-fi" "fill-opacity" "0" ".5")
@@ -376,7 +376,7 @@
 
 (def scale-me
         (->>
-          (gen-rect (pattern (str "noise-" yellow)) 0 0 @width @height)
+          (gen-rect (pattern (str "noise-" white)) 0 0 @width @height)
           (style {:transform "scale(50)"})
           (anim "scaley-huge" "5s" "infinite")
           (draw)
@@ -544,19 +544,21 @@
 
 (def hd (deform hex 8 30))
 
-(defonce z 
-  (scatter 10
-           (->>
-            (gen-shape white hd)
-            (style {:mix-blend-mode "color-dodge"})
-            (draw))))
 
 
-(defonce l 
-  (scatter 16
-           (->>
-            (gen-rect yellow 0 0 10 10)
-            (draw))))
+(def rrect 
+  (atom 
+   (->>
+    (gen-grid
+      2 2
+      {:col 300 :row 300}
+      (->>
+       (gen-rect white 0 0 200 200)))
+      ;(map #(style styles %))
+      ;(map #(anim "rot" "2s" "infinite" %))
+      (map draw)
+      (map #(gen-group {:style {:transform-origin "center" :transform "translate(40vw, 30vh)" }} %))
+      #_(map #(gen-group {:style {:transform-origin "center" :animation "rot 2s infinite" }} %)))))
 
 
 
@@ -654,13 +656,21 @@
              ;midnight 
              ;midnight midnight midnight 
              ;yellow 
-             ;yellow yellow yellow
+             ;pink pink
              ;white 
              ;white white
              ;pink 
              ;pink pink
              
-             navy navy navy
+             navy navy navy navy
+             ;navy navy navy navy
+             pink pink pink pink
+             ;pink pink pink pink
+             yellow yellow yellow yellow
+             ;yellow yellow yellow yellow 
+             br-orange br-orange br-orange
+            ; br-orange br-orange br-orange br-orange br-orange
+             
              ;charcoal
 
              ]]
@@ -677,11 +687,6 @@
 
   
 
-  ;(doall (map deref all-the-moves))
-  ;@move-me
-
-  
-
 
   
 
@@ -693,26 +698,27 @@
              (* 0.1 @width) (* 0.1 @height) 
              (* 0.2 @width) (* 0.2 @height))
    (draw)
-   (when (nth-frame 1 frame)))
+   (when (nth-frame 3 frame)))
   
   (->>
-   (gen-rect charcoal 
+   (gen-rect yellow 
              (* 0.32 @width) (* 0.1 @height) 
              (* 0.52 @width) (* 0.2 @height))
    (draw)
-   (when (nth-frame 1 frame)))
+   (when (nth-frame 3 (+ 1 frame))))
   
     (->>
-     (gen-rect charcoal 
+     (gen-rect midnight 
                (* 0.1 @width) (* 0.32 @height) 
                (* 0.2 @width) (* 0.2 @height))
      (draw)
-     (when (nth-frame 1 frame)))
+     (when (nth-frame 4 frame)))
   
     (->>
      (gen-rect mint 
                (* 0.32 @width) (* 0.32 @height) 
                (* 0.52 @width) (* 0.52 @height))
+     ;(style {:mix-blend-mode "overlay"})
      (style {:transform (str "scale("
                             (val-cyc frame (concat
                                             (repeat 2 1)
@@ -723,14 +729,14 @@
                                             (repeat 2 2)))
                             ")")})
      (draw)
-     (when (nth-frame 1 frame)))
+     (when (nth-frame 5 frame)))
   
   
 (->>
        (gen-rect white 
                  (* 0.1 @width) (* 0.54 @height) 
                  (* 0.2 @width) (* 0.3 @height))
-       (style {:mix-blend-mode "exclusion"})
+       (style {:mix-blend-mode "overlay"})
        (style {:transform (str "scale("
                               (val-cyc frame (concat
                                               (repeat 3 10)
@@ -741,77 +747,10 @@
                                               (repeat 3 12)))
                               ")")})
        (draw)
-       (when (nth-frame 1 frame))))
-
-  ;@bb5
-  ;@bb6
-  ;@bb6s
-  ;@bb7
-  ;@bb7s
-  
-  #_(list 
-   @bb5
-   (when (nth-frame 6 frame)
-     (freak-out @width
-                @height
-                12
-                80
-                white))
-   (when (nth-frame 5 frame)
-     (freak-out @width
-                @height
-                8
-                200
-                yellow)))
+       (when (nth-frame 3 frame))))
 
 
-  (when (nth-frame 4 frame)
-    (gen-group {:style {:transform-origin "center"
-                        :transform "translate(-40vh, 30vh)"}}
-               (->>
-                (gen-shape white tri)
-                (style {:transform 
-                        (str "translate(" (* 0.4 @width) "px," (* 0.4 @height)"px) 
-                        rotate(135deg) scale(.3)")})
-                (draw))
-           
-              (->>
-               (gen-shape white tri)
-               (style {:transform 
-                       (str "translate(" (* 0.44 @width) "px," (* 0.48 @height)"px) 
-                       rotate(135deg) scale(.3)")})
-               (draw))
-           
-              (->>
-               (gen-shape white tri)
-               (style {:transform 
-                       (str "translate(" (* 0.36 @width) "px," (* 0.48 @height)"px) 
-                       rotate(135deg) scale(.3)")})
-               (draw))))
-  
-  
-  (when (nth-frame 3 frame)
-    (gen-group {:style {:transform-origin "center"
-                        :transform "translate(48vh, -38vh)"}}
-                     (->>
-                      (gen-shape white tri)
-                      (style {:transform 
-                              (str "translate(" (* 0.4 @width) "px," (* 0.4 @height)"px) rotate(-135deg) scale(.3)")})
-                      (draw))
-                 
-                    (->>
-                     (gen-shape white tri)
-                     (style {:transform 
-                             (str "translate(" (* 0.44 @width) "px," (* 0.48 @height)"px) rotate(-135deg) scale(.3)")})
-                     (draw))
-                 
-                    (->>
-                     (gen-shape white tri)
-                     (style {:transform 
-                             (str "translate(" (* 0.36 @width) "px," (* 0.48 @height)"px) rotate(-135deg) scale(.3)")})
-                     (draw))))
 
-  
   
   #_(when (nth-frame 9 frame)(->>
    (gen-grid
@@ -824,8 +763,62 @@
      (map #(gen-group {:style {:transform-origin "center" :transform "scale(.6)"}} %))))
     
 
-
-  
+  ; (add-remove "chewed-grid" frame 1 9
+  ;               (gen-group {:mask (url "na")}
+  ;                          (when (nth-frame 2 (+ 1 frame)) 
+  ;                            (gen-line-grid white 2
+  ;                                           100 80
+  ;                                           {:col 20 :row 20}))
+  ; 
+  ;                 (when (nth-frame 2 (+ 0 frame)) 
+  ;                   (gen-line-grid white 6
+  ;                                  100 80
+  ;                                 {:col 20 :row 20}))))
+  ; 
+  ; (add-remove "just-grid" frame 9 19
+  ;               (gen-group {:mask (url "")}
+  ;                          (when (nth-frame 2 (+ 1 frame)) 
+  ;                            (gen-line-grid white 2
+  ;                                           100 80
+  ;                                           {:col 20 :row 20}))
+  ; 
+  ;                 (when (nth-frame 2 (+ 0 frame)) 
+  ;                   (gen-line-grid white 6
+  ;                                  100 80
+  ;                                 {:col 20 :row 20}))))
+  ; 
+  ; (add-remove "circle" frame 19 29
+  ;             (->>
+  ;              (gen-circ white (* 0.5 @width) (* 0.5 @height) "16vw")
+  ;              (style {:transform "rotate(135deg)"})
+  ;                 #_(style {:transform (str "rotate(135deg) scale("
+  ;                                        (val-cyc frame (concat
+  ;                                                        (repeat 2 1)
+  ;                                                        (repeat 2 .5)
+  ;                                                        (repeat 2 2)
+  ;                                                        (repeat 2 2.5)
+  ;                                                        (repeat 2 13)
+  ;                                                        (repeat 2 2)))
+  ;                                        ")")})
+  ;              (draw)
+  ;              (when (nth-frame 1 frame))))
+  ; 
+  ; (add-remove "squares" frame 29 39 @rrect)
+  ; 
+  ; (add-remove "lines" frame 39 49 (->>
+  ;  (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) "16vw")
+  ;  (style {:transform "scale(12)"})
+  ;  (draw)
+  ;  (when (nth-frame 1 frame))))
+  ; 
+  ; (add-remove "spin" frame 49 59 @lr1)
+  ; 
+  ; (add-remove "noise" frame 59 69 @sc-circ)
+  ; (add-remove "anim-lines" frame 69 79 @scale-me)
+  ; 
+  ; (add-remove "b1" frame 79 89 @bnz)
+  ; (add-remove "b2" frame 89 99 @bnz-2)
+  ; 
   #_(gen-group {:mask (url "na")}
              (when (nth-frame 2 (+ 1 frame)) 
                (gen-line-grid white 2
@@ -838,7 +831,7 @@
                     {:col 20 :row 20})))
   
   
-  (->>
+  #_(->>
    (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) "16vw")
    (style {:transform "rotate(135deg)"})
       #_(style {:transform (str "rotate(135deg) scale("
@@ -866,23 +859,27 @@
                                              (repeat 2 2)))
                              ")")})
    (draw)
-   (when (nth-frame 4 frame)))
+   (when (nth-frame 1 frame)))
   
-    #_(->>
-     (gen-circ (pattern (:id mint-lines)) (* 0.5 @width) (* 0.5 @height) 400)
-     (style {:transform "rotate(135deg)"})
-        (style {:transform (str "rotate(135deg) scale("
-                               (val-cyc frame (concat
-                                               (repeat 2 1)
-                                               (repeat 2 .5)
-                                               (repeat 2 2)
-                                               (repeat 2 2.5)
-                                               (repeat 2 13)
-                                               (repeat 2 2)))
-                               ")")})
-     (draw)
-     (when (nth-frame 1 frame)))
   
+  ;@rrect
+  
+  #_(->>
+   (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) "16vw")
+   (style {:transform "scale(12)"})
+   (draw)
+   (when (nth-frame 1 frame)))
+  
+  ;@lr1
+  
+  ;@sc-circ
+  ;@scale-me
+  
+  
+  @bnz
+  ;@bnz-2
+  
+
 
 
 )) ; cx end
