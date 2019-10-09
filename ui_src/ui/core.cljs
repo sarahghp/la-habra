@@ -614,7 +614,7 @@
               {:transform "scale(30)"}
               ))
 
-(when (nth-frame 1 frame)
+#_(when (nth-frame 1 frame)
   (freak-out @width
              @height
              60
@@ -622,7 +622,7 @@
              white
              {:opacity .6}))
 
-  (when (nth-frame 2 frame)(gen-line-grid white 10
+  #_(when (nth-frame 2 frame)(gen-line-grid white 10
     80 80
     {:col 20 :row 20}))
 
