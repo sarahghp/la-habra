@@ -864,7 +864,7 @@
   
   ;@rrect
   
-  #_(->>
+  (->>
    (gen-circ (pattern (:id white-lines)) (* 0.5 @width) (* 0.5 @height) "16vw")
    (style {:transform "scale(12)"})
    (draw)
@@ -872,13 +872,60 @@
   
   ;@lr1
   
-  ;@sc-circ
-  ;@scale-me
+  @sc-circ
+  @scale-me
   
   
-  @bnz
+  ;@bnz
   ;@bnz-2
   
+  @bb6
+  @bb6s
+  @bb7
+  @bb7s
+  
+  ;(gen-bg-lines midnight (mod (* 3 frame) 80))
+  
+  (doall (map deref levels))
+  
+  (when (nth-frame 4 frame)
+    (new-freakout @width @height 40 100 "testCirc") )
+  
+  (when (nth-frame 3 frame)
+    (gen-line-grid white 4
+      100 100
+      {:col 20 :row 20}))
+  
+  (when (nth-frame 3 (+ 1 frame))
+    (gen-line-grid midnight 4
+      100 100
+      {:col 20 :row 20}))
+  
+  (->>
+   (gen-circ midnight (* 0.5 @width) (* 0.5 @height) "16vw")
+   (style {:transform "rotate(135deg)"})
+      #_(style {:transform (str "rotate(135deg) scale("
+                             (val-cyc frame (concat
+                                             (repeat 2 1)
+                                             (repeat 2 .5)
+                                             (repeat 2 2)
+                                             (repeat 2 2.5)
+                                             (repeat 2 13)
+                                             (repeat 2 2)))
+                             ")")})
+   (draw)
+   (when (nth-frame 1 frame)))
+  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               14
+               1000
+               white))
+  
+  
+  
+
 
 
 
@@ -980,7 +1027,7 @@
                        
                       "multiply" "multiply" "multiply" "multiply"
                        ;"multiply" "multiply" "multiply" "multiply"
-                      ;"difference" "difference" "difference" 
+                      "difference" "difference" "difference" 
                        ;"difference"
                        ;"difference" "difference" "difference" "difference"
                        ]) }
