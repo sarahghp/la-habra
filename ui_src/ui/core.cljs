@@ -744,13 +744,13 @@
        (when (nth-frame 1 frame))))
 
   ;@bb5
-  ;@bb6
-  ;@bb6s
-  ;@bb7
-  ;@bb7s
+  @bb6
+  @bb6s
+  @bb7
+  @bb7s
   
-  #_(list 
-   @bb5
+  (list 
+   ;@bb5
    (when (nth-frame 6 frame)
      (freak-out @width
                 @height
@@ -977,11 +977,11 @@
     :style  {:mix-blend-mode
              (val-cyc @frame
                       [
-                      ;"luminosity" "luminosity"
+                      "luminosity" "luminosity"
                       ;"difference"
                       ;"multiply"
                        
-                      "multiply" "multiply" "multiply" "multiply"
+                      ;"multiply" "multiply" "multiply" "multiply"
                        ;"multiply" "multiply" "multiply" "multiply"
                       ;"difference" "difference" "difference" 
                        ;"difference"
