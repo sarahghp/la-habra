@@ -147,6 +147,16 @@
                       (pattern (str "noise-" midnight))]))
 
 (make-frames!
+  "colorcolorcolorcolorcolor"
+    [10, 35, 55, 85, 92]
+   (make-body "fill" [
+                      (pattern (str "noise-" pink))
+                      (pattern (str "noise-" br-orange))
+                      (pattern (str "noise-" white))
+                      (pattern (str "noise-" white))
+                      (pattern (str "noise-" pink))]))
+
+(make-frames!
   "woosh"
     [10, 35, 55, 85, 92]
    (make-body "transform" [
@@ -407,10 +417,10 @@
 
 (def mf
   (->>
-   (gen-shape white tri)
+   (gen-shape midnight tri)
    (anim "morph" "10s" "infinite")
    (draw)
-   (gen-group {:style {:transform-origin "center" :transform "translate(15vw, 15vh) scale(3)"}})
+   (gen-group {:style {:transform-origin "center" :transform "translate(27vw, 15vh) scale(4)"}})
    (atom)))
 
 
@@ -437,7 +447,7 @@
   (map-indexed
     (fn [idx color]
           (->>
-            (gen-rect color -100 -100 "120%" "120%" (url "cutout"))
+            (gen-rect color -100 -100 "160%" "160%" (url "cutout"))
             (style {:opacity .4
                     :transform-origin "center"
                     :transform (str
@@ -468,12 +478,12 @@
   (->>
    (->>
     (gen-grid
-      20 20
-      {:col 40 :row 40}
+      10 10
+      {:col 60 :row 60}
       (->>
       (gen-shape white oct)))
       (map #(style {:mix-blend-mode "overlay"}  %))
-      (map #(anim "colorcolorcolorcolor" (str (rand-int 60) "s") "infinite" %))
+      (map #(anim "colorcolorcolorcolorcolor" (str (rand-int 60) "s") "infinite" %))
       (map draw)
       (map #(gen-group {:style {:transform-origin "center"
                                 :transform (str
@@ -664,14 +674,15 @@
              
              navy navy navy navy
              ;navy navy navy navy
-             pink pink pink pink
              ;pink pink pink pink
-             yellow yellow yellow yellow
+             ;mint mint mint mint
+             ;pink pink pink pink
+             ;yellow yellow yellow yellow
              ;yellow yellow yellow yellow 
-             br-orange br-orange br-orange
+             ;br-orange br-orange br-orange
             ; br-orange br-orange br-orange br-orange br-orange
              
-             ;charcoal
+             ;charcoal charcoal charcoal charcoal
 
              ]]
       (->>
@@ -872,36 +883,38 @@
   
   ;@lr1
   
-  @sc-circ
-  @scale-me
+  ;@sc-circ
+  ;@scale-me
   
   
   ;@bnz
   ;@bnz-2
   
-  @bb6
-  @bb6s
-  @bb7
-  @bb7s
+  ; @bb6
+  ; @bb6s
+  ; @bb7
+  ; @bb7s
   
   ;(gen-bg-lines midnight (mod (* 3 frame) 80))
   
-  (doall (map deref levels))
+  #_(doall (map deref levels))
   
-  (when (nth-frame 4 frame)
-    (new-freakout @width @height 40 100 "testCirc") )
+  @bb
   
-  (when (nth-frame 3 frame)
-    (gen-line-grid white 4
-      100 100
-      {:col 20 :row 20}))
   
-  (when (nth-frame 3 (+ 1 frame))
-    (gen-line-grid midnight 4
-      100 100
-      {:col 20 :row 20}))
+    (when (nth-frame 3 frame)
+      (gen-line-grid pink 4
+        100 100
+        {:col 40 :row 40}))
+    
+    (when (nth-frame 3 (+ 1 frame))
+      (gen-line-grid pink 8
+        100 100
+        {:col 40 :row 40}))
   
-  (->>
+
+  
+  #_(->>
    (gen-circ midnight (* 0.5 @width) (* 0.5 @height) "16vw")
    (style {:transform "rotate(135deg)"})
       #_(style {:transform (str "rotate(135deg) scale("
@@ -916,16 +929,40 @@
    (draw)
    (when (nth-frame 1 frame)))
   
-  (when (nth-frame 1 frame)
+  (->>
+   (gen-shape midnight hept)
+   (style {:opacity 1 :transform "translate(45vw, 35vh) scale(3.5)"})
+   (draw))
+  
+ (when (nth-frame 4 @c))
+  
+  ;@mf
+  
+  #_(when (nth-frame 1 frame)
     (freak-out @width
                @height
                14
-               1000
+               600
                white))
   
   
   
+  #_(gen-group {:mask (url "nn")}
+             (when (nth-frame 2 (+ 1 frame)) 
+               (gen-line-grid white 2
+                              100 80
+                              {:col 20 :row 20}))
+    
+    (when (nth-frame 2 (+ 0 frame)) 
+      (gen-line-grid white 6
+                     100 80
+                    {:col 20 :row 20})))
+  
+    
 
+  
+  (when (nth-frame 1 frame)
+    (new-freakout @width @height 40 100 "testCirc") )
 
 
 
@@ -1025,9 +1062,9 @@
                       ;"difference"
                       ;"multiply"
                        
-                      "multiply" "multiply" "multiply" "multiply"
-                       ;"multiply" "multiply" "multiply" "multiply"
-                      "difference" "difference" "difference" 
+                      ;"multiply" "multiply" "multiply" "multiply"
+                       "multiply" "multiply" "multiply" "multiply"
+                      ;"difference" "difference" "difference" 
                        ;"difference"
                        ;"difference" "difference" "difference" "difference"
                        ]) }
