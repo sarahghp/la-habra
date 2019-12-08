@@ -643,6 +643,25 @@
   ;         :style {:font "bold 148px monospace"
   ;                 :fill white}}
   ;  "SHORTS"]
+    
+    
+    
+        [:text {:key (random-uuid)
+                :x (* 0.5 @width)
+                :y (* 0.45 @height)
+                :text-anchor "middle"
+                :style {:font "bold 148px monospace"
+                        :fill white}}
+         "COLOR"]
+      
+      [:text {:key (random-uuid)
+              :x (* 0.5 @width)
+              :y (* 0.6 @height)
+              :text-anchor "middle"
+              :style {:font "bold 148px monospace"
+                      :fill white}}
+       "EXCERPTS"]
+    
 
 
         #_(gen-bg-lines white (mod (* 10 frame) 80))
