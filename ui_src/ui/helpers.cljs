@@ -8,8 +8,8 @@
   (update-in shape [:style] #(merge % changes)))
 
 (defn url
-  ([ fill-id ]
-    (str "url(#" fill-id ")")))
+  ([fill-id]
+   (str "url(#" fill-id ")")))
 
 (defn val-cyc
   [frame vals]
