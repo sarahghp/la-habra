@@ -651,16 +651,35 @@
                 :y (* 0.45 @height)
                 :text-anchor "middle"
                 :style {:font "bold 148px monospace"
-                        :fill white}}
-         "COLOR"]
+                        :fill white
+                        :letter-spacing "2px"}}
+         "VAULT &"]
       
       [:text {:key (random-uuid)
               :x (* 0.5 @width)
               :y (* 0.6 @height)
               :text-anchor "middle"
-              :style {:font "bold 148px monospace"
-                      :fill white}}
-       "EXCERPTS"]
+              :style {:font "148px monospace"
+                      :fill white
+                      :letter-spacing "2px"}}
+       "FIRMAMENT"]
+    
+    
+    #_[:text {:key (random-uuid)
+            :x (* 0.5 @width)
+            :y (* 0.65 @height)
+            :text-anchor "middle"
+            :style {:font "38px monospace"
+                    :fill white}}
+     "a short film"]
+    
+    #_[:text {:key (random-uuid)
+            :x (* 0.5 @width)
+            :y (* 0.7 @height)
+            :text-anchor "middle"
+            :style {:font "38px monospace"
+                    :fill white}}
+     "by Sarah Groff Hennigh-Palermo"]
     
 
 
