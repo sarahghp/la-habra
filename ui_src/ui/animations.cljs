@@ -1,10 +1,36 @@
 (ns ui.animations
-  (:require [clojure.string :as string :refer [split join]]))
+  (:require 
+   [clojure.string :as string :refer [split join]]
+   [ui.fills :as fills :refer
+     [gray charcoal mint midnight navy blue orange
+       br-orange pink white yellow]]
+   [ui.shapes :as shapes :refer [tri square pent hex hept oct
+                                 b1 b2 b3 b4]]
+   [ui.generators :refer
+    [freak-out new-freakout scatter lerp
+     gen-circ gen-line gen-poly gen-rect gen-shape draw
+     gen-group gen-offset-lines gen-bg-lines gen-mask
+     gen-grid gen-line-grid gen-cols gen-rows]]
+  [ui.patterns :as patterns :refer
+      [ gen-color-noise pattern pattern-def
+        blue-dots blue-lines
+        pink-dots pink-lines pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
+        gray-dots gray-dots-lg gray-lines gray-patch
+        mint-dots mint-lines
+        navy-dots navy-lines
+        orange-dots orange-lines
+        br-orange-dots br-orange-lines
+        yellow-dots yellow-lines
+        white-dots white-dots-lg white-lines
+        shadow noise]]))
 
 
 ;; ------------------------------------------------------ ;;
 ;; --------------------- ANIMATIONS --------------------- ;;
 ;; ------------------------------------------------------ ;;
+
+(def width (atom (.-innerWidth js/window)))
+(def height (atom (.-innerHeight js/window)))
 
 ;; -------------------- CSS MANIP HELPERS ------------------
 
