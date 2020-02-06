@@ -259,7 +259,11 @@
 
 (def mf
   (->>
-   (gen-shape (pattern (:id pink-dots)) tri)
+   (gen-shape "hsla(100, 100%, 100%, 0)" tri)
+   (style {:stroke mint
+           :stroke-width 4
+           :stroke-dasharray 100
+           :stroke-dashoffset 100})
    (anim "morph" "4s" "infinite")
    (draw)
    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)"}})
@@ -267,35 +271,28 @@
 
 (def mf2
   (->>
-   (gen-shape (pattern (:id white-dots)) tri)
-   (anim "morph" "3s" "infinite")
+   (gen-shape "hsla(100, 100%, 100%, 0)" tri)
+   (style {:stroke mint
+           :stroke-width 4
+           :stroke-dasharray 80
+           :stroke-dashoffset 80})
+   (anim "morph" "4s" "infinite" {:delay "1.2s"})
    (draw)
-   (gen-group {:style {:transform-origin "center" :transform "translate(50vw, 15vh) scale(3)"}})
+   (gen-group {:style {:transform-origin "center" :transform "translate(30vw, 20vh) scale(4)"}})
    (atom)))
 
 (def mf3
   (->>
-   (gen-shape (pattern (:id mint-dots)) tri)
-   (anim "morph" "7s" "infinite")
+   (gen-shape "hsla(100, 100%, 100%, 0)" tri)
+   (style {:stroke pink
+           :stroke-width 4
+           :stroke-dasharray 120
+           :stroke-dashoffset 120})
+   (anim "morph" "4s" "infinite" {:delay "2.2s"})
    (draw)
-   (gen-group {:style {:transform-origin "center" :transform "translate(10vw, 35vh) scale(3)"}})
+   (gen-group {:style {:transform-origin "center" :transform "translate(10vw, 10vh) scale(4.4)"}})
    (atom)))
 
-(def mf4
-  (->>
-   (gen-shape (pattern (:id white-dots)) tri)
-   (anim "morph" "2s" "infinite")
-   (draw)
-   (gen-group {:style {:transform-origin "center" :transform "translate(0vw, 10vh) scale(5)"}})
-   (atom)))
-
-(def mf5
-  (->>
-   (gen-shape (pattern (:id white-dots)) tri)
-   (anim "morph" "10s" "infinite")
-   (draw)
-   (gen-group {:style {:transform-origin "center" :transform "translate(50vw, 40vh) scale(3)"}})
-   (atom)))
 
 
 
@@ -333,21 +330,6 @@
     (take 10 (repeatedly #(nth [mint navy navy mint] (rand-int 6))))))
 
 
-(def astro-mots
-  (map-indexed
-    (fn [idx [color val]]
-          (atom (gen-group 
-                 #_{:style {:animation (str "woosh-3 " (rand-int 4) "s infinite " (rand) "s")}}
-                 {}
-                 [:text {:key (random-uuid)
-                  :x (* (rand) @width)
-                  :y (* (rand) @height)
-                  :text-anchor "middle"
-                  :style {:font "bold 240px monospace"
-                          :fill white}}
-           val])))
-    (take 3 (repeatedly #(nth [[pink 10] [pink 9] [pink 8] [pink 7] [pink 6] [pink 5] [pink 4] [pink 3] [pink 2] [white 1]] (rand-int 9))))))
-
 (def all-the-moves
   (map-indexed
    (fn [idx [time patt]]
@@ -363,6 +345,26 @@
          (repeatedly #(rand-nth [[10 gray-dots-lg] [9 pink-lines] [12 white-dots]])))))
 
 
+(def worms
+  (map-indexed
+   (fn [idx [color scale]]
+     (->>
+      (gen-shape "hsla(100, 100%, 100%, 0)" tri)
+      (style {:stroke color
+              :stroke-width 4
+              :stroke-dasharray (+ (rand-int 20) 80)
+              :stroke-dashoffset (+ (rand-int 20) 80)
+              :stroke-linejoin "round"
+              :stroke-linecap "round"})
+      (anim "morph" "4s" "infinite" {:delay (str (* 4 (rand)) "s")})
+      (draw)
+      (gen-group {:style {
+                          :transform-origin "center" 
+                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20)) 
+                                          "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
+      (atom)))
+   (take 10
+         (repeatedly #(rand-nth [[mint 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4]])))))
 
 (def bb
   (->>
@@ -463,28 +465,14 @@
   (let
     [colors [
              midnight 
-             ;midnight midnight midnight 
-             ;yellow 
-             ;yellow yellow yellow
-             ;white 
-             ;white white
-             ;pink 
-             ;pink pink
-             ;mint mint
-             ;navy navy navy
-             ;charcoal
-             ;br-orange br-orange
              
-             ;midnight midnight midnight 
-             
-             ;br-orange
-
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .95})
         (draw)))
 
+  ;(doall (map deref worms))
   
   
 #_(gen-group {:mask (url "nn")}
@@ -496,20 +484,24 @@
                {:col 20 :row 20})))
 
 
+  (->>
+   (gen-circ white (* 0.5 @width) (* 0.5 @height) 40)
+   (draw)
+   (when (nth-frame 3 frame)))
   
-  #_(->>
+  (->>
    (gen-shape white oct)
-   (style {:opacity (val-cyc frame (concat 
+   #_(style {:opacity (val-cyc frame (concat 
                                     (repeat 4 .3)
                                     (repeat 4 .7)
                                     (repeat 4 .3)
                                     (repeat 4 .5)))})
-   (style {:mix-blend-mode "color-dodge"})
+   #_(style {:mix-blend-mode "color-dodge"})
    (style {:filter (url (:id noiz))} )
    (style {:transform "translate(40vw, 40vh) scale(2)"})
    #_(style {:transform "translate(40vw, 40vh) scale(5)"})
    #_(style {:transform "translate(40vw, 40vh) scale(10)"})
-   (style {:transform (str "translate(40vw, 40vh) scale("
+    #_(style {:transform (str "translate(40vw, 40vh) scale("
                            (val-cyc frame (concat
                                            (repeat 4 2)
                                            (repeat 4 3)
@@ -521,7 +513,7 @@
    (draw)
    (when (nth-frame 4 frame)))
 
-  #_(list 
+  (list 
    (->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
      (style {:stroke white
@@ -535,7 +527,7 @@
      (draw)
      (when (nth-frame 3 frame)))
   
-    (->>
+  #_(->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
      (style {:stroke white
              :stroke-width 4
@@ -548,7 +540,7 @@
      (draw)
      (when (nth-frame 2 frame)))
 
-  (->>
+  #_(->>
    (gen-shape pink tri)
    (style {:transform-origin "center" :transform (str "translate(60vw, 60vh) rotate("
            (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
@@ -557,7 +549,7 @@
    (draw)
    (when (nth-frame 3 frame)))
   
-    (->>
+    #_(->>
      (gen-shape pink tri)
      (style {:transform-origin "center" :transform (str "translate(20vw, 20vh) rotate("
              (val-cyc frame [80 80 80 80 120 120 120 120 -60 -60 -60 -60 245 245 245 245])
@@ -566,29 +558,26 @@
      (draw)
      (when (nth-frame 6 frame)))
   
-  (->>
+  #_(->>
    (gen-shape (pattern (:id yellow-lines)) tri)
    (style {:transform-origin "center" :transform (str "translate(30vw, 30vh) rotate("
            (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
-           "deg) scale(1.2)")})
+           "deg) scale(3.2)")})
    (style {:mix-blend-mode "color-dodge"})
    (draw)
    (when (nth-frame 7 frame)))
   
-  (->>
+  #_(->>
      (gen-shape (pattern (:id yellow-lines)) tri)
      (style {:transform-origin "center" :transform (str "translate(70vw, 70vh) rotate("
              (val-cyc frame [80 80 80 80 120 120 120 120 -60 -60 -60 -60 245 245 245 245])
-             "deg) scale(2)")})
+             "deg) scale(3)")})
      (style {:mix-blend-mode "color-dodge"})
      (draw)
      (when (nth-frame 5 frame)))
   
-
   
-  
-  
-  (->>
+  #_(->>
    (gen-shape (pattern (:id blue-dots)) oct)
    (style {:opacity (val-cyc frame (concat 
                                     (repeat 4 .6)
@@ -704,12 +693,11 @@
                30
                400
                (pattern (:id navy-dots))))
-  
-  @mf
-  ; @mf2
+  ; 
+  ; @mf
+  ;   @mf2
   ; @mf3
-  ; @mf4
-  ; @mf5
+
   
   ;@scale-me
   ;@scale-me-2

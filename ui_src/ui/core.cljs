@@ -1,5 +1,6 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
+            [clojure.string :as string :refer [split-lines split join trim]]
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
             [ui.helpers :refer [cos sin style url val-cyc]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct
@@ -94,53 +95,14 @@
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
 (def all-fills [gray mint navy blue orange br-orange pink white yellow midnight])
 
-(defn setup []
-      (map #(:def %) all-filters)
-       (map identity gradients)
-       (map identity masks)
-       (map gen-color-noise all-fills)
-       (map t/pattern-def-text [cd1 cd2 cd3 cd4])
-       (map pattern-def [ blue-dots
-                          blue-lines
-                          pink-dots pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
-                          pink-lines
-                          gray-dots
-                          gray-dots-lg
-                          gray-lines
-                          gray-patch
-                          mint-dots
-                          mint-lines
-                          navy-dots
-                          navy-lines
-                          orange-dots
-                          orange-lines
-                          br-orange-dots
-                          br-orange-lines
-                          yellow-dots
-                          yellow-lines
-                          white-dots
-                          white-dots-lg
-                          white-lines
-                          shadow]))
-
-
-(defn drawing []
+(defn add-svg [collection blend-mode]
   [:svg {
-    :style  {:mix-blend-mode
-             (val-cyc @frame
-                      [
-                      ;"luminosity" "luminosity"
-                      ;"difference"
-                     ;"multiply"
-                       
-                      "multiply" "multiply" "multiply" "multiply"
-                      ; ;"multiply" "multiply" "multiply" "multiply"
-                      ;"difference" "difference" "difference" 
-                       ;"difference"
-                       ;"difference" "difference" "difference" "difference"
-                       ]) }
+    :style  {:mix-blend-mode blend-mode }
     :width  (:width settings)
     :height (:height settings)}
+     ;; filters
+    (map #(:def %) all-filters)
+    ;; masks and patterns
     [:defs
      noise
      [:circle {:id "weeCirc" :cx 0 :cy 0 :r 4
@@ -154,43 +116,54 @@
           [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" navy))}]
          [:circle {:id "testCirc4" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" mint))}]
 
-]
-    (setup)
-    ;; then here dereference a state full of polys
-    @collection
-    ])
+     (map identity gradients)
+     (map identity masks)
+     (map gen-color-noise all-fills)
+     (map t/pattern-def-text [cd1 cd2 cd3 cd4])
+     (map pattern-def [ blue-dots
+                        blue-lines
+                        pink-dots pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
+                        pink-lines
+                        gray-dots
+                        gray-dots-lg
+                        gray-lines
+                        gray-patch
+                        mint-dots
+                        mint-lines
+                        navy-dots
+                        navy-lines
+                        orange-dots
+                        orange-lines
+                        br-orange-dots
+                        br-orange-lines
+                        yellow-dots
+                        yellow-lines
+                        white-dots
+                        white-dots-lg
+                        white-lines
+                        shadow])]
+                      collection
+  ])
 
+(defn drawing []
+    (add-svg @collection (val-cyc @frame
+             [
+             ;"luminosity" "luminosity"
+             "multiply" "multiply" "multiply" "multiply"
+             ;"difference" "difference" "difference" 
+              ])))
 
-    (defn drawing2 []
-      [:svg {
-        :style  {:mix-blend-mode
-                 (val-cyc @frame
-                          [
-                          ;"luminosity"
-                           "multiply" "multiply" "multiply" "multiply" ;"multiply" "multiply" "multiply" "multiply"
-                           ;"difference" "difference" ;"difference" "difference"
-                           ;"difference" "difference" "difference" "difference"
-                           ]) }
-        :width  (:width settings)
-        :height (:height settings)}
-        ;; masks and patterns
-        [:defs
-         noise
-         [:circle {:id "weeCirc" :cx 0 :cy 0 :r 4
-                   :style {:animation "colorcolor 100s infinite"
-                           :opacity .6}}]
-         [:circle {:id "testCirc" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" white))}]
-         (setup)]
+(defn drawing2 []
+    (add-svg @collection2 (val-cyc @frame
+             [
+             "multiply" "multiply" "multiply" "multiply"
+              ])))
 
-        ;; then here dereference a state full of polys
-        @collection2
-        ])
-
-#_(reagent/render [:div
+(reagent/render [:div
                  [:div {:style {:position "absolute" :top 0 :left 0}} [drawing]] [:div {:style {:position "absolute" :top 0 :left 0}} [drawing2]]]
                           (js/document.getElementById "app-container"))
 
-(reagent/render [drawing]
+#_(reagent/render [drawing]
                           (js/document.getElementById "app-container"))
 
 ;(hide-display)
