@@ -225,6 +225,14 @@
           (draw)
           (atom)))
 
+(def scale-me-4
+        (->>
+          (gen-rect (pattern (:id pink-dots)) 0 0 @width @height)
+          (style {:transform "scale(50)"})
+          (anim "scaley-huge" ".5s" "infinite")
+          (draw)
+          (atom)))
+
 
 (def scale-me-3
         (->>
@@ -423,7 +431,7 @@
             20 30
             {:col 100 :row 150}
             (->>
-             (gen-shape mint tri)))
+             (gen-shape navy tri)))
             ;(map #(style styles %))
             ;(map #(anim "rot" "10s" "infinte" %))
             (map draw)
@@ -484,24 +492,21 @@
                {:col 20 :row 20})))
 
 
-  (->>
-   (gen-circ white (* 0.5 @width) (* 0.5 @height) 40)
-   (draw)
-   (when (nth-frame 3 frame)))
+ ;@bb
   
   (->>
    (gen-shape white oct)
-   #_(style {:opacity (val-cyc frame (concat 
+   (style {:opacity (val-cyc frame (concat 
                                     (repeat 4 .3)
                                     (repeat 4 .7)
                                     (repeat 4 .3)
                                     (repeat 4 .5)))})
-   #_(style {:mix-blend-mode "color-dodge"})
-   (style {:filter (url (:id noiz))} )
+   (style {:mix-blend-mode "color-dodge"})
+   #_(style {:filter (url (:id noiz))} )
    (style {:transform "translate(40vw, 40vh) scale(2)"})
    #_(style {:transform "translate(40vw, 40vh) scale(5)"})
-   #_(style {:transform "translate(40vw, 40vh) scale(10)"})
-    #_(style {:transform (str "translate(40vw, 40vh) scale("
+   (style {:transform "translate(40vw, 40vh) scale(10)"})
+  #_(style {:transform (str "translate(40vw, 40vh) scale("
                            (val-cyc frame (concat
                                            (repeat 4 2)
                                            (repeat 4 3)
@@ -511,9 +516,9 @@
                                            (repeat 4 3)))
                            ")")})
    (draw)
-   (when (nth-frame 4 frame)))
+   (when (nth-frame 1 frame)))
 
-  (list 
+  #_(list 
    (->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
      (style {:stroke white
@@ -527,7 +532,7 @@
      (draw)
      (when (nth-frame 3 frame)))
   
-  #_(->>
+  (->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
      (style {:stroke white
              :stroke-width 4
@@ -558,7 +563,7 @@
      (draw)
      (when (nth-frame 6 frame)))
   
-  #_(->>
+  (->>
    (gen-shape (pattern (:id yellow-lines)) tri)
    (style {:transform-origin "center" :transform (str "translate(30vw, 30vh) rotate("
            (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
@@ -567,7 +572,7 @@
    (draw)
    (when (nth-frame 7 frame)))
   
-  #_(->>
+  (->>
      (gen-shape (pattern (:id yellow-lines)) tri)
      (style {:transform-origin "center" :transform (str "translate(70vw, 70vh) rotate("
              (val-cyc frame [80 80 80 80 120 120 120 120 -60 -60 -60 -60 245 245 245 245])
@@ -577,7 +582,7 @@
      (when (nth-frame 5 frame)))
   
   
-  #_(->>
+  (->>
    (gen-shape (pattern (:id blue-dots)) oct)
    (style {:opacity (val-cyc frame (concat 
                                     (repeat 4 .6)
@@ -601,15 +606,7 @@
    (when (nth-frame 3 frame)))
   
   
-    #_(when (nth-frame 8 frame) (->>
-     (gen-grid
-       10 10
-       {:col 240 :row 240}
-       (->>
-        (gen-shape white hept)))
-       (map #(style {:mix-blend-mode "color-dodge"} %))
-       (map draw)
-       (map #(gen-group {:style {:transform-origin "center" }} %))))
+    
   
     #_(->>
      (gen-shape (pattern (:id yellow-lines)) oct)
@@ -634,104 +631,63 @@
      (draw)
      (when (nth-frame 8 frame))))
 
+    #_(when (nth-frame 1 frame )(gen-group {:style {:transform "translate(50vw, 30vh)"} :mask (url "nt2")}(when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
+      80 80
+      {:col 20 :row 20}))
+              
+                                          
+
+      (when (nth-frame 2 (+ 0 frame)) (gen-line-grid white 6
+        80 80
+        {:col 20 :row 20}))))
 
   
-  ;(when (nth-frame 3 frame) @b)
-  ;(when (nth-frame 4 frame) @c)
-  ;(when (nth-frame 1 frame) @c)
-  ;(when (nth-frame 7 frame) @d)
+  #_(when (nth-frame 1 frame )(gen-group {:style {:transform "translate(10vw, 10vh)"} :mask (url "nt2")}(when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
+    80 80
+    {:col 20 :row 20}))
+            
+                                        
 
+    (when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 6
+      80 80
+      {:col 20 :row 20}))))
+  
+  ;@scale-me
+  
   ;@bb6
   ;@bb6a
   
-
-  #_(when (nth-frame  1  frame )(gen-group {:mask (url "nt")}(when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
-    80 80
-    {:col 20 :row 20}))
-             
-             (->>
-              (gen-circ pink 400 400 400)
-              (style {:transform "scale(200)"})
-              (draw))
-              
-
-    #_(when (nth-frame 2 (+ 0 frame)) (gen-line-grid white 6
-      80 80
-      {:col 20 :row 20}))))
-  
-  
-  #_(when (nth-frame 1 frame )(gen-group {:style {:transform "translate(50vw, 30vh)"} :mask (url "nt2")}(when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
-    80 80
-    {:col 20 :row 20}))
-             
-             #_(->>
-              (gen-circ pink 400 400 400)
-              (style {:transform "scale(100)"})
-              (draw)
-              (when (nth-frame 4 frame)))
-                                        
-
-    (when (nth-frame 2 (+ 0 frame)) (gen-line-grid white 6
-      80 80
-      {:col 20 :row 20}))))
-
-  
-  #_(gen-group {:mask (url "na")}(when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
-    80 80
-    {:col 20 :row 20}))
-  
-    (when (nth-frame 2 (+ 0 frame)) (gen-line-grid white 6
-      80 80
-      {:col 20 :row 20})))
-    
-
-  
-  
-  #_(when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               30
-               400
-               (pattern (:id navy-dots))))
-  ; 
-  ; @mf
-  ;   @mf2
-  ; @mf3
-
-  
-  ;@scale-me
   ;@scale-me-2
-  ;@scale-me-3
+  
+  ;@scale-me-4
+  
+;  @bb7
+  
+  ;@move-me-2
   
     
-  ;@drops
-  ;@drops2
-
-
+  (when (nth-frame 2 frame) (->>
+   (gen-grid
+     10 10
+     {:col 240 :row 240}
+     (->>
+      (gen-shape navy hept)))
+     (map #(style {:mix-blend-mode "color-dodge"} %))
+     (map draw)
+     (map #(gen-group {:style {:transform-origin "center" }} %))))
   
-  ;(new-freakout @width @height 40 700 "testCirc")
-  
-  #_(when (nth-frame 7 frame)
+  (when (nth-frame 1 frame)
     (freak-out @width
                @height
-               20
-               100
-               pink))
-  
-    #_(when (nth-frame 3 frame)
-      (freak-out @width
-                 @height
-                 20
-                 100
-                 yellow))
+               4
+               1000
+               white))
   
   
-    #_(when (nth-frame 1 frame)
-      (freak-out @width
-                 @height
-                 80
-                 100
-                 (pattern (:id navy-dots))))
+;(new-freakout @width @height 40 400 "testCirc")
+
+  
+
   
 
 )) ; cx end

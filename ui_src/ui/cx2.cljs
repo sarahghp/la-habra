@@ -450,16 +450,26 @@
     ;@bb6
     ;@bb4
     
-       ;(when (nth-frame 4 frame) @b)
-    ;(when (nth-frame 2 frame) @c)
-    ;(when (nth-frame 3 frame) @d)
+       (when (nth-frame 1 frame) @b)
+    (when (nth-frame 1 frame) @c)
+    (when (nth-frame 1 frame) @d)
     
-       #_(when (nth-frame 4 frame) @e)
-    #_(when (nth-frame 2 frame) @f)
-    #_(when (nth-frame 3 frame) @g)
+    ;@drops
+    ;@drops2
     
-      ;@drops
-      ;@drops2
+      (when (nth-frame 1 frame)
+        (freak-out @width
+                   @height
+                   30
+                   400
+                   (pattern (:id navy-dots))))
+    
+    (when (nth-frame 1 frame)
+      (freak-out @width
+                 @height
+                 30
+                 800
+                 (pattern (:id pink-dots))))
     
     #_(when (nth-frame 3 frame)(gen-line-grid mint 2
       80 80
