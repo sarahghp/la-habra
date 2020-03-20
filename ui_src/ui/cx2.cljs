@@ -450,21 +450,21 @@
     ;@bb6
     ;@bb4
     
-       (when (nth-frame 1 frame) @b)
-    (when (nth-frame 1 frame) @c)
-    (when (nth-frame 1 frame) @d)
+    ;(when (nth-frame 1 frame) @b)
+    ;(when (nth-frame 1 frame) @c)
+    ;(when (nth-frame 1 frame) @d)
     
     ;@drops
     ;@drops2
     
-      (when (nth-frame 1 frame)
+      #_(when (nth-frame 1 frame)
         (freak-out @width
                    @height
                    30
                    400
                    (pattern (:id navy-dots))))
     
-    (when (nth-frame 1 frame)
+    #_(when (nth-frame 1 frame)
       (freak-out @width
                  @height
                  30

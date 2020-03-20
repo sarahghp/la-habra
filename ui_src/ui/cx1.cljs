@@ -494,7 +494,7 @@
 
  ;@bb
   
-  (->>
+  #_(->>
    (gen-shape white oct)
    (style {:opacity (val-cyc frame (concat 
                                     (repeat 4 .3)
@@ -652,16 +652,16 @@
       80 80
       {:col 20 :row 20}))))
   
-  ;@scale-me
+  @scale-me
   
   ;@bb6
   ;@bb6a
   
-  ;@scale-me-2
+  @scale-me-2
   
-  ;@scale-me-4
+  @scale-me-4
   
-;  @bb7
+  @bb7
   
   ;@move-me-2
   
@@ -676,12 +676,7 @@
      (map draw)
      (map #(gen-group {:style {:transform-origin "center" }} %))))
   
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               4
-               1000
-               white))
+  
   
   
 ;(new-freakout @width @height 40 400 "testCirc")

@@ -148,8 +148,8 @@
 (defn drawing []
     (add-svg @collection (val-cyc @frame
              [
-             "luminosity" "luminosity"
-             ;"multiply" "multiply" "multiply" "multiply"
+             ;"luminosity" "luminosity"
+             "multiply" "multiply" "multiply" "multiply"
              ;"difference" "difference" "difference" 
               ])))
 
