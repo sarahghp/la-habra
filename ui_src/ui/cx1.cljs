@@ -51,7 +51,7 @@
      #(->>
        (gen-rect white (+ 30 (* % 160)) 10 200 36)
        (anim "slide-up" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (style {:mix-blend-mode "overlay"})
+       (style {:mix-blend-mode "color-dodge"})
        (draw))
      (range 10))))
 
@@ -71,7 +71,7 @@
 
 (def move-me-2
   (->>
-   (gen-shape (pattern (:id cd2)) hept)
+   (gen-shape (pattern (:id mint-dots)) hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
    (style {:mix-blend-mode "difference"})
    (anim "loopy-left" "16s" "infinite")
@@ -80,7 +80,7 @@
 
 (def move-me-3
   (->>
-   (gen-shape (pattern (:id cd3)) tri)
+   (gen-shape (pattern (:id pink-lines)) tri)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
    (style {:mix-blend-mode "difference"})
    (anim "loopy-right" "16s" "infinite")
@@ -135,7 +135,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh" "6s" "infinite")
+      (anim "woosh" "2s" "infinite")
     (draw)
     (atom)))
 
@@ -147,7 +147,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh-2" "6s" "infinite" {:delay ".4s"})
+      (anim "woosh" "2s" "infinite" {:delay ".4s"})
     (draw)
     (atom)))
 
@@ -444,14 +444,49 @@
             20 30
             {:col 100 :row 150}
             (->>
-             (gen-shape yellow tri)))
-              (map #(style {:opacity 1 :mix-blend-mode "difference"} %))
+             (gen-shape pink tri)))
+              (map #(style {:opacity 1 :mix-blend-mode "overlay"} %))
 
             (map #(anim "morph" "5s" "infinite" %))
             (map draw)
                   (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
-          (map #(gen-group {:style {:transform-origin "center" :transform "translate(-200px, 100px)"}} %))
+          (map #(gen-group {:style {:transform-origin "center" :transform "translate(-400px, 1px)"}} %))
             (map #(gen-group { :style {:transform-origin "center"  :animation "rot 5s infinite" }} %)))))
+
+(def trio (atom 
+      (gen-group
+       {:style {:transform-origin "center" 
+                ;:animation "descend 3s infinite"
+                }}
+       (->>
+         (gen-grid
+           20 20
+           {:col 300 :row 300}
+           (->>
+            (gen-shape pink tri)))
+           (map draw)
+           (map #(gen-group {:style 
+                             {:transform-origin "center" 
+                              :transform "translate(-10vw, -10vh) scale(.3)"}} %))
+           (map #(gen-group {:style {:transform-origin "center" :animation "rot 3s infinite"}} %))))))
+
+(def trioo (atom 
+      (gen-group
+       {:style {:transform-origin "center" 
+                ;:animation "descend 3s infinite"
+                }}
+       (->>
+         (gen-grid
+           20 20
+           {:col 300 :row 300}
+           (->>
+            (gen-shape white tri)))
+           (map draw)
+           (map #(gen-group {:style 
+                             {:transform-origin "center" 
+                              :transform "translate(-10vw, -10vh) scale(.3)"}} %))
+           (map #(gen-group {:style {:transform-origin "center" :animation "rot 3s infinite .4s"}} %))))))
+
 
 (def l1 (lerp))
 
@@ -472,7 +507,8 @@
 
   (let
     [colors [
-             midnight 
+             midnight midnight midnight midnight
+             ;mint mint mint mint
              
              ]]
       (->>
@@ -480,19 +516,26 @@
         (style {:opacity .95})
         (draw)))
 
-  ;(doall (map deref worms))
   
   
-#_(gen-group {:mask (url "nn")}
-             ;(new-freakout @width @height 100 100 "testCirc")
-            ;(new-freakout @width @height 10 100 "testCirc4")
-            (new-freakout @width @height 4 100 "testCirc2")
-             #_(when (nth-frame 3 frame)(gen-line-grid midnight 3
+(gen-group {:mask (url "nn")}
+             #_(new-freakout @width @height 100 100 "testCirc")
+             #_(new-freakout @width @height 10 100 "testCirc4")
+             #_(new-freakout @width @height 4 100 "testCirc2")
+             (->>
+              (gen-circ white (* 0.5 @width) (* 0.5 @height) 400)
+              (draw)
+              (when (nth-frame 4 frame)))
+             (when (nth-frame 3 frame)(gen-line-grid midnight 3
                80 80
                {:col 20 :row 20})))
+  
+  (->>
+   (gen-circ (pattern (:id white-dots)) (* 0.5 @width) (* 0.5 @height) 200)
+   (style {:transform "scale(2)"})
+   (draw)
+   (when (nth-frame 4 (+ 1 frame))))
 
-
- ;@bb
   
   #_(->>
    (gen-shape white oct)
@@ -505,7 +548,7 @@
    #_(style {:filter (url (:id noiz))} )
    (style {:transform "translate(40vw, 40vh) scale(2)"})
    #_(style {:transform "translate(40vw, 40vh) scale(5)"})
-   (style {:transform "translate(40vw, 40vh) scale(10)"})
+   #_(style {:transform "translate(40vw, 40vh) scale(10)"})
   #_(style {:transform (str "translate(40vw, 40vh) scale("
                            (val-cyc frame (concat
                                            (repeat 4 2)
@@ -516,9 +559,9 @@
                                            (repeat 4 3)))
                            ")")})
    (draw)
-   (when (nth-frame 1 frame)))
+   (when (nth-frame 3 frame)))
 
-  #_(list 
+  (list 
    (->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
      (style {:stroke white
@@ -532,7 +575,7 @@
      (draw)
      (when (nth-frame 3 frame)))
   
-  (->>
+  #_(->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
      (style {:stroke white
              :stroke-width 4
@@ -630,59 +673,50 @@
                              ")")})
      (draw)
      (when (nth-frame 8 frame))))
-
-    #_(when (nth-frame 1 frame )(gen-group {:style {:transform "translate(50vw, 30vh)"} :mask (url "nt2")}(when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
-      80 80
-      {:col 20 :row 20}))
-              
-                                          
-
-      (when (nth-frame 2 (+ 0 frame)) (gen-line-grid white 6
-        80 80
-        {:col 20 :row 20}))))
-
   
-  #_(when (nth-frame 1 frame )(gen-group {:style {:transform "translate(10vw, 10vh)"} :mask (url "nt2")}(when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
-    80 80
-    {:col 20 :row 20}))
-            
-                                        
-
-    (when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 6
-      80 80
-      {:col 20 :row 20}))))
+  #_(when (nth-frame 3 frame )(->>
+   (gen-grid
+     30 30
+     {:col 200 :row 200}
+     (->>
+      (gen-shape white tri)))
+     (map draw)
+     (map #(gen-group {:style {
+                               :transform-origin "center"
+                               :transform "scale(.5)"
+                               :mix-blend-mode "difference"
+                               }} %))))
   
-  @scale-me
+    #_(when (nth-frame 6 frame )(->>
+     (gen-grid
+       30 30
+       {:col 200 :row 200}
+       (->>
+        (gen-shape pink oct)))
+       (map draw)
+       (map #(gen-group {:style {
+                                 :transform-origin "center"
+                                 :transform "scale(.5)"
+                                 :mix-blend-mode "overlay"
+                                 }} %))))
+  
+  @trio
+  @trioo
+
+  (when (nth-frame 2 frame)
+    (freak-out @width
+               @height
+               20
+               100
+               (pattern (:id white-dots))))
+
+    
   
   ;@bb6
   ;@bb6a
-  
-  @scale-me-2
-  
-  @scale-me-4
-  
-  @bb7
-  
-  ;@move-me-2
-  
-    
-  (when (nth-frame 2 frame) (->>
-   (gen-grid
-     10 10
-     {:col 240 :row 240}
-     (->>
-      (gen-shape navy hept)))
-     (map #(style {:mix-blend-mode "color-dodge"} %))
-     (map draw)
-     (map #(gen-group {:style {:transform-origin "center" }} %))))
-  
-  
-  
-  
-;(new-freakout @width @height 40 400 "testCirc")
-
-  
-
-  
 
 )) ; cx end
+
+
+;;; Lol ok everything broke <3 u all ...
+

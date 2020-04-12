@@ -446,34 +446,19 @@
 (defn cx2 [frame]
   (list
       
-    ;@bb6s
-    ;@bb6
-    ;@bb4
+   ; grid (80/20), b, c, d
     
-    ;(when (nth-frame 1 frame) @b)
-    ;(when (nth-frame 1 frame) @c)
-    ;(when (nth-frame 1 frame) @d)
-    
-    ;@drops
-    ;@drops2
-    
-      #_(when (nth-frame 1 frame)
-        (freak-out @width
-                   @height
-                   30
-                   400
-                   (pattern (:id navy-dots))))
-    
-    #_(when (nth-frame 1 frame)
-      (freak-out @width
-                 @height
-                 30
-                 800
-                 (pattern (:id pink-dots))))
-    
-    #_(when (nth-frame 3 frame)(gen-line-grid mint 2
-      80 80
-      {:col 20 :row 20}))
+   (when (nth-frame 4 frame) @b)
+      (when (nth-frame 5 frame) @c)
+      (when (nth-frame 6 frame) @d)
+   
+   (when (nth-frame 2 frame)(gen-line-grid white 2
+     80 80
+     {:col 20 :row 20}))
+
+
 
    ))
 
+
+   ;; ok time for an experiment ... let's see if this works ... 

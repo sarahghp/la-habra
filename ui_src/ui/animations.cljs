@@ -299,3 +299,16 @@
   (str "path('"tri"')")
 ]))
 
+(make-frames! 
+ "descend"
+ [0 100]
+ (make-body "transform"
+             ["translate(-30vw, -30vh)"
+              "translate(110vw, 80vh)"]))
+
+(make-frames! 
+ "ascend"
+ [0 100]
+ (make-body "transform"
+             ["translate(110vw, 80vh)"
+              "translate(-30vw, -30vh)"]))
