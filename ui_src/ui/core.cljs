@@ -51,10 +51,10 @@
 (def DEBUG false)
 
 (when DEBUG
-  (defonce collection (atom (cx 1))))
+  (defonce collection (atom (cx 1 1 1))))
 
 (when DEBUG
-  (defonce collection2 (atom (cx2 1))))
+  (defonce collection2 (atom (cx2 1 1 1))))
 
 (when-not DEBUG
   (defonce collection (atom (list))))
@@ -65,19 +65,31 @@
 ;; ----------- LOOP TIMERS ------------------------------
 
 (defonce frame (atom 0))
+(defonce fast-frame (atom 0))
+(defonce slow-frame (atom 0))
 
 (when-not DEBUG
   (defonce start-cx-timer
     (js/setInterval
-      #(reset! collection (cx @frame)) 50))
+      #(reset! collection (cx @frame @fast-frame @slow-frame)) 50)) 
 
   (defonce start-cx-timer-2
     (js/setInterval
-      #(reset! collection2 (cx2 @frame)) 50))
+      #(reset! collection2 (cx2 @frame @fast-frame @slow-frame)) 50))
 
   (defonce start-frame-timer
     (js/setInterval
-      #(swap! frame inc) 500)))
+      #(swap! frame inc) 500))
+
+  (defonce start-fast-frame-timer
+    (js/setInterval
+      #(swap! fast-frame inc) 250))
+
+  (defonce start-slow-frame-timer
+    (js/setInterval
+      #(swap! slow-frame inc) 1000)))
+
+
 
 
 ;; ----------- DEFS AND DRAW ------------------------------

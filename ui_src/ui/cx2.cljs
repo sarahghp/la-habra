@@ -444,7 +444,7 @@
 
 (def lerp1 (lerp))
 
-(defn cx2 [frame]
+(defn cx2 [frame fast-frame slow-frame]
   (list
       
    ; grid (80/20), b, c, d
@@ -457,7 +457,7 @@
      80 80
      {:col 20 :row 20}))
 
-     @bb6
+     ;@bb6
    
    ;@scale-me
    

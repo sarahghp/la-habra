@@ -114,23 +114,6 @@
 
 
 
-(def move-me-2
-  (->>
-   (gen-shape (pattern (:id mint-dots)) hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (style {:mix-blend-mode "difference"})
-   (anim "loopy-left" "16s" "infinite")
-   (draw)
-   (atom)))
-
-(def move-me-3
-  (->>
-   (gen-shape (pattern (:id pink-lines)) tri)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (style {:mix-blend-mode "difference"})
-   (anim "loopy-right" "16s" "infinite")
-   (draw)
-   (atom)))
 
 
 (def bnz
@@ -143,35 +126,6 @@
    (atom)))
 
 
-(def bnz-2
-  (->>
-   (gen-shape (pattern (str "noise-" white)) b2)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(.4)"})
-   (style {:mix-blend-mode "difference"})
-   (anim "sc-rot" "6s" "infinite")
-   (draw)
-   (atom)))
-
-(def bb2
-  (->>
-    (gen-shape mint oct)
-      (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
-      (style {:mix-blend-mode "luminosity" :filter (url (:id noiz))} )
-      ;(style {:mix-blend-mode "difference"} )
-      (anim "woosh" "4s" "infinite")
-    (draw)
-    (atom)))
-
-(def bb4
-  (->>
-    (gen-shape yellow oct)
-      (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
-      ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
-          ;(style {:mix-blend-mode "difference"} )
-
-      (anim "woosh" "3s" "infinite")
-    (draw)
-    (atom)))
 
 (def bb6
   (->>
@@ -524,7 +478,7 @@
 (def lerp1 (lerp))
 
 
-(defn cx [frame]
+(defn cx [frame fast-frame slow-frame]
   (list
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -540,8 +494,8 @@
 
   (let
     [colors [
-             ;midnight midnight midnight midnight
-             ;mint mint
+             midnight midnight midnight midnight
+             mint mint
              yellow yellow
              
              ]]
@@ -551,18 +505,15 @@
         (draw)))
   
   
-      #_(->>
-       (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
-       (style {:transform "scale(20)" :opacity ".8" :mix-blend-mode "color-dodge"})
-       (draw)
-       (when (nth-frame 9 (+ 1 frame))))
+
   
-#_(gen-group {:mask (url "nn")}
+(gen-group {:mask (url "nn")}
              (new-freakout @width @height 100 100 "testCirc")
              (new-freakout @width @height 10 100 "testCirc4")
              (new-freakout @width @height 4 100 "testCirc2")
              (->>
               (gen-circ white (* 0.5 @width) (* 0.5 @height) 400)
+              (style {:mix-blend-mode "overlay"})
               (draw)
               (when (nth-frame 1 frame)))
              (when (nth-frame 4 frame)(gen-line-grid midnight 3
@@ -773,17 +724,8 @@
     
     #_(when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) (doall (map deref worms)))
 
-  ;(doall (map deref worms))
+  #_(doall (map deref worms))
   
-  
-  @lm2
-  @lm4
-  
-
-
-  
-  
-        
 
 
   
