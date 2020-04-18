@@ -78,6 +78,22 @@
  (draw)
  (atom)))
 
+(def babrect1 
+  (->>
+   (gen-rect white 0 0 @width (* .05 @height))
+   (style {:mix-blend-mode "luminosity"})
+   (anim "small-scale" "5s" "infinite")
+   (draw)
+   (atom)))
+
+(def babrect2 
+  (->>
+   (gen-rect white 0 (* .9 @height) @width (* .05 @height))
+   (style {:mix-blend-mode "luminosity"})
+   (anim "small-scale" "5s" "infinite")
+   (draw)
+   (atom)))
+
 (def move-me
   (->>
    (gen-shape (pattern (:id mint-dots)) hept)
@@ -763,18 +779,20 @@
   ; 
   ; 
   ; 
-  (when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) @lm2)
-    (when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) @lm3)
+  #_(when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) @lm2)
+    #_(when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) @lm3)
 
   
   
   
-  #_(->>
+  (->>
    (gen-shape br-orange l4)
    (style {:transform "translate(10vw, 10vh) scale(1)" :mix-blend-mode "difference"})
    (draw)
    (when (nth-frame 1 frame)))
 
+  @babrect1
+  @babrect2
   
 
 )) ; cx end
