@@ -98,12 +98,12 @@
             [ "grad-mask-an"
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" :style {:transform-origin "center" :animation "small-scale-y 3s infinite"} }]]
             [ "cutout"
-             (->>
+             (gen-group {} (->>
                (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
                (draw))
              (->>
                (gen-circ "#000" (* 0.7 @width) (* 0.7 @height) 100)
-                (draw))]
+                (draw)))]
               ["rect-buds"
                (->>
                  (gen-rect white 10 12 (* 0.3 @width) (* 0.5 @height))
@@ -117,6 +117,18 @@
                                 :xlinkHref "img/blop.png"
                                 :style {:transform-origin "center"
                                         :transform "scale(2)"} }]]
+                ["nn" [ :image {:key (random-uuid)
+                                :x "100"
+                                :y "200"
+                                :width "100%"
+                                :height "100%"
+                                :xlinkHref "img/blop.png"
+                                :style {:transform-origin "center"
+                                        :transform "scale(4)"
+                                        } }]]
+                ["bc" (->>
+                 (gen-circ white (* 0.5 @width) (* 0.5 @height) 400)
+                 (draw))]
 
 
             ])
