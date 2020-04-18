@@ -41,10 +41,62 @@
                 (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 1000)
                 (style {:opacity 1 :transform "scale(.3)"})
                 (draw))]
+            ["cblt"
+             (->>
+              (gen-circ white (* 0.25 @width) (* 0.25 @height) 200)
+              (draw))]
+            ["cbrt"
+             (->>
+              (gen-circ white (* 0.75 @width) (* 0.25 @height) 200)
+              (draw))]
+            ["cblb"
+             (->>
+              (gen-circ white (* 0.25 @width) (* 0.75 @height) 200)
+              (draw))]
+                
+            ["cbrb"
+             (->>
+              (gen-circ white (* 0.75 @width) (* 0.75 @height) 200)
+              (draw))]
+            ["clt"
+               (map 
+                #(->>
+                 (gen-circ white (* (rand) (* 0.5 @width)) (* (rand) (* 0.5 @height)) 100)
+                 (style {:opacity 1 :transform "scale(.3)"})
+                 (draw))
+                (range 6))]
+            ["crt"
+               (map 
+                #(->>
+                 (gen-circ white (+ (* 0.5 @width) (* (rand) (* 0.5 @width))) (* (rand) (* 0.5 @height)) 100)
+                 (style {:opacity 1 :transform "scale(.3)"})
+                 (draw))
+                (range 6))]
+            ["clb"
+               (map 
+                #(->>
+                 (gen-circ white (* (rand) (* 0.25 @width)) (+ (* 0.5 @height) (* (rand) (* 0.5 @height))) 100)
+                 (style {:opacity 1 :transform "scale(.3)"})
+                 (draw))
+                (range 6))]
+            ["crb"
+               (map 
+                #(->>
+                 (gen-circ white (+ (* 0.5 @width) (* (rand) (* 0.5 @width))) (+ (* 0.5 @height) (* (rand) (* 0.5 @height))) 100)
+                 (style {:opacity 1 :transform "scale(.3)"})
+                 (draw))
+                (range 6))]     
+            ["circs"
+               (map 
+                #(->>
+                 (gen-circ white (* (rand) @width) (* (rand) @height) 100)
+                 (style {:opacity 1 :transform "scale(.3)"})
+                 (draw))
+                (range 100))]
             [ "grad-mask"
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
             [ "grad-mask-an"
-              [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" :animation "woosh 3s infinite" }]]
+              [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" :style {:transform-origin "center" :animation "small-scale-y 3s infinite"} }]]
             [ "cutout"
              (->>
                (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
@@ -65,47 +117,8 @@
                                 :xlinkHref "img/blop.png"
                                 :style {:transform-origin "center"
                                         :transform "scale(2)"} }]]
-                ["nt1" [ :image {:key (random-uuid)
-                                :x "0"
-                                :y "0"
-                                :width "100%"
-                                :height "100%"
-                                :xlinkHref "img/001.png"
-                                :style {:transform-origin "center"
-                                        :transform "scale(2)"} }]]
-                ["nt2" [ :image {:key (random-uuid)
-                                :x "0"
-                                :y "0"
-                                :width "100%"
-                                :height "100%"
-                                :xlinkHref "img/002.png"
-                                :style {:transform-origin "center"
-                                        :transform "scale(2)"} }]]
-                ["nt3" [ :image {:key (random-uuid)
-                                :x "0"
-                                :y "0"
-                                :width "100%"
-                                :height "100%"
-                                :xlinkHref "img/003.png"
-                                :style {:transform-origin "center"
-                                        :transform "scale(2)"} }]]
-                ["nt4" [ :image {:key (random-uuid)
-                                :x "0"
-                                :y "0"
-                                :width "100%"
-                                :height "100%"
-                                :xlinkHref "img/004.png"
-                                :style {:transform-origin "center"
-                                        :transform "scale(2)"} }]]
-                ["nn" [ :image {:key (random-uuid)
-                                :x "100"
-                                :y "200"
-                                :width "100%"
-                                :height "100%"
-                                :xlinkHref "img/blop.png"
-                                :style {:transform-origin "center"
-                                        :transform "scale(10)"
-                                        } }]]
+
+
             ])
 
 

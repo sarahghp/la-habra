@@ -346,3 +346,7 @@
 (back-and-forth! "small-scale"
                  "scale(1)"
                  "scale(15)")
+
+(back-and-forth! "small-scale-y"
+                 "scaleY(1)"
+                 "scaleY(.05)")

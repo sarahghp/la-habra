@@ -112,7 +112,7 @@
                :style {:animation "colorcolorcolor 100s infinite"}
                :fill (pattern (str "noise-" yellow))}]
           [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" navy))}]
-         [:circle {:id "testCirc4" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" mint))}]
+         [:circle {:id "testCirc4" :cx 0 :cy 0 :r 100 :fill (pattern (:id pink-lines))}]
 
      (map identity gradients)
      (map identity masks)

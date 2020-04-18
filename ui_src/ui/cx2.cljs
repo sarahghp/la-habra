@@ -131,7 +131,7 @@
 
 (def bb6
   (->>
-    (gen-shape mint oct)
+    (gen-shape white oct)
       (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
@@ -457,9 +457,11 @@
      80 80
      {:col 20 :row 20}))
 
-     ;@bb6
+     @bb6
    
-   @scale-me
+   ;@scale-me
+   
+
 
 
    ))

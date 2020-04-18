@@ -59,7 +59,7 @@
 
 (def lm (->>
  (gen-shape pink l1)
- (style {:transform "translate(10vw, 10vh) scale(1)"})
+ (style {:transform "translate(30vw, 30vh) scale(1.4)"})
  (anim "lump-morph" "20s" "infinite")
  (draw)
  (atom)))
@@ -78,11 +78,19 @@
  (draw)
  (atom)))
 
+(def lm4 (->>
+ (gen-shape yellow l1)
+ (style {:transform "translate(10vw, 40vh) scale(1)"})
+ (anim "l2l4" "2s" "infinite" {:delay '.3s'})
+ (draw)
+ (atom)))
+
+
 (def babrect1 
   (->>
    (gen-rect white 0 0 @width (* .05 @height))
    (style {:mix-blend-mode "luminosity"})
-   (anim "small-scale" "5s" "infinite")
+   (anim "small-scale" "3s" "infinite")
    (draw)
    (atom)))
 
@@ -90,7 +98,7 @@
   (->>
    (gen-rect white 0 (* .9 @height) @width (* .05 @height))
    (style {:mix-blend-mode "luminosity"})
-   (anim "small-scale" "5s" "infinite")
+   (anim "small-scale" "3s" "infinite")
    (draw)
    (atom)))
 
@@ -409,7 +417,7 @@
                                           "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
       (atom)))
    (take 10
-         (repeatedly #(rand-nth [[mint 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4]])))))
+         (repeatedly #(rand-nth [[midnight 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4]])))))
 
 (def bb
   (->>
@@ -495,32 +503,23 @@
                               :transform "translate(-10vw, -10vh) scale(.3)"}} %))
            (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "rot 1s infinite"}} %))))))
 
-(def trioo (atom 
-      (gen-group
-       {:style {:transform-origin "center" 
-                :animation "rot 3s infinite"
-                }}
-       (->>
-         (gen-grid
-           20 20
-           {:col 300 :row 300}
-           (->>
-            (gen-shape white tri)))
-           (map draw)
-           (map #(gen-group {:style 
-                             {:transform-origin "center" 
-                              :transform "translate(-10vw, -10vh) scale(.3)"}} %))
-           (map #(gen-group {:style {:transform-origin "center" :animation "rot 2s infinite 2s"}} %))))))
+(def line-growth 
+   (map-indexed
+    (fn [idx item]
+      (->>
+       (gen-rect white 
+                 0 
+                 (* (+ 1 idx) 0.07 @height) 
+                 @width 
+                 (* 4 (+ 1 idx) 0.001 @height))
+       ;(style {:mix-blend-mode "color-dodge"})
+       (anim "small-scale-y" "1s" "infinite" 
+             {:delay (str (* idx .01) "s")})
+       (draw)
+       atom))
+    (range 20)))
 
-(def octs 
-    (scatter 20 
-               (->>
-                 (gen-shape mint oct)
-                   (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
-                   ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
-                   (style {:mix-blend-mode "color-dodge"} )
-                 (draw))
-  ))
+
 
 (def lerp1 (lerp))
 
@@ -541,8 +540,8 @@
 
   (let
     [colors [
-             midnight midnight midnight midnight
-             mint mint
+             ;midnight midnight midnight midnight
+             ;mint mint
              yellow yellow
              
              ]]
@@ -551,7 +550,7 @@
         (style {:opacity .95})
         (draw)))
   
-
+  
       #_(->>
        (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
        (style {:transform "scale(20)" :opacity ".8" :mix-blend-mode "color-dodge"})
@@ -598,29 +597,7 @@
    (draw)
    (when (nth-frame 3 frame)))
   
-      ;@trioo
   
-  ; @scale-me
-  
-  ;@move-me-2
-  
-  
-  
-  #_(when (nth-frame 5 frame)
-    (freak-out @width
-               @height
-               30
-               60
-               pink))
-  
-    #_(when (nth-frame 3 frame)
-      (freak-out @width
-                 @height
-                 30
-                 80
-                 mint))
-  
-  ;@move-me
 
   (list 
    #_(->>
@@ -772,10 +749,8 @@
 
 
   
-  ;@bb6
-  ;@bb6a
   
-  ; (when (or (nth-frame 4 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) (doall (map deref worms)))
+
   ; 
   ; 
   ; 
@@ -784,15 +759,33 @@
 
   
   
-  
-  (->>
+
+    
+  #_(->>
    (gen-shape br-orange l4)
-   (style {:transform "translate(10vw, 10vh) scale(1)" :mix-blend-mode "difference"})
+   (style {:transform "translate(30vw, 30vh) scale(1.4)" :mix-blend-mode "difference"})
    (draw)
    (when (nth-frame 1 frame)))
 
-  @babrect1
-  @babrect2
+  ;@babrect1
+  ;@babrect2
+  
+    
+    #_(when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) (doall (map deref worms)))
+
+  ;(doall (map deref worms))
+  
+  
+  @lm2
+  @lm4
+  
+
+
+  
+  
+        
+
+
   
 
 )) ; cx end
