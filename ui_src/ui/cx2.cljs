@@ -3,7 +3,8 @@
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
             [ui.helpers :refer [cos sin style url val-cyc deform]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct
-                                          b1 b2 b3 b4]]
+                                          b1 b2 b3 b4
+                                          l1 l2 l3 l4 l5 l6]]
             [ui.fills :as fills :refer
               [gray charcoal mint midnight navy blue orange
                 br-orange pink white yellow]]
@@ -441,24 +442,25 @@
           (map #(gen-group {:style {:transform-origin "center" :transform "translate(-200px, 100px)"}} %))
             (map #(gen-group { :style {:transform-origin "center"  :animation "rot 5s infinite" }} %)))))
 
-(def l1 (lerp))
+(def lerp1 (lerp))
 
 (defn cx2 [frame]
   (list
       
    ; grid (80/20), b, c, d
     
-   (when (nth-frame 4 frame) @b)
-      (when (nth-frame 5 frame) @c)
-      (when (nth-frame 6 frame) @d)
+   ;(when (nth-frame 4 frame) @b)
+   ;(when (nth-frame 5 frame) @c)
+   ;(when (nth-frame 6 frame) @d)
    
-   (when (nth-frame 2 frame)(gen-line-grid white 2
+   #_(when (nth-frame 2 frame)(gen-line-grid mint 2
      80 80
      {:col 20 :row 20}))
 
+     ;@bb6
+   
+   @scale-me
 
 
    ))
 
-
-   ;; ok time for an experiment ... let's see if this works ... 

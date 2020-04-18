@@ -5,7 +5,8 @@
      [gray charcoal mint midnight navy blue orange
        br-orange pink white yellow]]
    [ui.shapes :as shapes :refer [tri square pent hex hept oct
-                                 b1 b2 b3 b4]]
+                                 b1 b2 b3 b4
+                                 l1 l2 l3 l4 l5 l6]]
    [ui.generators :refer
     [freak-out new-freakout scatter lerp
      gen-circ gen-line gen-poly gen-rect gen-shape draw
@@ -124,6 +125,14 @@
     (make-body att [
       (str start-str)
       (str finish-str)])))
+
+(defn a-to-b-to-a!
+  [name att start-str finish-str]
+  (make-frames! name [0 50 100]
+    (make-body att [
+      (str start-str)
+      (str finish-str)
+      (str start-str)])))
 
 (defn fade-start!
   [name op-end]
@@ -312,3 +321,28 @@
  (make-body "transform"
              ["translate(110vw, 80vh)"
               "translate(-30vw, -30vh)"]))
+
+(make-frames!
+ "lump-morph"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"l1"')")
+  (str "path('"l2"')")
+  (str "path('"l3"')")
+  (str "path('"l4"')")
+  (str "path('"l5"')")
+  (str "path('"l6"')")
+  (str "path('"l1"')")
+]))
+
+(a-to-b-to-a! "l1l6" "d"
+                  (str "path('"l6"')")
+                  (str "path('"l1"')"))
+
+(a-to-b-to-a! "l2l4" "d"
+                  (str "path('"l2"')")
+                  (str "path('"l4"')"))
+
+(back-and-forth! "small-scale"
+                 "scale(1)"
+                 "scale(5)")

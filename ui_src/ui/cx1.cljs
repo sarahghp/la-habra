@@ -3,7 +3,9 @@
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
             [ui.helpers :refer [cos sin style url val-cyc deform]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct
-                                          b1 b2 b3 b4]]
+                                          b1 b2 b3 b4 
+                                          l1 l2 l3 l4 l5 l6
+                                          ul2 ul3]]
             [ui.fills :as fills :refer
               [gray charcoal mint midnight navy blue orange
                 br-orange pink white yellow]]
@@ -55,7 +57,26 @@
        (draw))
      (range 10))))
 
+(def lm (->>
+ (gen-shape pink l1)
+ (style {:transform "translate(10vw, 10vh) scale(1)"})
+ (anim "lump-morph" "20s" "infinite")
+ (draw)
+ (atom)))
 
+(def lm2 (->>
+ (gen-shape pink l1)
+ (style {:transform "translate(10vw, 10vh) scale(1)"})
+ (anim "l1l6" "2s" "infinite")
+ (draw)
+ (atom)))
+
+(def lm3 (->>
+ (gen-shape pink l1)
+ (style {:transform "translate(20vw, 20vh) scale(1)" :mix-blend-mode "color-dodge"})
+ (anim "l2l4" "3s" "infinite")
+ (draw)
+ (atom)))
 
 (def move-me
   (->>
@@ -135,7 +156,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh" "2s" "infinite")
+      (anim "woosh" "6s" "infinite")
     (draw)
     (atom)))
 
@@ -147,7 +168,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh" "2s" "infinite" {:delay ".4s"})
+      (anim "woosh" "6s" "infinite" {:delay ".4s"})
     (draw)
     (atom)))
 
@@ -397,18 +418,6 @@
    (style {:mix-blend-mode "color-dodge"})
    (draw))))
 
-(defonce c
-  (scatter 40 (->>
-   (gen-circ mint 10 10 60)
-   (style {:mix-blend-mode "color-dodge"})
-   (draw))))
-
-
-(defonce d
-  (scatter 40 (->>
-   (gen-circ navy 10 10 80)
-   (style {:mix-blend-mode "color-dodge"})
-   (draw))))
 
 (defonce k
   (scatter 40 
@@ -456,24 +465,24 @@
 (def trio (atom 
       (gen-group
        {:style {:transform-origin "center" 
-                ;:animation "descend 3s infinite"
+                :animation "rot 3s infinite"
                 }}
        (->>
          (gen-grid
            20 20
            {:col 300 :row 300}
            (->>
-            (gen-shape pink tri)))
+            (gen-shape yellow tri)))
            (map draw)
            (map #(gen-group {:style 
                              {:transform-origin "center" 
                               :transform "translate(-10vw, -10vh) scale(.3)"}} %))
-           (map #(gen-group {:style {:transform-origin "center" :animation "rot 3s infinite"}} %))))))
+           (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "rot 1s infinite"}} %))))))
 
 (def trioo (atom 
       (gen-group
        {:style {:transform-origin "center" 
-                ;:animation "descend 3s infinite"
+                :animation "rot 3s infinite"
                 }}
        (->>
          (gen-grid
@@ -485,10 +494,19 @@
            (map #(gen-group {:style 
                              {:transform-origin "center" 
                               :transform "translate(-10vw, -10vh) scale(.3)"}} %))
-           (map #(gen-group {:style {:transform-origin "center" :animation "rot 3s infinite .4s"}} %))))))
+           (map #(gen-group {:style {:transform-origin "center" :animation "rot 2s infinite 2s"}} %))))))
 
+(def octs 
+    (scatter 20 
+               (->>
+                 (gen-shape mint oct)
+                   (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
+                   ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+                   (style {:mix-blend-mode "color-dodge"} )
+                 (draw))
+  ))
 
-(def l1 (lerp))
+(def lerp1 (lerp))
 
 
 (defn cx [frame]
@@ -508,33 +526,36 @@
   (let
     [colors [
              midnight midnight midnight midnight
-             ;mint mint mint mint
+             mint mint
+             yellow yellow
              
              ]]
       (->>
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .95})
         (draw)))
+  
 
+      #_(->>
+       (gen-circ (pattern (str "noise-" pink)) (* 0.5 @width) (* 0.5 @height) 200)
+       (style {:transform "scale(20)" :opacity ".8" :mix-blend-mode "color-dodge"})
+       (draw)
+       (when (nth-frame 9 (+ 1 frame))))
   
-  
-(gen-group {:mask (url "nn")}
-             #_(new-freakout @width @height 100 100 "testCirc")
-             #_(new-freakout @width @height 10 100 "testCirc4")
-             #_(new-freakout @width @height 4 100 "testCirc2")
+#_(gen-group {:mask (url "nn")}
+             (new-freakout @width @height 100 100 "testCirc")
+             (new-freakout @width @height 10 100 "testCirc4")
+             (new-freakout @width @height 4 100 "testCirc2")
              (->>
               (gen-circ white (* 0.5 @width) (* 0.5 @height) 400)
               (draw)
-              (when (nth-frame 4 frame)))
-             (when (nth-frame 3 frame)(gen-line-grid midnight 3
+              (when (nth-frame 1 frame)))
+             (when (nth-frame 4 frame)(gen-line-grid midnight 3
                80 80
                {:col 20 :row 20})))
   
-  (->>
-   (gen-circ (pattern (:id white-dots)) (* 0.5 @width) (* 0.5 @height) 200)
-   (style {:transform "scale(2)"})
-   (draw)
-   (when (nth-frame 4 (+ 1 frame))))
+
+
 
   
   #_(->>
@@ -560,9 +581,33 @@
                            ")")})
    (draw)
    (when (nth-frame 3 frame)))
+  
+      ;@trioo
+  
+  ; @scale-me
+  
+  ;@move-me-2
+  
+  
+  
+  #_(when (nth-frame 5 frame)
+    (freak-out @width
+               @height
+               30
+               60
+               pink))
+  
+    #_(when (nth-frame 3 frame)
+      (freak-out @width
+                 @height
+                 30
+                 80
+                 mint))
+  
+  ;@move-me
 
   (list 
-   (->>
+   #_(->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
      (style {:stroke white
              :stroke-width 4
@@ -606,7 +651,7 @@
      (draw)
      (when (nth-frame 6 frame)))
   
-  (->>
+  #_(->>
    (gen-shape (pattern (:id yellow-lines)) tri)
    (style {:transform-origin "center" :transform (str "translate(30vw, 30vh) rotate("
            (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
@@ -615,7 +660,7 @@
    (draw)
    (when (nth-frame 7 frame)))
   
-  (->>
+  #_(->>
      (gen-shape (pattern (:id yellow-lines)) tri)
      (style {:transform-origin "center" :transform (str "translate(70vw, 70vh) rotate("
              (val-cyc frame [80 80 80 80 120 120 120 120 -60 -60 -60 -60 245 245 245 245])
@@ -625,7 +670,7 @@
      (when (nth-frame 5 frame)))
   
   
-  (->>
+  #_(->>
    (gen-shape (pattern (:id blue-dots)) oct)
    (style {:opacity (val-cyc frame (concat 
                                     (repeat 4 .6)
@@ -636,7 +681,7 @@
 
    (style {:transform "translate(40vw, 40vh) scale(2)"})
    #_(style {:transform "translate(40vw, 40vh) scale(20)"})
-   (style {:transform (str "translate(40vw, 40vh) scale("
+   #_(style {:transform (str "translate(40vw, 40vh) scale("
                            (val-cyc frame (concat
                                            (repeat 3 3)
                                            (repeat 3 2)
@@ -700,20 +745,37 @@
                                  :mix-blend-mode "overlay"
                                  }} %))))
   
-  @trio
-  @trioo
+  
 
-  (when (nth-frame 2 frame)
+  #_(when (nth-frame 2 frame)
     (freak-out @width
                @height
                20
                100
                (pattern (:id white-dots))))
 
-    
+
   
   ;@bb6
   ;@bb6a
+  
+  ; (when (or (nth-frame 4 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) (doall (map deref worms)))
+  ; 
+  ; 
+  ; 
+  (when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) @lm2)
+    (when (or (nth-frame 1 frame) (nth-frame 4 (+ 1 frame)) (nth-frame 4 (+ 2 frame))) @lm3)
+
+  
+  
+  
+  #_(->>
+   (gen-shape br-orange l4)
+   (style {:transform "translate(10vw, 10vh) scale(1)" :mix-blend-mode "difference"})
+   (draw)
+   (when (nth-frame 1 frame)))
+
+  
 
 )) ; cx end
 
