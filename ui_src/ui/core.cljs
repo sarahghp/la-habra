@@ -38,10 +38,7 @@
 
 (println "Loaded.")
 
-;; hides heads up display for performance
-(defn hide-display [] (let [heads-up-display (.getElementById js/document "figwheel-heads-up-container")]
-  (.setAttribute heads-up-display "style" "display: none")
-))
+
 
 ;; ------------------------ SETTINGS  ---------------------
 
@@ -166,4 +163,3 @@
 #_(reagent/render [drawing]
                           (js/document.getElementById "app-container"))
 
-;(hide-display)
