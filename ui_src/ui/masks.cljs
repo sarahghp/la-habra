@@ -1,7 +1,9 @@
 (ns ui.masks
   (:require 
    [ui.shapes :as shapes :refer [tri square pent hex hept oct
-                                 b1 b2 b3 b4]]
+                                 b1 b2 b3 b4
+                                l1 l2 l3 l4 l5 l6
+                                ul2 ul3]]
   [ui.helpers :refer [cos sin style url val-cyc]]
   [ui.generators :refer
       [freak-out new-freakout scatter lerp
@@ -36,6 +38,8 @@
               [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
             [ "poly-mask-2"
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :animation "woosh-3 3s infinite"}}]]
+            [ "poly-mask-3"
+                          [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :animation "loopy-left 3s infinite"}}]]
             ["bitey"
                (->>
                 (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 1000)
