@@ -152,7 +152,7 @@
 
 (def mf
   (->>
-   (gen-shape "hsla(100, 100%, 100%, 0)" tri)
+   (gen-shape "hsla(100, 100%, 100%, 0)" l1)
    (style {:stroke mint
            :stroke-width 14
            :stroke-dasharray 100
