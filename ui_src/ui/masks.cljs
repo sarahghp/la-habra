@@ -40,6 +40,9 @@
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :animation "woosh-3 3s infinite"}}]]
             [ "poly-mask-3"
                           [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :animation "loopy-left 3s infinite"}}]]
+                
+                [ "poly-mask-4"
+                              [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" }}]]
             ["bitey"
                (->>
                 (gen-circ (pattern (str "noise-" white)) (* 0.5 @width) (* 0.5 @height) 1000)
