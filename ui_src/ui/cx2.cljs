@@ -136,7 +136,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh" "6s" "infinite")
+      (anim "woosh" "3s" "infinite")
     (draw)
     (atom)))
 
@@ -148,7 +148,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh-2" "6s" "infinite" {:delay ".4s"})
+      (anim "woosh-2" "1s" "infinite" {:delay ".4s"})
     (draw)
     (atom)))
 
@@ -457,7 +457,8 @@
      80 80
      {:col 20 :row 20}))
 
-     ;@bb6
+    ; @bb6
+    ;@bb6s
    
    ;@scale-me
    

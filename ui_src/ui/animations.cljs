@@ -312,15 +312,15 @@
  "descend"
  [0 100]
  (make-body "transform"
-             ["translate(-30vw, -30vh)"
-              "translate(110vw, 80vh)"]))
+             ["translate(0vw, -100vh)"
+              "translate(0vw, 80vh)"]))
 
 (make-frames! 
  "ascend"
  [0 100]
  (make-body "transform"
-             ["translate(110vw, 80vh)"
-              "translate(-30vw, -30vh)"]))
+             ["translate(0vw, 80vh)"
+              "translate(0vw, -30vh)"]))
 
 (make-frames!
  "lump-morph"
