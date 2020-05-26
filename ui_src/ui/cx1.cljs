@@ -75,14 +75,14 @@
 
 (def lm2 (->>
  (gen-shape pink l1)
- (style {:transform "translate(40vw, 20vh) scale(2.5)"})
+ (style {:transform "translate(40vw, 20vh) scale(1)"})
  (anim "l1l6" "16s" "infinite")
  (draw)
  (atom)))
 
 (def lm4 (->>
  (gen-shape pink l1)
- (style {:transform "translate(40vw, 20vh) scaleX(-2.5)"})
+ (style {:transform "translate(40vw, 20vh) scaleX(-1)"})
  (style {:mix-blend-mode "color-dodge"})
  (anim "l1l6" "16s" "infinite")
  (draw)
@@ -90,7 +90,7 @@
 
 (def lm6 (->>
  (gen-shape mint l1)
- (style {:transform "translate(42vw, 18vh) scale(-3.5)"})
+ (style {:transform "translate(42vw, 18vh) scale(-1.5)"})
  (style {:mix-blend-mode "overlay"})
  (anim "l1l6" "16s" "infinite")
  (draw)
@@ -175,7 +175,7 @@
         (->>
           (gen-rect (pattern (str "noise-" midnight)) 0 0 @width @height)
           (style {:transform "scale(50)"})
-          (anim "scaley-huge" "3s" "infinite")
+          (anim "scaley-huge" "20s" "infinite")
           (draw)
           (atom)))
 
@@ -192,14 +192,14 @@
 (def sc-circ
   (->>
    (gen-circ (pattern (:id orange-lines)) (* 0.5 @width) (* 0.4 @height) 100)
-   (anim "scaley-huge" "5s" "infinite")
+   (anim "scaley" "5s" "infinite")
    (draw)
    (atom)))
 
 (def sc-circ-2
   (->>
    (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.4 @height) 100)
-   (anim "scaley-huge" "5s" "infinite" {:delay "1.2s"})
+   (anim "scaley" "5s" "infinite" {:delay "1.2s"})
    (draw)
    (atom)))
 
@@ -229,6 +229,20 @@
    (anim "lump-morph" "14s" "infinite")
    (draw)
    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)"}})
+   (atom)))
+
+(def mf4
+  (->>
+   (gen-shape "hsla(100, 100%, 100%, 0)" l1)
+   (style {:stroke yellow
+           :stroke-width 14
+           :stroke-dasharray 100
+           :stroke-dashoffset 100
+           :stroke-linecap "round"
+           :stroke-join "round"})
+   (anim "lump-morph" "14s" "infinite")
+   (draw)
+   (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(1)"}})
    (atom)))
 
 (def mf2
@@ -342,7 +356,7 @@
                  (* (+ 1 idx) 0.07 @height) 
                  @width 
                  (* 4 (+ 1 idx) 0.001 @height))
-       ;(style {:mix-blend-mode "color-dodge"})
+       (style {:mix-blend-mode "color-dodge"})
        (anim "small-scale-y" "1s" "infinite" 
              {:delay (str (* idx .01) "s")})
        (draw)
@@ -358,7 +372,7 @@
       {:col 800 :row 800}
       (->>
        (gen-shape pink l2)))
-      #_(map #(style styles %))
+      (map #(style {:opacity .8} %))
       #_(map #(anim "l2l4" "12s" "infintite" %))
       (map draw)
       (map #(gen-group {:style {:transform-origin "center" :transform "scale(.25)" }} %))
@@ -458,45 +472,8 @@
                {:col 20 :row 20}))))
 
 
-#_(->>
- (gen-shape "hsla(0, 0%, 0%, 0)" tri)
- (style {:stroke white
-         :stroke-width 4
-         :stroke-dasharray 10
-         :stroke-dashoffset 10})
- (style {:transform-origin "center" :transform (str "translate(60vw, 60vh) rotate("
-         (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
-         "deg) scale(6.2)")})
- (style {:mix-blend-mode "color-dodge"})
- (draw)
- (when (nth-frame 3 frame)))
-  
-  #_(->>
-   (gen-shape "hsla(0, 0%, 0%, 0)" tri)
-   (style {:stroke white
-           :stroke-width 4
-           :stroke-dasharray 10
-           :stroke-dashoffset 10})
-   (style {:transform-origin "center" :transform (str "translate(40vw, 40vh) rotate("
-           (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
-           "deg) scale(6.2)")})
-   (style {:mix-blend-mode "color-dodge"})
-   (draw)
-   (when (nth-frame 4 frame)))
-  
-  
-    #_(->>
-     (gen-shape "hsla(0, 0%, 0%, 0)" tri)
-     (style {:stroke white
-             :stroke-width 4
-             :stroke-dasharray 10
-             :stroke-dashoffset 10})
-     (style {:transform-origin "center" :transform (str "translate(20vw, 10vh) rotate("
-             (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
-             "deg) scale(6.2)")})
-     (style {:mix-blend-mode "color-dodge"})
-     (draw)
-     (when (nth-frame 7 frame)))
+
+
   
 #_(->>
  (gen-shape (pattern (:id blue-dots)) oct)
@@ -521,34 +498,12 @@
  (draw)
  (when (nth-frame 3 frame)))
   
-  
+
+
 
   
-  
-  ;(when (nth-frame 2 frame) @lm2)
-  ;(when (nth-frame 2 (+ 1 frame)) @lm4)
-  
-  #_(doall (map deref line-growth))
-  
-    
-    ;@sc-circ
-    ;@sc-circ-2
-    
   
   #_(->>
-   (gen-shape midnight ul2)
-   (style {:transform "translate(40vw, 10vh) scale(4)"})
-   (draw)
-   (when (nth-frame 4 frame)))
-  
-  ;(when (nth-frame 1 frame) @blobs3)
-  ;(when (nth-frame 1 fast-frame) @blobs)
-  ;(when (nth-frame 4 frame) @blobs2)
-  
-  ;(gen-bg-lines navy (mod (* 1 slow-frame) 80))
-
-  
-  (->>
    (gen-rect white (* 0.25 @width) (* 0.25 @height) (* 0.5 @width) (* 0.5 @height))
    (style {:transform-origin "center" :transform "scale(4)"})
    (style {:mix-blend-mode (val-cyc frame 
@@ -569,16 +524,18 @@
   
 
     
-(when (nth-frame 4 frame) (gen-line-grid navy 2
+(when (nth-frame 1 frame) (gen-line-grid navy 2
   80 80
   {:col 20 :row 20}))
+
   
-  @lm
-  @lm6
+  ;(when (nth-frame 4 slow-frame) @mf4)
 
 
   
-  ;@scale-me
+  @scale-me
+  
+
   
 
   #_(->>
@@ -587,32 +544,15 @@
    (draw)
    (when (nth-frame 4 frame)))
   
-    #_(->>
-     (gen-shape (pattern (:id yellow-lines)) oct)
-     (style {:transform "translate(66vw, 55vh) scale(5.5)"})
-     (draw)
-     (when (nth-frame 7 frame)))
+  #_(->>
+   (gen-shape (pattern (:id yellow-lines)) oct)
+   (style {:transform "translate(66vw, 55vh) scale(5.5)"})
+   (draw)
+   (when (nth-frame 7 frame)))
   
-  
-          ; @mf
-          ; @mf2
-          ; @mf3
-          ; 
-  
-  
-  
-  ;@blobs4
-  ;@blobs3
-  ;(when (nth-frame 4 frame) @blobs)
-  ;(when (nth-frame 3 slow-frame) @blobs2)
   
   
 
-  
-  ;@drops
-  ;@drops3
-  
-;(when (nth-frame 3 slow-frame) @lm2)
   
   #_(->>
    (gen-shape "hsla(0, 0%, 0%, 0)" tri)
@@ -640,25 +580,15 @@
      (draw)
      (when (nth-frame 4 frame)))
 
-
-  
-  #_(->>
-   (gen-shape mint ul2)
-   (style {:transform "translate(0vw, 0vh) scale(4)"})
-   (style {:mix-blend-mode "color-burn"})
-   (draw)
-   (when (nth-frame 2 frame)))
   
     
 
   
-  ;(when (nth-frame 2 frame) @streaks)
-  ;(when (nth-frame 5 frame) @streaks2)
   
-  
-  ;(when (nth-frame 4 frame) @lm2)
-  
-  
+  (->>
+   (gen-circ white (* 0.5 @width) (* 0.5 @height) 400)
+   (style {:mix-blend-mode "color-dodge"})
+   (draw))
   
 
   
