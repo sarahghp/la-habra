@@ -111,6 +111,8 @@
     (map #(:def %) all-filters)
     ;; masks and patterns
     [:defs
+     [:filter { :id "d-shadow" }
+      [:feDropShadow { :dx "2.2" :dy "2.4" :stdDeviation "0.2"  :flood-color "cyan"}]]
      noise
      [:circle {:id "weeCirc" :cx 0 :cy 0 :r 4
                :style {:animation "colorcolor 100s infinite"
@@ -155,9 +157,9 @@
 (defn drawing []
     (add-svg @collection (val-cyc @frame
              [
-             ;"luminosity" "luminosity"
-             "multiply" "multiply" "multiply" "multiply"
-             ;"difference" "difference" "difference" 
+             "luminosity" "luminosity"
+             ;"multiply" "multiply" "multiply" "multiply"
+             ;"difference" "difference" 
               ])))
 
 (defn drawing2 []

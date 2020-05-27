@@ -37,9 +37,9 @@
             [ "poly-mask"
               [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
             [ "poly-mask-2"
-                          [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" :animation "woosh-2 10s infinite"}}]]
+                          [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" :animation "woosh 10s infinite"}}]]
             [ "poly-mask-3"
-                          [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :animation "lump-morph 10s infinite"}}]]
+                          [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :animation "loopy-left 10s infinite"}}]]
                 
                 [ "poly-mask-4"
                               [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" }}]]

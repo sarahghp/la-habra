@@ -68,23 +68,25 @@
 
 (def lm (->>
  (gen-shape pink l1)
- (style {:transform "translate(30vw, 30vh) scale(3.4)"})
+ (style {:transform "translate(30vw, 30vh) scale(4.4)"})
  (anim "lump-morph" "40s" "infinite")
+  (style {:mix-blend-mode "color-dodge"})
+
  (draw)
  (atom)))
 
 (def lm2 (->>
  (gen-shape pink l1)
- (style {:transform "translate(40vw, 20vh) scale(1)"})
- (anim "l1l6" "16s" "infinite")
+ (style {:transform "translate(40vw, 20vh) scale(2)"})
+ (anim "l1l6" "10s" "infinite")
  (draw)
  (atom)))
 
 (def lm4 (->>
  (gen-shape pink l1)
- (style {:transform "translate(40vw, 20vh) scaleX(-1)"})
+ (style {:transform "translate(40vw, 20vh) scaleX(-2)"})
  (style {:mix-blend-mode "color-dodge"})
- (anim "l1l6" "16s" "infinite")
+ (anim "l1l6" "10s" "infinite")
  (draw)
  (atom)))
 
@@ -96,6 +98,16 @@
  (draw)
  (gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
  (atom)))
+
+(def lm5 (->>
+ (gen-shape mint l1)
+ (style {:transform "translate(42vw, 18vh) scale(-3.5)"})
+ #_(style {:mix-blend-mode "overlay"})
+ (anim "l1l6" "16s" "infinite")
+ (draw)
+ #_(gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
+ (atom)))
+
 
 
 
@@ -156,7 +168,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh" "6s" "infinite")
+      (anim "woosh" "8s" "infinite")
     (draw)
     (atom)))
 
@@ -167,7 +179,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh" "6s" "infinite" {:delay ".4s"})
+      (anim "woosh" "9s" "infinite" {:delay ".4s"})
     (draw)
     (atom)))
 
@@ -243,6 +255,34 @@
    (anim "lump-morph" "14s" "infinite")
    (draw)
    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(1)"}})
+   (atom)))
+
+(def mf5
+  (->>
+   (gen-shape "hsla(100, 100%, 100%, 0)" l1)
+   (style {:stroke pink
+           :stroke-width 14
+           :stroke-dasharray 100
+           :stroke-dashoffset 100
+           :stroke-linecap "round"
+           :stroke-join "round"})
+   (anim "lump-morph" "14s" "infinite")
+   (draw)
+   (gen-group {:style {:transform-origin "center" :transform "translate(40vw, 25vh) scale(1)"}})
+   (atom)))
+
+(def mf6
+  (->>
+   (gen-shape "hsla(100, 100%, 100%, 0)" l1)
+   (style {:stroke mint
+           :stroke-width 14
+           :stroke-dasharray 100
+           :stroke-dashoffset 100
+           :stroke-linecap "round"
+           :stroke-join "round"})
+   (anim "lump-morph" "14s" "infinite")
+   (draw)
+   (gen-group {:style {:transform-origin "center" :transform "translate(70vw, 35vh) scale(1)"}})
    (atom)))
 
 (def mf2
@@ -376,7 +416,7 @@
       #_(map #(anim "l2l4" "12s" "infintite" %))
       (map draw)
       (map #(gen-group {:style {:transform-origin "center" :transform "scale(.25)" }} %))
-    (map #(gen-group {:style {:transform-origin "center" :animation "descend-m 4s infinite"}} %)))))
+    (map #(gen-group {:style {:transform-origin "center" :animation "descend 10s infinite"}} %)))))
 
 
 (def blobs3 
@@ -406,7 +446,7 @@
       #_(map #(anim "l2l4" "12s" "infintite" %))
       (map draw)
       (map #(gen-group {:style {:transform-origin "center" :transform "scale(.25)" }} %))
-    (map #(gen-group {:style {:transform-origin "center" :animation "ascend 12s infinite 2s"}} %)))))
+    (map #(gen-group {:style {:transform-origin "center" :animation "rot 12s infinite 2s"}} %)))))
 
 (def blobs2
   (atom 
@@ -420,7 +460,7 @@
       #_(map #(anim animations %))
       (map draw)
       (map #(gen-group {:style {:transform-origin "center" :transform "scale(.25)" }} %))
-            (map #(gen-group {:style {:transform-origin "center" :animation "rot 1s infinite"}} %)))))
+            (map #(gen-group {:style {:transform-origin "center" :animation "rot 4s infinite"}} %)))))
 
 
 ;; start end dur frame no-repeat
@@ -447,8 +487,9 @@
   (let
     [colors [
              midnight midnight midnight midnight
-             ;mint mint
-             ;yellow yellow
+             mint mint
+             yellow yellow
+             pink pink
              ;
              ]]
       (->>
@@ -524,18 +565,48 @@
   
 
     
-(when (nth-frame 1 frame) (gen-line-grid navy 2
-  80 80
+(when (nth-frame 2 frame) (gen-line-grid navy 2
+  100 80
   {:col 20 :row 20}))
+  
+  (when (nth-frame 2 (+ 1 frame)) (gen-line-grid white 2
+    100 80
+    {:col 20 :row 20}))
 
   
-  ;(when (nth-frame 4 slow-frame) @mf4)
+  ;(when (nth-frame 3 slow-frame) @mf4)
+  
+    ;(when (nth-frame 7 slow-frame) @mf5)
+  
+      ;(when (nth-frame 5 slow-frame) @mf6)
 
+@lm5
+  
+      ;(when (nth-frame 7 slow-frame ) @blobs4)
+    ;(when (nth-frame 3 slow-frame ) @blobs3)
+  
+  @lm
+
+    ;(when (nth-frame 9 slow-frame)   @blobs)
+  ;(when (nth-frame 4 slow-frame ) @blobs2)
+
+  #_(when (nth-frame 1 slow-frame) @lm2)
+  
+  #_(when (nth-frame 1 slow-frame) @lm4)
+    #_(when (nth-frame 1 slow-frame) @lm6)
+
+    ;@mf
+  ;@mf2
+  ;@mf3
 
   
-  @scale-me
-  
+  ;@scale-me
+  ;@sc-circ
 
+  ;@move-me
+    ;@bb6
+  ;@bb6a
+  
   
 
   #_(->>
@@ -551,7 +622,7 @@
    (when (nth-frame 7 frame)))
   
   
-  
+  #_(doall (map deref line-growth))
 
   
   #_(->>
@@ -565,7 +636,7 @@
            "deg) scale(6.2)")})
    (style {:mix-blend-mode "color-dodge"})
    (draw)
-   (when (nth-frame 3 frame)))
+   (when (nth-frame 7 frame)))
     
     #_(->>
      (gen-shape "hsla(0, 0%, 0%, 0)" tri)
@@ -578,20 +649,67 @@
              "deg) scale(6.2)")})
      (style {:mix-blend-mode "color-dodge"})
      (draw)
-     (when (nth-frame 4 frame)))
+     (when (nth-frame 8 frame)))
 
   
     
 
   
+  #_(gen-group {:mask (url "poly-mask-2") }(when (nth-frame 1 fast-frame)
+    (freak-out @width
+               @height
+               30
+               100
+               (pattern (:id white-lines)))))
   
-  (->>
-   (gen-circ white (* 0.5 @width) (* 0.5 @height) 400)
+  #_(gen-group {:mask "poly-mask-3"}
+             (when (nth-frame 3 fast-frame)
+               (freak-out @width
+                          @height
+                          30
+                          100
+                          (pattern (:id pink-dots)))))
+    
+  
+  #_(->>
+   (gen-circ white (* 0.3 @width) (* 0.5 @height) 400)
    (style {:mix-blend-mode "color-dodge"})
-   (draw))
+   (draw)
+   (when (nth-frame 4 frame)))
   
+  (gen-group {}
+
+             [:text {:key (random-uuid)
+                       :x (* 0.3 @width)
+                       :y (* 0.3 @height)
+                       :text-anchor "middle"
+                       :style {:font "70px monospace"
+                               :font-weight "800"
+                               :fill pink
+                               :filter (url "d-shadow")}}
+                "no more"]
+             
+             [:text {:key (random-uuid)
+                       :x (* 0.3 @width)
+                       :y (* 0.4 @height)
+                       :text-anchor "middle"
+                       :style {:font "70px monospace"
+                               :font-weight "800"
+                               :fill pink
+                               :filter (url "d-shadow")}}
+                "time for"]
+               [:text {:key (random-uuid)
+                         :x (* 0.3 @width)
+                         :y (* 0.65 @height)
+                         :text-anchor "middle"
+                         :style {:font "180px monospace"
+                                 :font-weight "800"
+                                 :fill yellow
+                                 :filter (url "d-shadow")}}
+                  "CODIE"])
 
   
+
 
 
   
