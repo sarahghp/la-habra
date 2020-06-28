@@ -66,32 +66,61 @@
        (draw))
      (range 10))))
 
+(def spinlm 
+  (->>
+   (gen-shape yellow l1)
+   (style {:opacity .7 :transform "translate(30vw, 30vh) scale(1.4)"})
+    (anim "lump-morph" "5s" "infinite")
+
+   (draw)
+   #_(gen-group {:style {:animation "rot 2s infinite"}})
+   (atom)))
+
+(def spinlm2
+  (->>
+   (gen-shape pink l1)
+   (style {:opacity .7 :transform "translate(30vw, 30vh) scale(.8)"})
+   
+    (anim "l1l6" "3s" "infinite")
+   (draw)
+   #_(gen-group {:style {:animation "rot 2s infinite .4s"}})
+   (atom)))
+
 (def lm (->>
  (gen-shape pink l1)
- (style {:transform "translate(30vw, 30vh) scale(3.4)"})
+ (style {:transform "translate(30vw, 30vh) scale(3.4)" :opacity .7})
  (anim "lump-morph" "40s" "infinite")
  (draw)
  (atom)))
 
 (def lm2 (->>
  (gen-shape pink l1)
- (style {:transform "translate(40vw, 20vh) scale(2.5)"})
+ (style {:transform "translate(40vw, 20vh) scale(2.5)" :opacity .7})
+ (anim "l1l6" "16s" "infinite")
+ (draw)
+ (atom)))
+
+(def lm5 (->>
+ (gen-shape mint l1)
+ (style {:transform "translate(10vw, 10vh) scale(2.5)"})
+(style {:mix-blend-mode "overlay"})
+
  (anim "l1l6" "16s" "infinite")
  (draw)
  (atom)))
 
 (def lm4 (->>
- (gen-shape pink l1)
+ (gen-shape blue l1)
  (style {:transform "translate(40vw, 20vh) scaleX(-2.5)"})
  (style {:mix-blend-mode "color-dodge"})
- (anim "l1l6" "16s" "infinite")
+ (anim "l1l6" "6s" "infinite")
  (draw)
  (atom)))
 
 (def lm6 (->>
  (gen-shape mint l1)
  (style {:transform "translate(42vw, 18vh) scale(-3.5)"})
- (style {:mix-blend-mode "overlay"})
+ (style {:mix-blend-mode "overlay" :opacity .7})
  (anim "l1l6" "16s" "infinite")
  (draw)
  (gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
@@ -291,7 +320,7 @@
   (->>
    (->>
     (gen-grid
-      4 4
+      8 8
       {:col 100 :row 100}
       (->>
       (gen-shape white oct)))
@@ -432,8 +461,8 @@
 
   (let
     [colors [
-             midnight midnight midnight midnight
-             ;mint mint
+             ;midnight midnight midnight midnight
+             mint mint mint mint
              ;yellow yellow
              ;
              ]]
@@ -528,7 +557,7 @@
   ;(when (nth-frame 2 frame) @lm2)
   ;(when (nth-frame 2 (+ 1 frame)) @lm4)
   
-  #_(doall (map deref line-growth))
+  ;(doall (map deref line-growth))
   
     
     ;@sc-circ
@@ -548,7 +577,7 @@
   ;(gen-bg-lines navy (mod (* 1 slow-frame) 80))
 
   
-  (->>
+  #_(->>
    (gen-rect white (* 0.25 @width) (* 0.25 @height) (* 0.5 @width) (* 0.5 @height))
    (style {:transform-origin "center" :transform "scale(4)"})
    (style {:mix-blend-mode (val-cyc frame 
@@ -566,26 +595,43 @@
    (when (nth-frame 4 frame)))
   
 
-  
 
     
-(when (nth-frame 4 frame) (gen-line-grid navy 2
+(when (nth-frame 1 frame) (gen-line-grid navy 2
   80 80
   {:col 20 :row 20}))
   
-  @lm
-  @lm6
-
+  ;@lm
+  ;@lm6
 
   
   ;@scale-me
   
 
-  #_(->>
+  (->>
    (gen-shape (pattern (:id mint-dots)) oct)
-   (style {:transform "translate(14vw, 14vh) scale(4)"})
+   (style {:transform "translate(14vw, 14vh) scale(5)"})
    (draw)
-   (when (nth-frame 4 frame)))
+   (when (nth-frame 1 frame)))
+  
+    (->>
+     (gen-shape (pattern (:id mint-dots)) oct)
+     (style {:transform "translate(48vw, 44vh) scale(8)"})
+     (draw)
+     (when (nth-frame 1 frame)))
+  
+  (->>
+   (gen-shape (pattern (:id mint-dots)) oct)
+   (style {:transform "translate(44vw, 64vh) scale(7)"})
+   (draw)
+   (when (nth-frame 1 slow-frame)))
+  
+    (->>
+     (gen-shape (pattern (:id mint-dots)) oct)
+     (style {:transform "translate(24vw, 84vh) scale(6)"})
+     (draw)
+     (when-not (nth-frame 4 slow-frame)))
+    
   
     #_(->>
      (gen-shape (pattern (:id yellow-lines)) oct)
@@ -594,17 +640,18 @@
      (when (nth-frame 7 frame)))
   
   
-          ; @mf
-          ; @mf2
-          ; @mf3
+          ;@mf
+          ;@mf2
+         ;@mf3
           ; 
   
   
   
-  ;@blobs4
-  ;@blobs3
-  ;(when (nth-frame 4 frame) @blobs)
-  ;(when (nth-frame 3 slow-frame) @blobs2)
+
+  #_(when (nth-frame 4 frame) @blobs)
+    ;@blobs4
+    ;@blobs3
+  #_(when (nth-frame 3 slow-frame) @blobs2)
   
   
 
@@ -612,7 +659,7 @@
   ;@drops
   ;@drops3
   
-;(when (nth-frame 3 slow-frame) @lm2)
+;(when (nth-frame 1 slow-frame) @lm2)
   
   #_(->>
    (gen-shape "hsla(0, 0%, 0%, 0)" tri)
@@ -642,12 +689,12 @@
 
 
   
-  #_(->>
+  (->>
    (gen-shape mint ul2)
    (style {:transform "translate(0vw, 0vh) scale(4)"})
    (style {:mix-blend-mode "color-burn"})
    (draw)
-   (when (nth-frame 2 frame)))
+   (when (nth-frame 1 frame)))
   
     
 
@@ -660,8 +707,10 @@
   
   
   
-
+;@spinlm
+;  @spinlm2
   
+  ;@bb
 
 
   
