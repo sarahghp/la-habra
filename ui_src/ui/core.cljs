@@ -163,9 +163,9 @@
 (defn drawing2 []
     (add-svg @collection2 (val-cyc @frame
              [
-              "difference" "difference" "difference" 
-             ;"multiply" "multiply" "multiply" "multiply"
-              ;"luminosity"
+              ;"difference" "difference" "difference" 
+             "multiply" "multiply" "multiply" "multiply"
+               ;"luminosity"
               ])))
 
 (reagent/render [:div

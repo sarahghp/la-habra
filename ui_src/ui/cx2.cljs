@@ -40,7 +40,7 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect white (+ 30 (* % 160)) 10 200 36)
+       (gen-rect midnight (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
        (style {:mix-blend-mode "color-dodge"})
        (draw))
@@ -50,9 +50,9 @@
 (def drops2
   (atom  (map
      #(->>
-       (gen-rect white (+ 30 (* % 160)) 10 200 36)
+       (gen-rect pink (+ 30 (* % 160)) 10 200 36)
        (anim "slide-up" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (style {:mix-blend-mode "overlay"})
+       #_(style {:mix-blend-mode "overlay"})
        (draw))
      (range 10))))
 
@@ -211,11 +211,20 @@
 
 (def scale-me
         (->>
-          (gen-rect (pattern (str "noise-" midnight)) 0 0 @width @height)
+          (gen-rect (pattern (str "noise-" yellow)) 0 0 @width @height)
           (style {:transform "scale(50)"})
-          (anim "scaley-huge" "3s" "infinite")
+          (anim "scaley-huge" "2s" "infinite")
           (draw)
           (atom)))
+
+(def rot-me
+        (->>
+          (gen-rect (pattern (str "noise-" blue)) 0 0 @width @height)
+          (style {:transform "scale(50)"})
+          (anim "rot" ".5s" "infinite")
+          (draw)
+          (atom)))
+
 
 
 (def scale-me-2
@@ -334,20 +343,7 @@
     (take 10 (repeatedly #(nth [mint navy navy mint] (rand-int 6))))))
 
 
-(def astro-mots
-  (map-indexed
-    (fn [idx [color val]]
-          (atom (gen-group 
-                 #_{:style {:animation (str "woosh-3 " (rand-int 4) "s infinite " (rand) "s")}}
-                 {}
-                 [:text {:key (random-uuid)
-                  :x (* (rand) @width)
-                  :y (* (rand) @height)
-                  :text-anchor "middle"
-                  :style {:font "bold 240px monospace"
-                          :fill white}}
-           val])))
-    (take 3 (repeatedly #(nth [[pink 10] [pink 9] [pink 8] [pink 7] [pink 6] [pink 5] [pink 4] [pink 3] [pink 2] [white 1]] (rand-int 9))))))
+
 
 (def all-the-moves
   (map-indexed
@@ -382,6 +378,13 @@
                                             "scale(4) translate(-20vh, -20vh)")}} %)))
    (atom)))
 
+
+(defonce a
+  (scatter 100 (->>
+   (gen-circ pink 10 10 60)
+   (style {:mix-blend-mode "color-dodge"})
+   (draw))))
+
 (defonce b
   (scatter 100 (->>
    (gen-circ navy 10 10 60)
@@ -408,6 +411,8 @@
             (draw))))
 
 (def bbb (atom (gen-group {:style {:animation "rot 2s infinite"}} @b)))
+
+(def aaa (atom (gen-group {:style {:animation "ascend 6s infinite"}} @a)))
 
 
 
@@ -449,20 +454,23 @@
       
    ; grid (80/20), b, c, d
     
-   ;(when (nth-frame 4 frame) @b)
+   ;(when-not (nth-frame 4 slow-frame) @a)
    ;(when (nth-frame 5 frame) @c)
+   ;@aaa
    ;(when (nth-frame 6 frame) @d)
    
    #_(when (nth-frame 2 frame)(gen-line-grid mint 2
      80 80
      {:col 20 :row 20}))
 
-    ; @bb6
+    ;@bb6
     ;@bb6s
    
    ;@scale-me
-   
+   ;@rot-me
 
+   @drops
+   @drops2
 
 
    ))
