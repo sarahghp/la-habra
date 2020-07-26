@@ -644,6 +644,13 @@
   ;                 :fill white}}
   ;  "SHORTS"]
     
+        #_[:text {:key (random-uuid)
+                :x (* 0.5 @width)
+                :y (* 0.3 @height)
+                :text-anchor "middle"
+                :style {:font "88px monospace"
+                        :fill white}}
+         "datafruits"]
     
     
         [:text {:key (random-uuid)
@@ -652,34 +659,37 @@
                 :text-anchor "middle"
                 :style {:font "bold 148px monospace"
                         :fill white
-                        :letter-spacing "2px"}}
-         "VAULT &"]
+                        :letter-spacing "2px"
+                        :text-transform "uppercase"}}
+         "performance"]
       
       [:text {:key (random-uuid)
               :x (* 0.5 @width)
               :y (* 0.6 @height)
               :text-anchor "middle"
-              :style {:font "148px monospace"
+              :style {:font "bold 148px monospace"
                       :fill white
-                      :letter-spacing "2px"}}
-       "FIRMAMENT"]
+                      :letter-spacing "2px"
+                      :text-transform "uppercase"
+                      }}
+       "CLIPS"]
     
     
     #_[:text {:key (random-uuid)
             :x (* 0.5 @width)
-            :y (* 0.65 @height)
+            :y (* 0.68 @height)
             :text-anchor "middle"
             :style {:font "38px monospace"
                     :fill white}}
-     "a short film"]
+     "live • prepared"]
     
     #_[:text {:key (random-uuid)
             :x (* 0.5 @width)
-            :y (* 0.7 @height)
+            :y (* 0.75 @height)
             :text-anchor "middle"
             :style {:font "38px monospace"
                     :fill white}}
-     "by Sarah Groff Hennigh-Palermo"]
+     "music by Nancy Drone"]
     
 
 
