@@ -1,8 +1,7 @@
-[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Gonzih/feeds2imap.clj/blob/master/LICENSE.md) [![Build Status](https://travis-ci.org/Gonzih/cljs-electron.svg?branch=master)](https://travis-ci.org/Gonzih/cljs-electron)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Gonzih/feeds2imap.clj/blob/master/LICENSE.md) 
 
 # La Habra: The Shape of Things to DOM
 
-![gif of livecoded visuals](./docs/la-habra.gif)
 
 ### La Habra is the tool I use to live code visuals as one third of [Codie](https://codie.live). They look like those backgrounds up there.
 
