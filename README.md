@@ -2,6 +2,8 @@
 
 # La Habra: The Shape of Things to DOM
 
+![gif of la habra sketch](./docs/2019-09-25.gif)
+
 
 ### La Habra is the tool I use to live code visuals as one third of [Codie](https://codie.live). They look like those backgrounds up there.
 
