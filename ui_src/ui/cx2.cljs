@@ -213,7 +213,7 @@
         (->>
           (gen-rect (pattern (str "noise-" yellow)) 0 0 @width @height)
           (style {:transform "scale(50)"})
-          (anim "scaley-huge" "2s" "infinite")
+          (anim "scaley-huge" "4s" "infinite")
           (draw)
           (atom)))
 
@@ -384,6 +384,12 @@
    (gen-circ pink 10 10 60)
    (style {:mix-blend-mode "color-dodge"})
    (draw))))
+   
+   (defonce s
+     (scatter 30 (->>
+      (gen-circ white 10 10 60)
+      (style {:mix-blend-mode "color-dodge"})
+      (draw))))
 
 (defonce b
   (scatter 100 (->>
@@ -412,9 +418,9 @@
 
 (def bbb (atom (gen-group {:style {:animation "rot 2s infinite"}} @b)))
 
-(def aaa (atom (gen-group {:style {:animation "ascend 6s infinite"}} @a)))
+(def aaa (atom (gen-group {:style {:animation "ascend 3s infinite"}} @a)))
 
-
+(def sss (atom (gen-group {:style {:animation "ascend 3s infinite"}} @s)))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
@@ -454,9 +460,35 @@
       
    ; grid (80/20), b, c, d
     
-   ;(when-not (nth-frame 4 slow-frame) @a)
+   ;(when (nth-frame 9 slow-frame) @a)
    ;(when (nth-frame 5 frame) @c)
-   ;@aaa
+   
+   
+     #_(->>
+      (gen-rect white "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+      (draw)
+      (when-not (nth-frame 4 frame)))
+     
+       #_(->>
+        (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+       (style {:transform "translate(50vw, 50vh)"})
+        (draw)
+        (when-not (nth-frame 3 frame)))
+     
+         #_(->>
+          (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+         (style {:transform "translate(0vw, 50vh)"})
+          (draw)
+          (when-not (nth-frame 6 frame)))
+          
+                #_(->>
+                 (gen-rect yellow "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+                (style {:transform "translate(50vw, 0vh)"})
+                 (draw)
+                 (when-not (nth-frame 7 frame)))
+   
+   ;(when (nth-frame 13 slow-frame) @sss)
+   
    ;(when (nth-frame 6 frame) @d)
    
    #_(when (nth-frame 2 frame)(gen-line-grid mint 2
@@ -466,11 +498,17 @@
     ;@bb6
     ;@bb6s
    
-   ;@scale-me
-   ;@rot-me
+   @scale-me
+   @rot-me
 
-   @drops
-   @drops2
+   ;@drops
+   ;@drops2
+   
+   (->>
+    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+    (style {:transform "rotate(135deg)"})
+    (draw)
+    (when-not (nth-frame 12 frame)))
 
 
    ))

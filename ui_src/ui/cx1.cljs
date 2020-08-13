@@ -471,8 +471,9 @@
     [colors [
              ;midnight midnight midnight midnight
              ;mint mint mint mint
-             pink pink 
-             yellow yellow
+            ;pink pink 
+            ;yellow yellow
+            white white white white
              ;
              ]]
       (->>
@@ -481,19 +482,7 @@
         (draw)))
       
 
-  
-#_(gen-group {:mask (url "")} 
-           (gen-group {:mask (url "nn")}
-             (new-freakout @width @height 100 100 "testCirc")
-             ;(new-freakout @width @height 10 100 "testCirc4")
-             ;(new-freakout @width @height 4 100 "testCirc2")
-             #_(->>
-              (gen-circ white (* 0.5 @width) (* 0.5 @height) 400)
-              (draw)
-              (when (nth-frame 1 frame)))
-             (when (nth-frame 4 frame)(gen-line-grid midnight 3
-               80 80
-               {:col 20 :row 20}))))
+
 
 
 #_(->>
@@ -501,23 +490,25 @@
  (style {:stroke white
          :stroke-width 4
          :stroke-dasharray 10
-         :stroke-dashoffset 10})
+         :stroke-dashoffset 10
+         :stroke-linecap "round"})
  (style {:transform-origin "center" :transform (str "translate(60vw, 60vh) rotate("
          (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
-         "deg) scale(6.2)")})
+         "deg) scale(.2)")})
  (style {:mix-blend-mode "color-dodge"})
  (draw)
  (when (nth-frame 3 frame)))
   
   #_(->>
-   (gen-shape "hsla(0, 0%, 0%, 0)" tri)
+   (gen-shape "hsla(0, 0%, 0%, 0)" hept)
    (style {:stroke white
            :stroke-width 4
            :stroke-dasharray 10
-           :stroke-dashoffset 10})
+           :stroke-dashoffset 10
+           :stroke-linecap "round"})
    (style {:transform-origin "center" :transform (str "translate(40vw, 40vh) rotate("
            (val-cyc frame [120 120 120 120 -60 -60 -60 -60 80 80 80 80 245 245 245 245])
-           "deg) scale(6.2)")})
+           "deg) scale(3.2)")})
    (style {:mix-blend-mode "color-dodge"})
    (draw)
    (when (nth-frame 4 frame)))
@@ -536,38 +527,27 @@
      (draw)
      (when (nth-frame 7 frame)))
   
-#_(->>
- (gen-shape (pattern (:id blue-dots)) oct)
- (style {:opacity (val-cyc frame (concat 
-                                  (repeat 4 .6)
-                                  (repeat 4 .8)
-                                  (repeat 4 .3)
-                                  (repeat 4 .5)))})
- ;(style {:mix-blend-mode "color-dodge"})
-
- (style {:transform "translate(40vw, 40vh) scale(2)"})
- #_(style {:transform "translate(40vw, 40vh) scale(20)"})
- (style {:transform (str "translate(40vw, 40vh) scale("
-                         (val-cyc frame (concat
-                                         (repeat 3 3)
-                                         (repeat 3 2)
-                                         (repeat 3 4)
-                                         (repeat 3 6)
-                                         (repeat 3 4)
-                                         (repeat 3 2)))
-                         ")")})
- (draw)
- (when (nth-frame 3 frame)))
-  
-  
-
-  
 
   
   
 
   
+
+  ; (->>
+  ;  (gen-rect (pattern (:id blue-lines)) 0 0 (* 0.5 @width) (* 0.5 @height))
+  ;  (style {:transform "rotate(135deg) scale(3)"})
+  ;  (draw)
+  ;  (when (nth-frame 4 fast-frame)))
+  ; 
+  ;    (->>
+  ;     (gen-rect (pattern (:id white-dots)) 0 0 (* 0.5 @width) (* 0.5 @height))
+  ;     (style {:transform "rotate(135deg) scale(3)"})
+  ;     (draw)
+  ;     (when (nth-frame 8 fast-frame)))
   
+
+  @blobs2
+  @blobs4
 
   
   #_(->>
@@ -587,45 +567,51 @@
    (draw)
    (when (nth-frame 4 frame)))
   
-  #_(doall (map deref levels))
 
+    ;@bb6
 
-#_(when (nth-frame 4 frame) (gen-line-grid navy 2
-  80 80
-  {:col 20 :row 20}))
   
-  (->>
-   (gen-rect white "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-   (draw)
-   (when-not (nth-frame 4 frame)))
-  
-    (->>
-     (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-    (style {:transform "translate(50vw, 50vh)"})
-     (draw)
-     (when-not (nth-frame 3 frame)))
-  
-      (->>
-       (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-      (style {:transform "translate(0vw, 50vh)"})
-       (draw)
-       (when-not (nth-frame 6 frame)))
+  ; (->>
+  ;  (gen-rect white "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+  ;  (draw)
+  ;  (when-not (nth-frame 4 frame)))
+  ; 
+  ;   (->>
+  ;    (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+  ;   (style {:transform "translate(50vw, 50vh)"})
+  ;    (draw)
+  ;    (when-not (nth-frame 3 frame)))
+  ; 
+  ;     (->>
+  ;      (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+  ;     (style {:transform "translate(0vw, 50vh)"})
+  ;      (draw)
+  ;      (when-not (nth-frame 6 frame)))
+  ; 
+  ;            (->>
+  ;             (gen-rect yellow "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
+  ;            (style {:transform "translate(50vw, 0vh)"})
+  ;             (draw)
+  ;             (when-not (nth-frame 7 frame)))
     
-  
+  ;(doall (map deref line-growth))
 
 (->>
  (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
  (style {:transform "rotate(135deg)"})
  (draw)
  (when-not (nth-frame 12 frame)))
+ 
+
+   
   
-  (->>
+  #_(->>
    (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask"))
    (draw)
    (when (nth-frame 2 frame)))
   
   
-  (->>
+  #_(->>
    (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.5 @height) 200)
    (draw)
    (when (nth-frame 5 frame)))
@@ -680,7 +666,7 @@
   
   
 
-        ;@bb6
+    
 
   
   #_(gen-group {:style {:transform-origin "center" :transform "translateX(80px)"}}
@@ -794,29 +780,20 @@
      (when (nth-frame 4 frame)))
 
 
-  
-@drops 
-  @drops2
-  @drops3
+
   
   
   
-;@spinlm
-;  @spinlm2
+@spinlm
+ @spinlm2
+
+(when (nth-frame 3 frame)(gen-line-grid midnight 4
+  80 80
+  {:col 20 :row 20})  )
   
-(when (nth-frame 4 frame)
-  (freak-out @width
-             @height
-             20
-             200
-             white))
-  
-  (when (nth-frame 3 frame)
-    (freak-out @width
-               @height
-               20
-               200
-               mint))
+  (when (nth-frame 3 (- 1 frame))(gen-line-grid br-orange 4
+    80 80
+    {:col 20 :row 20})  )
 
   
 )) ; cx end
