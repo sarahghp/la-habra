@@ -40,17 +40,17 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect midnight (+ 30 (* % 160)) 10 200 36)
+       (gen-rect midnight (+ 30 (* % 160)) 10 36 36)
        (anim "etof" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
        (style {:mix-blend-mode "color-dodge"})
        (draw))
-     (range 10))))
+     (range 30))))
 
 
 (def drops2
   (atom  (map
      #(->>
-       (gen-rect pink (+ 30 (* % 160)) 10 200 36)
+       (gen-rect pink (+ 30 (* % 160)) 10 36 36)
        (anim "slide-up" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
        #_(style {:mix-blend-mode "overlay"})
        (draw))
@@ -467,25 +467,25 @@
      #_(->>
       (gen-rect white "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
       (draw)
-      (when-not (nth-frame 4 frame)))
+      (when (nth-frame 4 frame)))
      
        #_(->>
         (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
        (style {:transform "translate(50vw, 50vh)"})
         (draw)
-        (when-not (nth-frame 3 frame)))
+        (when (nth-frame 1 frame)))
      
          #_(->>
           (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
          (style {:transform "translate(0vw, 50vh)"})
           (draw)
-          (when-not (nth-frame 6 frame)))
+          (when (nth-frame 1 frame)))
           
                 #_(->>
                  (gen-rect yellow "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
                 (style {:transform "translate(50vw, 0vh)"})
                  (draw)
-                 (when-not (nth-frame 7 frame)))
+                 (when (nth-frame 1 frame)))
    
    ;(when (nth-frame 13 slow-frame) @sss)
    
@@ -496,15 +496,15 @@
      {:col 20 :row 20}))
 
     ;@bb6
-    ;@bb6s
+  ;  @bb6s
    
-   @scale-me
-   @rot-me
+   ;@scale-me
+   ;@rot-me
 
    ;@drops
    ;@drops2
    
-   (->>
+   #_(->>
     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
     (style {:transform "rotate(135deg)"})
     (draw)
