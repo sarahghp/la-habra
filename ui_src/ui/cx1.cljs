@@ -214,7 +214,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh-2" "3s" "infinite" {:delay ".4s"})
+      (anim "woosh" "4s" "infinite" {:delay ".4s"})
     (draw)
     (atom)))
     
@@ -521,11 +521,11 @@
     [colors [
              midnight midnight midnight midnight
              ;mint mint mint mint
-            ;pink pink 
+            pink pink 
             ;br-orange br-orange br-orange br-orange
-            ;yellow yellow
+            yellow yellow
             ;white white white white
-            blue blue blue 
+            ;blue blue blue 
              ;
              ]]
       (->>
@@ -559,7 +559,6 @@
                (when (nth-frame (+ 1 idx) frame) item)))
             (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
             
-            (doall (map deref levels))
             
             ;@spinlm4
             ;@spinlm2
@@ -602,42 +601,46 @@
  (draw)
  (when (nth-frame 4 frame)))
 
-  (gen-group {:mask (url "grad-mask")} (->>
+  #_(gen-group {:mask (url "grad-mask")} (->>
    (gen-shape (pattern (:id navy-lines)) tri)
    (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
    (draw)
    (when-not (nth-frame 1 frame))))
    
-     (gen-group {:mask (url "grad-mask")} (->>
+     #_(gen-group {:mask (url "grad-mask")} (->>
       (gen-shape (pattern (:id pink-lines)) tri)
       (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
       (draw)
-      (when (nth-frame 0 frame))))
+      (when (nth-frame 1 frame))))
       
-           #_(gen-group {:mask (url "grad-mask") :style {:transform-origin "center" :transform "translate(30vh, 0vh)"}} (->>
-            (gen-shape (pattern (:id pink-lines)) tri)
-            (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
-            (draw)
-            (when (nth-frame 3 (+ 1 frame)))))
-            
-            #_(gen-group {:mask (url "grad-mask") :style {:transform-origin "center" :transform "translate(-30vh, 0vh)"}} (->>
-             (gen-shape (pattern (:id pink-lines)) tri)
-             (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
-             (draw)
-             (when (nth-frame 3 (- 1 frame)))))
+      (doall (map deref worms))
+  
+  (->>
+   (gen-rect charcoal 0 "20vh" "100%" "100%")
+   (draw)
+   (when (nth-frame 4 frame)))
    
-   ;@bb6a
-   
-   
-   
-   #_(when (nth-frame 12 frame) (gen-line-grid blue 4
-     80 80
-     {:col 20 :row 20}))
-     
-        #_(when (nth-frame 8 frame) (gen-line-grid white 4
-          80 80
-          {:col 20 :row 20}))
+   (->>
+    (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
+    (draw)
+    (when (nth-frame 4 slow-frame)))
+    
+       (->>
+        (gen-rect charcoal "70vw" "30vh" 400 100)
+        (draw)
+        (when (nth-frame 3 slow-frame)))
+          
       
+      
+  (gen-group {:style {:mix-blend-mode "color-dodge"}}
+    (when (nth-frame 6 frame)(gen-line-grid white 2
+      80 80
+      {:col 20 :row 20})))
+   
+   @bb6a
+   
+   
+   
 
 
 
