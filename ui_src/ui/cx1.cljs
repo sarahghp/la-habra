@@ -278,7 +278,7 @@
 (def mf
   (->>
    (gen-shape "hsla(100, 100%, 100%, 0)" l1)
-   (style {:stroke orange
+   (style {:stroke pink
            :stroke-width 14
            :stroke-dasharray 100
            :stroke-dashoffset 100
@@ -353,26 +353,7 @@
             (atom)))
     (take 10 (repeatedly #(nth [pink orange yellow pink] (rand-int 6))))))
 
-(def worms
-  (map-indexed
-   (fn [idx [color scale]]
-     (->>
-      (gen-shape "hsla(100, 100%, 100%, 0)" tri)
-      (style {:stroke color
-              :stroke-width 8
-              :stroke-dasharray (+ (rand-int 20) 80)
-              :stroke-dashoffset (+ (rand-int 20) 80)
-              :stroke-linejoin "round"
-              :stroke-linecap "round"})
-      (anim "morph" "4s" "infinite" {:delay (str (* 4 (rand)) "s")})
-      (draw)
-      (gen-group {:style {
-                          :transform-origin "center" 
-                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20)) 
-                                          "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
-      (atom)))
-   (take 10
-         (repeatedly #(rand-nth [[midnight 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4]])))))
+
 
 (def bb
   (->>
@@ -501,6 +482,28 @@
 (def lerp2 (lerp))
 (def lerp3 (lerp))
 
+
+(def worms
+  (map-indexed
+   (fn [idx [color scale]]
+     (->>
+      (gen-shape "hsla(100, 100%, 100%, 0)" tri)
+      (style {:stroke color
+              :stroke-width 8
+              :stroke-dasharray (+ (rand-int 20) 80)
+              :stroke-dashoffset (+ (rand-int 20) 80)
+              :stroke-linejoin "round"
+              :stroke-linecap "round"})
+      (anim "morph" "4s" "infinite" {:delay (str (* 4 (rand)) "s")})
+      (draw)
+      (gen-group {:style {
+                          :transform-origin "center" 
+                          :transform (str "translate(" (+ (rand-int 30) (rand-int 40)) 
+                                          "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
+      (atom)))
+   (take 12
+         (repeatedly #(rand-nth [[midnight 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4] [mint 2.4]])))))
+
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 (defn cx [frame fast-frame slow-frame]
@@ -520,10 +523,16 @@
   (let
     [colors [
              midnight midnight midnight midnight
-             ;mint mint mint mint
-            pink pink 
+             midnight midnight midnight midnight
+             midnight midnight midnight midnight
+             ; mint mint mint mint
+            ; pink pink  pink pink
+            ; pink pink  pink pink
+            ; pink pink  pink pink
             ;br-orange br-orange br-orange br-orange
-            yellow yellow
+            ; yellow yellow yellow yellow
+            ; yellow yellow yellow yellow
+            ; yellow yellow yellow yellow
             ;white white white white
             ;blue blue blue 
              ;
@@ -533,24 +542,11 @@
         (style {:opacity .95})
         (draw)))
         
-        #_(when (nth-frame 1 slow-frame) (->>
-         (gen-grid
-           12 12
-           {:col 100 :row 100}
-           (->>
-            (gen-rect midnight 4 4 20 20)))
-           ;(map #(style styles %))
-           ;(map #(anim animations %))
-           (map draw)
-           (map-indexed
-            (fn [idx item]
-              (when (nth-frame (* idx .5) frame) item)))
-           (map #(gen-group {:style {:transform-origin "center" }} %))))
            
          #_(when (nth-frame 1 slow-frame) (->>
           (gen-grid
-            8 12
-            {:col 400 :row 400}
+            20 12
+            {:col 600 :row 400}
             (->>
              (gen-shape blue oct)))
             (map draw)
@@ -559,54 +555,25 @@
                (when (nth-frame (+ 1 idx) frame) item)))
             (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
             
-            
-            ;@spinlm4
-            ;@spinlm2
-                     #_(when (nth-frame 1 slow-frame) (->>
-                      (gen-grid
-                        12 12
-                        {:col 400 :row 400}
-                        (->>
-                         (gen-shape br-orange hex)))
-                        (map draw)
-                        (map-indexed
-                         (fn [idx item]
-                           (when (nth-frame (+ 2 idx) frame) item)))
-                        (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
+
+         #_(when (nth-frame 1 slow-frame) (->>
+          (gen-grid
+            24 12
+            {:col 400 :row 400}
+            (->>
+             (gen-shape br-orange hex)))
+            (map draw)
+            (map-indexed
+             (fn [idx item]
+               (when (nth-frame (+ 2 idx) frame) item)))
+            (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
       
 
-        #_(->>
-         (gen-circ orange (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
-         (style {:transform "rotate(135deg)"})
-         (draw)
-         (when-not (nth-frame 4 frame)))
-
-
-#_(->>
- (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
- (style {:transform "rotate(20deg)"})
- (draw)
- (when-not (nth-frame 6 frame)))
- 
- (when (nth-frame 2 frame)
-   (freak-out @width
-              @height
-              40
-              300
-              midnight))
-
-
-     #_(gen-group {:mask (url "grad-mask")} (->>
-      (gen-shape (pattern (:id pink-lines)) tri)
-      (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
-      (draw)
-      (when (nth-frame 1 frame))))
       
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ------------------ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ------------------ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ------------------ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
       
-      (doall (map deref worms))
   
   #_(->>
    (gen-rect charcoal 0 "20vh" "100%" "100%")
@@ -614,27 +581,95 @@
    (when (nth-frame 4 frame)))
    
    #_(->>
-    (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
+    (gen-rect (pattern (:id white-lines)) "70vw" "30vh" 100 400)
     (draw)
     (when (nth-frame 4 slow-frame)))
     
-       #_(->>
-        (gen-rect charcoal "70vw" "30vh" 400 100)
-        (draw)
-        (when (nth-frame 3 slow-frame)))
+   #_(->>
+    (gen-rect (pattern (:id white-lines)) "20vw" "12vh" 100 400)
+    (draw)
+    (when (nth-frame 3 slow-frame)))
+    
+    
+    
+    
+    
+    #_(->>
+     (gen-rect mint "20vw" "10vh" "100%" "100%")
+     (draw)
+     (when (nth-frame 8 frame)))
+     
+   #_(->>
+    (gen-rect pink "16vw" "30vh" "10vw" "30vh")
+    (draw)
+    (when (nth-frame 8 frame)))
+     
+     
+    (doall (map deref worms))  
+
+     
+    
+    
+   #_(->>
+    (gen-rect (pattern (:id white-lines)) "16vw" "60vh" 100 200)
+    (style {:transform "rotate(90deg)"})
+    (draw)
+    (when (and (nth-frame 5 slow-frame) 
+      (not (nth-frame 15 slow-frame)))))
+      
+    #_(->>
+     (gen-rect (pattern (:id white-dots)) "16vw" "60vh" 100 200)
+     (style {:transform "scale(3) rotate(90deg)"})
+     (draw)
+     (when (nth-frame 15 slow-frame)))
+       
+         
+     #_(->>
+      (gen-rect (pattern (:id white-dots)) "66vw" "6vh" 100 200)
+      (style {:transform "scale(1.6) rotate(90deg)"})
+      (draw)
+      (when (nth-frame 2 slow-frame)))
+    
+     
+     
+     #_(->>
+      (gen-rect charcoal "70vw" "30vh" 400 100)
+      (draw)
+      (when (nth-frame 3 slow-frame)))
+        
+        
+        
+
           
       
       
   #_(gen-group {:style {:mix-blend-mode "color-dodge"}}
-    (when (nth-frame 6 frame)(gen-line-grid white 2
-      80 80
+    (when (nth-frame 6 slow-frame)(gen-line-grid white 2
+      120 80
       {:col 20 :row 20})))
    
+   ;@bb6
    ;@bb6a
+  
    
    
-   
+   #_@mf
+   #_@mf2
+   #_@mf3
+   #_@mf6
 
+   
+   #_(when (nth-frame 1 slow-frame) (->>
+    (gen-grid
+      12 12
+      {:col 400 :row 400}
+      (->>
+       (gen-shape br-orange hex)))
+      (map draw)
+      (map-indexed
+       (fn [idx item]
+         (when (nth-frame (+ 2 idx) frame) item)))
+      (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
 
 
 
