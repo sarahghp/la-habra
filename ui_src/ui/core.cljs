@@ -514,11 +514,7 @@
             (poly)
             (when (nth-frame 8 frame)))
 
-        (->>
-         ((gen-sc gray) (* .5 @width) (* .5 @height) 400)
-         (anim "rot" "10s" "infinite")
-         (circ)
-         (when (nth-frame 7 frame)))
+        
 
 
         (->>
@@ -527,6 +523,12 @@
           ; (anim "rot" "10s" "infinite")
           (circ)
           (when-not (nth-frame 7 frame)))
+          
+          (->>
+           ((gen-sc gray) (* .5 @width) (* .5 @height) 400)
+           (anim "rot" "10s" "infinite")
+           (circ)
+           (when (or (nth-frame 1 frame)(nth-frame 6 frame)(nth-frame 7 frame))))
 
 
     ;; INTRO
@@ -650,20 +652,20 @@
                 :text-anchor "middle"
                 :style {:font "88px monospace"
                         :fill white}}
-         "datafruits"]
+         "PURGATORIO"]
     
     
         [:text {:key (random-uuid)
                 :x (* 0.5 @width)
                 :y (* 0.45 @height)
                 :text-anchor "middle"
-                :style {:font "bold 148px monospace"
+                :style {:font "600 148px monospace"
                         :fill white
-                        :letter-spacing "2px"
+                        :letter-spacing "3px"
                         :text-transform "uppercase"}}
-         "performance"]
+         "sequencer"]
       
-      [:text {:key (random-uuid)
+      #_[:text {:key (random-uuid)
               :x (* 0.5 @width)
               :y (* 0.6 @height)
               :text-anchor "middle"
@@ -683,33 +685,32 @@
                     :fill white}}
      "live • prepared"]
     
-    #_[:text {:key (random-uuid)
+        [:text {:key (random-uuid)
+                :x (* 0.5 @width)
+                :y (* 0.56 @height)
+                :text-anchor "middle"
+                :style {:font "58px monospace"
+                        :fill white}}
+         "(not yet available)"]
+         
+                 [:text {:key (random-uuid)
+                         :x (* 0.5 @width)
+                         :y (* 0.8 @height)
+                         :text-anchor "middle"
+                         :style {:font "32px monospace"
+                                 :fill white}}
+                  "three videos from"]
+             
+    
+    [:text {:key (random-uuid)
             :x (* 0.5 @width)
-            :y (* 0.75 @height)
+            :y (* 0.85 @height)
             :text-anchor "middle"
-            :style {:font "38px monospace"
+            :style {:font "28px monospace"
                     :fill white}}
-     "music by Nancy Drone"]
+     "Sarah Groff Hennigh-Palermo"]
     
 
-
-        #_(gen-bg-lines white (mod (* 10 frame) 80))
-
-
-        #_(when (nth-frame 1 frame)
-          (freak-out @width
-                     @height
-                     100
-                     20
-                     white))
-
-
-         #_(when (nth-frame 1 frame)
-           (freak-out @width
-                      @height
-                      20
-                      100
-                      navy))
 
 
 
