@@ -198,12 +198,12 @@
 
 (def bb6
   (->>
-    (gen-shape mint oct)
+    (gen-shape (pattern (:id mint-dots)) oct)
       (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
-          #_(style {:mix-blend-mode "color-dodge"} )
+          (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "loopy-left" "6s" "infinite")
+      (anim "loopy-left" "7s" "infinite")
     (draw)
     (atom)))
 
@@ -214,7 +214,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "woosh" "4s" "infinite" {:delay ".4s"})
+      (anim "woosh" "6s" "infinite" {:delay ".4s"})
     (draw)
     (atom)))
     
@@ -225,7 +225,7 @@
           ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
               (style {:mix-blend-mode "color-dodge"} )
 
-          (anim "woosh-2" "5s" "infinite" {:delay "1s"})
+          (anim "scaley" "15s" "infinite" {:delay "1s"})
         (draw)
         (atom)))
 
@@ -693,7 +693,25 @@
       80 80
       {:col 20 :row 20})))
    
-   ;@bb6a
+   @bb6
+   @bb6a
+   
+   
+  (when (nth-frame 3 frame)
+    (freak-out @width
+               @height
+               40
+               50
+               br-orange))
+   
+   (when (nth-frame 4 frame)
+     (freak-out @width
+                @height
+                50
+                50
+                yellow))
+   
+   @bb6b
    
    
    
