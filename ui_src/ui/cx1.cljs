@@ -519,11 +519,11 @@
                
   (let
     [colors [
-             midnight midnight midnight midnight
+             midnight midnight midnight midnight midnight midnight
              ;mint mint mint mint
-            pink pink 
+            pink pink pink pink pink pink
             ;br-orange br-orange br-orange br-orange
-            yellow yellow
+            yellow yellow yellow yellow yellow yellow
             ;white white white white
             ;blue blue blue 
              ;
@@ -613,31 +613,87 @@
       (draw)
       (when (nth-frame 1 frame))))
       
-      (doall (map deref worms))
+  #_(doall (map deref worms))
+  
+  (gen-group {:style {:mix-blend-mode "color-dodge"}}
+    (when (nth-frame 4 frame)(gen-line-grid white 2
+      80 80
+      {:col 20 :row 20})))
   
   (->>
    (gen-rect charcoal 0 "20vh" "100%" "100%")
    (draw)
-   (when (nth-frame 4 frame)))
+   (when (nth-frame 4 slow-frame)))
    
+   
+     (->>
+      (gen-rect mint "70vh" 0 "100%" "100%")
+      (style {:mix-blend-mode "color-dodge"})
+      (draw)
+      (when (nth-frame 6 slow-frame)))
+   
+
    (->>
     (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
     (draw)
+    (when (nth-frame 3 slow-frame)))
+    
+   (->>
+    (gen-rect charcoal "70vw" "30vh" "31vw" 100)
+    (draw)
     (when (nth-frame 4 slow-frame)))
     
-       (->>
-        (gen-rect charcoal "70vw" "30vh" 400 100)
-        (draw)
-        (when (nth-frame 3 slow-frame)))
-          
+   (->>
+    (gen-rect mint "70vw" "30vh" "31vw" 100)
+    (style {:transform "translateY(4vw)"})
+    (draw)
+    (when (nth-frame 6 slow-frame)))
+  
+     (->>
+      (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
+      (draw)
+      (when (nth-frame 3 slow-frame)))
       
       
-  (gen-group {:style {:mix-blend-mode "color-dodge"}}
+
+    (->>
+     (gen-rect charcoal "22vw" "70vh" "31vw" 100)
+     (style {:transform "rotate(90deg)"})
+     (draw)
+     (when (nth-frame 6 slow-frame)))
+     
+    (->>
+     (gen-rect pink "22vw" "70vh" "31vw" 100)
+     (style {:transform "rotate(90deg) translateY(4vw)"})
+     (draw)
+     (when (nth-frame 2 slow-frame)))
+       
+
+   (->>
+    (gen-rect (pattern (:id white-dots)) "20vw" "8vh" 300 100)
+    (draw)
+    (when (nth-frame 2 slow-frame)))
+    
+     (->>
+      (gen-rect (pattern (:id white-lines)) "16vw" "40vh" 300 100)
+      (draw)
+      (when (nth-frame 3 slow-frame)))
+      
+   (->>
+    (gen-rect (pattern (:id white-dots)) "24vw" "80vh" 300 100)
+    (draw)
+    (when (nth-frame 4 slow-frame)))
+    
+    
+
+      
+      
+  #_(gen-group {:style {:mix-blend-mode "color-dodge"}}
     (when (nth-frame 6 frame)(gen-line-grid white 2
       80 80
       {:col 20 :row 20})))
    
-   @bb6a
+   ;@bb6a
    
    
    
