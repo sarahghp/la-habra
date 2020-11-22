@@ -101,7 +101,7 @@
                  (draw))
                 (range 100))]
             [ "grad-mask"
-              [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" }]]
+              [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 340 :fill "url(#grad)" }]]
             [ "grad-mask-an"
               [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" :style {:transform-origin "center" :animation "small-scale-y 3s infinite"} }]]
             [ "cutout"

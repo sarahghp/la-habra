@@ -461,6 +461,8 @@
    ; grid (80/20), b, c, d
     
    ;(when (nth-frame 9 slow-frame) @a)
+   ;(when (nth-frame 3 slow-frame) @aaa)
+
    ;(when (nth-frame 5 frame) @c)
    
    
@@ -504,11 +506,11 @@
    ;@drops
    ;@drops2
    
-   #_(->>
-    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+   (->>
+    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 600 (url "grad-mask"))
     (style {:transform "rotate(135deg)"})
     (draw)
-    (when-not (nth-frame 12 frame)))
+    (when-not (nth-frame 0 frame)))
 
 
    ))

@@ -429,7 +429,7 @@
                  (* (+ 1 idx) 0.07 @height) 
                  @width 
                  (* 4 (+ 1 idx) 0.001 @height))
-       ;(style {:mix-blend-mode "color-dodge"})
+       (style {:mix-blend-mode "color-dodge"})
        (anim "small-scale-y" "1s" "infinite" 
              {:delay (str (* idx .1) "s")})
        (draw)
@@ -525,7 +525,7 @@
             ;br-orange br-orange br-orange br-orange
             ;yellow yellow
             ;white white white white
-            blue blue blue 
+            ;blue blue blue 
              ;
              ]]
       (->>
@@ -558,9 +558,7 @@
              (fn [idx item]
                (when (nth-frame (+ 1 idx) frame) item)))
             (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
-            
-            (doall (map deref levels))
-            
+                        
             ;@spinlm4
             ;@spinlm2
                      #_(when (nth-frame 1 slow-frame) (->>
@@ -602,13 +600,13 @@
  (draw)
  (when (nth-frame 4 frame)))
 
-  (gen-group {:mask (url "grad-mask")} (->>
+  #_(gen-group {:mask (url "grad-mask")} (->>
    (gen-shape (pattern (:id navy-lines)) tri)
    (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
    (draw)
    (when-not (nth-frame 1 frame))))
    
-     (gen-group {:mask (url "grad-mask")} (->>
+     #_(gen-group {:mask (url "grad-mask")} (->>
       (gen-shape (pattern (:id pink-lines)) tri)
       (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
       (draw)
@@ -625,21 +623,74 @@
              (style {:transform "translate(40vw, 40vh) scale(4) rotate(180deg)"})
              (draw)
              (when (nth-frame 3 (- 1 frame)))))
-   
-   ;@bb6a
-   
-   
-   
-   #_(when (nth-frame 12 frame) (gen-line-grid blue 4
-     80 80
-     {:col 20 :row 20}))
-     
-        #_(when (nth-frame 8 frame) (gen-line-grid white 4
-          80 80
-          {:col 20 :row 20}))
+             
+  #_(doall (map deref line-growth))
+  
+     #_(->>
+      (gen-rect pink 10 10 (* 0.5 @width) (* 0.3 @height))
+      (style {:mix-blend-mode "difference"})
+      (draw)
+      (when (nth-frame 4 frame)))
       
+         #_(->>
+          (gen-rect orange 10 10 (* 0.5 @width) (* 0.3 @height))
+          (style {:mix-blend-mode "difference" :transform "translateX(110%)"})
+          (draw)
+          (when (nth-frame 5 frame)))
+          
+           #_(->>
+            (gen-rect charcoal 10 400 (* 0.5 @width) (* 0.3 @height))
+            #_(style {:mix-blend-mode "color-burn"})
+            (draw)
+            (when (nth-frame 6 frame)))
+            
+               #_(->>
+                (gen-rect charcoal 10 400 (* 0.5 @width) (* 0.3 @height))
+                (style {:mix-blend-mode "color-burn" :transform "translateX(110%)"})
+                (draw)
+                (when (nth-frame 8 frame)))
+   
+  #_(gen-group {:style {:transform-origin "center" :transform "scale(2) translate(-30vw, -2vh)"} }
+      (->>
+       (gen-rect blue (* 0.4 @width) (* 0.4 @height) 200 200)
+       (draw)
+       (when (nth-frame 4 frame)))
+       
+     (->>
+      (gen-rect white (* 0.5 @width) (* 0.3 @height) 180 80)
+      (draw)
+      (when (nth-frame 3 frame)))
+      
+      (->>
+       (gen-rect yellow (* 0.45 @width) (* 0.2 @height) 100 100)
+       (draw)
+       (when (nth-frame 6 frame))))
+      
+   
+
+       (gen-bg-lines br-orange (mod frame 40) {:opacity .6})
+       
+       (gen-group {:style {:transform "translateY(300px)"}}
+        (gen-bg-lines pink (mod frame 40) {:opacity .6}))
+        
+        (gen-group {:style {:transform "translateY(600px)"}}
+         (gen-bg-lines mint (mod (+ 1 frame) 40) {:opacity .6}))
 
 
+
+
+                    
+         (->>
+          (gen-circ (pattern (str "noise-" white)) 0 0 2000)
+          (style {:opacity .6})
+          (draw))
+          
+                 (->>
+                  (gen-circ (pattern (str "noise-" pink)) 0 0 2000)
+                  (style {:opacity .6 :mix-blen-mode "difference"})
+                  (draw)
+                  (when (nth-frame 8 frame)))
+                  
 
 
 
