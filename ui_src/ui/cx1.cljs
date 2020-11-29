@@ -702,14 +702,16 @@
                @height
                40
                50
-               br-orange))
+               orange
+               {:opacity .7}))
    
    (when (nth-frame 4 frame)
      (freak-out @width
                 @height
                 50
                 50
-                yellow))
+                yellow
+                {:opacity .8}))
    
    @bb6b
    
