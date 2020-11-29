@@ -613,7 +613,7 @@
       (draw)
       (when (nth-frame 1 frame))))
       
-  #_(doall (map deref worms))
+  (doall (map deref worms))
   
   (gen-group {:style {:mix-blend-mode "color-dodge"}}
     (when (nth-frame 4 frame)(gen-line-grid white 2
@@ -703,7 +703,7 @@
                40
                50
                orange
-               {:opacity .7}))
+               {:opacity .9}))
    
    (when (nth-frame 4 frame)
      (freak-out @width
