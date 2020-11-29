@@ -95,6 +95,13 @@
         ret (if ran? solid fader)]
     (when-not init-frame (swap! ran assoc name frame))
     ret))
+    
+(defn add-remove 
+  [name frame start end item]
+    (anim-and-hold name frame start
+                 (list) 
+                   (anim-and-hold name frame end
+                                  item (list))))
 
 
 ;; -------------------- SHAPE ANIMATION HELPER ---------------------------

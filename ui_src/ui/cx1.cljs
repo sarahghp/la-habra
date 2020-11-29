@@ -28,7 +28,7 @@
                white-dots white-dots-lg white-lines
                shadow noise]]
             [ui.animations :as animations :refer
-              [ nth-frame anim anim-and-hold
+              [ nth-frame anim anim-and-hold add-remove
                 ]]))
 
 ;; --------------- SETTINGS --------------------
@@ -613,114 +613,108 @@
       (draw)
       (when (nth-frame 1 frame))))
       
-  (doall (map deref worms))
+  #_(doall (map deref worms))
+  
+  (add-remove "worms" frame 118 150 (doall (map deref worms)))
   
   (gen-group {:style {:mix-blend-mode "color-dodge"}}
     (when (nth-frame 4 frame)(gen-line-grid white 2
       80 80
       {:col 20 :row 20})))
-  
-  (->>
-   (gen-rect charcoal 0 "20vh" "100%" "100%")
-   (draw)
-   (when (nth-frame 4 slow-frame)))
-   
-   
+    
+  (add-remove 
+    "r1" frame 86 150
+    (list 
+      (->>
+       (gen-rect charcoal 0 "20vh" "100%" "100%")
+       (draw)
+       (when (nth-frame 4 slow-frame)))
+       
      (->>
       (gen-rect mint "70vh" 0 "100%" "100%")
       (style {:mix-blend-mode "color-dodge"})
       (draw)
-      (when (nth-frame 6 slow-frame)))
-   
+      (when (nth-frame 6 slow-frame)))))
 
-   (->>
-    (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
-    (draw)
-    (when (nth-frame 3 slow-frame)))
     
-   (->>
-    (gen-rect charcoal "70vw" "30vh" "31vw" 100)
-    (draw)
-    (when (nth-frame 4 slow-frame)))
-    
-   (->>
-    (gen-rect mint "70vw" "30vh" "31vw" 100)
-    (style {:transform "translateY(4vw)"})
-    (draw)
-    (when (nth-frame 6 slow-frame)))
+  (add-remove 
+    "r3" frame 96 150
+    (list 
+       (->>
+        (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
+        (draw)
+        (when (nth-frame 3 slow-frame)))
+        
+       (->>
+        (gen-rect charcoal "70vw" "30vh" "31vw" 100)
+        (draw)
+        (when (nth-frame 4 slow-frame)))
+        
+       (->>
+        (gen-rect mint "70vw" "30vh" "31vw" 100)
+        (style {:transform "translateY(4vw)"})
+        (draw)
+        (when (nth-frame 6 slow-frame)))
+      
+       (->>
+        (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
+        (draw)
+        (when (nth-frame 3 slow-frame)))
+
+        (->>
+         (gen-rect charcoal "22vw" "70vh" "31vw" 100)
+         (style {:transform "rotate(90deg)"})
+         (draw)
+         (when (nth-frame 6 slow-frame)))
+         
+        (->>
+         (gen-rect pink "22vw" "70vh" "31vw" 100)
+         (style {:transform "rotate(90deg) translateY(4vw)"})
+         (draw)
+         (when (nth-frame 2 slow-frame)))))
   
-     (->>
-      (gen-rect (pattern (:id white-lines)) "70vw" "10vh" 100 400)
-      (draw)
-      (when (nth-frame 3 slow-frame)))
+
+    (add-remove 
+      "r3" frame 91 150
+      (list 
+       (->>
+        (gen-rect (pattern (:id white-dots)) "20vw" "8vh" 300 100)
+        (draw)
+        (when (nth-frame 2 slow-frame)))
+        
+         (->>
+          (gen-rect (pattern (:id white-lines)) "16vw" "40vh" 300 100)
+          (draw)
+          (when (nth-frame 3 slow-frame)))
+          
+       (->>
+        (gen-rect (pattern (:id white-dots)) "24vw" "80vh" 300 100)
+        (draw)
+        (when (nth-frame 4 slow-frame)))))
+  
+    (add-remove "an1" frame 26 150 @bb6)
+    (add-remove "an2" frame 31 150 @bb6a)
       
+   
+   (add-remove "dots" frame 102 150 (list
+     (when (nth-frame 3 frame)
+       (freak-out @width
+                  @height
+                  40
+                  50
+                  orange
+                  {:opacity .9}))
       
-
-    (->>
-     (gen-rect charcoal "22vw" "70vh" "31vw" 100)
-     (style {:transform "rotate(90deg)"})
-     (draw)
-     (when (nth-frame 6 slow-frame)))
-     
-    (->>
-     (gen-rect pink "22vw" "70vh" "31vw" 100)
-     (style {:transform "rotate(90deg) translateY(4vw)"})
-     (draw)
-     (when (nth-frame 2 slow-frame)))
-       
-
-   (->>
-    (gen-rect (pattern (:id white-dots)) "20vw" "8vh" 300 100)
-    (draw)
-    (when (nth-frame 2 slow-frame)))
-    
-     (->>
-      (gen-rect (pattern (:id white-lines)) "16vw" "40vh" 300 100)
-      (draw)
-      (when (nth-frame 3 slow-frame)))
-      
-   (->>
-    (gen-rect (pattern (:id white-dots)) "24vw" "80vh" 300 100)
-    (draw)
-    (when (nth-frame 4 slow-frame)))
-    
-    
-
-      
-      
-  #_(gen-group {:style {:mix-blend-mode "color-dodge"}}
-    (when (nth-frame 6 frame)(gen-line-grid white 2
-      80 80
-      {:col 20 :row 20})))
+      (when (nth-frame 4 frame)
+        (freak-out @width
+                   @height
+                   50
+                   50
+                   yellow
+                   {:opacity .8}))))
    
-   @bb6
-   @bb6a
+  
+  (add-remove "an3" frame 36 150 @bb6b)
    
-   
-  (when (nth-frame 3 frame)
-    (freak-out @width
-               @height
-               40
-               50
-               orange
-               {:opacity .9}))
-   
-   (when (nth-frame 4 frame)
-     (freak-out @width
-                @height
-                50
-                50
-                yellow
-                {:opacity .8}))
-   
-   @bb6b
-   
-   
-   
-
-
-
-
-
   
 )) ; cx end
