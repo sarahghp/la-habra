@@ -357,7 +357,7 @@
       (gen-group {:mask (url "dmask")})
       (atom)))
    (take 4
-         (repeatedly #(rand-nth [[10 gray-dots-lg] [9 pink-lines] [12 white-dots]])))))
+         (repeatedly #(rand-nth [[4 gray-dots-lg] [6 pink-lines] [2 mint-dots]])))))
 
 
 
@@ -457,6 +457,11 @@
 
 (defn cx2 [frame fast-frame slow-frame]
   (list
+    
+    ;(doall (map deref all-the-moves))
+    
+    ;@rr2
+    (doall (map deref levels))
       
    ; grid (80/20), b, c, d
     
@@ -489,7 +494,7 @@
                  (draw)
                  (when (nth-frame 1 frame)))
    
-   ;(when (nth-frame 13 slow-frame) @sss)
+   ;(when (nth-frame 4 slow-frame) @sss)
    
    ;(when (nth-frame 6 frame) @d)
    
@@ -506,7 +511,7 @@
    ;@drops
    ;@drops2
    
-   (->>
+   #_(->>
     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 600 (url "grad-mask"))
     (style {:transform "rotate(135deg)"})
     (draw)

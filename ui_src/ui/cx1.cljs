@@ -397,6 +397,8 @@
             (gen-line [10 10] [200 100] white 10)
             (draw))))
 
+(def stst (atom (gen-group {:style {:transform-origin "center" :animation "rot 4s infinite"}} @streaks)))
+
 (defonce streaks2
   (scatter 40 
            (->>
@@ -496,6 +498,36 @@
             (map #(gen-group {:style {:transform-origin "center" :animation "rot 1s infinite"}} %)))))
 
 
+(defonce ra
+  (scatter 40 
+    (->>
+     (gen-rect (pattern (:id mint-lines)) 0 0 40 100)
+     (draw))))
+     
+     (defonce rb
+       (scatter 20 
+         (->>
+          (gen-rect (pattern (:id pink-lines)) 0 0 100 100)
+          (style {:transform "scale(2)"})
+          (draw))))
+          
+               
+               (defonce re
+                 (scatter 200 
+                   (->>
+                    (gen-rect orange 0 0 400 80)
+                    (draw))))
+                    
+                     (defonce rd
+                       (scatter 200 
+                         (->>
+                          (gen-rect blue 0 0 400 80)
+                          (draw))))
+                          
+            (def rere (atom (gen-group {:style {:transform-origin "center" :animation "ascend 40s infinite"}} @re)))
+            
+            (def rdrd (atom (gen-group {:style {:transform-origin "center" :animation "descend 10s infinite"}} @rd)))
+
 ;; start end dur frame no-repeat
 (def lerp1 (lerp))
 (def lerp2 (lerp))
@@ -519,8 +551,8 @@
                
   (let
     [colors [
-             midnight midnight midnight midnight
-             ;mint mint mint mint
+             ;midnight midnight midnight midnight
+             mint mint mint mint
             ;pink pink 
             ;br-orange br-orange br-orange br-orange
             ;yellow yellow
@@ -626,6 +658,11 @@
              
   #_(doall (map deref line-growth))
   
+  ;(when-not (nth-frame 4 frame) @rdrd)
+  (when-not (nth-frame 0 frame) @re)
+  
+    ;@blobs3
+  
      #_(->>
       (gen-rect pink 10 10 (* 0.5 @width) (* 0.3 @height))
       (style {:mix-blend-mode "difference"})
@@ -666,30 +703,34 @@
        (draw)
        (when (nth-frame 6 frame))))
       
-   
+      
 
-       (gen-bg-lines br-orange (mod frame 40) {:opacity .6})
-       
-       (gen-group {:style {:transform "translateY(300px)"}}
-        (gen-bg-lines pink (mod frame 40) {:opacity .6}))
-        
-        (gen-group {:style {:transform "translateY(600px)"}}
-         (gen-bg-lines mint (mod (+ 1 frame) 40) {:opacity .6}))
+      ;(when (nth-frame 2 slow-frame) @stst)
+      
+            ;(when (nth-frame 3 frame) @ra)
+            ;(when (nth-frame 4 frame) @rb)
 
+
+      
+          (->>
+           (gen-rect white (* 0.45 @width) (* 0.5 @width) 180 80)
+           (draw)
+           (when (nth-frame 0 slow-frame)))
+           
+           (->>
+            (gen-circ mint (* 0.3 @width) (* 0.3 @height) 100)
+            (draw)
+            (when (nth-frame  slow-frame)))
 
 
 
                     
-         (->>
+         #_(->>
           (gen-circ (pattern (str "noise-" white)) 0 0 2000)
           (style {:opacity .6})
           (draw))
           
-                 (->>
-                  (gen-circ (pattern (str "noise-" pink)) 0 0 2000)
-                  (style {:opacity .6 :mix-blen-mode "difference"})
-                  (draw)
-                  (when (nth-frame 8 frame)))
+    
                   
 
 
