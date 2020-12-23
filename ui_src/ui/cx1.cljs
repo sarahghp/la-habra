@@ -368,7 +368,7 @@
       (draw)
       (gen-group {:style {
                           :transform-origin "center" 
-                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20)) 
+                          :transform (str "translate(" (+ (rand-int 40) (rand-int 20)) 
                                           "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
       (atom)))
    (take 10
@@ -619,7 +619,7 @@
   
   (gen-group {:style {:mix-blend-mode "color-dodge"}}
     (when (nth-frame 4 frame)(gen-line-grid white 2
-      80 80
+      120 80
       {:col 20 :row 20})))
     
   (add-remove 
@@ -662,13 +662,13 @@
         (when (nth-frame 3 slow-frame)))
 
         (->>
-         (gen-rect charcoal "22vw" "70vh" "31vw" 100)
+         (gen-rect charcoal "16vw" "70vh" "31vw" 100)
          (style {:transform "rotate(90deg)"})
          (draw)
          (when (nth-frame 6 slow-frame)))
          
         (->>
-         (gen-rect pink "22vw" "70vh" "31vw" 100)
+         (gen-rect pink "16vw" "70vh" "31vw" 100)
          (style {:transform "rotate(90deg) translateY(4vw)"})
          (draw)
          (when (nth-frame 2 slow-frame)))))
@@ -715,6 +715,6 @@
    
   
   (add-remove "an3" frame 36 150 @bb6b)
+
    
-  
-)) ; cx end
+  )) ; cx end
