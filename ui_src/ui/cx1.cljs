@@ -29,13 +29,14 @@
               mint-lines mint-lines-1 mint-lines-2 mint-lines-3 mint-lines-4 mint-lines-5
               navy-dots navy-dots-1 navy-dots-2 navy-dots-3 navy-dots-4 navy-dots-5
               navy-lines navy-lines-1 navy-lines-2 navy-lines-3 navy-lines-4 navy-lines-5
-              orange-dots orange-lines
-              br-orange-dots br-orange-lines
+              orange-dots orange-dots-1 orange-dots-2 orange-dots-3 orange-dots-4 orange-dots-5 orange-lines orange-lines-1 orange-lines-2 orange-lines-3 orange-lines-4 orange-lines-5
+              br-orange-dots br-orange-dots-1 br-orange-dots-2 br-orange-dots-3 br-orange-dots-4 br-orange-dots-5  br-orange-lines br-orange-lines-1 br-orange-lines-2 br-orange-lines-3 br-orange-lines-4 br-orange-lines-5
               yellow-dots yellow-dots-1 yellow-dots-2 yellow-dots-3 yellow-dots-4 yellow-dots-5
               yellow-lines yellow-lines-1 yellow-lines-2 yellow-lines-3 yellow-lines-4 yellow-lines-5
               white-dots white-dots-1 white-dots-2 white-dots-3 white-dots-4 white-dots-5
               white-dots-lg
               white-lines white-lines-1 white-lines-2 white-lines-3 white-lines-4 white-lines-5
+              midnight-dots-1 midnight-dots-2 midnight-dots-3 midnight-dots-4 midnight-dots-5  midnight-lines-1 midnight-lines-2 midnight-lines-3 midnight-lines-4 midnight-lines-5
               shadow noise]]
             [ui.animations :as animations :refer
               [ nth-frame anim anim-and-hold
@@ -56,6 +57,25 @@
        (style {:mix-blend-mode "color-dodge"})
        (draw))
      (range 20))))
+     
+     
+     (def dr
+       (atom  (map
+          #(->>
+            (gen-rect white (+ 0 (* % 160)) 10 400 260)
+            (anim "etof" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
+            (style {:mix-blend-mode "color-dodge"})
+            (draw))
+          (range 8))))
+          
+               (def op
+                 (atom  (map
+                    #(->>
+                      (gen-rect white (+ 0 (* % 160)) 10 400 260)
+                      (anim "ascend" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
+                      (style {:mix-blend-mode "color-dodge"})
+                      (draw))
+                    (range 4))))
 
 (def drops3
   (atom  (map
@@ -176,17 +196,53 @@
    (gen-shape (pattern (:id mint-dots)) hept)
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
    (style {:mix-blend-mode "luminosity"})
-   (anim "woosh" "13s" "infinite")
+   (anim "wee" "13s" "infinite")
    (draw)
    (atom)))
+   
+   (def move-me-a
+     (->>
+      (gen-circ orange 30 30 30)
+      (anim "wee" "3s" "infinite")
+      (draw)
+      (atom)))
+      
+         (def move-me-b
+           (->>
+            (gen-circ (pattern (:id yellow-lines-4)) 30 30 30)
+            (anim "wee-2" "2.8s" "infinite")
+            (draw)
+            (atom)))
 
 (def move-me-3
   (->>
-   (gen-shape (pattern (:id pink-dots)) hept)
+   (gen-shape clear scr5)
+   (style {:stroke gray
+           :stroke-width 5})
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
    (anim "woosh" "6s" "infinite")
    (draw)
    (atom)))
+   
+(def move-me-5
+  (->>
+   (gen-shape clear scr1)
+   (style {:stroke pink
+           :stroke-width 5})
+   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (anim "woosh" "3s" "infinite")
+   (draw)
+   (atom)))
+   
+   (def move-me-7
+     (->>
+      (gen-shape clear scr4)
+      (style {:stroke yellow
+              :stroke-width 5})
+      (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+      (anim "woosh" "6s" "infinite")
+      (draw)
+      (atom)))
 
 (def move-me-2
   (->>
@@ -532,9 +588,9 @@
   (let
     [colors [
              midnight midnight midnight midnight
-             ;mint (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+             mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
              ;mint mint mint mint
-            ;pink pink 
+            pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
             ;br-orange br-orange br-orange br-orange
             ;yellow yellow
             ;white white white white
@@ -611,30 +667,30 @@
              (when (nth-frame 3 (- 1 frame)))))
 
 
-  #_(->>
+  (->>
    (gen-shape clear scr2)
    (style {:stroke pink
            :stroke-width 3})
-   (style {:transform "translate(40vw, 25vh) scale(2.5)"})
+   (style {:transform "translate(40vw, 25vh) scale(3)"})
    (draw)
-   (when (nth-frame 1 frame)))
+   (when (nth-frame 5 frame)))
    
    
-   #_(->>
+   (->>
     (gen-shape clear scr3)
-    (style {:stroke navy
-            :stroke-width 4})
-    (style {:transform "translate(35vw, 80vh) scale(-3)"})
+    (style {:stroke white
+            :stroke-width 2})
+    (style {:transform "translate(35vw, 70vh) scale(-3.5)"})
     (draw)
     (when (nth-frame 5 (+ 1 frame))))
     
-  #_(->>
+  (->>
    (gen-shape clear scr4)
    (style {:stroke yellow
            :stroke-width 2
            :stroke-dasharray 15
            :stroke-dashoffset 15})
-   (style {:transform "translate(50vw, 40vh) scale(6)"})
+   (style {:transform "translate(50vw, 40vh) scale(7)"})
    (draw)
    (when (nth-frame 4 frame)))   
    
@@ -655,12 +711,59 @@
    (style {:transform "rotate(45deg)"})
    (draw)
    (when (nth-frame 1 frame)))
+   ; @move-me-a
+   ;  @move-me-b
+    
+    (when (nth-frame 4 frame)
+      (freak-out @width
+                 @height
+                 10
+                 200
+                 pink))
+                 
+                     (when (nth-frame 7 frame)
+                       (freak-out @width
+                                  @height
+                                  10
+                                  200
+                                  br-orange))
+
+
+   ;(when (nth-frame 3 frame) @streaks)
    
+   @dr
+   @op
+   
+   (when (nth-frame 5 frame)
+   (gen-line-grid white 2
+     80 80
+     {:col 40 :row 40}))
+   
+      ;@move-me-3
+            ;@move-me-5
+
+      ;@move-me-7
 
   (->>
-   (gen-circ (pattern (:id mint-dots-5)) (* 0.5 @width) (* 0.5 @height) 140)
+   (gen-circ (pattern (:id mint-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
    (draw)
-   (when (nth-frame 1 frame)))
+   (when (nth-frame 4 frame)))
+   
+     (->>
+      (gen-circ (pattern (:id navy-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+      (draw)
+      (when (nth-frame 4 (+ 2 frame))))
+   
+     (->>
+      (gen-circ (pattern (:id mint-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+      (draw)
+      (when (nth-frame 4 (+ 3 frame))))
+      
+        (->>
+         (gen-circ (pattern (:id navy-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+         (draw)
+         (when (nth-frame 4 (+ 1 frame))))
+
     
 
   

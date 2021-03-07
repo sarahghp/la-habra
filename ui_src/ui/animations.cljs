@@ -269,6 +269,23 @@
                            "translate(40vw, 40vh) rotate(120deg) scale(8.4)"
                            "translate(50vw, 30vh) rotate(0deg) scale(12.2)"
                            "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
+                           
+ (make-frames!
+   "wee"
+     [10, 55, 85, 92]
+    (make-body "transform" [
+                            "translate(80vw, 10vh) rotate(2deg) scale(2.2)"
+                            "translate(40vw, 40vh) rotate(120deg) scale(1.4)"
+                            "translate(50vw, 30vh) rotate(0deg) scale(2.2)"
+                            "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
+  (make-frames!
+    "wee-2"
+      [10, 55, 85, 92]
+     (make-body "transform" [
+                             "translate(20vw, 10vh) rotate(2deg) scale(2.2)"
+                             "translate(60vw, 60vh) rotate(120deg) scale(1.4)"
+                             "translate(30vw, 30vh) rotate(0deg) scale(2.2)"
+                             "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
 
  (make-frames!
    "loopy-left"
