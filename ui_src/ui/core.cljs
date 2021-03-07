@@ -16,17 +16,7 @@
               gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
-             [ gen-color-noise pattern pattern-def
-               blue-dots blue-lines
-               pink-dots pink-lines pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
-               gray-dots gray-dots-lg gray-lines gray-patch
-               mint-dots mint-lines
-               navy-dots navy-lines
-               orange-dots orange-lines
-               br-orange-dots br-orange-lines
-               yellow-dots yellow-lines
-               white-dots white-dots-lg white-lines
-               shadow noise]]
+             [ gen-color-noise pattern pattern-def all-patterns noise]]
             [ui.animations :as animations :refer
               [ make-body splice-bodies make-frames!
                 nth-frame even-frame odd-frame
@@ -121,34 +111,12 @@
                :style {:animation "colorcolorcolor 100s infinite"}
                :fill (pattern (str "noise-" yellow))}]
           [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" navy))}]
-         [:circle {:id "testCirc4" :cx 0 :cy 0 :r 100 :fill (pattern (:id pink-lines))}]
 
      (map identity gradients)
      (map identity masks)
      (map gen-color-noise all-fills)
      (map t/pattern-def-text [cd1 cd2 cd3 cd4])
-     (map pattern-def [ blue-dots
-                        blue-lines
-                        pink-dots pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
-                        pink-lines
-                        gray-dots
-                        gray-dots-lg
-                        gray-lines
-                        gray-patch
-                        mint-dots
-                        mint-lines
-                        navy-dots
-                        navy-lines
-                        orange-dots
-                        orange-lines
-                        br-orange-dots
-                        br-orange-lines
-                        yellow-dots
-                        yellow-lines
-                        white-dots
-                        white-dots-lg
-                        white-lines
-                        shadow])]
+     (map pattern-def all-patterns)]
                       collection
   ])
 

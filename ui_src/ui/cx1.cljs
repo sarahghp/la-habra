@@ -17,17 +17,26 @@
               gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
-             [ gen-color-noise pattern pattern-def
-               blue-dots blue-lines
-               pink-dots pink-lines pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
-               gray-dots gray-dots-lg gray-lines gray-patch
-               mint-dots mint-lines
-               navy-dots navy-lines
-               orange-dots orange-lines
-               br-orange-dots br-orange-lines
-               yellow-dots yellow-lines
-               white-dots white-dots-lg white-lines
-               shadow noise]]
+             [gen-color-noise pattern pattern-def
+              blue-dots blue-dots-1 blue-dots-2 blue-dots-3 blue-dots-4 blue-dots-5
+              blue-lines blue-lines-1 blue-lines-2 blue-lines-3 blue-lines-4 blue-lines-5
+              pink-lines pink-lines-1 pink-lines-2 pink-lines-3 pink-lines-4 pink-lines-5
+              pink-dots pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
+              gray-dots gray-dots-lg gray-dots-1 gray-dots-2 gray-dots-3 gray-dots-4 gray-dots-5
+              gray-lines gray-lines-1 gray-lines-2 gray-lines-3 gray-lines-4 gray-lines-5
+              gray-patch
+              mint-dots mint-dots-1 mint-dots-2 mint-dots-3 mint-dots-4 mint-dots-5
+              mint-lines mint-lines-1 mint-lines-2 mint-lines-3 mint-lines-4 mint-lines-5
+              navy-dots navy-dots-1 navy-dots-2 navy-dots-3 navy-dots-4 navy-dots-5
+              navy-lines navy-lines-1 navy-lines-2 navy-lines-3 navy-lines-4 navy-lines-5
+              orange-dots orange-lines
+              br-orange-dots br-orange-lines
+              yellow-dots yellow-dots-1 yellow-dots-2 yellow-dots-3 yellow-dots-4 yellow-dots-5
+              yellow-lines yellow-lines-1 yellow-lines-2 yellow-lines-3 yellow-lines-4 yellow-lines-5
+              white-dots white-dots-1 white-dots-2 white-dots-3 white-dots-4 white-dots-5
+              white-dots-lg
+              white-lines white-lines-1 white-lines-2 white-lines-3 white-lines-4 white-lines-5
+              shadow noise]]
             [ui.animations :as animations :refer
               [ nth-frame anim anim-and-hold
                 ]]))
@@ -522,9 +531,9 @@
                
   (let
     [colors [
-             ;midnight midnight midnight midnight
+             midnight midnight midnight midnight
              ;mint (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-             mint mint mint mint
+             ;mint mint mint mint
             ;pink pink 
             ;br-orange br-orange br-orange br-orange
             ;yellow yellow
@@ -602,7 +611,7 @@
              (when (nth-frame 3 (- 1 frame)))))
 
 
-  (->>
+  #_(->>
    (gen-shape clear scr2)
    (style {:stroke pink
            :stroke-width 3})
@@ -641,13 +650,17 @@
        (draw)
        (when (nth-frame 11 frame))) 
          
-  (->>
+  #_(->>
    (gen-circ gray (* 0.5 @width) (* 0.5 @height) 140)
    (style {:transform "rotate(45deg)"})
    (draw)
    (when (nth-frame 1 frame)))
    
 
+  (->>
+   (gen-circ (pattern (:id mint-dots-5)) (* 0.5 @width) (* 0.5 @height) 140)
+   (draw)
+   (when (nth-frame 1 frame)))
     
 
   
