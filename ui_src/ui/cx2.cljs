@@ -461,7 +461,7 @@
     ;(doall (map deref all-the-moves))
     
     ;@rr2
-    (doall (map deref levels))
+    ;(doall (map deref levels))
       
    ; grid (80/20), b, c, d
     
@@ -516,6 +516,8 @@
     (style {:transform "rotate(135deg)"})
     (draw)
     (when-not (nth-frame 0 frame)))
+    
+
 
 
    ))
