@@ -230,7 +230,7 @@
    (style {:stroke pink
            :stroke-width 5})
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "3s" "infinite")
+   (anim "woosh" "8s" "infinite")
    (draw)
    (atom)))
    
@@ -240,9 +240,19 @@
       (style {:stroke yellow
               :stroke-width 5})
       (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-      (anim "woosh" "6s" "infinite")
+      (anim "woosh" "7s" "infinite" {:delay "2s"})
       (draw)
       (atom)))
+      
+         (def move-me-9
+           (->>
+            (gen-shape clear scr4)
+            (style {:stroke white
+                    :stroke-width 8})
+            (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+            (anim "woosh" "7s" "infinite")
+            (draw)
+            (atom)))
 
 (def move-me-2
   (->>
@@ -397,7 +407,80 @@
    (draw)
    (gen-group {:style {:transform-origin "center" :transform "translate(-10vw, -10vh) scale(5)"}})
    (atom)))
+   
+  (def slide1
+    (->>
+     (gen-circ mint 0 0 40)
+     (anim "right-down-1" "2s" "infinite")
+     (draw)
+     (atom)))
+     
+   (def slide2
+     (->>
+      (gen-circ (pattern (:id white-dots-3)) 0 0 40)
+      (anim "right-down-1" "2s" "infinite" {:timing "ease-out"})
+      (draw)
+      (atom)))
+      
+     (def slide3
+       (->>
+        (gen-circ (pattern (:id pink-lines-3)) 0 0 40)
+        (anim "left-up-1" "3s" "infinite" {:timing "ease-out"})
+        (draw)
+        (atom)))
+        
+             (def slide4
+               (->>
+                (gen-circ white 0 0 40)
+                (anim "left-up-1" "3s" "infinite" {:timing "ease-out"})
+                (draw)
+                (atom)))
 
+
+  (def slide5
+    (->>
+     (gen-circ mint 0 0 40)
+     (anim "right-down-2" "2s" "infinite")
+     (draw)
+     (atom)))
+     
+   (def slide6
+     (->>
+      (gen-circ (pattern (:id white-dots-3)) 0 0 40)
+      (anim "right-down-2" "2s" "infinite" {:timing "ease-out"})
+      (draw)
+      (atom)))
+      
+     (def slide7
+       (->>
+        (gen-circ (pattern (:id pink-lines-3)) 0 0 40)
+        (anim "left-up-2" "3s" "infinite" {:timing "ease-out"})
+        (draw)
+        (atom)))
+        
+             (def slide8
+               (->>
+                (gen-circ white 0 0 40)
+                (anim "left-up-2" "3s" "infinite" {:timing "ease-out"})
+                (draw)
+                (atom)))
+                
+    (def grr
+      (->>
+       (gen-rect (pattern (:id yellow-dots-4)) 0 0 "100%" "100%")
+       (style {:opacity .6})
+       (anim "rot" "10s" "infinite")
+       (draw)
+       (atom)))
+       
+           (def grr2
+             (->>
+              (gen-rect (pattern (:id br-orange-dots-3)) 0 0 "200%" "200%")
+                     (style {:opacity .6})
+
+              (anim "rot" "8s" "infinite" {:delay "3s" :timing "ease-out"})
+              (draw)
+              (atom)))
 
 
 
@@ -587,10 +670,13 @@
                
   (let
     [colors [
-             midnight midnight midnight midnight
-             mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-             ;mint mint mint mint
-            pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
+             ;midnight midnight midnight midnight
+            ; midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
+
+             ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+            ;mint mint mint mint
+            pink pink pink pink
+            ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
             ;br-orange br-orange br-orange br-orange
             ;yellow yellow
             ;white white white white
@@ -601,6 +687,11 @@
         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
         (style {:opacity .95})
         (draw)))
+        
+        ;(doall (map deref levels))
+        
+        ;@grr
+        ;@grr2
         
         #_(when (nth-frame 1 slow-frame) (->>
          (gen-grid
@@ -640,6 +731,13 @@
            (when (nth-frame (+ 2 idx) frame) item)))
         (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
       
+      #_(when (nth-frame 6 frame) (gen-line-grid pink 2
+        40 40
+        {:col 80 :row 80}))
+        
+              #_(when (nth-frame 8 frame) (gen-line-grid white 2
+                20 5
+                {:col 40 :row 80}))
 
  
   #_(gen-group {:mask (url "grad-mask")} (->>
@@ -666,14 +764,23 @@
              (draw)
              (when (nth-frame 3 (- 1 frame)))))
 
+;@trio
 
-  (->>
+  #_(->>
    (gen-shape clear scr2)
    (style {:stroke pink
            :stroke-width 3})
    (style {:transform "translate(40vw, 25vh) scale(3)"})
    (draw)
    (when (nth-frame 5 frame)))
+   
+     #_(->>
+      (gen-shape clear scr2)
+      (style {:stroke midnight
+              :stroke-width 3})
+      (style {:transform "translate(40vw, 25vh) scale(3)"})
+      (draw)
+      (when (nth-frame 5 (- 1 frame))))
    
    
    (->>
@@ -682,9 +789,9 @@
             :stroke-width 2})
     (style {:transform "translate(35vw, 70vh) scale(-3.5)"})
     (draw)
-    (when (nth-frame 5 (+ 1 frame))))
+    (when (nth-frame 1 (+ 1 frame))))
     
-  (->>
+  #_(->>
    (gen-shape clear scr4)
    (style {:stroke yellow
            :stroke-width 2
@@ -692,7 +799,7 @@
            :stroke-dashoffset 15})
    (style {:transform "translate(50vw, 40vh) scale(7)"})
    (draw)
-   (when (nth-frame 4 frame)))   
+   (when (nth-frame 2 slow-frame)))   
    
      #_(->>
       (gen-circ (pattern (:id gray-lines)) (* 0.5 @width) (* 0.5 @height) 200)
@@ -711,60 +818,47 @@
    (style {:transform "rotate(45deg)"})
    (draw)
    (when (nth-frame 1 frame)))
-   ; @move-me-a
-   ;  @move-me-b
+
     
-    (when (nth-frame 4 frame)
-      (freak-out @width
-                 @height
-                 10
-                 200
-                 pink))
-                 
-                     (when (nth-frame 7 frame)
-                       (freak-out @width
-                                  @height
-                                  10
-                                  200
-                                  br-orange))
 
 
-   ;(when (nth-frame 3 frame) @streaks)
-   
-   @dr
-   @op
-   
-   (when (nth-frame 5 frame)
-   (gen-line-grid white 2
-     80 80
-     {:col 40 :row 40}))
-   
-      ;@move-me-3
-            ;@move-me-5
-
-      ;@move-me-7
-
-  (->>
-   (gen-circ (pattern (:id mint-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+  #_(->>
+   (gen-circ (pattern (:id navy-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
    (draw)
    (when (nth-frame 4 frame)))
    
-     (->>
-      (gen-circ (pattern (:id navy-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
-      (draw)
-      (when (nth-frame 4 (+ 2 frame))))
    
-     (->>
-      (gen-circ (pattern (:id mint-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
-      (draw)
-      (when (nth-frame 4 (+ 3 frame))))
-      
-        (->>
-         (gen-circ (pattern (:id navy-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
-         (draw)
-         (when (nth-frame 4 (+ 1 frame))))
+    (->>
+     (gen-circ (pattern (:id gray-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+     (draw)
+     (when-not (nth-frame 0 frame)))
+     
+         #_(->>
+          (gen-circ (pattern (:id mint-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+          (draw)
+          (when (nth-frame 5 frame)))
+     
+ #_(->>
+  (gen-circ (pattern (:id orange-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+  (draw)
+  (when (nth-frame 7 frame)))
 
+  ;  @slide1
+  ; @slide2
+  ;  @slide4
+  ; @slide3
+  ;    @slide5
+  ; @slide6
+  ;  @slide7
+  ;   @slide8
     
+    @lm5
+    
+    ;@move-me-5
+    ;@move-me-7
+    ;@move-me-9
+    
+    ;(doall (map deref line-growth))
 
   
 )) ; cx end

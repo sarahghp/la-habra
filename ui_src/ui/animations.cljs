@@ -367,3 +367,20 @@
 (back-and-forth! "small-scale-y"
                  "scaleY(1)"
                  "scaleY(.05)")
+                 
+
+(back-and-forth! "right-down-1"
+                 "translate(10vw, 10vh) scale(1)"
+                 "translate(80vw, 70vh) scale(1.8)")
+                 
+(back-and-forth! "right-down-2"
+                 "translate(30vw, 10vh) scale(1)"
+                 "translate(85vw, 90vh) scale(1.8)")
+                 
+(back-and-forth! "left-up-1"
+                 "translate(12vw, 70vh) scale(1)"
+                 "translate(70vw, 4vh) scale(1.8)")
+                 
+(back-and-forth! "left-up-2"
+                 "translate(20vw, 95vh) scale(1)"
+                 "translate(90vw, 10vh) scale(1.8)")
