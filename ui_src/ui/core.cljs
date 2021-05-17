@@ -125,7 +125,7 @@
              [
              ;"luminosity" "luminosity" "luminosity" 
             ; "luminosity"
-            "multiply" "multiply" "multiply" "multiply"
+            "multiply" "multiply" "multiply" "multipl;"
             ;"difference" "difference" "difference"
             ; "difference" "difference" "difference"  
               ])))

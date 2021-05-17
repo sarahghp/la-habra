@@ -441,16 +441,16 @@
 (def rr2 (atom
          (->>
           (gen-grid
-            20 30
+            5 5
             {:col 100 :row 150}
             (->>
-             (gen-shape yellow tri)))
+             (gen-shape yellow oct)))
               (map #(style {:opacity 1 :mix-blend-mode "difference"} %))
 
-            (map #(anim "morph" "5s" "infinite" %))
+            (map #(anim "lump-morph" "5s" "infinite" %))
             (map draw)
-                  (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
-          (map #(gen-group {:style {:transform-origin "center" :transform "translate(-200px, 100px)"}} %))
+                  (map #(gen-group {:style {:transform-origin "center" :transform "scale(3)"}} %))
+          (map #(gen-group {:style {:transform-origin "center" :transform "translate(-300px, 100px)"}} %))
             (map #(gen-group { :style {:transform-origin "center"  :animation "rot 5s infinite" }} %)))))
 
 (def lerp1 (lerp))
@@ -466,7 +466,7 @@
    ; grid (80/20), b, c, d
     
    ;(when (nth-frame 9 slow-frame) @a)
-   ;(when (nth-frame 3 slow-frame) @aaa)
+   ;(when-not (nth-frame 3 slow-frame) @aaa)
 
    ;(when (nth-frame 5 frame) @c)
    
@@ -503,7 +503,7 @@
      {:col 20 :row 20}))
 
     ;@bb6
-  ;  @bb6s
+    ;@bb6s
    
    ;@scale-me
    ;@rot-me
