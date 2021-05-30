@@ -15,17 +15,27 @@
               gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
             [ui.patterns :as patterns :refer
-             [ gen-color-noise pattern pattern-def
-               blue-dots blue-lines
-               pink-dots pink-lines pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
-               gray-dots gray-dots-lg gray-lines gray-patch
-               mint-dots mint-lines
-               navy-dots navy-lines
-               orange-dots orange-lines
-               br-orange-dots br-orange-lines
-               yellow-dots yellow-lines
-               white-dots white-dots-lg white-lines
-               shadow noise]]
+             [gen-color-noise pattern pattern-def
+              blue-dots blue-dots-1 blue-dots-2 blue-dots-3 blue-dots-4 blue-dots-5
+              blue-lines blue-lines-1 blue-lines-2 blue-lines-3 blue-lines-4 blue-lines-5
+              pink-lines pink-lines-1 pink-lines-2 pink-lines-3 pink-lines-4 pink-lines-5
+              pink-dots pink-dots-1 pink-dots-2 pink-dots-3 pink-dots-4 pink-dots-5
+              gray-dots gray-dots-lg gray-dots-1 gray-dots-2 gray-dots-3 gray-dots-4 gray-dots-5
+              gray-lines gray-lines-1 gray-lines-2 gray-lines-3 gray-lines-4 gray-lines-5
+              gray-patch
+              mint-dots mint-dots-1 mint-dots-2 mint-dots-3 mint-dots-4 mint-dots-5
+              mint-lines mint-lines-1 mint-lines-2 mint-lines-3 mint-lines-4 mint-lines-5
+              navy-dots navy-dots-1 navy-dots-2 navy-dots-3 navy-dots-4 navy-dots-5
+              navy-lines navy-lines-1 navy-lines-2 navy-lines-3 navy-lines-4 navy-lines-5
+              orange-dots orange-dots-1 orange-dots-2 orange-dots-3 orange-dots-4 orange-dots-5 orange-lines orange-lines-1 orange-lines-2 orange-lines-3 orange-lines-4 orange-lines-5
+              br-orange-dots br-orange-dots-1 br-orange-dots-2 br-orange-dots-3 br-orange-dots-4 br-orange-dots-5  br-orange-lines br-orange-lines-1 br-orange-lines-2 br-orange-lines-3 br-orange-lines-4 br-orange-lines-5
+              yellow-dots yellow-dots-1 yellow-dots-2 yellow-dots-3 yellow-dots-4 yellow-dots-5
+              yellow-lines yellow-lines-1 yellow-lines-2 yellow-lines-3 yellow-lines-4 yellow-lines-5
+              white-dots white-dots-1 white-dots-2 white-dots-3 white-dots-4 white-dots-5
+              white-dots-lg
+              white-lines white-lines-1 white-lines-2 white-lines-3 white-lines-4 white-lines-5
+              midnight-dots-1 midnight-dots-2 midnight-dots-3 midnight-dots-4 midnight-dots-5  midnight-lines-1 midnight-lines-2 midnight-lines-3 midnight-lines-4 midnight-lines-5
+              shadow noise]]
             [ui.animations :as animations :refer
               [ nth-frame anim anim-and-hold
                 ]]))
@@ -436,7 +446,7 @@
             ;(map #(anim "rot" "10s" "infinte" %))
             (map draw)
           (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
-          (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center" :animation "rot 10s infinite" }} %)))))
+          (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center" :animation "rot 10s 1" }} %)))))
 
 (def rr2 (atom
          (->>
@@ -452,15 +462,29 @@
                   (map #(gen-group {:style {:transform-origin "center" :transform "scale(3)"}} %))
           (map #(gen-group {:style {:transform-origin "center" :transform "translate(-300px, 100px)"}} %))
             (map #(gen-group { :style {:transform-origin "center"  :animation "rot 5s infinite" }} %)))))
+            
+            (defonce streaks
+              (scatter 40 
+                       (->>
+                        (gen-line [10 10] [200 100] midnight 10)
+                        (draw))))
+                        
+                    (defonce streaks2
+                      (scatter 100 
+                               (->>
+                                (gen-line [10 10] [200 100] white 10)
+                                (draw))))
+
 
 (def lerp1 (lerp))
 
 (defn cx2 [frame fast-frame slow-frame]
   (list
     
-    ;(doall (map deref all-the-moves))
+    #_(doall (map deref all-the-moves))
     
-    ;@rr2
+    
+    ;@rr
     ;(doall (map deref levels))
       
    ; grid (80/20), b, c, d
@@ -515,8 +539,15 @@
     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 600 (url "grad-mask"))
     (style {:transform "rotate(135deg)"})
     (draw)
-    (when-not (nth-frame 0 frame)))
+    (when-not (nth-frame 1 frame)))
     
+
+    #_(when (nth-frame 1 frame)
+      (freak-out @width
+                 @height
+                 4
+                 400
+                 white))
 
 
 

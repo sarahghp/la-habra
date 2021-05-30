@@ -110,7 +110,7 @@
                :cx 0 :cy 0 :r 100
                :style {:animation "colorcolorcolor 100s infinite"}
                :fill (pattern (str "noise-" yellow))}]
-          [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" navy))}]
+          [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" midnight))}]
 
      (map identity gradients)
      (map identity masks)
@@ -125,7 +125,7 @@
              [
              ;"luminosity" "luminosity" "luminosity" 
             ; "luminosity"
-            "multiply" "multiply" "multiply" "multipl;"
+            "multiply" "multiply"
             ;"difference" "difference" "difference"
             ; "difference" "difference" "difference"  
               ])))
@@ -133,10 +133,10 @@
 (defn drawing2 []
     (add-svg @collection2 (val-cyc @frame
              [
-              "difference" "difference" "difference" 
+              ;"difference" "difference" "difference" 
               
-             ;"multiply" "multiply" "multiply" "multiply"
-             ;"luminosity" "luminosity"
+             "multiply" "multiply" "multiply" "multiply"
+             "luminosity" "luminosity"
                ;"luminosity"
               ])))
 
