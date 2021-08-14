@@ -136,7 +136,7 @@
               ;"difference" "difference" "difference" 
               
              "multiply" "multiply" "multiply" "multiply"
-             "luminosity" "luminosity"
+             ;"luminosity" "luminosity"
                ;"luminosity"
               ])))
 

@@ -478,6 +478,15 @@
 
 (def lerp1 (lerp))
 
+
+(def open 
+  (atom  (gen-group {:style 
+      {:transform-origin "center" :animation "scaley 12s infinite"}}
+      (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 20 (url "grad-mask"))
+      (style {:transform "rotate(135deg)"})
+      (draw)))))
+
 (defn cx2 [frame fast-frame slow-frame]
   (list
     
@@ -535,11 +544,7 @@
    ;@drops
    ;@drops2
    
-   #_(->>
-    (gen-circ pink (* 0.5 @width) (* 0.5 @height) 600 (url "grad-mask"))
-    (style {:transform "rotate(135deg)"})
-    (draw)
-    (when-not (nth-frame 1 frame)))
+
     
 
     #_(when (nth-frame 1 frame)
@@ -549,7 +554,13 @@
                  400
                  white))
 
+  @open
 
+      (->>
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask"))
+      (style {:transform "rotate(135deg)"})
+      (draw)
+      (when (nth-frame 4 frame)))
 
    ))
 

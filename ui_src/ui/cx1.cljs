@@ -690,7 +690,7 @@
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
-(defn cx [frame fast-frame slow-frame]
+(defn cx [fast-frame frame slow-frame]
   (list
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -710,11 +710,13 @@
              ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
              ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-            ;mint mint mint mint
-            pink pink pink pink
+            mint mint mint mint
+            mint mint mint mint
+            ;pink pink pink pink
             ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
             ;br-orange br-orange br-orange br-orange
-            ;yellow yellow
+            yellow yellow yellow yellow
+            yellow yellow yellow yellow
             ;white white white white
             ;blue blue blue 
              ;
@@ -724,10 +726,24 @@
         (style {:opacity .95})
         (draw)))
         
+        (gen-bg-lines pink (mod frame 60))
+        
+  
+
+        
         ;(doall (map deref levels))
         
-        ;@grr
-        ;@grr2
+        #_(when (nth-frame 6 frame)
+        (gen-line-grid white 8
+          40 40
+          {:col 200 :row 200}))
+          
+              #_(when (nth-frame 5 frame)
+              (gen-line-grid 
+                (pattern (:id blue-dots-2)) 8
+                40 40
+                {:col 100 :row 100}))
+        
         
         #_(when (nth-frame 4 frame)(gen-line-grid midnight 2
           20  20
@@ -735,31 +751,7 @@
           
           ;#_@blobs4
         
-        (when (nth-frame 1 slow-frame) (->>
-         (gen-grid
-           12 12
-           {:col 100 :row 100}
-           (->>
-            (gen-rect orange 4 4 20 20)))
-           ;(map #(style styles %))
-           ;(map #(anim animations %))
-           (map draw)
-           (map-indexed
-            (fn [idx item]
-              (when (nth-frame (* idx .5) frame) item)))
-           (map #(gen-group {:style {:transform-origin "center" :transform "scale(3)" }} %))))
-           
-         (when (nth-frame 1 slow-frame) (->>
-          (gen-grid
-            8 12
-            {:col 400 :row 400}
-            (->>
-             (gen-shape blue oct)))
-            (map draw)
-            (map-indexed
-             (fn [idx item]
-               (when (nth-frame (+ 10 idx) fast-frame) item)))
-            (map #(gen-group {:style {:transform-origin "center" :transform "scale(.4)" }} %))))
+
 
      #_(when (nth-frame 1 slow-frame) (->>
       (gen-grid
@@ -772,14 +764,7 @@
          (fn [idx item]
            (when (nth-frame (+ 2 idx) frame) item)))
         (map #(gen-group {:style {:transform-origin "center" :transform "scale(.2)" }} %))))
-      
-      #_(when (nth-frame 6 frame) (gen-line-grid pink 2
-        40 40
-        {:col 80 :row 80}))
-        
-              #_(when (nth-frame 8 frame) (gen-line-grid white 2
-                20 5
-                {:col 40 :row 80}))
+
 
  
   #_(gen-group {:mask (url "grad-mask")} (->>
@@ -833,7 +818,7 @@
       (when (nth-frame 5 (- 1 frame))))
    
    
-   (->>
+   #_(->>
     (gen-shape clear scr3)
     (style {:stroke white
             :stroke-width 2})
@@ -863,7 +848,7 @@
       (when (nth-frame 5 slow-frame)))   
       
       
-        (->>
+        #_(->>
          (gen-shape clear scr4)
          (style {:stroke yellow
                  :stroke-width 2
@@ -871,45 +856,46 @@
                  :stroke-dashoffset 15})
          (style {:transform "translate(70vw, 40vh) scale(7)"})
          (draw)
-         (when (nth-frame 4 slow-frame)))   
+         (when (nth-frame 4 frame)))   
 
 
-
+   ;@bb6
+   ;@move-me-5   
+   ;@move-me-7
+   ;@move-me-9
     
 
 
-  (->>
-   (gen-circ (pattern (:id navy-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
+  #_(->>
+   (gen-circ (pattern (:id navy-lines-5)) (* 0.5 @width) (* 0.5 @height)  (val-cyc frame  [200 0 0 400 0 0 300 0 0 400 0 0 200 0 0]))
    (draw)
-   (when (nth-frame 4 frame)))
+   (when (nth-frame 1 frame)))
    
 
-   ;@move-me-5
    
-   ;@move-me-7
-   
-   ;@move-me-9
+
    
    
-    #_(->>
-     (gen-circ (pattern (:id white-lines-3)) (* 0.5 @width) (* 0.5 @height) 300)
+   
+    (->>
+     (gen-circ (pattern (:id white-lines-3)) (* 0.2 @width) (* 0.6 @height) 100)
      (draw)
      (when (nth-frame 4 (+ 2 frame))))
      
      
          #_(->>
-          (gen-circ (pattern (:id orange-lines-5)) (* 0.5 @width) (* 0.5 @height) 300)
+          (gen-circ (pattern (:id orange-lines-5)) (* 0.2 @width) (* 0.2 @height) 300)
           (draw)
           (when (nth-frame 6 frame)))
           
      
           
-        (->>
+        #_(->>
          (gen-rect midnight (* 0.1 @width) (* 0.1 @height) 400 400)
          (draw)
          (when (nth-frame 4 (+ 2 frame))))
          
-         (->>
+         #_(->>
           (gen-rect midnight (* 0.7 @width) (* 0 @height) (* 0.8 @width) @height)
           (draw)
           (when (nth-frame 3 (+ 4 frame))))
@@ -917,67 +903,97 @@
           ;@scale-me
           
           
-          @mf3
-          @mf3a
+          ;@mf3
+          ;@mf3a
      
      
      
 
      
- (->>
+ #_(->>
   (gen-circ (pattern (:id orange-lines-5)) (* 0.5 @width) (* 0.5 @height) 200)
   (draw)
   (when (nth-frame 7 frame)))
 
 
     
-     ;(doall (map deref line-growth))
     
     ;@dr
     ;@op
     
-    (->>
+    #_(->>
      (gen-shape (pattern (:id midnight-dots-4)) pent)
      (style {:transform "translate(38vw, 40vh) scale(2)"})
      (draw)
      (when (nth-frame 5 frame)))
      
-     #_(new-freakout @width @height 20 400 "testCirc2")
+     #_(->>
+      (gen-rect white (* 0.1 @width) (* 0.1 @height) 600 600)
+      (style {:mix-blend-mode "difference"})
+      (draw)
+      (when (nth-frame 9 frame)))
+
     
-    
-    (->>
+    #_(->>
      (gen-rect white (* 0.25 @width) (* 0.25 @height) (* 0.6 @width) 100)
      (style {:mix-blend-mode "luminosity"})
      (draw)
      (when (nth-frame 3 frame)))
      
          
-     (->>
+     #_(->>
       (gen-rect white (* 0.25 @width) (* 0.45 @height) (* 0.6 @width) 100)
       (style {:mix-blend-mode "difference"})
 
       (draw)
       (when (nth-frame 3 (+ 1 frame))))
       
-         (->>
+         #_(->>
           (gen-rect white (* 0.25 @width) (* 0.65 @height) (* 0.6 @width) 100)
                (style {:mix-blend-mode "overlay"})
 
           (draw)
           (when (nth-frame 3 (+ 2 frame))))
           
-          ;@move-me-2
-          ;@move-me-5
           
-          
-          
-          
-          ;@spinlm4
-          @spinlm2
-                    ;@spinlm
+
+    
  
           
                     #_(gen-bg-lines white (mod (+ 4 frame) 60))
+                    
+                    #_(new-freakout @width @height 20 10 "testCirc2")
+                    
+            (when (nth-frame 6 slow-frame) (->>
+             (gen-grid
+               12 12
+               {:col 100 :row 100}
+               (->>
+                (gen-rect orange 4 4 20 20)))
+               ;(map #(style styles %))
+               ;(map #(anim animations %))
+               (map draw)
+               (map-indexed
+                (fn [idx item]
+                  (when (nth-frame (* idx .5) frame) item)))
+               (map #(gen-group {:style {:transform-origin "center" :transform "scale(3)" }} %))))
+               
+             (when (nth-frame 4 slow-frame) (->>
+              (gen-grid
+                8 12
+                {:col 400 :row 400}
+                (->>
+                 (gen-shape blue oct)))
+                (map draw)
+                (map-indexed
+                 (fn [idx item]
+                   (when (nth-frame (+ 10 idx) fast-frame) item)))
+                (map #(gen-group {:style {:transform-origin "center" :transform "scale(.4)" }} %))))
+                
+            
+          (when (nth-frame 2 frame) @streaks)
+          (when (nth-frame 2 (+ 1 frame)) @streaks2)          
+                    
 
   
 )) ; cx end
