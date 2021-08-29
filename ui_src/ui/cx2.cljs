@@ -481,7 +481,7 @@
 
 (def open 
   (atom  (gen-group {:style 
-      {:transform-origin "center" :animation "scaley 12s infinite"}}
+      {:transform-origin "center" :animation "scaley 6s infinite"}}
       (->>
       (gen-circ pink (* 0.5 @width) (* 0.5 @height) 20 (url "grad-mask"))
       (style {:transform "rotate(135deg)"})
@@ -554,13 +554,19 @@
                  400
                  white))
 
-  @open
+     ;@open
 
       (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 200 (url "grad-mask"))
+      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
       (style {:transform "rotate(135deg)"})
       (draw)
-      (when (nth-frame 4 frame)))
+      (when (nth-frame 8 frame)))
+      
+      (->>
+      (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+      (style {:transform "rotate(135deg)"})
+      (draw)
+      (when (nth-frame 6 frame)))
 
    ))
 
