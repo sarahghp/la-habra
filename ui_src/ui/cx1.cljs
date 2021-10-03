@@ -141,13 +141,12 @@
  (atom)))
 
 (def lm5 (->>
- (gen-shape mint l1)
- (style {:transform "translate(10vw, 10vh) scale(2.5)"})
-(style {:mix-blend-mode "overlay"})
-
- (anim "l1l6" "16s" "infinite")
- (draw)
- (atom)))
+  (gen-shape mint l1)
+  (style {:transform "translate(10vw, 10vh) scale(2.5)"})
+  (style {:mix-blend-mode "overlay"})
+  (anim "l1l6" "16s" "infinite")
+  (draw)
+  (atom)))
 
 (def lm4 (->>
  (gen-shape blue l1)
@@ -665,99 +664,61 @@
 (def lerp3 (lerp))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
+ 
+ (defn list1 [fast-frame frame slow-frame svg-frame]
+   (list
+     (let
+       [colors [
+                ;midnight midnight midnight midnight
+                ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
-(defn cx [fast-frame frame slow-frame]
-  (list
+                ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+               ;mint mint mint mint
+               ;mint mint mint mint
+               pink pink pink pink
+               ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
+               ;br-orange br-orange br-orange br-orange
+               yellow yellow yellow yellow
+               yellow yellow yellow yellow
+               ;white white white white
+               ;blue blue blue 
+                ;
+                ]]
+         (->>
+           (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+           (style {:opacity .95})
+           (draw)))))
+           
+   (defn list2 [fast-frame frame slow-frame svg-frame]
+     (list
+       (let
+         [colors [
+                  ;midnight midnight midnight midnight
+                  ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;;;;;;;;;;;;;;;;; BACKGROUNDS ;;;;;;;;;;;;;;;;;;;;;;;
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+                 ;mint mint mint mint
+                 ;mint mint mint mint
+                 ;pink pink pink pink
+                 ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
+                 ;br-orange br-orange br-orange br-orange
+                 ;yellow yellow yellow yellow
+                 ;yellow yellow yellow yellow
+                 ;white white white white
+                 blue blue blue 
+                  ;
+                  ]]
+           (->>
+             (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+             (style {:opacity .95})
+             (draw)))
+             
+            @bb6
+            ))
 
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               4
-               400
-               white))
-               
-  (let
-    [colors [
-             ;midnight midnight midnight midnight
-             ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
-
-             ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-            ;mint mint mint mint
-            ;mint mint mint mint
-            pink pink pink pink
-            ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
-            ;br-orange br-orange br-orange br-orange
-            yellow yellow yellow yellow
-            yellow yellow yellow yellow
-            ;white white white white
-            ;blue blue blue 
-             ;
-             ]]
-      (->>
-        (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
-        (style {:opacity .95})
-        (draw)))
-        
-        
+(defn cx [fast-frame frame slow-frame svg-frame]
+  (val-cyc svg-frame [
+    (list1 fast-frame frame slow-frame svg-frame)
+    (list2 fast-frame frame slow-frame svg-frame)
+  ])) ; cx end
   
-  ;(doall (map deref levels))
-
-;@trio
-   
-   
-   #_(->>
-    (gen-shape clear scr3)
-    (style {:stroke white
-            :stroke-width 2})
-    (style {:transform "translate(20vw, 70vh) scale(-4.5)"})
-    (draw)
-    (when (nth-frame 6  (+ 1 frame))))
-
-   #_(->>
-    (gen-rect (pattern (:id white-lines-4)) 10 10 (* 0.6 @width) (* 0.7 @height))
-    (draw)
-    (when (nth-frame 8 frame)))
-    
-       #_(->>
-        (gen-rect (pattern (:id white-lines-2)) (* 0.4 @width) (* 0.45 @height) (* 0.5 @width) (* 0.5 @height))
-        (draw)
-        (when (nth-frame 3 frame)))
-        
-       #_(->>
-        (gen-rect white (* 0.5 @width) (* 0.1 @height) (* 0.5 @width) (* 0.5 @height))
-        (draw)
-        (when (nth-frame 5 frame)))
-        
-       (->>
-        (gen-rect white (* 0.3 @width) (* 0.2 @height) (* 0.5 @width) (* 0.5 @height))
-        (style {:mix-blend-mode "difference" :transform "scale(2)"})
-        (draw)
-        (when (nth-frame 4 frame)))
-
-   
-  (when (nth-frame 6 (+ 2 slow-frame)) @recties-3)
-   (when (nth-frame 6 slow-frame) @recties)
-         (when (nth-frame 8 slow-frame) @recties-5)
-      (when (nth-frame 3 slow-frame) @recties-6)
-
-      (when (nth-frame 7 slow-frame) @recties-4)
-
-   
-      (gen-group {:style {:mix-blend-mode "difference"}}(new-freakout @width @height 10 100 "testCirc"))
-                    
-                    
-                      
-                      (when (nth-frame 1 frame) (gen-line-grid white 4
-                        80 80
-                        {:col 30 :row 30}))
-                        
-                        (when (nth-frame 4 (+ 1 frame)) (gen-line-grid midnight 4
-                          80 80
-                          {:col 30 :row 30}))
-
-  
-)) ; cx end

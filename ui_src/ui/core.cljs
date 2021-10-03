@@ -41,10 +41,10 @@
 (def DEBUG false)
 
 (when DEBUG
-  (defonce collection (atom (cx 1 1 1))))
+  (defonce collection (atom (cx 1 1 1 1))))
 
 (when DEBUG
-  (defonce collection2 (atom (cx2 1 1 1))))
+  (defonce collection2 (atom (cx2 1 1 1 ))))
 
 (when-not DEBUG
   (defonce collection (atom (list))))
@@ -57,11 +57,12 @@
 (defonce frame (atom 0))
 (defonce fast-frame (atom 0))
 (defonce slow-frame (atom 0))
+(defonce svg-frame (atom 0))
 
 (when-not DEBUG
   (defonce start-cx-timer
     (js/setInterval
-      #(reset! collection (cx @frame @fast-frame @slow-frame)) 50)) 
+      #(reset! collection (cx @frame @fast-frame @slow-frame @svg-frame)) 50)) 
 
   (defonce start-cx-timer-2
     (js/setInterval
@@ -77,7 +78,11 @@
 
   (defonce start-slow-frame-timer
     (js/setInterval
-      #(swap! slow-frame inc) 1000)))
+      #(swap! slow-frame inc) 1000))
+      
+  (defonce start-svg-frame-timer
+    (js/setInterval
+      #(swap! svg-frame inc) 5000)))
 
 
 
