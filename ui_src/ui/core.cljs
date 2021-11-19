@@ -142,7 +142,7 @@
               
              "multiply" "multiply" "multiply" "multiply"
              ;"luminosity" "luminosity"
-               ;"luminosity"
+              ; "luminosity"
               ])))
 
 (reagent/render [:div

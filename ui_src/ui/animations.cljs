@@ -384,3 +384,7 @@
 (back-and-forth! "left-up-2"
                  "translate(20vw, 95vh) scale(1)"
                  "translate(90vw, 10vh) scale(1.8)")
+                 
+(back-and-forth! "lengthen"
+                 "scaleY(0%)"
+                 "scaleY(100%)")

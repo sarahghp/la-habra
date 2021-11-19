@@ -435,6 +435,31 @@
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 
+(def babrect1 
+  (->>
+   (gen-rect navy 0 0 @width (* .05 @height))
+   (style {:mix-blend-mode "luminosity"})
+   (anim "small-scale" "6.4s" "infinite")
+   (draw)
+   (atom)))
+
+(def babrect2 
+  (->>
+   (gen-rect navy 0 (* .9 @height) @width (* 1 @height))
+   (style {:mix-blend-mode "luminosity"})
+   (anim "small-scale" "6.4s" "infinite" {:delay "3.2s"})
+   (draw)
+   (atom)))
+   
+   
+   (def babrect3 
+     (->>
+      (gen-rect navy 0 (* 0 @height) @width (* 1 @height))
+      (style {:mix-blend-mode "luminosity"})
+      ;(anim "small-scale" "1.4s" "infinite" {:delay "1.2s"})
+      (draw)
+      (atom)))
+
 (def rr (atom
          (->>
           (gen-grid
@@ -513,7 +538,7 @@
         (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
        (style {:transform "translate(50vw, 50vh)"})
         (draw)
-        (when (nth-frame 1 frame)))
+        (when (nth-frame 3 frame)))
      
          #_(->>
           (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
@@ -544,29 +569,81 @@
    ;@drops
    ;@drops2
    
+   ;@babrect1
+   ;@babrect2
 
     
 
-    #_(when (nth-frame 1 frame)
+    #_(when (nth-frame 2 frame)
       (freak-out @width
                  @height
-                 4
-                 400
-                 white))
+                 40
+                 100
+                 orange))
 
-     ;@open
 
-      (->>
+  #_(when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               20
+               200
+               white))
+               
+               #_(when (nth-frame 1 frame)
+                 (freak-out @width
+                            @height
+                            30
+                            300
+                            white))
+     
+
+      #_(->>
       (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
       (style {:transform "rotate(135deg)"})
       (draw)
-      (when (nth-frame 8 frame)))
+      (when (nth-frame 4 frame)))
       
-      (->>
+      #_(->>
       (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
       (style {:transform "rotate(135deg)"})
       (draw)
-      (when (nth-frame 6 frame)))
+      (when (nth-frame 0 frame)))
+      
+      #_(when (nth-frame 6 frame)
+        (freak-out @width
+                   @height
+                   30
+                   100
+                   mint))
+                   
+#_(when (nth-frame 2 (+ 1 frame))(gen-line-grid white 2
+  80 80
+  {:col 20 :row 20})   ) 
+  
+       ;@bb6a
+       
+       ;@babrect3
+               ;@open
+                     (->>
+                     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+                     (style {:transform "rotate(135deg)"})
+                     (draw)
+                     (when (nth-frame 4 frame)))
+                     
+                       #_(when (nth-frame 1 frame)
+                         (freak-out @width
+                                    @height
+                                    20
+                                    200
+                                    charcoal))
+                                    
+                                    #_(when (nth-frame 1 frame)
+                                      (freak-out @width
+                                                 @height
+                                                 30
+                                                 300
+                                                 white))
+
 
    ))
 
