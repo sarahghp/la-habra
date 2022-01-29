@@ -279,7 +279,7 @@
       ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
           (style {:mix-blend-mode "color-dodge"} )
 
-      (anim "loopy-left" "4s" "infinite")
+      (anim "loopy-left" "10s" "infinite")
     (draw)
     (atom)))
 
@@ -294,12 +294,35 @@
     (draw)
     (atom)))
     
-    (def bb6b
+    (def bb6c
       (->>
-        (gen-shape midnight oct)
+        (gen-shape white oct)
           (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
           ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
-              (style {:mix-blend-mode "color-burn"} )
+              ;(style {:mix-blend-mode "color-dodge"} )
+
+          (anim "woosh" "12s" "infinite" {:delay ".4s"})
+        (draw)
+        (atom)))
+        
+        
+            (def bb6d
+              (->>
+                (gen-shape orange oct)
+                  (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
+                  ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+                      ;(style {:mix-blend-mode "color-dodge"} )
+
+                  (anim "woosh" "12s" "infinite" {:delay "1s"})
+                (draw)
+                (atom)))
+    
+    (def bb6b
+      (->>
+        (gen-shape white oct)
+          (style {:transform "translate(10vw, 30vh) scale(2) rotate(45deg)"})
+          ;(style {:mix-blend-mode "color-dodge" :filter (url (:id noiz))} )
+              ;(style {:mix-blend-mode "color-burn"} )
 
           (anim "woosh-2" "5s" "infinite" {:delay "0s"})
         (draw)
@@ -669,19 +692,19 @@
      (doall (map deref worms))
      (let
        [colors [
-                midnight midnight midnight midnight
+                ;midnight midnight midnight midnight
                 ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                 ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
                ;mint mint mint mint
                ;mint mint mint mint
-               pink pink pink pink
+               ;pink pink pink pink
                ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
                ;br-orange br-orange br-orange br-orange
                ;yellow yellow yellow yellow
                ;yellow yellow yellow yellow
                ;white white white white
-               ;blue blue blue 
+               blue blue blue 
                 ;
                 ]]
          (->>
@@ -689,40 +712,65 @@
            (style {:opacity .95})
            (draw)))
            
-                (->>
-                 (gen-rect (pattern (:id white-lines-4)) 100 100 "30%" "30%")
-                 (style {:mix-blend-mode "luminosity"})
-                 (draw)
-                 (when (nth-frame 2 slow-frame)))
-                 
-                 (->>
-                  (gen-rect (pattern (:id white-dots-5)) 400 100 "30%" "20%")
-                  (style {:mix-blend-mode "luminosity" })
-
-                  (draw)
-                  (when (nth-frame 3 slow-frame)))
-                  
-                  
-                  (->>
-                   (gen-rect (pattern (:id white-lines-4)) 300 300 "50%" "50%")
-                  (style {:mix-blend-mode "luminosity"})
-
-                   (draw)
-                   (when (nth-frame 4 slow-frame)))
+           (->>
+            (gen-rect "#00f" 0 0 (* 0.2 @width) @height)
+            (draw))
+            
+           (->>
+            (gen-rect "#00c" (* 0.2 @width) 0 (* 0.2 @width) @height)
+            (draw))
+           
+          (->>
+           (gen-rect "#00a" (* 0.4 @width) 0 (* 0.2 @width) @height)
+           (draw))
+           
+         (->>
+          (gen-rect "#009" (* 0.6 @width) 0 (* 0.2 @width) @height)
+          (draw))
+          
+         (->>
+          (gen-rect "#006" (* 0.8 @width) 0 (* 0.2 @width) @height)
+          (draw))
+      ; (->>
+                ;  (gen-rect (pattern (:id white-lines-4)) 100 100 "30%" "30%")
+                ;  (style {:mix-blend-mode "luminosity"})
+                ;  (draw)
+                ;  (when (nth-frame 2 slow-frame)))
+                ; 
+                ;  (->>
+                ;   (gen-rect (pattern (:id white-dots-5)) 600 100 "30%" "20%")
+                ;   (style {:mix-blend-mode "luminosity" })
+                ; 
+                ;   (draw)
+                ;   (when (nth-frame 3 slow-frame)))
+                ; 
+                ; 
+                ;   (->>
+                ;    (gen-rect (pattern (:id white-lines-4)) 300 300 "50%" "50%")
+                ;   (style {:mix-blend-mode "luminosity"})
+                ; 
+                ;    (draw)
+                ;    (when (nth-frame 4 slow-frame)))
                   
                   ;@move-me-5
+                  ;@bb6a
+                  @bb6c
+                  
+                  @bb6d
            
            
            ))
            
    (defn list2 [frame fast-frame  slow-frame svg-frame]
      (list
+      (doall (map deref worms))
+
        (let
          [colors [
                   ;midnight midnight midnight midnight
                   ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
-                  midnight midnight (pattern (:id midnight-dots-4)) (pattern (:id midnight-dots-3)) midnight (pattern (:id midnight-lines-5))
+                  midnight midnight (pattern (:id midnight-dots-4)) (pattern (:id midnight-dots-3)) midnight midnight 
                  ;mint mint mint mint
                  ;mint mint mint mint
                  ;pink pink pink pink
@@ -741,10 +789,8 @@
              (draw)))
              
              @scale-me-4
-                                     ;@spinlm2
-
-             
-            ;@bb6
+             @spinlm2
+             @bb6
             
             
                   
@@ -754,10 +800,12 @@
             
             
                (defn list3 [frame fast-frame  slow-frame svg-frame]
+                
                  (list
+                   (doall (map deref worms))
                    (let
                      [colors [
-                              midnight midnight midnight midnight
+                              ;midnight midnight midnight midnight
                               ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                               ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
@@ -765,7 +813,7 @@
                              ;mint mint mint mint
                              ;pink pink pink pink
                              ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
-                             ;br-orange br-orange br-orange br-orange
+                             br-orange br-orange br-orange br-orange
                              ;yellow yellow yellow yellow
                              ;yellow yellow yellow yellow
                              ;white white white white
@@ -777,12 +825,12 @@
                          (style {:opacity .95})
                          (draw)))
                          
-                         ;(doall (map deref levels))
+                         (doall (map deref levels))
                          
                          ;@trio
                          
-                         ;@scale-me
-                        ;(doall (map deref worms))
+                         @scale-me
+                        
 
                       
                          
@@ -793,15 +841,15 @@
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
-    ;(list1 fast-frame frame slow-frame svg-frame)
-    ;(list1 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
-    ;(list2 fast-frame frame slow-frame svg-frame)
-    ;(list1 fast-frame frame slow-frame svg-frame)
-    ;(list2 fast-frame frame slow-frame svg-frame)
-    ;(list1 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
+    (list1 fast-frame frame slow-frame svg-frame)
+    ; (list1 fast-frame frame slow-frame svg-frame)
+    ; (list3 fast-frame frame slow-frame svg-frame)
+    ; (list2 fast-frame frame slow-frame svg-frame)
+    ; (list1 fast-frame frame slow-frame svg-frame)
+    ; (list2 fast-frame frame slow-frame svg-frame)
+    ; (list1 fast-frame frame slow-frame svg-frame)
+    ; (list3 fast-frame frame slow-frame svg-frame)
+    ; (list3 fast-frame frame slow-frame svg-frame)
 
 
   ])) ; cx end

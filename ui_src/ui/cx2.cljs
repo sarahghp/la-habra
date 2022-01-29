@@ -47,6 +47,29 @@
 
 ;; --------------- ATOMS STORAGE --------------------
 
+
+(def worms
+  (map-indexed
+   (fn [idx [color scale]]
+     (->>
+      (gen-shape "hsla(100, 100%, 100%, 0)" tri)
+      (style {:stroke color
+              :stroke-width 8
+              :stroke-dasharray (+ (rand-int 20) 80)
+              :stroke-dashoffset (+ (rand-int 20) 80)
+              :stroke-linejoin "round"
+              :stroke-linecap "round"})
+      (anim "morph" "4s" "infinite" {:delay (str (* 4 (rand)) "s")})
+      (draw)
+      (gen-group { :style {
+                          :transform-origin "center" 
+                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20)) 
+                                          "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
+      (atom)))
+   (take 10
+         (repeatedly #(rand-nth [[midnight 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4]])))))
+
+
 (def drops
   (atom  (map
      #(->>
@@ -623,8 +646,11 @@
        ;@bb6a
        
        ;@babrect3
-               ;@open
-                     (->>
+               @open
+               
+               ;(when-not (nth-frame 12 frame)(doall (map deref worms)))
+               
+                   #_(->>
                      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
                      (style {:transform "rotate(135deg)"})
                      (draw)
