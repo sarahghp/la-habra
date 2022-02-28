@@ -646,6 +646,7 @@
        ;@bb6a
        
        ;@babrect3
+      @bb6
                @open
                
                ;(when-not (nth-frame 12 frame)(doall (map deref worms)))

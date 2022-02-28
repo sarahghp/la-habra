@@ -338,6 +338,20 @@
  (make-body "transform"
              ["translate(0vw, 80vh)"
               "translate(0vw, -30vh)"]))
+              
+(make-frames! 
+ "right-right"
+ [0 100]
+ (make-body "transform"
+             ["translate(-200px, 20vh)"
+              "translate(1000px, 20vh)"]))
+              
+(make-frames! 
+ "right-right-2"
+ [0 100]
+ (make-body "transform"
+             ["translateX(-200px)"
+              "translateX(2000px)"]))
 
 (make-frames!
  "lump-morph"
