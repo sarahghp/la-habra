@@ -502,7 +502,7 @@
       (draw)
       (gen-group {:style {
                           :transform-origin "center" 
-                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20)) 
+                          :transform (str "translate(" (+ (rand-int 20) (rand-int 40)) 
                                           "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
       (atom)))
    (take 10
@@ -859,8 +859,8 @@
              (style {:opacity .95})
              (draw)))
              
-             @scale-me-4
-             @spinlm2
+             ;@scale-me-4
+             ;@spinlm2
              @bb6
             
             
@@ -870,7 +870,7 @@
             ))
             
             
-               (defn list3 [frame fast-frame  slow-frame svg-frame]
+(defn list3 [frame fast-frame  slow-frame svg-frame]
                 
                  (list
                    (doall (map deref worms))
@@ -896,18 +896,10 @@
                          (style {:opacity .95})
                          (draw)))
                          
-                         (doall (map deref levels))
                          
-                         ;@trio
+                         @trio
                          
-                         @scale-me
-                        
 
-                      
-                         
-                        
-                        
-                        
                         ))
                         
                         
@@ -917,7 +909,7 @@
     (let
       [colors [
                ;midnight midnight midnight midnight
-               blue blue blue blue
+               ;blue blue blue blue
                ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
@@ -927,7 +919,7 @@
               ;pink pink pink pink
               ;pink (pattern (:id pink-lines-4))  (pattern (:id pink-dots-5))
               ;br-orange br-orange br-orange br-orange
-              ;yellow yellow yellow yellow
+              yellow yellow yellow yellow
               ;yellow yellow yellow yellow
               ;white white white white
               ;(pattern (:id blue-lines-5)) blue (pattern (:id blue-lines-2))blue
@@ -938,56 +930,30 @@
           (style {:opacity .95})
           (draw)))
           
-          ;@mf
-          ;@mf2
-          ;@mf3
-          ;@mf3a
-          ;@mf6
-          
-          ;@drops
-          
-          ;@bb6c
-          
-          
-          ;@blobs3
-          
-          
-          #_(when (nth-frame 3 slow-frame)(gen-line-grid midnight 20
-            80  80 
-            {:col 40 :row 40}))
-            
-            @slidey-blobs
-            
-            @lm2
-            @lm6
-            @lm4
-            
-            
-          ; @move-me-a
-          ; @move-me-b
   
   ))
   
 
   
 (defn list5 [frame fast-frame  slow-frame svg-frame]
-  
   (list
+    (doall (map deref worms))
+
     (let
       [colors [
                ;midnight midnight midnight midnight
-              blue blue blue blue
+              ;blue blue blue blue
               ;orange orange orange orange 
               ;transparent
                ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
               ;mint mint mint mint
-              ;mint mint mint mint
+              mint mint mint mint
               ;"#4400a3" "#4400a3" "#4400a3" "#4400a3"
               ;pink pink pink pink
               ;pink (pattern (:id pink-lines-4))  (pattern (:id pink-dots-5))
-              ;br-orange br-orange br-orange br-orange
+              br-orange br-orange br-orange br-orange
               ;yellow yellow yellow yellow
               ;yellow yellow yellow yellow
               ;white white white white
@@ -1013,42 +979,46 @@
           (draw)
           (when-not (nth-frame 2 slow-frame)))
         
-        @sqrts3
+        ;@sqrts3
         
-          @sqrts6
-          @sqrts7
+        ;@sqrts6
+        ;@sqrts7
 
-        @sqrts1
-        @sqrts2
+        ;@sqrts1
+        ;@sqrts2
         
-                @sqrts4
-                @sqrts5
+        ;@sqrts4
+        ;@sqrts5
 
           
           
-        (->>
+      #_(->>
          (gen-rect white "20vw" "60vh" 80 300)
+         (style {:transform "scale(1.3)"})
          (draw)
          (when (nth-frame 4 frame)))
            
-       (->>
+       #_(->>
         (gen-rect (pattern (:id white-lines-4)) "30vw" "42vh" 80 300)
+        (style {:transform "scale(1.3)"})
         (draw)
         (when (nth-frame 3 frame)))
             
             
-       (->>
+       #_(->>
         (gen-rect (pattern (:id white-dots-4)) "74vw" "10vh" 300 100)
+         (style {:transform "scale(1.3)"})
         (draw)
-        (when (nth-frame 3 frame)))
+        (when (nth-frame 5 frame)))
         
         
-     (->>
+     #_(->>
       (gen-rect (pattern (:id pink-lines-4)) "66vw" "42vh" 400 300)
       (style {:transform "scale(1.6)"})
       (draw)
       (when (nth-frame 6 frame)))
-
+      
+      
   
   ))
 

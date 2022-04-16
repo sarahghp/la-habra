@@ -538,18 +538,15 @@
 (defn cx2 [frame fast-frame slow-frame]
   (list
     
-    #_(doall (map deref all-the-moves))
+    ;(doall (map deref all-the-moves))
     
     
     ;@rr
-    ;(doall (map deref levels))
       
-   ; grid (80/20), b, c, d
     
    ;(when (nth-frame 9 slow-frame) @a)
    ;(when-not (nth-frame 3 slow-frame) @aaa)
 
-   ;(when (nth-frame 5 frame) @c)
    
    
      #_(->>
@@ -579,46 +576,15 @@
    
    ;(when (nth-frame 6 frame) @d)
    
-   #_(when (nth-frame 2 frame)(gen-line-grid mint 2
-     80 80
-     {:col 20 :row 20}))
 
-    ;@bb6
-    ;@bb6s
-   
-   ;@scale-me
-   ;@rot-me
 
    ;@drops
    ;@drops2
-   
-   ;@babrect1
-   ;@babrect2
+
 
     
 
-    #_(when (nth-frame 2 frame)
-      (freak-out @width
-                 @height
-                 40
-                 100
-                 orange))
 
-
-  #_(when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               20
-               200
-               white))
-               
-               #_(when (nth-frame 1 frame)
-                 (freak-out @width
-                            @height
-                            30
-                            300
-                            white))
-     
 
       #_(->>
       (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
@@ -630,46 +596,17 @@
       (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
       (style {:transform "rotate(135deg)"})
       (draw)
-      (when (nth-frame 0 frame)))
+      (when (nth-frame 4 frame)))
       
-      #_(when (nth-frame 6 frame)
-        (freak-out @width
-                   @height
-                   30
-                   100
-                   mint))
-                   
-#_(when (nth-frame 2 (+ 1 frame))(gen-line-grid white 2
-  80 80
-  {:col 20 :row 20})   ) 
-  
-       ;@bb6a
+
+
        
        ;@babrect3
-      @bb6
-               @open
+      
+       @open
                
-               ;(when-not (nth-frame 12 frame)(doall (map deref worms)))
-               
-                   #_(->>
-                     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
-                     (style {:transform "rotate(135deg)"})
-                     (draw)
-                     (when (nth-frame 4 frame)))
-                     
-                       #_(when (nth-frame 1 frame)
-                         (freak-out @width
-                                    @height
-                                    20
-                                    200
-                                    charcoal))
-                                    
-                                    #_(when (nth-frame 1 frame)
-                                      (freak-out @width
-                                                 @height
-                                                 30
-                                                 300
-                                                 white))
+      ;(when-not (nth-frame 12 frame)(doall (map deref worms)))
+
 
 
    ))

@@ -140,8 +140,8 @@
              [
               ;"difference" "difference" "difference" 
               
-             "multiply" "multiply" "multiply" "multiply"
-             ;"luminosity" "luminosity"
+             ;"multiply" "multiply" "multiply" "multiply"
+             "luminosity" "luminosity"
               ; "luminosity"
               ])))
 
