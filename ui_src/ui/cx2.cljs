@@ -73,7 +73,7 @@
 (def drops
   (atom  (map
      #(->>
-       (gen-rect midnight (+ 30 (* % 160)) 10 36 36)
+       (gen-rect white (+ 30 (* % 160)) 10 36 36)
        (anim "etof" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
        (style {:mix-blend-mode "color-dodge"})
        (draw))
@@ -578,8 +578,8 @@
    
 
 
-   ;@drops
-   ;@drops2
+   @drops
+   @drops2
 
 
     

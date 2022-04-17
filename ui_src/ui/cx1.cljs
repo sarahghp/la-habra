@@ -200,6 +200,14 @@
    (draw)
    (atom)))
    
+   (def mm
+     (->>
+      (gen-shape (pattern (:id yellow-lines-5)) hept)
+      (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+      (anim "woosh-2" "8s" "infinite")
+      (draw)
+      (atom)))
+   
 (def move-me-2
   (->>
    (gen-shape (pattern (:id mint-dots)) hept)
@@ -933,6 +941,22 @@
   
   ))
   
+(defonce a
+  (scatter 100 (->>
+   (gen-circ pink 10 10 60)
+   ;(style {:mix-blend-mode "color-dodge"})
+   (draw))))
+   
+   
+   (defonce b
+     (scatter 100 (->>
+      (gen-circ pink 10 10 60)
+      (style {:mix-blend-mode "color-dodge"})
+      (draw))))
+   
+(def aaa (atom (gen-group {:style {:animation "ascend 3s infinite"}} @a)))
+(def aa (atom (gen-group {:style {:transform-origin "center":animation "rot 3s infinite"}} @a)))
+(def cc (atom (gen-group {:style {:transform-origin "center":animation "rot 3s infinite"}} @b)))
 
   
 (defn list5 [frame fast-frame  slow-frame svg-frame]
@@ -948,8 +972,8 @@
                ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-              ;mint mint mint mint
               mint mint mint mint
+              ;mint mint mint mint
               ;"#4400a3" "#4400a3" "#4400a3" "#4400a3"
               ;pink pink pink pink
               ;pink (pattern (:id pink-lines-4))  (pattern (:id pink-dots-5))
@@ -960,6 +984,8 @@
               ;(pattern (:id blue-lines-5)) blue (pattern (:id blue-lines-2))blue
               
               ;white white pink pink blue blue
+              
+              ;"#000"
                ;
                ]]
         (->>
@@ -979,7 +1005,12 @@
           (draw)
           (when-not (nth-frame 2 slow-frame)))
         
-        ;@sqrts3
+        ;(when (nth-frame 4 frame) @a)
+        
+      ;  @sqrts3
+        
+        ;@aa
+        ;@cc
         
         ;@sqrts6
         ;@sqrts7
@@ -1017,6 +1048,18 @@
       (style {:transform "scale(1.6)"})
       (draw)
       (when (nth-frame 6 frame)))
+      ;@mm
+      ;@trio
+      
+      ;@move-me
+      ;@move-me-2
+      
+      ;@move-me-5
+      
+          ;@aa
+          ;@cc
+      
+      ;@aaa
       
       
   
