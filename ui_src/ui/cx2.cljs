@@ -607,7 +607,12 @@
                
       ;(when-not (nth-frame 12 frame)(doall (map deref worms)))
 
-
+      (when (nth-frame 4 frame)
+        (freak-out @width
+                   @height
+                   20
+                   300
+                   white))
 
    ))
 

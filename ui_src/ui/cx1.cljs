@@ -1048,18 +1048,21 @@
       (style {:transform "scale(1.6)"})
       (draw)
       (when (nth-frame 6 frame)))
-      ;@mm
+      @mm
       ;@trio
       
-      ;@move-me
+      @move-me
       ;@move-me-2
       
       ;@move-me-5
       
-          ;@aa
+      
+        
+        @aa
+          
           ;@cc
       
-      ;@aaa
+      @aaa
       
       
   
@@ -1075,7 +1078,7 @@
     ; (list2 fast-frame frame slow-frame svg-frame)
     ; (list1 fast-frame frame slow-frame svg-frame)
     ; (list3 fast-frame frame slow-frame svg-frame)
-    ; (list3 fast-frame frame slow-frame svg-frame)
+    ;(list3 fast-frame frame slow-frame svg-frame)
 
 
   ])) ; cx end
