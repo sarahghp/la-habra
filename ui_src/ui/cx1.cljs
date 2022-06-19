@@ -594,7 +594,7 @@
            (map #(gen-group {:style 
                              {:transform-origin "center" 
                               :transform "translate(-10vw, -10vh) scale(.3)"}} %))
-           (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "ascend 1s infinite"}} %))))))
+           (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "ascend 4s infinite"}} %))))))
            
            (def trio2 (atom 
                  (gen-group
@@ -889,8 +889,8 @@
 
                               ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
                              ;mint mint mint mint
-                             ;mint mint mint mint
-                             ;pink pink pink pink
+                             mint mint mint mint
+                             pink pink pink pink
                              ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
                              br-orange br-orange br-orange br-orange
                              ;yellow yellow yellow yellow
@@ -905,8 +905,43 @@
                          (draw)))
                          
                          
-                         @trio
                          
+                         
+                         ;@trio
+                         ;@trio2
+                         
+                         #_(->>
+                          (gen-shape midnight tri)
+                          (style {:transform "translate(40vw, 20vh) scale(3) rotate(135deg)"})
+                          (draw)
+                          (when (nth-frame 4 frame)))
+                          
+                                   #_(->>
+                                    (gen-shape midnight tri)
+                                    (style {:transform "translate(30vw, 40vh) scale(3) rotate(-135deg)"})
+                                    (draw)
+                                    (when (nth-frame 3 frame)))
+                                    
+                                    
+                        #_(gen-group {:style {:transform "translate(50vh)"}}
+                          
+                          #_(->>
+                           (gen-shape midnight tri)
+                           (style {:transform "translate(60vw, 20vh) scale(3) rotate(135deg)"})
+                           (draw)
+                           (when (nth-frame 8 frame)))
+                           
+                                    #_(->>
+                                     (gen-shape midnight tri)
+                                     (style {:transform "translate(30vw, 60vh) scale(3) rotate(-135deg)"})
+                                     (draw)
+                                     (when (nth-frame 2 frame))))
+                                     
+                                     @mf
+                                     @mf2
+                                     
+
+
 
                         ))
                         
@@ -937,6 +972,10 @@
           (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
           (style {:opacity .95})
           (draw)))
+          
+          ;@blobs3
+          ;@blobs2
+          ;@blobs4
           
   
   ))
@@ -972,7 +1011,7 @@
                ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-              mint mint mint mint
+              ;mint mint mint mint
               ;mint mint mint mint
               ;"#4400a3" "#4400a3" "#4400a3" "#4400a3"
               ;pink pink pink pink
@@ -993,76 +1032,25 @@
           (style {:opacity .95})
           (draw)))
           
-          #_(->>
-           (gen-circ (pattern (:id navy-lines-4)) (* 0.5 @width) (* 0.5 @height) 200)
-           (style {:transform "scale(29)"})
-           (draw)
-           (when (nth-frame 2 slow-frame)))
-           
-         #_(->>
-          (gen-circ (pattern (:id white-lines-2)) (* 0.5 @width) (* 0.5 @height) 200)
-          (style {:transform "scale(8)"})
-          (draw)
-          (when-not (nth-frame 2 slow-frame)))
-        
-        ;(when (nth-frame 4 frame) @a)
-        
-      ;  @sqrts3
-        
-        ;@aa
-        ;@cc
-        
-        ;@sqrts6
-        ;@sqrts7
 
-        ;@sqrts1
-        ;@sqrts2
-        
-        ;@sqrts4
-        ;@sqrts5
 
-          
-          
-      #_(->>
-         (gen-rect white "20vw" "60vh" 80 300)
-         (style {:transform "scale(1.3)"})
-         (draw)
-         (when (nth-frame 4 frame)))
-           
-       #_(->>
-        (gen-rect (pattern (:id white-lines-4)) "30vw" "42vh" 80 300)
-        (style {:transform "scale(1.3)"})
-        (draw)
-        (when (nth-frame 3 frame)))
-            
-            
-       #_(->>
-        (gen-rect (pattern (:id white-dots-4)) "74vw" "10vh" 300 100)
-         (style {:transform "scale(1.3)"})
-        (draw)
-        (when (nth-frame 5 frame)))
-        
-        
-     #_(->>
-      (gen-rect (pattern (:id pink-lines-4)) "66vw" "42vh" 400 300)
-      (style {:transform "scale(1.6)"})
-      (draw)
-      (when (nth-frame 6 frame)))
+
       @mm
       ;@trio
       
-      @move-me
-      ;@move-me-2
+      ;@move-me
+      @move-me-2
       
-      ;@move-me-5
+      @move-me-5
       
       
         
         @aa
           
-          ;@cc
+          @cc
       
       @aaa
+      
       
       
   
@@ -1070,15 +1058,15 @@
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
-    ;(list4 fast-frame frame slow-frame svg-frame)
+    (list4 fast-frame frame slow-frame svg-frame)
     ;(list1 fast-frame frame slow-frame svg-frame)
-    (list5 fast-frame frame slow-frame svg-frame)
-    ; (list2 fast-frame frame slow-frame svg-frame)
+    ;(list5 fast-frame frame slow-frame svg-frame)
+    ;(list2 fast-frame frame slow-frame svg-frame)
+    ;(list1 fast-frame frame slow-frame svg-frame)
+    ;(list2 fast-frame frame slow-frame svg-frame)
     ; (list1 fast-frame frame slow-frame svg-frame)
-    ; (list2 fast-frame frame slow-frame svg-frame)
-    ; (list1 fast-frame frame slow-frame svg-frame)
-    ; (list3 fast-frame frame slow-frame svg-frame)
-    ;(list3 fast-frame frame slow-frame svg-frame)
+    (list3 fast-frame frame slow-frame svg-frame)
+    (list3 fast-frame frame slow-frame svg-frame)
 
 
   ])) ; cx end

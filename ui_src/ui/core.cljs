@@ -129,9 +129,9 @@
     (add-svg @collection (val-cyc @frame
              [
              ;"luminosity" "luminosity" "luminosity" 
-            ; "luminosity"
+            "luminosity"
             "multiply" "multiply"
-            ;"difference" "difference" "difference"
+            "difference" "difference" "difference"
             ; "difference" "difference" "difference"  
               ])))
 
