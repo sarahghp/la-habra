@@ -458,30 +458,6 @@
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 
-(def babrect1 
-  (->>
-   (gen-rect navy 0 0 @width (* .05 @height))
-   (style {:mix-blend-mode "luminosity"})
-   (anim "small-scale" "6.4s" "infinite")
-   (draw)
-   (atom)))
-
-(def babrect2 
-  (->>
-   (gen-rect navy 0 (* .9 @height) @width (* 1 @height))
-   (style {:mix-blend-mode "luminosity"})
-   (anim "small-scale" "6.4s" "infinite" {:delay "3.2s"})
-   (draw)
-   (atom)))
-   
-   
-   (def babrect3 
-     (->>
-      (gen-rect navy 0 (* 0 @height) @width (* 1 @height))
-      (style {:mix-blend-mode "luminosity"})
-      ;(anim "small-scale" "1.4s" "infinite" {:delay "1.2s"})
-      (draw)
-      (atom)))
 
 (def rr (atom
          (->>
@@ -489,12 +465,12 @@
             20 30
             {:col 100 :row 150}
             (->>
-             (gen-shape mint tri)))
+             (gen-shape charcoal tri)))
             ;(map #(style styles %))
             ;(map #(anim "rot" "10s" "infinte" %))
             (map draw)
           (map #(gen-group {:style {:transform-origin "center" :transform "scale(2)"}} %))
-          (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center" :animation "rot 10s 1" }} %)))))
+          (map #(gen-group {:mask (url "bitey") :style {:transform-origin "center" :animation "rot 10s infinite" }} %)))))
 
 (def rr2 (atom
          (->>
@@ -502,30 +478,15 @@
             5 5
             {:col 100 :row 150}
             (->>
-             (gen-shape yellow oct)))
-              (map #(style {:opacity 1 :mix-blend-mode "difference"} %))
+             (gen-shape pink oct)))
+              (map #(style {:opacity 1 :mix-blend-mode "multiply"} %))
 
             (map #(anim "lump-morph" "5s" "infinite" %))
             (map draw)
-                  (map #(gen-group {:style {:transform-origin "center" :transform "scale(3)"}} %))
+            (map #(gen-group {:style {:transform-origin "center" :transform "scale(3)"}} %))
           (map #(gen-group {:style {:transform-origin "center" :transform "translate(-300px, 100px)"}} %))
             (map #(gen-group { :style {:transform-origin "center"  :animation "rot 5s infinite" }} %)))))
             
-            (defonce streaks
-              (scatter 40 
-                       (->>
-                        (gen-line [10 10] [200 100] midnight 10)
-                        (draw))))
-                        
-                    (defonce streaks2
-                      (scatter 100 
-                               (->>
-                                (gen-line [10 10] [200 100] white 10)
-                                (draw))))
-
-
-(def lerp1 (lerp))
-
 
 (def open 
   (atom  (gen-group {:style 
@@ -540,6 +501,7 @@
     
       ;(doall (map deref all-the-moves))
       ;@rr
+      ;@rr2
 
       ;@drops
       ;@drops2

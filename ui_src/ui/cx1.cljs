@@ -655,58 +655,7 @@
       (map #(gen-group {:style {:transform-origin "center" :transform "scale(.15)" }} %))
             (map #(gen-group {:style {:transform-origin "center" :animation "rot 1s infinite"}} %)))))
             
-(def sqrts1
-  (->>
-   (gen-rect pink 100 100 300 300)
-      (anim "right-right" "6s" "infinite")
-   (draw)
-   (atom)))
-   
-(def sqrts2
-  (->>
-   (gen-rect orange 100 40 300 300)
-      (anim "right-right" "6s" "infinite")
-   (draw)
-   (atom)))
-   
-   
-   (def sqrts3
-     (->>
-      (gen-rect (pattern (:id mint-dots-5)) 100 40 400 400)
-         (anim "right-right-2" "12s" "infinite")
-      (draw)
-      (atom)))
-      
-      
- (def sqrts4
-   (->>
-    (gen-rect (pattern (:id mint-dots-5)) 100 40 400 400)
-       (anim "ascend" "12s" "infinite")
-    (draw)
-    (atom)))
-    
- (def sqrts5
-   (->>
-    (gen-rect (pattern (:id white-dots-4)) 100 40 400 400)
-       (anim "ascend" "12s" "infinite" {:delay ".4s"})
-    (draw)
-    (atom)))
-    
-            
-(def sqrts6
-  (->>
-   (gen-rect pink "70vw" 100 300 300)
-      (anim "descend" "16s" "infinite")
-   (draw)
-   (atom)))
-   
-(def sqrts7
-  (->>
-   (gen-rect orange "70vw" 40 300 300)
-      (anim "descend" "16s" "infinite")
-   (draw)
-   (atom)))
-   
+
 
 ;; start end dur frame no-repeat
 (def lerp1 (lerp))
@@ -758,11 +707,11 @@
     ; --- add a figure or three -------
     
     (->>
-     (gen-circ orange (* 0.5 @width) (* 0.5 @height) 160)
+     (gen-circ orange (* 0.5 @width) (* 0.5 @height) 240)
      (draw)
      (when-not (nth-frame 6 frame)))
      
-    (gen-group {:style {:transform-origin "center" :transform "translate(40px, 290px) rotate(-45deg)"}}
+    (gen-group {:style {:transform "scale(1.5) translate(0, -60px)"}}(gen-group {:style {:transform-origin "center" :transform "translate(40px, 290px) rotate(-45deg)"}}
       (->>
        (gen-rect blue 0 0 300 30)
        (draw)
@@ -801,7 +750,7 @@
           (gen-rect blue 0 0 300 30)
           (style {:transform "translateY(40px)"})
           (draw)
-          (when (nth-frame 3 frame))))
+          (when (nth-frame 3 frame)))))
      
      
     ; ----- finally, animation ------------------
@@ -860,6 +809,7 @@
        ;(doall (map deref worms))
        (let
          [colors [
+                  ;"#000"
                   ;midnight midnight midnight midnight
                   ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
