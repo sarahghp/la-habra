@@ -59,43 +59,6 @@
        (draw))
      (range 20))))
      
-     
-     (def dr
-       (atom  (map
-          #(->>
-            (gen-rect white (+ 0 (* % 160)) 10 400 260)
-            (anim "etof" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
-            (style {:mix-blend-mode "color-dodge"})
-            (draw))
-          (range 10))))
-          
-               (def op
-                 (atom  (map
-                    #(->>
-                      (gen-rect white (+ 0 (* % 160)) 10 400 260)
-                      (anim "ascend" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
-                      (style {:mix-blend-mode "color-dodge"})
-                      (draw))
-                    (range 10))))
-
-(def drops3
-  (atom  (map
-     #(->>
-       (gen-rect white (+ 30 (* % 160)) 10 200 36)
-       (anim "etof" "2.2s" "infinite" {:delay (str (* .7 %) "s")})
-       (style {:mix-blend-mode "color-dodge"})
-       (draw))
-     (range 20))))
-
-
-(def drops2
-  (atom  (map
-     #(->>
-       (gen-rect white (+ 30 (* % 160)) 10 200 36)
-       (anim "slide-up" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (style {:mix-blend-mode "color-dodge"})
-       (draw))
-     (range 10))))
 
 (def spinlm 
   (->>
@@ -175,21 +138,7 @@
  (draw)
  (atom)))
 
-(def babrect1 
-  (->>
-   (gen-rect navy 0 0 @width (* .05 @height))
-   (style {:mix-blend-mode "luminosity"})
-   (anim "small-scale" "3.2s" "infinite")
-   (draw)
-   (atom)))
 
-(def babrect2 
-  (->>
-   (gen-rect navy 0 (* .9 @height) @width (* .05 @height))
-   (style {:mix-blend-mode "luminosity"})
-   (anim "small-scale" "3.2s" "infinite")
-   (draw)
-   (atom)))
 
 (def move-me
   (->>
@@ -768,22 +717,15 @@
  
  (defn list1 [frame fast-frame slow-frame svg-frame]
    (list
-     (doall (map deref worms))
      (let
        [colors [
                 ;midnight midnight midnight midnight
                 ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                 ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-               ;mint mint mint mint
-               ;mint mint mint mint
+               mint mint mint mint
                ;pink pink pink pink
                ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
-               ;br-orange br-orange br-orange br-orange
-               ;yellow yellow yellow yellow
-               ;yellow yellow yellow yellow
-               ;white white white white
-               blue blue blue 
                 ;
                 ]]
          (->>
@@ -791,56 +733,90 @@
            (style {:opacity .95})
            (draw)))
            
-           (->>
-            (gen-rect "#00f" 0 0 (* 0.2 @width) @height)
-            (draw))
-            
-           (->>
-            (gen-rect "#00c" (* 0.2 @width) 0 (* 0.2 @width) @height)
-            (draw))
-           
-          (->>
-           (gen-rect "#00a" (* 0.4 @width) 0 (* 0.2 @width) @height)
-           (draw))
-           
+        
+        ; --- build up a ground -------
+        ; --- add rhythm --------------
+        
+      (->>
+       (gen-rect white (* 0.5 @width) 0 (* 0.5 @width) (* 1 @height))
+       (style {:opacity ".7"})
+       (style {:mix-blend-mode "color-dodge"})
+       (draw)
+       (when (nth-frame 3 frame)))
+      
+      (->>
+       (gen-rect pink 0 (* 0.5 @height) "100%" (* 0.5 @height))
+       (draw)
+       (when (nth-frame 4 frame)))
+      
+      (when (nth-frame 2 frame)(gen-line-grid white 2
+        80 80
+        {:col 20 :row 20}))
+        
+    ; --- a grid for texture -------     
+
+    ; --- add a figure or three -------
+    
+    (->>
+     (gen-circ orange (* 0.5 @width) (* 0.5 @height) 160)
+     (draw)
+     (when-not (nth-frame 6 frame)))
+     
+    (gen-group {:style {:transform-origin "center" :transform "translate(40px, 290px) rotate(-45deg)"}}
+      (->>
+       (gen-rect blue 0 0 300 30)
+       (draw)
+       (when (nth-frame 4 frame)))
+       
+       (->>
+        (gen-rect blue 0 0 300 30)
+        (style {:transform "translateY(40px)"})
+        (draw)
+        (when (nth-frame 3 frame))))
+        
+    ; --- more grouped shapes, variations -------
+    ; ----- (pattern (:id blue-dots-5) ----------
+    ; ----- timing (+ 1 frame) ------------------
+        
+    (gen-group {:style {:transform-origin "center" :transform "translate(240px, 490px) rotate(-45deg)"}}
+      (->>
+       (gen-rect blue 0 0 300 30)
+       (draw)
+       (when (nth-frame 4 frame)))
+       
+       (->>
+        (gen-rect blue 0 0 300 30)
+        (style {:transform "translateY(40px)"})
+        (draw)
+        (when (nth-frame 3 frame))))
+        
+        
+      (gen-group {:style {:transform-origin "center" :transform "translate(440px, 690px) rotate(-45deg)"}}
+        (->>
+         (gen-rect blue 0 0 300 30)
+         (draw)
+         (when (nth-frame 4 frame)))
+         
          (->>
-          (gen-rect "#009" (* 0.6 @width) 0 (* 0.2 @width) @height)
-          (draw))
-          
-         (->>
-          (gen-rect "#006" (* 0.8 @width) 0 (* 0.2 @width) @height)
-          (draw))
-      ; (->>
-                ;  (gen-rect (pattern (:id white-lines-4)) 100 100 "30%" "30%")
-                ;  (style {:mix-blend-mode "luminosity"})
-                ;  (draw)
-                ;  (when (nth-frame 2 slow-frame)))
-                ; 
-                ;  (->>
-                ;   (gen-rect (pattern (:id white-dots-5)) 600 100 "30%" "20%")
-                ;   (style {:mix-blend-mode "luminosity" })
-                ; 
-                ;   (draw)
-                ;   (when (nth-frame 3 slow-frame)))
-                ; 
-                ; 
-                ;   (->>
-                ;    (gen-rect (pattern (:id white-lines-4)) 300 300 "50%" "50%")
-                ;   (style {:mix-blend-mode "luminosity"})
-                ; 
-                ;    (draw)
-                ;    (when (nth-frame 4 slow-frame)))
-                  
-                  ;@move-me-5
-                  ;@bb6a
-                  @bb6c
-                  
-                  @bb6d
+          (gen-rect blue 0 0 300 30)
+          (style {:transform "translateY(40px)"})
+          (draw)
+          (when (nth-frame 3 frame))))
+     
+     
+    ; ----- finally, animation ------------------
+
+      ;@move-me
+      ;@move-me-2
+      
+      ;@move-me-5
+      ;@move-me-3
+      ;@move-me-7
            
            
-           ))
+         ))
            
-   (defn list2 [frame fast-frame  slow-frame svg-frame]
+(defn list2 [frame fast-frame  slow-frame svg-frame]
      (list
       (doall (map deref worms))
 
@@ -880,70 +856,67 @@
             
 (defn list3 [frame fast-frame  slow-frame svg-frame]
                 
-                 (list
-                   (doall (map deref worms))
-                   (let
-                     [colors [
-                              ;midnight midnight midnight midnight
-                              ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
+     (list
+       ;(doall (map deref worms))
+       (let
+         [colors [
+                  ;midnight midnight midnight midnight
+                  ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
-                              ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-                             ;mint mint mint mint
-                             mint mint mint mint
-                             pink pink pink pink
-                             ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
-                             br-orange br-orange br-orange br-orange
-                             ;yellow yellow yellow yellow
-                             ;yellow yellow yellow yellow
-                             ;white white white white
-                             ;(pattern (:id blue-lines-5)) blue (pattern (:id blue-lines-2))blue
-                              ;
-                              ]]
-                       (->>
-                         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
-                         (style {:opacity .95})
-                         (draw)))
-                         
-                         
-                         
-                         
-                         ;@trio
-                         ;@trio2
-                         
-                         #_(->>
-                          (gen-shape midnight tri)
-                          (style {:transform "translate(40vw, 20vh) scale(3) rotate(135deg)"})
-                          (draw)
-                          (when (nth-frame 4 frame)))
-                          
-                                   #_(->>
-                                    (gen-shape midnight tri)
-                                    (style {:transform "translate(30vw, 40vh) scale(3) rotate(-135deg)"})
-                                    (draw)
-                                    (when (nth-frame 3 frame)))
+                  ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+                 ;mint mint mint mint
+                 mint mint mint mint
+                 pink pink pink pink
+                 ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
+                 br-orange br-orange br-orange br-orange
+                 ;yellow yellow yellow yellow
+                 ;yellow yellow yellow yellow
+                 ;white white white white
+                 ;(pattern (:id blue-lines-5)) blue (pattern (:id blue-lines-2))blue
+                  ;
+                  ]]
+           (->>
+             (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+             (style {:opacity .95})
+             (draw)))
+             
+             
+             
+             
+           @trio
+           @trio2
+           
+           (->>
+            (gen-shape midnight tri)
+            (style {:transform "translate(40vw, 20vh) scale(3) rotate(135deg)"})
+            (draw)
+            (when (nth-frame 4 frame)))
+              
+           (->>
+            (gen-shape midnight tri)
+            (style {:transform "translate(30vw, 40vh) scale(3) rotate(-135deg)"})
+            (draw)
+            (when (nth-frame 3 frame)))
                                     
                                     
-                        #_(gen-group {:style {:transform "translate(50vh)"}}
-                          
-                          #_(->>
-                           (gen-shape midnight tri)
-                           (style {:transform "translate(60vw, 20vh) scale(3) rotate(135deg)"})
-                           (draw)
-                           (when (nth-frame 8 frame)))
+          (gen-group {:style {:transform "translate(50vh)"}}
+            
+            (->>
+             (gen-shape midnight tri)
+             (style {:transform "translate(60vw, 20vh) scale(3) rotate(135deg)"})
+             (draw)
+             (when (nth-frame 8 frame)))
                            
-                                    #_(->>
-                                     (gen-shape midnight tri)
-                                     (style {:transform "translate(30vw, 60vh) scale(3) rotate(-135deg)"})
-                                     (draw)
-                                     (when (nth-frame 2 frame))))
+        (->>
+         (gen-shape midnight tri)
+         (style {:transform "translate(30vw, 60vh) scale(3) rotate(-135deg)"})
+         (draw)
+         (when (nth-frame 2 frame))))
+         
+         @mf
+         @mf2
                                      
-                                     @mf
-                                     @mf2
-                                     
-
-
-
-                        ))
+  ))
                         
                         
 (defn list4 [frame fast-frame  slow-frame svg-frame]
@@ -951,7 +924,7 @@
   (list
     (let
       [colors [
-               ;midnight midnight midnight midnight
+               midnight midnight midnight midnight
                ;blue blue blue blue
                ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
@@ -962,7 +935,7 @@
               ;pink pink pink pink
               ;pink (pattern (:id pink-lines-4))  (pattern (:id pink-dots-5))
               ;br-orange br-orange br-orange br-orange
-              yellow yellow yellow yellow
+              ;yellow yellow yellow yellow
               ;yellow yellow yellow yellow
               ;white white white white
               ;(pattern (:id blue-lines-5)) blue (pattern (:id blue-lines-2))blue
@@ -973,9 +946,13 @@
           (style {:opacity .95})
           (draw)))
           
-          ;@blobs3
-          ;@blobs2
-          ;@blobs4
+          @blobs3
+          @blobs2
+          @blobs4
+          
+          @lm
+          @lm2
+          @lm5
           
   
   ))
@@ -1058,16 +1035,12 @@
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
-    (list4 fast-frame frame slow-frame svg-frame)
-    ;(list1 fast-frame frame slow-frame svg-frame)
+    (list1 fast-frame frame slow-frame svg-frame)
+    ;(list2 fast-frame frame slow-frame svg-frame)
+    ;(list3 fast-frame frame slow-frame svg-frame)
+    ;(list4 fast-frame frame slow-frame svg-frame)
     ;(list5 fast-frame frame slow-frame svg-frame)
-    ;(list2 fast-frame frame slow-frame svg-frame)
-    ;(list1 fast-frame frame slow-frame svg-frame)
-    ;(list2 fast-frame frame slow-frame svg-frame)
-    ; (list1 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
-
+    
 
   ])) ; cx end
   

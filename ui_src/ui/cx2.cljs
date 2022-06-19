@@ -538,83 +538,17 @@
 (defn cx2 [frame fast-frame slow-frame]
   (list
     
-    ;(doall (map deref all-the-moves))
-    
-    
-    ;@rr
-      
-    
-   ;(when (nth-frame 9 slow-frame) @a)
-   ;(when-not (nth-frame 3 slow-frame) @aaa)
+      ;(doall (map deref all-the-moves))
+      ;@rr
 
-   
-   
-     #_(->>
-      (gen-rect white "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-      (draw)
-      (when (nth-frame 4 frame)))
-     
-       #_(->>
-        (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-       (style {:transform "translate(50vw, 50vh)"})
-        (draw)
-        (when (nth-frame 3 frame)))
-     
-         #_(->>
-          (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-         (style {:transform "translate(0vw, 50vh)"})
-          (draw)
-          (when (nth-frame 1 frame)))
+      ;@drops
+      ;@drops2
+
           
-                #_(->>
-                 (gen-rect yellow "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-                (style {:transform "translate(50vw, 0vh)"})
-                 (draw)
-                 (when (nth-frame 1 frame)))
-   
-   ;(when (nth-frame 4 slow-frame) @sss)
-   
-   ;(when (nth-frame 6 frame) @d)
-   
-
-
-   @drops
-   @drops2
-
-
-    
-
-
-
-      #_(->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
-      (style {:transform "rotate(135deg)"})
-      (draw)
-      (when (nth-frame 4 frame)))
       
-      #_(->>
-      (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
-      (style {:transform "rotate(135deg)"})
-      (draw)
-      (when (nth-frame 4 frame)))
-      
+      ;@sc-circ
+      ;@open
+        
 
-
-       
-       ;@babrect3
-      
-      
-      @sc-circ
-      @open
-               
-      ;(when-not (nth-frame 12 frame)(doall (map deref worms)))
-
-      (when (nth-frame 1 frame)
-        (freak-out @width
-                   @height
-                   20
-                   300
-                   white))
-
-   ))
+))
 
