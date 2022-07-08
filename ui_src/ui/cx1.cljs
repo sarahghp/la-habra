@@ -50,6 +50,20 @@
 
 ;; --------------- ATOMS STORAGE --------------------
 
+(def trim
+  (->>
+   (gen-shape yellow tri)
+   (anim "loopy-left" "10s" "infinite")
+   (draw)
+   (atom)))
+   
+(def trim-2
+  (->>
+   (gen-shape (pattern (:id white-dots-1)) tri)
+   (anim "loopy-right" "10s" "infinite")
+   (draw)
+   (atom)))
+
 
 ;; start end dur frame no-repeat
 (def lerp1 (lerp))
@@ -62,13 +76,21 @@
    (list
      (let
        [colors [
-               mint mint mint mint
+               navy navy navy navy
+               blue blue blue blue
 
                 ]]
          (->>
            (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
            (style {:opacity .95})
            (draw)))
+
+           
+           
+           (->>
+            (gen-circ (pattern (:id white-lines-4)) (* 0.5 @width) (* 0.75 @height) (val-cyc frame [160 100 300 29]))
+            (draw)
+            (when (nth-frame 1 frame)))
            
            
            
@@ -83,12 +105,13 @@
 
                   ]]
            (->>
-             (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+             (gen-rect (val-cyc fast-frame colors) 0 0 "100vw" "100%")
              (style {:opacity .95})
              (draw)))
              
             
-            
+            @trim
+            @trim-2
                   
                   
                         
@@ -146,6 +169,9 @@
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
     (list1 fast-frame frame slow-frame svg-frame)
+    (list1 fast-frame frame slow-frame svg-frame)
+    ;(list2 fast-frame frame slow-frame svg-frame)
+
 
     
 
