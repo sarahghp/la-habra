@@ -126,13 +126,6 @@
       (str start-str)
       (str finish-str)])))
 
-(defn a-to-b-to-a!
-  [name att start-str finish-str]
-  (make-frames! name [0 50 100]
-    (make-body att [
-      (str start-str)
-      (str finish-str)
-      (str start-str)])))
 
 (defn fade-start!
   [name op-end]
@@ -160,24 +153,14 @@
   (make-body "fill-opacity" [0 0 0.5 1 1]))
 
 (make-frames!
-  "wee-oo"
-  [0 17 37 57 100]
-  (make-body "transform"
-    [ "translateX(1%) scale(1)"
-      "translateX(60%) scale(1.4)"
-      "translateX(70%) scale(2.5)"
-      "translateX(100%) scale(13.9)"
-      "translateX(1%) scale(1)"]))
+  "rot"
+  [0 100]
+  (make-body "transform" ["rotate(0deg)" "rotate(360deg)"]))
 
-  (make-frames!
-    "rot"
-    [0 100]
-    (make-body "transform" ["rotate(0deg)" "rotate(360deg)"]))
-
-  (make-frames!
-    "cent-rot"
-    [0 100]
-    (make-body "transform" ["translate(300px, 300px) scale(6.2) rotate(0deg)" "translate(300px, 300px) scale(1.2) rotate(360deg)"]))
+(make-frames!
+  "cent-rot"
+  [0 100]
+  (make-body "transform" ["translate(300px, 300px) scale(6.2) rotate(0deg)" "translate(300px, 300px) scale(1.2) rotate(360deg)"]))
 
 (make-frames!
   "rev"
@@ -186,35 +169,6 @@
 
 
 (fade-start! "fi" 1)
-
-
-(make-frames! "etof" [0 100] (make-body "transform" ["translateY(10px)" "translateY(1000px)"]))
-
-(back-and-forth! "scaley" "scale(1)" "scale(15)")
-(back-and-forth! "scaley-huge" "scale(20)" "scale(50)")
-
-
-(a-to-b! "new-fi" "fill-opacity" "0" ".5")
-(a-to-b! "bbll" "fill" pink white)
-(a-to-b! "sc-rot" "transform" "scale(4) rotate(0deg)" "scale(30) rotate(-80deg)")
-(a-to-b! "slide-up" "transform" "translateY(110vh)" (str "translateY("(* 0.15 @height)")"))
-(a-to-b! "grow2to3" "transform" "rotate(280deg) scale(1)" "rotate(280deg) scale(1.2)")
-
-(fade-start! "fi" 1)
-
-(make-frames! "scud"
-             [10 20 25 60 73]
-            (make-body "transform" [
-                                    "translateX(-10vw)"
-                                    "translateX(20vw)"
-                                    "translateX(50vw)"
-                                    "translateX(80vw)"
-                                    "translateX(110vw)"]) )
-
-(make-frames!
-  "supercolor"
-    [10, 35, 55, 85, 92]
-   (make-body "fill" [pink pink yellow midnight midnight]))
 
 (make-frames!
   "colorcolor"
@@ -230,62 +184,6 @@
                       (pattern (str "noise-" br-orange))
                       (pattern (str "noise-" white))
                       (pattern (str "noise-" midnight))]))
-
-(make-frames!
-  "colorcolorcolorcolor"
-    [10, 35, 55, 85, 92]
-   (make-body "fill" [
-                      (pattern (str "noise-" midnight))
-                      (pattern (str "noise-" mint))
-                      (pattern (str "noise-" navy))
-                      (pattern (str "noise-" white))
-                      (pattern (str "noise-" midnight))]))
-
-(make-frames!
-  "woosh"
-    [10, 35, 55, 85, 92]
-   (make-body "transform" [
-                           "translate(80vw, 50vh) rotate(2deg) scale(1.2)"
-                           "translate(60vw, 60vh) rotate(-200deg) scale(2.4)"
-                           "translate(40vw, 40vh) rotate(120deg) scale(4.4)"
-                           "translate(20vw, 30vh) rotate(-1000deg) scale(3.2)"
-                           "translate(60vw, 80vh) rotate(300deg) scale(6.2)"]))
-
-(make-frames!
-  "woosh-2"
-    [10, 35, 55, 85, 92]
-   (make-body "transform" [
-                           "translate(80vw, 50vh) rotate(2deg) scale(11.2)"
-                           "translate(60vw, 60vh) rotate(-200deg) scale(12.4)"
-                           "translate(40vw, 40vh) rotate(120deg) scale(13.4)"
-                           "translate(20vw, 30vh) rotate(-210deg) scale(12.2)"
-                           "translate(60vw, 80vh) rotate(400deg) scale(6.2)"]))
-
-(make-frames!
-  "woosh-3"
-    [10, 55, 85, 92]
-   (make-body "transform" [
-                           "translate(80vw, 10vh) rotate(2deg) scale(2.2)"
-                           "translate(40vw, 40vh) rotate(120deg) scale(8.4)"
-                           "translate(50vw, 30vh) rotate(0deg) scale(12.2)"
-                           "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
-                           
- (make-frames!
-   "wee"
-     [10, 55, 85, 92]
-    (make-body "transform" [
-                            "translate(80vw, 10vh) rotate(2deg) scale(2.2)"
-                            "translate(40vw, 40vh) rotate(120deg) scale(1.4)"
-                            "translate(50vw, 30vh) rotate(0deg) scale(2.2)"
-                            "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
-  (make-frames!
-    "wee-2"
-      [10, 55, 85, 92]
-     (make-body "transform" [
-                             "translate(20vw, 10vh) rotate(2deg) scale(2.2)"
-                             "translate(60vw, 60vh) rotate(120deg) scale(1.4)"
-                             "translate(30vw, 30vh) rotate(0deg) scale(2.2)"
-                             "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
 
  (make-frames!
    "loopy-left"
@@ -325,34 +223,6 @@
   (str "path('"tri"')")
 ]))
 
-(make-frames! 
- "descend"
- [0 100]
- (make-body "transform"
-             ["translate(0vw, -100vh)"
-              "translate(0vw, 80vh)"]))
-
-(make-frames! 
- "ascend"
- [0 100]
- (make-body "transform"
-             ["translate(0vw, 80vh)"
-              "translate(0vw, -30vh)"]))
-              
-(make-frames! 
- "right-right"
- [0 100]
- (make-body "transform"
-             ["translate(-200px, 20vh)"
-              "translate(1000px, 20vh)"]))
-              
-(make-frames! 
- "right-right-2"
- [0 100]
- (make-body "transform"
-             ["translateX(-200px)"
-              "translateX(2000px)"]))
-
 (make-frames!
  "lump-morph"
   [0 15 30 45 60 75 100]
@@ -365,40 +235,3 @@
   (str "path('"l6"')")
   (str "path('"l1"')")
 ]))
-
-(a-to-b-to-a! "l1l6" "d"
-                  (str "path('"l6"')")
-                  (str "path('"l1"')"))
-
-(a-to-b-to-a! "l2l4" "d"
-                  (str "path('"l2"')")
-                  (str "path('"l4"')"))
-
-(back-and-forth! "small-scale"
-                 "scale(1)"
-                 "scale(15)")
-
-(back-and-forth! "small-scale-y"
-                 "scaleY(1)"
-                 "scaleY(.05)")
-                 
-
-(back-and-forth! "right-down-1"
-                 "translate(10vw, 10vh) scale(1)"
-                 "translate(80vw, 70vh) scale(1.8)")
-                 
-(back-and-forth! "right-down-2"
-                 "translate(30vw, 10vh) scale(1)"
-                 "translate(85vw, 90vh) scale(1.8)")
-                 
-(back-and-forth! "left-up-1"
-                 "translate(12vw, 70vh) scale(1)"
-                 "translate(70vw, 4vh) scale(1.8)")
-                 
-(back-and-forth! "left-up-2"
-                 "translate(20vw, 95vh) scale(1)"
-                 "translate(90vw, 10vh) scale(1.8)")
-                 
-(back-and-forth! "lengthen"
-                 "scaleY(0%)"
-                 "scaleY(100%)")
