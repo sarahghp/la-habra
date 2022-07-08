@@ -503,13 +503,13 @@
       ;@rr
       ;@rr2
 
-      ;@drops
-      ;@drops2
+      @drops
+      @drops2
 
           
       
-      ;@sc-circ
-      ;@open
+      @sc-circ
+      @open
         
 
 ))

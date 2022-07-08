@@ -698,11 +698,12 @@
        (draw)
        (when (nth-frame 4 frame)))
       
-      (when (nth-frame 2 frame)(gen-line-grid white 2
-        80 80
-        {:col 20 :row 20}))
         
-    ; --- a grid for texture -------     
+    ; --- a grid for texture -------
+    
+    (when (nth-frame 6 frame)(gen-line-grid white 2
+      80 80
+      {:col 20 :row 20}) )   
 
     ; --- add a figure or three -------
     
@@ -718,7 +719,7 @@
        (when (nth-frame 4 frame)))
        
        (->>
-        (gen-rect blue 0 0 300 30)
+        (gen-rect (pattern (:id blue-dots-5)) 0 0 300 30)
         (style {:transform "translateY(40px)"})
         (draw)
         (when (nth-frame 3 frame))))
@@ -734,7 +735,7 @@
        (when (nth-frame 4 frame)))
        
        (->>
-        (gen-rect blue 0 0 300 30)
+        (gen-rect (pattern (:id blue-dots-5)) 0 0 300 30)
         (style {:transform "translateY(40px)"})
         (draw)
         (when (nth-frame 3 frame))))
@@ -747,7 +748,7 @@
          (when (nth-frame 4 frame)))
          
          (->>
-          (gen-rect blue 0 0 300 30)
+          (gen-rect (pattern (:id blue-dots-5)) 0 0 300 30)
           (style {:transform "translateY(40px)"})
           (draw)
           (when (nth-frame 3 frame)))))
@@ -755,12 +756,12 @@
      
     ; ----- finally, animation ------------------
 
-      ;@move-me
-      ;@move-me-2
+      @move-me
+      @move-me-2
       
-      ;@move-me-5
-      ;@move-me-3
-      ;@move-me-7
+      @move-me-5
+      @move-me-3
+      @move-me-7
            
            
          ))
@@ -986,10 +987,10 @@
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
     (list1 fast-frame frame slow-frame svg-frame)
-    ;(list2 fast-frame frame slow-frame svg-frame)
-    ;(list3 fast-frame frame slow-frame svg-frame)
-    ;(list4 fast-frame frame slow-frame svg-frame)
-    ;(list5 fast-frame frame slow-frame svg-frame)
+    (list2 fast-frame frame slow-frame svg-frame)
+    (list3 fast-frame frame slow-frame svg-frame)
+    (list4 fast-frame frame slow-frame svg-frame)
+    (list5 fast-frame frame slow-frame svg-frame)
     
 
   ])) ; cx end
