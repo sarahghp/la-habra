@@ -1,5 +1,6 @@
 (ns ui.cx1
   (:require [reagent.core :as reagent :refer [atom]]
+            [ui.sets :refer [worms worms-2]]
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
             [ui.helpers :refer [cos sin style url val-cyc deform]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct
@@ -169,9 +170,9 @@
            ;(when (nth-frame 4 frame) trio)
            ;longgis
            
-
+           ;(doall (map deref worms-2))
               
-
+           ;(gen-group {:style {:transform "translateX(100px)"}} longgis)
  
                   
            

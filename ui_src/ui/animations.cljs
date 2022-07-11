@@ -224,6 +224,19 @@
 ]))
 
 (make-frames!
+ "morph-2"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"pent"')")
+  (str "path('"square"')")
+  (str "path('"pent"')")
+  (str "path('"hex"')")
+  (str "path('"hept"')")
+  (str "path('"oct"')")
+  (str "path('"hept"')")
+]))
+
+(make-frames!
  "lump-morph"
   [0 15 30 45 60 75 100]
  (make-body "d" [
