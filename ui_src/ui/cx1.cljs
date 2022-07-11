@@ -52,32 +52,111 @@
 
 (def trim
   (->>
-   (gen-shape yellow tri)
+   (gen-shape yellow square)
    (anim "loopy-left" "10s" "infinite")
    (draw)
    (atom)))
    
 (def trim-2
   (->>
-   (gen-shape (pattern (:id white-dots-1)) tri)
+   (gen-shape (pattern (:id white-dots-1)) square)
    (anim "loopy-right" "10s" "infinite")
    (draw)
    (atom)))
+   
+(def peak
+  (->>
+   (gen-shape (pattern (:id mint-lines-5)) oct)
+    (anim "peak-r" "10s" "infinite")
+   (draw)
+   (atom)))
+   
+(def peak-2
+  (->>
+   (gen-shape (pattern (:id pink-lines-1)) oct)
+    (anim "peak-r-rot" "10s" "infinite" {:delay ".4s" :timing "ease-out"})
+   (draw)
+   (atom)))
+   
+(def peak-3
+  (->>
+   (gen-shape (pattern (:id white-dots-3)) oct)
+    (anim "peak-l-rot" "10s" "infinite" {:delay ".4s" :timing "ease-out"})
+   (draw)
+   (atom)))
+   
+(def longgi
+  (->>
+   (gen-line [300 300] [300 (* 0.8 @height)] white 10)
+   (anim "rot" "12s" "infinite")
+   (draw)
+   (atom)))
+
+(def longgi-2
+  (->>
+   (gen-line [(* 0.2 @width) 300] [(* 0.7 @width) (* 0.8 @height)] white 10)
+   (anim "rot" "12s" "infinite")
+   (draw)
+   (atom)))
+   
+   (def longgi-3
+     (->>
+      (gen-line [1500 300] [1500 (* 0.8 @height)] white 10)
+      (anim "rot" "12s" "infinite")
+      (draw)
+      (atom)))
 
 
-;; start end dur frame no-repeat
-(def lerp1 (lerp))
-(def lerp2 (lerp))
-(def lerp3 (lerp))
+ ;; ----------- GROUPS AND GRIDS --------------------------
+
+
+(def blobbo 
+      (->>
+       (gen-grid
+         10 10
+         {:col 200 :row 200}
+         (->>
+          (gen-circ mint 0 0 100)))
+         ;(map #(style styles %))
+         ;(map #(anim "ascend" "30s" "infinite" %))
+         (map draw)
+         (map #(gen-group {:style {:transform-origin "center" :animation "ascend 30s infinite" }} %))))
+
+
+(def trio 
+      (->>
+       (gen-grid
+         10 10
+         {:col 200 :row 200}
+         (gen-shape yellow tri))
+         ;(map #(style styles %))
+         ;(map #(anim "ascend" "30s" "infinite" %))
+         (map draw)
+         #_(map #(gen-group {:style {:transform-origin "center" :animation "ascend 30s infinite" }} %))))
+         
+(def longgis 
+      (->>
+       (gen-grid
+         10 10
+         {:col 200 :row 200}
+           (gen-line [30 30] [30 (* 0.5 @height)] white 10))
+         ;(map #(style styles %))
+         (map draw)
+         (map #(gen-group {:style {:transform-origin "center" :animation "rot 10s infinite" }} %))))
 
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
+ 
+ ;; start end dur frame no-repeat
+ (def lerp1 (lerp))
+ (def lerp2 (lerp))
+ (def lerp3 (lerp))
  
  (defn list1 [frame fast-frame slow-frame svg-frame]
    (list
      (let
        [colors [
-               navy navy navy navy
-               blue blue blue blue
+               ;navy navy navy navy
+               pink pink pink pink
 
                 ]]
          (->>
@@ -85,13 +164,16 @@
            (style {:opacity .95})
            (draw)))
 
+           ;blobbo
            
+           ;(when (nth-frame 4 frame) trio)
+           ;longgis
            
-           (->>
-            (gen-circ (pattern (:id white-lines-4)) (* 0.5 @width) (* 0.75 @height) (val-cyc frame [160 100 300 29]))
-            (draw)
-            (when (nth-frame 1 frame)))
-           
+
+              
+
+ 
+                  
            
            
     ))
@@ -101,7 +183,9 @@
        (let
          [colors [
 
-                  midnight midnight (pattern (:id midnight-dots-4)) (pattern (:id midnight-dots-3)) midnight midnight 
+                  ;navy navy (pattern (:id blue-dots-4)) (pattern (:id blue-dots-3)) navy navy 
+                  
+                  pink
 
                   ]]
            (->>
@@ -110,8 +194,9 @@
              (draw)))
              
             
-            @trim
-            @trim-2
+            ;@trim
+            ;@trim-2
+            
                   
                   
                         
@@ -120,16 +205,16 @@
 (defn list3 [frame fast-frame  slow-frame svg-frame]
                 
      (list
-       ;(doall (map deref worms))
        (let
          [colors [
-                  midnight midnight midnight midnight
+                  navy navy navy navy
 
                   ]]
            (->>
              (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
              (style {:opacity .95})
              (draw)))
+
              
                                      
   ))
@@ -169,9 +254,6 @@
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
     (list1 fast-frame frame slow-frame svg-frame)
-    (list1 fast-frame frame slow-frame svg-frame)
-    ;(list2 fast-frame frame slow-frame svg-frame)
-
 
     
 

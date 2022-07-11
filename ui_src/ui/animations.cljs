@@ -235,3 +235,46 @@
   (str "path('"l6"')")
   (str "path('"l1"')")
 ]))
+
+
+(make-frames!
+  "peak-r"
+  [30 75]
+  (make-body "transform" [
+    "translate(80vw, 50vh) scale(3)"
+    "translate(30vw, 80vh) scale(1.7)"
+  ]))
+  
+(make-frames!
+  "peak-r-rot"
+  [30 75]
+  (make-body "transform" [
+    "translate(80vw, 50vh) scale(3) rotate(200deg)"
+    "translate(30vw, 80vh) scale(1.7) rotate(-2000deg)"
+  ])) 
+  
+(make-frames!
+  "peak-l"
+  [0 30 75 100]
+  (make-body "transform" [
+    "translate(80vw, 0vh) scale(1.7)"
+    "translate(0vw, 50vh) scale(4)"
+    "translate(30vw, 80vh) scale(2.7)"
+    "translate(80vw, 0vh) scale(1.7)"
+  ]))
+
+(make-frames!
+  "peak-l-rot"
+  [0 30 75 100]
+  (make-body "transform" [
+    "translate(80vw, 0vh) scale(1.7) rotate(200deg)"
+    "translate(0vw, 50vh) scale(4) rotate(-1000deg)"
+    "translate(30vw, 80vh) scale(2.7) rotate(200deg)"
+    "translate(80vw, 0vh) scale(1.7) rotate(1000deg)"
+  ]))
+
+(a-to-b!
+  "ascend"
+  "transform"
+  "translateY(0vh)"
+  "translateY(-100vh)")

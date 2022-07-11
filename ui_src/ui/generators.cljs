@@ -20,7 +20,7 @@
   { :cx x
     :cy y
     :r radius
-    :mask mask
+    :mask (str "url" mask)
     :type :circle
     :style {:fill fill-string
             :transform-origin "center"}})

@@ -76,7 +76,20 @@
 (defn cx2 [frame fast-frame slow-frame]
   (list
 
-        
+        (->>
+         (gen-circ (pattern (str "noise-" white)) (* 0.5 @height) (* 0.5 @height) 3000)
+         ;(style {:opacity .5})
+         (draw))
+         
+                (->>
+                 (gen-circ (pattern (:id white-lines-4)) (* 0.5 @width) (* 0.5 @height) (val-cyc frame [400 100 260 29]) "#grad-mask")
+                 (draw)
+                 (when (nth-frame 1 frame)))
+         
+                 #_(->>
+                  (gen-circ br-orange (* 0.5 @height) (* 0.5 @height) 3000)
+                  (style {:opacity .5})
+                  (draw))
 
 ))
 
