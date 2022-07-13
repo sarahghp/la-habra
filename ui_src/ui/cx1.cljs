@@ -53,7 +53,7 @@
 
 (def trim
   (->>
-   (gen-shape yellow square)
+   (gen-shape (pattern (:id white-dots-1))  square)
    (anim "loopy-left" "10s" "infinite")
    (draw)
    (atom)))
@@ -100,13 +100,59 @@
    (draw)
    (atom)))
    
-   (def longgi-3
-     (->>
-      (gen-line [1500 300] [1500 (* 0.8 @height)] white 10)
-      (anim "rot" "12s" "infinite")
-      (draw)
-      (atom)))
+ (def longgi-3
+   (->>
+    (gen-line [1500 300] [1500 (* 0.8 @height)] white 10)
+    (anim "rot" "12s" "infinite")
+    (draw)
+    (atom)))
+    
+(def move-me
+  (->>
+   (gen-line [0 0] [100 100] white 10)
+   (style {:stroke-linecap "round"})
+   (anim "peak-l-rot" "12s" "infinite")
+   (draw)
+   (atom)))
 
+(def move-me-2
+  (->>
+   (gen-line [0 0] [100 100] white 10)
+   (style {:stroke-linecap "round"})
+   (anim "peak-r-rot" "12s" "infinite")
+   (draw)
+   (atom)))
+   
+(def move-me-3
+  (->>
+   (gen-shape br-orange tri)
+   (anim "peak-r-rot" "12s" "infinite")
+   
+   (draw)
+   (atom)))
+   
+(def move-me-4
+  (->>
+   (gen-shape orange tri)
+   (anim "woosh" "8s" "infinite")
+   (draw)
+   (atom)))
+   
+(def down
+  (->>
+   (gen-shape (pattern (:id yellow-lines-5)) oct)
+   (anim "descend" "20s" "infinite")
+   (draw)
+   (gen-group {:style {:transform "translateX(12vw) scale(4)"}})
+   (atom)))
+   
+ (def up
+   (->>
+    (gen-shape (pattern (:id mint-lines-5)) oct)
+    (anim "ascend" "20s" "infinite")
+    (draw)
+    (gen-group {:style {:transform "translateX(12vw) scale(4)"}})
+    (atom)))
 
  ;; ----------- GROUPS AND GRIDS --------------------------
 
@@ -165,16 +211,17 @@
            (style {:opacity .95})
            (draw)))
 
-           ;blobbo
-           
-           ;(when (nth-frame 4 frame) trio)
-           ;longgis
-           
-           ;(doall (map deref worms-2))
-              
-           ;(gen-group {:style {:transform "translateX(100px)"}} longgis)
+          blobbo
+
+          @move-me-4 
+          @move-me-3
+          
+          
+
  
-                  
+           @move-me
+           @move-me-2
+
            
            
     ))
@@ -194,9 +241,12 @@
              (style {:opacity .95})
              (draw)))
              
+            @down
+            @up
+          
             
-            ;@trim
-            ;@trim-2
+            @trim
+            @trim-2
             
                   
                   
@@ -209,13 +259,42 @@
        (let
          [colors [
                   navy navy navy navy
+                  
 
                   ]]
            (->>
              (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
              (style {:opacity .95})
              (draw)))
+             
+             longgis
+             
+             ;(when (nth-frame 4 slow-frame) trio)
+             
+             (gen-group {:style {:transform "translateX(100px)"}} longgis)
 
+               
+               (when (nth-frame 2 (+ 1 frame))
+                 (freak-out @width
+                            @height
+                            30
+                            500
+                            white))
+                            
+                         
+               (when (nth-frame 4 frame)
+                 (freak-out @width
+                            @height
+                            300
+                            50
+                            pink))
+             
+                 @down
+                 @up
+                          
+                          (when (nth-frame 2 frame) (gen-line-grid white 8
+                            80 80
+                            {:col 20 :row 20}))
              
                                      
   ))
@@ -254,7 +333,13 @@
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
-    (list1 fast-frame frame slow-frame svg-frame)
+    ;(list1 fast-frame frame slow-frame svg-frame)
+    (list3 fast-frame frame slow-frame svg-frame)
+    (list3 fast-frame frame slow-frame svg-frame)
+    ;(list2 fast-frame frame slow-frame svg-frame)
+    (list3 fast-frame frame slow-frame svg-frame)
+    (list3 fast-frame frame slow-frame svg-frame)
+
 
     
 

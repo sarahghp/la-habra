@@ -90,6 +90,8 @@
                   (gen-circ br-orange (* 0.5 @height) (* 0.5 @height) 3000)
                   (style {:opacity .5})
                   (draw))
+                  
+                (new-freakout @width @height 100 100 "testCirc")
 
 ))
 

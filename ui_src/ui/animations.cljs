@@ -285,9 +285,37 @@
     "translate(30vw, 80vh) scale(2.7) rotate(200deg)"
     "translate(80vw, 0vh) scale(1.7) rotate(1000deg)"
   ]))
+  
+(make-frames!
+  "woosh"
+  [0 30 55 75 100]
+  (make-body "transform" [
+    "translate(20vw, 0vh) scale(1.7) rotate(200deg)"
+    "translate(30vw, 80vh) scale(4) rotate(-1000deg)"
+    "translate(0vw, 50vh) scale(4) rotate(-1000deg)"
+    "translate(80vw, 400vh) scale(2.7) rotate(200deg)"
+    "translate(80vw, 0vh) scale(1.7) rotate(1000deg)"
+  ]))
+  
+(make-frames!
+  "woosh-2"
+  [0 30 55 75 100]
+  (make-body "transform" [
+    "translate(20vw, 0vh) scale(1.7) rotate(200deg)"
+    "translate(30vw, 80vh) scale(4) rotate(-1000deg)"
+    "translate(0vw, 50vh) scale(8) rotate(1000deg)"
+    "translate(80vw, 40vh) scale(2.7) rotate(200deg)"
+    "translate(20vw, 10vh) scale(1.7) rotate(1000deg)"
+  ]))
 
 (a-to-b!
   "ascend"
   "transform"
   "translateY(0vh)"
   "translateY(-100vh)")
+  
+(a-to-b!
+  "descend"
+  "transform"
+  "translateY(0vh)"
+  "translateY(100vh)")
