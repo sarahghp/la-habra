@@ -319,3 +319,13 @@
   "transform"
   "translateY(0vh)"
   "translateY(100vh)")
+  
+(back-and-forth!
+  "expand"
+  "scale(1)"
+  "scale(40)")
+  
+(back-and-forth!
+  "expand-sm"
+  "scale(1)"
+  "scale(20)")

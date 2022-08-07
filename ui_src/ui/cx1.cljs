@@ -153,6 +153,22 @@
     (draw)
     (gen-group {:style {:transform "translateX(12vw) scale(4)"}})
     (atom)))
+    
+    (def down-2
+      (->>
+       (gen-shape (pattern (:id yellow-lines-5)) oct)
+       (anim "descend" "20s" "infinite")
+       (draw)
+       (gen-group {:style {:transform "translateX(42vw) scale(4)"}})
+       (atom)))
+       
+     (def up-2
+       (->>
+        (gen-shape (pattern (:id mint-lines-5)) oct)
+        (anim "ascend" "20s" "infinite")
+        (draw)
+        (gen-group {:style {:transform "translateX(42vw) scale(4)"}})
+        (atom)))
 
  ;; ----------- GROUPS AND GRIDS --------------------------
 
@@ -213,14 +229,17 @@
 
           blobbo
 
-          @move-me-4 
-          @move-me-3
+          ;@move-me-4 
+          ;@move-me-3
           
           
 
  
-           @move-me
-           @move-me-2
+           ;@move-me
+           ;@move-me-2
+           
+                     ;@trim
+                     ;@trim-2
 
            
            
@@ -241,12 +260,15 @@
              (style {:opacity .95})
              (draw)))
              
-            @down
-            @up
+            ;@down
+            ;@up
+            
+                        ;@down-2
+                        ;@up-2
           
             
-            @trim
-            @trim-2
+          @trim
+          @trim-2
             
                   
                   
@@ -259,7 +281,6 @@
        (let
          [colors [
                   navy navy navy navy
-                  
 
                   ]]
            (->>
@@ -267,34 +288,66 @@
              (style {:opacity .95})
              (draw)))
              
-             longgis
+             ;blobbo
              
-             ;(when (nth-frame 4 slow-frame) trio)
+             @longgi
+             @longgi-2
+             @longgi-3
              
-             (gen-group {:style {:transform "translateX(100px)"}} longgis)
+             (when (nth-frame 4 slow-frame) trio)
+             
+                          ;longgis
+                          
+              #_(->>
+               (gen-shape br-orange tri)
+               (style {:transform "translate(20vw, 20vh) scale(4) rotate(135deg)"})
+                                         (style {:mix-blend-mode "luminosity"})
+
+               (draw)
+               (when (nth-frame 8 frame)))
+               
+            #_(->>
+              (gen-shape br-orange tri)
+              (style {:transform "translate(26vw, 40vh) scale(4) rotate(-135deg)"})
+              (draw)
+              (when (nth-frame 6 frame)))
+              
+              
+              #_(gen-group {:style {:transform "translate(40vw, 20vh)"}}
+                  (->>
+                   (gen-shape br-orange tri)
+                   (style {:transform "translate(20vw, 20vh) scale(4) rotate(135deg)"})
+                                             (style {:mix-blend-mode "luminosity"})
+
+                   (draw)
+                   (when (nth-frame 4 frame)))
+                   
+                (->>
+                  (gen-shape br-orange tri)
+                  (style {:transform "translate(26vw, 40vh) scale(4) rotate(-135deg)"})
+                  (draw)
+                  (when (nth-frame 6 frame))))
+                  
+                  
+                      #_(gen-group {:style {:transform "translate(60vw, 30vh)"}}
+                          (->>
+                           (gen-shape br-orange tri)
+                           (style {:transform "translate(20vw, 20vh) scale(4) rotate(135deg)"})
+                           (draw)
+                           (when (nth-frame 4 (+ 1 frame))))
+                           
+                        (->>
+                          (gen-shape br-orange tri)
+                          (style {:transform "translate(26vw, 40vh) scale(4) rotate(-135deg)"})
+                          (style {:mix-blend-mode "luminosity"})
+                          (draw)
+                          (when (nth-frame 6 (+ 1 frame)))))
+             
 
                
-               (when (nth-frame 2 (+ 1 frame))
-                 (freak-out @width
-                            @height
-                            30
-                            500
-                            white))
                             
                          
-               (when (nth-frame 4 frame)
-                 (freak-out @width
-                            @height
-                            300
-                            50
-                            pink))
-             
-                 @down
-                 @up
-                          
-                          (when (nth-frame 2 frame) (gen-line-grid white 8
-                            80 80
-                            {:col 20 :row 20}))
+  
              
                                      
   ))
@@ -312,7 +365,8 @@
           (style {:opacity .95})
           (draw)))
 
-          
+                       (gen-group {:style {:transform "translateX(100px)"}} longgis)
+                       longgis
   
   ))
   
@@ -333,12 +387,18 @@
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
-    ;(list1 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
+    (list1 fast-frame frame slow-frame svg-frame)
+        (list1 fast-frame frame slow-frame svg-frame)
+
+    ;(list3 fast-frame frame slow-frame svg-frame)
+    ;(list3 fast-frame frame slow-frame svg-frame)
     ;(list2 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
+        ;(list2 fast-frame frame slow-frame svg-frame)
+
+    ;(list3 fast-frame frame slow-frame svg-frame)
+        ;(list3 fast-frame frame slow-frame svg-frame)
+
+    ;(list4 fast-frame frame slow-frame svg-frame)
 
 
     

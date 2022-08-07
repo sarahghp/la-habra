@@ -47,7 +47,26 @@
 
 ;; --------------- ATOMS STORAGE --------------------
 
-
+(def open
+  (->>
+   (gen-circ (pattern  (:id pink-lines-3)) (* 0.5 @width) (* 0.5 @height) 40)
+   (anim "expand" "20s" "infinite")
+   (draw)
+   (atom)))
+   
+   (def open-2
+     (->>
+      (gen-circ (pattern  (:id white-dots-3)) (* 0.5 @width) (* 0.5 @height) 40)
+      (anim "expand-sm" "10s" "infinite" {:delay "1.6s"})
+      (draw)
+      (atom)))
+      
+         (def open-3
+           (->>
+            (gen-circ (pattern  (str "noise-pink")) (* 0.5 @width) (* 0.5 @height) 40)
+            (anim "expand-sm" "8s" "infinite" {:delay "2s"})
+            (draw)
+            (atom)))
 
 
 ;; ------------------- DRAWING HELPERS ------------------------
@@ -81,7 +100,11 @@
          ;(style {:opacity .5})
          (draw))
          
-                (->>
+         ;@open
+         ;@open-2
+         ;@open-3
+         
+                #_(->>
                  (gen-circ (pattern (:id white-lines-4)) (* 0.5 @width) (* 0.5 @height) (val-cyc frame [400 100 260 29]) "#grad-mask")
                  (draw)
                  (when (nth-frame 1 frame)))
@@ -90,8 +113,15 @@
                   (gen-circ br-orange (* 0.5 @height) (* 0.5 @height) 3000)
                   (style {:opacity .5})
                   (draw))
-                  
-                (new-freakout @width @height 100 100 "testCirc")
+
+  ;(new-freakout @width @height 30 600 "testCirc")
+  
+  (when (nth-frame 1 frame)
+    (freak-out @width
+               @height
+               40 
+               200
+               white))
 
 ))
 
