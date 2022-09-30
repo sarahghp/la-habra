@@ -116,12 +116,6 @@
 
   ;(new-freakout @width @height 30 600 "testCirc")
   
-  (when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               40 
-               200
-               white))
 
 ))
 

@@ -138,6 +138,13 @@
    (draw)
    (atom)))
    
+   (def move-me-5
+     (->>
+      (gen-shape (pattern (:id white-lines-1)) oct)
+      (anim "woosh-2" "18s" "infinite")
+      (draw)
+      (atom)))
+   
 (def down
   (->>
    (gen-shape (pattern (:id yellow-lines-5)) oct)
@@ -192,10 +199,9 @@
          10 10
          {:col 200 :row 200}
          (gen-shape yellow tri))
-         ;(map #(style styles %))
-         ;(map #(anim "ascend" "30s" "infinite" %))
          (map draw)
-         #_(map #(gen-group {:style {:transform-origin "center" :animation "ascend 30s infinite" }} %))))
+         (map #(gen-group {:style {:transform-origin "center" :transform "skew(40deg)" }} %))
+         (map #(gen-group {:style {:transform-origin "center" :animation "ascend 30s infinite" }} %))))
          
 (def longgis 
       (->>
@@ -227,7 +233,7 @@
            (style {:opacity .95})
            (draw)))
 
-          blobbo
+          ;blobbo
 
           ;@move-me-4 
           ;@move-me-3
@@ -240,6 +246,15 @@
            
                      ;@trim
                      ;@trim-2
+          
+          #_(->>
+           (gen-shape midnight tri)
+           (style {:transform (str "skew("(val-cyc frame [10 30 400 -10 60])"deg) translate(30vw, 30vh) scale(2)")})
+           (draw)
+           (when (nth-frame 1 frame)))
+           
+           trio
+           @move-me-5
 
            
            
