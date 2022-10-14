@@ -95,7 +95,7 @@
 (defn cx2 [frame fast-frame slow-frame]
   (list
 
-        (->>
+        #_(->>
          (gen-circ (pattern (str "noise-" white)) (* 0.5 @height) (* 0.5 @height) 3000)
          ;(style {:opacity .5})
          (draw))

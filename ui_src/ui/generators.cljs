@@ -230,7 +230,7 @@
                                  ")")}]))))
 (defn gen-mask
  [id insides]
- [:mask {:id id :key (random-uuid)} insides])
+ [:mask {:id id :key (random-uuid) :mask-content-units "userSpaceOnUse"} insides])
 
 (defn scatter
   ([num item] (scatter 0 @width 0 @height 0 1 num item))

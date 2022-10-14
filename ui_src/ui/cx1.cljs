@@ -10,7 +10,7 @@
                                           scr1 scr2 scr3 scr4 scr5]]
             [ui.fills :as fills :refer
               [gray charcoal mint midnight navy blue orange
-                br-orange pink white yellow clear]]
+                br-orange pink white yellow clear monopink monomint monoblue monochar]]
             [ui.generators :refer
              [freak-out new-freakout scatter lerp
               gen-circ gen-line gen-poly gen-rect gen-shape draw
@@ -51,6 +51,46 @@
 
 ;; --------------- ATOMS STORAGE --------------------
 
+(def scribble
+  (->>
+   (gen-shape "hsla(0, 0%, 0%, 0)" scr1)
+   (style {:stroke pink
+           :stroke-width 3
+           :stroke-dasharray 40
+           :stroke-dashoffset 8
+           :stroke-linecap "round"
+           :stroke-linejoin "round"})
+   (anim "woosh" "10s" "infinite")
+   (draw)
+   (atom)))
+   
+   
+(def scribble2
+  (->>
+   (gen-shape "hsla(0, 0%, 0%, 0)" scr2)
+   (style {:stroke mint
+           :stroke-width 3
+           :stroke-dasharray 40
+           :stroke-dashoffset 8
+           :stroke-linecap "round"
+           :stroke-linejoin "round"})
+   (anim "peak-l-rot" "8s" "infinite")
+   (draw)
+   (atom)))
+   
+  (def scribble3
+    (->>
+     (gen-shape "hsla(0, 0%, 0%, 0)" scr5)
+     (style {:stroke yellow
+             :stroke-width 3
+             :stroke-dasharray 12
+             :stroke-dashoffset 12
+             :stroke-linecap "round"
+             :stroke-linejoin "round"})
+     (anim "woosh-2" "8s" "infinite")
+     (draw)
+     (atom)))
+
 (def trim
   (->>
    (gen-shape (pattern (:id white-dots-1))  square)
@@ -60,7 +100,7 @@
    
 (def trim-2
   (->>
-   (gen-shape (pattern (:id white-dots-1)) square)
+   (gen-shape (pattern (:id white-dots-1)) "#grad-mask")
    (anim "loopy-right" "10s" "infinite")
    (draw)
    (atom)))
@@ -88,7 +128,7 @@
    
 (def longgi
   (->>
-   (gen-line [300 300] [300 (* 0.8 @height)] white 10)
+   (gen-line [300 (* 0.4 @height)] [300 (* 0.8 @height)] white 10)
    (anim "rot" "12s" "infinite")
    (draw)
    (atom)))
@@ -102,7 +142,7 @@
    
  (def longgi-3
    (->>
-    (gen-line [1500 300] [1500 (* 0.8 @height)] white 10)
+    (gen-line [(* 0.8 @width) 300] [(* 0.8 @width) (* 0.8 @height)] white 10)
     (anim "rot" "12s" "infinite")
     (draw)
     (atom)))
@@ -155,7 +195,7 @@
    
  (def up
    (->>
-    (gen-shape (pattern (:id mint-lines-5)) oct)
+    (gen-shape (pattern (:id pink-lines-5)) oct)
     (anim "ascend" "20s" "infinite")
     (draw)
     (gen-group {:style {:transform "translateX(12vw) scale(4)"}})
@@ -198,10 +238,20 @@
        (gen-grid
          10 10
          {:col 200 :row 200}
-         (gen-shape yellow tri))
+         (gen-shape pink tri))
          (map draw)
          (map #(gen-group {:style {:transform-origin "center" :transform "skew(40deg)" }} %))
          (map #(gen-group {:style {:transform-origin "center" :animation "ascend 30s infinite" }} %))))
+         
+         (def trio2 
+               (->>
+                (gen-grid
+                  10 10
+                  {:col 200 :row 200}
+                  (gen-shape yellow tri))
+                  (map draw)
+                  (map #(gen-group {:style {:transform-origin "center" :transform "skew(-60deg)" }} %))
+                  (map #(gen-group {:style {:transform-origin "center" :animation "ascend 40s infinite" }} %))))
          
 (def longgis 
       (->>
@@ -220,12 +270,19 @@
  (def lerp2 (lerp))
  (def lerp3 (lerp))
  
+
+ 
  (defn list1 [frame fast-frame slow-frame svg-frame]
    (list
      (let
        [colors [
                ;navy navy navy navy
-               pink pink pink pink
+               ;pink pink pink pink
+               ;mint mint mint mint
+               charcoal
+                                 ;white pink
+                                 ;white
+
 
                 ]]
          (->>
@@ -233,30 +290,56 @@
            (style {:opacity .95})
            (draw)))
 
-          ;blobbo
+;@scribble
+;@scribble2
+;@scribble3
 
-          ;@move-me-4 
-          ;@move-me-3
-          
-          
-
- 
-           ;@move-me
-           ;@move-me-2
-           
-                     ;@trim
-                     ;@trim-2
-          
-          #_(->>
-           (gen-shape midnight tri)
-           (style {:transform (str "skew("(val-cyc frame [10 30 400 -10 60])"deg) translate(30vw, 30vh) scale(2)")})
-           (draw)
-           (when (nth-frame 1 frame)))
-           
-           trio
-           @move-me-5
+#_(when (nth-frame 3 frame)
+  (freak-out @width
+             @height
+             10
+             40
+             white))
 
            
+ #_(when (nth-frame 2 slow-frame) (gen-line-grid midnight 2
+   80 80
+   {:col 80 :row 80}))
+             
+  #_(when (nth-frame 2 (+ 1 slow-frame)) (gen-line-grid white 1
+    80 80
+    {:col 20 :row 20}))
+          
+           
+           #_(->>
+            (gen-circ (pattern "img1")(* 0.5 @width) (* 0.5 @height) (lerp1 300 600 20 frame))
+            (style {:mix-blend-mode "overlay"})
+            (draw)
+            (when (nth-frame 1 slow-frame)))
+            
+           #_(->>
+            (gen-circ (pattern "img1") (* (lerp3 0.1 0.8 30 frame) @width) (* 0.5 @height) 300)
+            (style {:mix-blend-mode "overlay"})
+            (draw)
+            (when (nth-frame 3 slow-frame)))
+            
+           #_(->>
+            (gen-circ (pattern "img1")(* (lerp2 0.8 0.1 45 frame) @width) (* 0.5 @height) 300)
+            (style {:mix-blend-mode "luminosity"})
+            (draw)
+            (when (nth-frame 2 (+ 1 slow-frame))))
+            
+            ;@longgi
+            ;@longgi-2
+            ;@longgi-3
+            ;longgis
+   
+   (->>
+    (gen-circ 
+      (monochar (val-cyc slow-frame [:lightlight :light :mid :dark :darkdark])) 
+      (* 0.5 @width) (* 0.5 @height) 200)
+    (draw)
+    (when (nth-frame 1 frame)))
            
     ))
            
@@ -266,7 +349,6 @@
          [colors [
 
                   ;navy navy (pattern (:id blue-dots-4)) (pattern (:id blue-dots-3)) navy navy 
-                  
                   pink
 
                   ]]
@@ -308,6 +390,7 @@
              @longgi
              @longgi-2
              @longgi-3
+             
              
              (when (nth-frame 4 slow-frame) trio)
              

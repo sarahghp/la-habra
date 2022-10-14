@@ -116,7 +116,14 @@
                :style {:animation "colorcolorcolor 100s infinite"}
                :fill (pattern (str "noise-" yellow))}]
           [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" midnight))}]
-
+      [:pattern {:id "img1" :pattern-units "userSpaceOnUse" :width "2000" :height "2000"}
+      [:image {:href "Fb2.png"  :x "-30" :y "-30" :width (str (* 1 1169)) :height (str (* 1 1353)) }]]
+      
+      [:pattern {:id "img2" :pattern-units "userSpaceOnUse" :width "400" :height "400"}
+      [:image {:href "Fb2.png"  :x "-20" :y "-20" :width "600" :height "600" }]]
+        
+      [:pattern {:id "img3" :pattern-units "userSpaceOnUse" :width "400" :height "400"}
+      [:image {:href "Fb2.png"  :x "100" :y "-100" :width "600" :height "600" }]]
      (map identity gradients)
      (map identity masks)
      (map gen-color-noise all-fills)

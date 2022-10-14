@@ -35,7 +35,7 @@
 
 (def mask-list [
             [ "poly-mask"
-              [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
+              [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 8s infinite"}}]]
             [ "poly-mask-2"
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" :animation "woosh-2 10s infinite"}}]]
             [ "poly-mask-3"
