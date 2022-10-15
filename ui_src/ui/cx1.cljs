@@ -100,7 +100,7 @@
    
 (def trim-2
   (->>
-   (gen-shape (pattern (:id white-dots-1)) "#grad-mask")
+   (gen-shape (pattern (:id white-dots-1)) square)
    (anim "loopy-right" "10s" "infinite")
    (draw)
    (atom)))
@@ -219,6 +219,21 @@
 
  ;; ----------- GROUPS AND GRIDS --------------------------
 
+(def s1 (scatter 100 
+  (->>
+   (gen-rect pink 100 100 100 100)
+   (draw))))
+   
+   (def s2 (scatter 100 
+     (->>
+      (gen-rect mint 100 100 100 100)
+      (draw))))
+      
+   (defonce s3 (scatter 13 1 5
+     (->>
+      (gen-shape mint oct)
+      (style { :filter (url (:id noiz)) })
+      (draw))))
 
 (def blobbo 
       (->>
@@ -278,8 +293,8 @@
        [colors [
                ;navy navy navy navy
                ;pink pink pink pink
-               ;mint mint mint mint
-               charcoal
+               mint mint mint mint
+               ;charcoal
                                  ;white pink
                                  ;white
 
@@ -290,9 +305,9 @@
            (style {:opacity .95})
            (draw)))
 
-;@scribble
-;@scribble2
-;@scribble3
+           ;@scribble
+           ;@scribble2
+           ;@scribble3
 
 #_(when (nth-frame 3 frame)
   (freak-out @width
@@ -302,44 +317,43 @@
              white))
 
            
- #_(when (nth-frame 2 slow-frame) (gen-line-grid midnight 2
+ (when (nth-frame 2 slow-frame) (gen-line-grid midnight 2
    80 80
    {:col 80 :row 80}))
              
-  #_(when (nth-frame 2 (+ 1 slow-frame)) (gen-line-grid white 1
+  (when (nth-frame 2 (+ 1 slow-frame)) (gen-line-grid white 1
     80 80
     {:col 20 :row 20}))
           
            
-           #_(->>
-            (gen-circ (pattern "img1")(* 0.5 @width) (* 0.5 @height) (lerp1 300 600 20 frame))
+           (->>
+            (gen-circ 
+              (pattern (val-cyc slow-frame ["img1" "img4" "img5" "img6"]))
+              (* 0.5 @width) (* 0.5 @height) (lerp1 200 400 20 frame))
             (style {:mix-blend-mode "overlay"})
             (draw)
             (when (nth-frame 1 slow-frame)))
             
-           #_(->>
-            (gen-circ (pattern "img1") (* (lerp3 0.1 0.8 30 frame) @width) (* 0.5 @height) 300)
+           (->>
+            (gen-circ (pattern (val-cyc slow-frame ["img7" "img5" "img6"])) (* 0.2 @width) (* 0.5 @height) 300)
             (style {:mix-blend-mode "overlay"})
             (draw)
-            (when (nth-frame 3 slow-frame)))
+            (when (nth-frame 1 slow-frame)))
             
-           #_(->>
-            (gen-circ (pattern "img1")(* (lerp2 0.8 0.1 45 frame) @width) (* 0.5 @height) 300)
-            (style {:mix-blend-mode "luminosity"})
-            (draw)
-            (when (nth-frame 2 (+ 1 slow-frame))))
+         (->>
+          (gen-circ 
+            (pattern (val-cyc slow-frame ["img1" "img5" "img6" "img4"]))
+            (* 0.8 @width) (* 0.5 @height) 300)
+          (style {:mix-blend-mode "overlay"})
+          (draw)
+          (when (nth-frame 1 (+ 1 slow-frame))))
             
+
             ;@longgi
             ;@longgi-2
             ;@longgi-3
             ;longgis
-   
-   (->>
-    (gen-circ 
-      (monochar (val-cyc slow-frame [:lightlight :light :mid :dark :darkdark])) 
-      (* 0.5 @width) (* 0.5 @height) 200)
-    (draw)
-    (when (nth-frame 1 frame)))
+
            
     ))
            
@@ -357,8 +371,8 @@
              (style {:opacity .95})
              (draw)))
              
-            ;@down
-            ;@up
+            @down
+            @up
             
                         ;@down-2
                         ;@up-2
@@ -392,7 +406,7 @@
              @longgi-3
              
              
-             (when (nth-frame 4 slow-frame) trio)
+             ;(when (nth-frame 4 slow-frame) trio)
              
                           ;longgis
                           
@@ -472,7 +486,7 @@
   (list
     (let
       [colors [
-               midnight midnight midnight midnight
+               navy
                ]]
         (->>
           (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
@@ -480,13 +494,21 @@
           (draw)))
           
 
+          (->>
+           (gen-shape (monoblue :light) b2)
+           (style {:transform "translate(50vw, 50vh) scale(2)"})
+           (draw)
+           (when (nth-frame 4 frame)))
+                           
+
+
   
   ))
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
-    (list1 fast-frame frame slow-frame svg-frame)
-        (list1 fast-frame frame slow-frame svg-frame)
+    ;(list1 fast-frame frame slow-frame svg-frame)
+        ;(list1 fast-frame frame slow-frame svg-frame)
 
     ;(list3 fast-frame frame slow-frame svg-frame)
     ;(list3 fast-frame frame slow-frame svg-frame)
@@ -494,7 +516,7 @@
         ;(list2 fast-frame frame slow-frame svg-frame)
 
     ;(list3 fast-frame frame slow-frame svg-frame)
-        ;(list3 fast-frame frame slow-frame svg-frame)
+        (list5 fast-frame frame slow-frame svg-frame)
 
     ;(list4 fast-frame frame slow-frame svg-frame)
 

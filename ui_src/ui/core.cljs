@@ -117,13 +117,25 @@
                :fill (pattern (str "noise-" yellow))}]
           [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" midnight))}]
       [:pattern {:id "img1" :pattern-units "userSpaceOnUse" :width "2000" :height "2000"}
-      [:image {:href "Fb2.png"  :x "-30" :y "-30" :width (str (* 1 1169)) :height (str (* 1 1353)) }]]
+      [:image {:href "Fb2.png"  :x "-300" :y "-400" :width (str (* 1 2169)) :height (str (* 1 1353)) }]]
       
       [:pattern {:id "img2" :pattern-units "userSpaceOnUse" :width "400" :height "400"}
-      [:image {:href "Fb2.png"  :x "-20" :y "-20" :width "600" :height "600" }]]
+      [:image {:href "Fb2.png"  :x "-200" :y "-20" :width "600" :height "600" }]]
         
       [:pattern {:id "img3" :pattern-units "userSpaceOnUse" :width "400" :height "400"}
       [:image {:href "Fb2.png"  :x "100" :y "-100" :width "600" :height "600" }]]
+      
+    [:pattern {:id "img4" :pattern-units "userSpaceOnUse" :width "2000" :height "2000"}
+    [:image {:href "Fb3.png"  :x "-300" :y "-400" :width (str (* 1 2169)) :height (str (* 1 1353)) }]]
+    
+    [:pattern {:id "img5" :pattern-units "userSpaceOnUse" :width "2000" :height "2000"}
+    [:image {:href "Fb4.png"  :x "-300" :y "-400" :width (str (* 1 2169)) :height (str (* 1 1353)) }]]
+        
+    [:pattern {:id "img6" :pattern-units "userSpaceOnUse" :width "2000" :height "2000"}
+    [:image {:href "Fb5.png"  :x "-30" :y "-400" :width (str (* 1 2169)) :height (str (* 1 1353)) }]]
+    
+        [:pattern {:id "img7" :pattern-units "userSpaceOnUse" :width "2000" :height "2000"}
+        [:image {:href "Fb6.png"  :x "-600" :y "-100" :width (str (* 1 2169)) :height (str (* 1 1353)) }]]
      (map identity gradients)
      (map identity masks)
      (map gen-color-noise all-fills)
@@ -145,10 +157,10 @@
 (defn drawing2 []
     (add-svg @collection2 (val-cyc @frame
              [
-              "difference" "difference" "difference" 
+              ;"difference" "difference" "difference" 
               
              ;"multiply" "multiply" "multiply" "multiply"
-             ;"luminosity" "luminosity"
+             "luminosity" "luminosity"
                ;"luminosity"
               ])))
 
