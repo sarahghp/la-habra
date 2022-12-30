@@ -24494,7 +24494,8 @@ electron.core.browser_window = electron.core.electron.BrowserWindow;
 electron.core.crash_reporter = electron.core.electron.crashReporter;
 electron.core.main_window = cljs.core.atom.call(null, null);
 electron.core.init_browser = function() {
-  cljs.core.reset_BANG_.call(null, electron.core.main_window, new electron.core.browser_window(cljs.core.clj__GT_js.call(null, new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, "width", "width", -384071477), 1080, new cljs.core.Keyword(null, "height", "height", 1025178622), 800], null))));
+  cljs.core.reset_BANG_.call(null, electron.core.main_window, new electron.core.browser_window(cljs.core.clj__GT_js.call(null, new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "width", "width", -384071477), 1080, new cljs.core.Keyword(null, "height", "height", 1025178622), 800, new cljs.core.Keyword(null, "webPreferences", "webPreferences", -1267169265), new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null, "backgroundThrottling", "backgroundThrottling", 272836265), 
+  !1], null)], null))));
   cljs.core.deref.call(null, electron.core.main_window).loadURL(["file://", cljs.core.str.cljs$core$IFn$_invoke$arity$1(__dirname), "/public/index.html"].join(""));
   return cljs.core.deref.call(null, electron.core.main_window).on("closed", function() {
     return cljs.core.reset_BANG_.call(null, electron.core.main_window, null);
