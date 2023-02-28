@@ -264,3 +264,12 @@
       (+ start (* step frame-count)))))
 
 (defn lerp [] (gen-lerp (atom 1) (atom nil)))
+
+(defn gen-grad
+  ([start] (gen-grad start 0 start 1))
+  ([start end] (gen-grad start 1 end 1))
+  ([start start-opacity end end-opacity]
+    (let [grad-name (if (= start end) (str "grad-" start) (str "grad-" start "-" end))]
+      [:linearGradient { :id grad-name :key (random-uuid)}
+                       [:stop { :offset "0" :stop-color start :stop-opacity "0" }]
+                       [:stop { :offset "1" :stop-color end :stop-opacity "1" }]])))

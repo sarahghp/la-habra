@@ -11,7 +11,7 @@
                 br-orange pink white yellow]]
             [ui.generators :refer
              [freak-out new-freakout scatter lerp
-              gen-circ gen-line gen-poly gen-rect gen-shape draw
+              gen-circ gen-line gen-grad gen-poly gen-rect gen-shape draw
               gen-group gen-offset-lines gen-bg-lines gen-mask
               gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
@@ -62,7 +62,7 @@
 (when-not DEBUG
   (defonce start-cx-timer
     (js/setInterval
-      #(reset! collection (cx @frame @fast-frame @slow-frame @svg-frame)) 50)) 
+      #(reset! collection (cx @frame @fast-frame @slow-frame @svg-frame)) 50))
 
   (defonce start-cx-timer-2
     (js/setInterval
@@ -79,7 +79,7 @@
   (defonce start-slow-frame-timer
     (js/setInterval
       #(swap! slow-frame inc) 1000))
-      
+
   (defonce start-svg-frame-timer
     (js/setInterval
       #(swap! svg-frame inc) 5000)))
@@ -88,11 +88,6 @@
 
 
 ;; ----------- DEFS AND DRAW ------------------------------
-
-(def gradients [[:linearGradient { :id "grad" :key (random-uuid)}
-                 [:stop { :offset "0" :stop-color "white" :stop-opacity "0" }]
-                 [:stop { :offset "1" :stop-color "white" :stop-opacity "1" }]]])
-
 
 (def all-filters [turb noiz soft-noiz disappearing splotchy blur])
 (def all-fills [gray mint navy blue orange br-orange pink white yellow midnight])
@@ -117,7 +112,7 @@
                :fill (pattern (str "noise-" yellow))}]
           [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" midnight))}]
 
-     (map identity gradients)
+     (map gen-grad all-fills)
      (map identity masks)
      (map gen-color-noise all-fills)
      (map t/pattern-def-text [cd1 cd2 cd3 cd4])
@@ -128,18 +123,18 @@
 (defn drawing []
     (add-svg @collection (val-cyc @frame
              [
-             ;"luminosity" "luminosity" "luminosity" 
+             ;"luminosity" "luminosity" "luminosity"
             ; "luminosity"
             "multiply" "multiply"
             ;"difference" "difference" "difference"
-            ; "difference" "difference" "difference"  
+            ; "difference" "difference" "difference"
               ])))
 
 (defn drawing2 []
     (add-svg @collection2 (val-cyc @frame
              [
-              ;"difference" "difference" "difference" 
-              
+              ;"difference" "difference" "difference"
+
              "multiply" "multiply" "multiply" "multiply"
              ;"luminosity" "luminosity"
               ; "luminosity"
@@ -151,4 +146,3 @@
 
 #_(reagent/render [drawing]
                           (js/document.getElementById "app-container"))
-

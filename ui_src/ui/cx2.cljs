@@ -10,7 +10,7 @@
                 br-orange pink white yellow]]
             [ui.generators :refer
              [freak-out new-freakout scatter lerp
-              gen-circ gen-line gen-poly gen-rect gen-shape draw
+              gen-circ gen-line gen-grad gen-poly gen-rect gen-shape draw
               gen-group gen-offset-lines gen-bg-lines gen-mask
               gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
@@ -394,7 +394,7 @@
    (gen-circ pink 10 10 60)
    (style {:mix-blend-mode "color-dodge"})
    (draw))))
-   
+
    (defonce s
      (scatter 30 (->>
       (gen-circ white 10 10 60)
@@ -421,7 +421,7 @@
    (draw))))
 
 (defonce k
-  (scatter 40 
+  (scatter 40
            (->>
             (gen-line [10 10] [200 100] white 4)
             (draw))))
@@ -435,7 +435,7 @@
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
 
 
-(def babrect1 
+(def babrect1
   (->>
    (gen-rect navy 0 0 @width (* .05 @height))
    (style {:mix-blend-mode "luminosity"})
@@ -443,16 +443,16 @@
    (draw)
    (atom)))
 
-(def babrect2 
+(def babrect2
   (->>
    (gen-rect navy 0 (* .9 @height) @width (* 1 @height))
    (style {:mix-blend-mode "luminosity"})
    (anim "small-scale" "6.4s" "infinite" {:delay "3.2s"})
    (draw)
    (atom)))
-   
-   
-   (def babrect3 
+
+
+   (def babrect3
      (->>
       (gen-rect navy 0 (* 0 @height) @width (* 1 @height))
       (style {:mix-blend-mode "luminosity"})
@@ -487,15 +487,15 @@
                   (map #(gen-group {:style {:transform-origin "center" :transform "scale(3)"}} %))
           (map #(gen-group {:style {:transform-origin "center" :transform "translate(-300px, 100px)"}} %))
             (map #(gen-group { :style {:transform-origin "center"  :animation "rot 5s infinite" }} %)))))
-            
+
             (defonce streaks
-              (scatter 40 
+              (scatter 40
                        (->>
                         (gen-line [10 10] [200 100] midnight 10)
                         (draw))))
-                        
+
                     (defonce streaks2
-                      (scatter 100 
+                      (scatter 100
                                (->>
                                 (gen-line [10 10] [200 100] white 10)
                                 (draw))))
@@ -504,75 +504,75 @@
 (def lerp1 (lerp))
 
 
-(def open 
-  (atom  (gen-group {:style 
+(def open
+  (atom  (gen-group {:style
       {:transform-origin "center" :animation "scaley 6s infinite"}}
       (->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 20 (url "grad-mask"))
+      (gen-circ (url (str "grad-" pink)) (* 0.5 @width) (* 0.5 @height) 20)
       (style {:transform "rotate(135deg)"})
       (draw)))))
 
 (defn cx2 [frame fast-frame slow-frame]
   (list
-    
+
     #_(doall (map deref all-the-moves))
-    
-    
+
+
     ;@rr
     ;(doall (map deref levels))
-      
+
    ; grid (80/20), b, c, d
-    
+
    ;(when (nth-frame 9 slow-frame) @a)
    ;(when-not (nth-frame 3 slow-frame) @aaa)
 
    ;(when (nth-frame 5 frame) @c)
-   
-   
+
+
      #_(->>
       (gen-rect white "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
       (draw)
       (when (nth-frame 4 frame)))
-     
+
        #_(->>
         (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
        (style {:transform "translate(50vw, 50vh)"})
         (draw)
         (when (nth-frame 3 frame)))
-     
+
          #_(->>
           (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
          (style {:transform "translate(0vw, 50vh)"})
           (draw)
           (when (nth-frame 1 frame)))
-          
+
                 #_(->>
                  (gen-rect yellow "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
                 (style {:transform "translate(50vw, 0vh)"})
                  (draw)
                  (when (nth-frame 1 frame)))
-   
+
    ;(when (nth-frame 4 slow-frame) @sss)
-   
+
    ;(when (nth-frame 6 frame) @d)
-   
+
    #_(when (nth-frame 2 frame)(gen-line-grid mint 2
      80 80
      {:col 20 :row 20}))
 
     ;@bb6
     ;@bb6s
-   
+
    ;@scale-me
    ;@rot-me
 
    ;@drops
    ;@drops2
-   
+
    ;@babrect1
    ;@babrect2
 
-    
+
 
     #_(when (nth-frame 2 frame)
       (freak-out @width
@@ -588,55 +588,55 @@
                20
                200
                white))
-               
+
                #_(when (nth-frame 1 frame)
                  (freak-out @width
                             @height
                             30
                             300
                             white))
-     
+
 
       #_(->>
-      (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+      (gen-circ (url (str "grad-" pink)) (* 0.5 @width) (* 0.5 @height) 300)
       (style {:transform "rotate(135deg)"})
       (draw)
       (when (nth-frame 4 frame)))
-      
+
       #_(->>
-      (gen-circ yellow (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+      (gen-circ (url (str "grad-" yellow)) (* 0.5 @width) (* 0.5 @height) 300)
       (style {:transform "rotate(135deg)"})
       (draw)
       (when (nth-frame 0 frame)))
-      
+
       #_(when (nth-frame 6 frame)
         (freak-out @width
                    @height
                    30
                    100
                    mint))
-                   
+
 #_(when (nth-frame 2 (+ 1 frame))(gen-line-grid white 2
   80 80
-  {:col 20 :row 20})   ) 
-  
+  {:col 20 :row 20})   )
+
        ;@bb6a
-       
+
        ;@babrect3
                ;@open
-                     (->>
-                     (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
+                    (->>
+                     (gen-circ (url (str "grad-" navy)) (* 0.5 @width) (* 0.5 @height) 300 )
                      (style {:transform "rotate(135deg)"})
                      (draw)
-                     (when (nth-frame 4 frame)))
-                     
+                     (when (nth-frame 1 frame)))
+
                        #_(when (nth-frame 1 frame)
                          (freak-out @width
                                     @height
                                     20
                                     200
                                     charcoal))
-                                    
+
                                     #_(when (nth-frame 1 frame)
                                       (freak-out @width
                                                  @height
@@ -646,4 +646,3 @@
 
 
    ))
-

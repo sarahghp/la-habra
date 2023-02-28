@@ -3,7 +3,7 @@
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
             [ui.helpers :refer [cos sin style url val-cyc deform]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct
-                                          b1 b2 b3 b4 
+                                          b1 b2 b3 b4
                                           l1 l2 l3 l4 l5 l6
                                           ul2 ul3
                                           scr1 scr2 scr3 scr4 scr5]]
@@ -12,7 +12,7 @@
                 br-orange pink white yellow clear]]
             [ui.generators :refer
              [freak-out new-freakout scatter lerp
-              gen-circ gen-line gen-poly gen-rect gen-shape draw
+              gen-circ gen-line gen-grad gen-poly gen-rect gen-shape draw
               gen-group gen-offset-lines gen-bg-lines gen-mask
               gen-grid gen-line-grid gen-cols gen-rows]]
             [ui.filters :as filters :refer [turb noiz soft-noiz disappearing splotchy blur]]
@@ -57,8 +57,8 @@
        (style {:mix-blend-mode "color-dodge"})
        (draw))
      (range 20))))
-     
-     
+
+
      (def dr
        (atom  (map
           #(->>
@@ -67,7 +67,7 @@
             (style {:mix-blend-mode "color-dodge"})
             (draw))
           (range 10))))
-          
+
                (def op
                  (atom  (map
                     #(->>
@@ -96,7 +96,7 @@
        (draw))
      (range 10))))
 
-(def spinlm 
+(def spinlm
   (->>
    (gen-shape yellow l1)
    (style {:opacity .7 :transform "translate(30vw, 30vh) scale(1.4)"})
@@ -110,12 +110,12 @@
   (->>
    (gen-shape blue l1)
    (style {:opacity .7 :transform "translate(30vw, 30vh) scale(2)"})
-   
+
     (anim "l1l6" "33s" "infinite")
    (draw)
    #_(gen-group {:style {:animation "rot 2s infinite .4s"}})
    (atom)))
-   
+
    (def spinlm4
      (->>
       (gen-shape mint l1)
@@ -174,7 +174,7 @@
  (draw)
  (atom)))
 
-(def babrect1 
+(def babrect1
   (->>
    (gen-rect navy 0 0 @width (* .05 @height))
    (style {:mix-blend-mode "luminosity"})
@@ -182,7 +182,7 @@
    (draw)
    (atom)))
 
-(def babrect2 
+(def babrect2
   (->>
    (gen-rect navy 0 (* .9 @height) @width (* .05 @height))
    (style {:mix-blend-mode "luminosity"})
@@ -198,7 +198,7 @@
    (anim "wee" "8s" "infinite")
    (draw)
    (atom)))
-   
+
 (def move-me-2
   (->>
    (gen-shape (pattern (:id mint-dots)) hept)
@@ -207,14 +207,14 @@
    (anim "woosh" "8s" "infinite")
    (draw)
    (atom)))
-   
+
    (def move-me-a
      (->>
       (gen-circ orange 30 30 30)
       (anim "wee" "13s" "infinite")
       (draw)
       (atom)))
-      
+
          (def move-me-b
            (->>
             (gen-circ (pattern (:id yellow-lines-4)) 30 30 30)
@@ -231,7 +231,7 @@
    (anim "woosh" "6s" "infinite")
    (draw)
    (atom)))
-   
+
 (def move-me-5
   (->>
    (gen-shape clear scr1)
@@ -241,7 +241,7 @@
    (anim "woosh" "8s" "infinite")
    (draw)
    (atom)))
-   
+
    (def move-me-7
      (->>
       (gen-shape clear scr4)
@@ -251,7 +251,7 @@
       (anim "woosh" "7s" "infinite" {:delay "2s"})
       (draw)
       (atom)))
-      
+
          (def move-me-9
            (->>
             (gen-shape clear scr4)
@@ -293,7 +293,7 @@
       (anim "woosh-2" "2s" "infinite" {:delay ".4s"})
     (draw)
     (atom)))
-    
+
     (def bb6b
       (->>
         (gen-shape midnight oct)
@@ -320,22 +320,13 @@
           (anim "scaley-huge" "3s" "infinite" {:delay ".5s"})
           (draw)
           (atom)))
-          
+
           (def scale-me-3
             (->>
-             (gen-circ pink (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
-             (anim "scaley" "1s" "infinite" {:delay ".7s"})
+             (gen-circ (url (str "grad-" pink)) (* 0.5 @width) (* 0.5 @height) 300)
+             (anim "scaley" "10s" "infinite" {:delay ".7s"})
              (draw)
              (atom)))
-
-(def scale-me-4
-  (->>
-   (gen-circ (pattern (:id white-dots)) (* 0.5 @width) (* 0.5 @height) 300 (url "grad-mask"))
-   (style {:mix-blend-mode "difference"})
-   (anim "scaley" "6s" "infinite" {:delay "0s"})
-   (draw)
-   (atom)))
-
 
 (def sc-circ
   (->>
@@ -364,8 +355,8 @@
    (draw)
    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(5)"}})
    (atom)))
-   
-   
+
+
    (def mf6
      (->>
       (gen-shape "hsla(100, 100%, 100%, 0)" l1)
@@ -394,7 +385,7 @@
    (draw)
    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)" :animation "ascend 12s infinite" }})
    (atom)))
-   
+
    (def mf3a
      (->>
       (gen-shape "hsla(100, 100%, 100%, 0)" l1)
@@ -424,9 +415,9 @@
    (draw)
    (gen-group {:style {:transform-origin "center" :transform "translate(-10vw, -10vh) scale(5)"}})
    (atom)))
-   
 
-                
+
+
     (def grr
       (->>
        (gen-rect (pattern (:id yellow-dots-4)) 0 0 "100%" "100%")
@@ -434,7 +425,7 @@
        (anim "rot" "10s" "infinite")
        (draw)
        (atom)))
-       
+
            (def grr2
              (->>
               (gen-rect (pattern (:id br-orange-dots-3)) 0 0 "200%" "200%")
@@ -477,8 +468,8 @@
       (anim "morph" "4s" "infinite" {:delay (str (* 4 (rand)) "s")})
       (draw)
       (gen-group {:style {
-                          :transform-origin "center" 
-                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20)) 
+                          :transform-origin "center"
+                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20))
                                           "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
       (atom)))
    (take 10
@@ -500,33 +491,33 @@
                                             "rotate(" (rand-int 360) "deg)"
                                             "scale(4) translate(-20vh, -20vh)")}} %)))
    (atom)))
-   
+
 (defonce recties
   (scatter 100 400 100 500 2 6 10
     (->>
      (gen-rect (pattern (:id navy-dots-1)) 0 0 40 50)
      (draw))))
-     
+
      (defonce recties-4
        (scatter 100 400 100 500 2 6 20
          (->>
           (gen-rect (pattern (:id navy-dots-3)) 0 0 40 50)
           (draw))))
-          
-          
+
+
                (defonce recties-5
                  (scatter 100 400 500 800 2 6 20
                    (->>
                     (gen-rect (pattern (:id white-dots-3)) 0 0 40 50)
                     (draw))))
-                    
+
                     (defonce recties-6
                       (scatter 500 800 100 500 2 6 20
                         (->>
                          (gen-rect (pattern (:id pink-dots-3)) 0 0 40 50)
                          (draw))))
-                    
-     
+
+
   (defonce recties-3
     (scatter 300 800 100 500 2 6 20
       (->>
@@ -534,7 +525,7 @@
        (draw))))
 
 (defonce streaks
-  (scatter 40 
+  (scatter 40
            (->>
             (gen-line [10 10] [200 100] white 10)
             (draw))))
@@ -542,14 +533,14 @@
 (def stst (atom (gen-group {:style {:transform-origin "center" :animation "rot 4s infinite"}} @streaks)))
 
 (defonce streaks2
-  (scatter 40 
+  (scatter 40
            (->>
             (gen-line [10 10] [200 100] white 10)
             (draw))))
 
-(def trio (atom 
+(def trio (atom
       (gen-group
-       {:style {:transform-origin "center" 
+       {:style {:transform-origin "center"
                 :animation "rot 3s infinite"
                 }}
        (->>
@@ -559,14 +550,14 @@
            (->>
             (gen-shape blue tri)))
            (map draw)
-           (map #(gen-group {:style 
-                             {:transform-origin "center" 
+           (map #(gen-group {:style
+                             {:transform-origin "center"
                               :transform "translate(-10vw, -10vh) scale(.3)"}} %))
            (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "ascend 1s infinite"}} %))))))
-           
-           (def trio2 (atom 
+
+           (def trio2 (atom
                  (gen-group
-                  {:style {:transform-origin "center" 
+                  {:style {:transform-origin "center"
                            :animation "rott 3s infinite"
                            }}
                   (->>
@@ -576,30 +567,30 @@
                       (->>
                        (gen-shape mint tri)))
                       (map draw)
-                      (map #(gen-group {:style 
-                                        {:transform-origin "center" 
+                      (map #(gen-group {:style
+                                        {:transform-origin "center"
                                          :transform "translate(-10vw, -10vh) scale(.3)"}} %))
                       (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "rot 1s infinite"}} %))))))
 
-(def line-growth 
+(def line-growth
    (map-indexed
     (fn [idx item]
       (->>
-       (gen-rect white 
-                 0 
-                 (* (+ 1 idx) 0.07 @height) 
-                 @width 
+       (gen-rect white
+                 0
+                 (* (+ 1 idx) 0.07 @height)
+                 @width
                  (* 4 (+ 1 idx) 0.001 @height))
        (style {:mix-blend-mode "color-dodge"})
-       (anim "small-scale-y" "1s" "infinite" 
+       (anim "small-scale-y" "1s" "infinite"
              {:delay (str (* idx .1) "s")})
        (draw)
        atom))
     (range 20)))
 
 
-(def blobs 
-  (atom 
+(def blobs
+  (atom
    (->>
     (gen-grid
       10 10
@@ -613,8 +604,8 @@
     (map #(gen-group {:style {:transform-origin "center" :animation "descend-m 4s infinite"}} %)))))
 
 
-(def blobs3 
-  (atom 
+(def blobs3
+  (atom
    (->>
     (gen-grid
       10 10
@@ -628,8 +619,8 @@
     (map #(gen-group {:style {:transform-origin "center" :animation "ascend 12s infinite"}} %)))))
 
 
-(def blobs4 
-  (atom 
+(def blobs4
+  (atom
    (->>
     (gen-grid
       10 10
@@ -643,7 +634,7 @@
     (map #(gen-group {:style {:transform-origin "center" :animation "ascend 12s infinite"}} %)))))
 
 (def blobs2
-  (atom 
+  (atom
    (->>
     (gen-grid
       10 10
@@ -654,7 +645,7 @@
       (map draw)
       (map #(gen-group {:style {:transform-origin "center" :transform "scale(.15)" }} %))
             (map #(gen-group {:style {:transform-origin "center" :animation "rot 1s infinite"}} %)))))
-            
+
 
 
 ;; start end dur frame no-repeat
@@ -662,8 +653,22 @@
 (def lerp2 (lerp))
 (def lerp3 (lerp))
 
+
+(def c-test
+  (atom
+    (->>
+     (gen-grid
+       3 3
+       {:col (* @width .3) :row (* @height .3)}
+       (->>
+        (gen-circ (url (str "grad-" white)) 100 100 100)))
+       #_(map #(style styles %))
+       #_(map #(anim animations %))
+       (map draw)
+       (map #(gen-group {:style {:transform-origin "center" }} %)))))
+
  ;; ----------- COLLECTION SETUP AND CHANGE ----------------
- 
+
  (defn list1 [frame fast-frame slow-frame svg-frame]
    (list
      (doall (map deref worms))
@@ -681,40 +686,40 @@
                ;yellow yellow yellow yellow
                ;yellow yellow yellow yellow
                ;white white white white
-               ;blue blue blue 
+               ;blue blue blue
                 ;
                 ]]
          (->>
            (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
            (style {:opacity .95})
            (draw)))
-           
+
                 (->>
                  (gen-rect (pattern (:id white-lines-4)) 100 100 "30%" "30%")
                  (style {:mix-blend-mode "luminosity"})
                  (draw)
                  (when (nth-frame 2 slow-frame)))
-                 
+
                  (->>
                   (gen-rect (pattern (:id white-dots-5)) 400 100 "30%" "20%")
                   (style {:mix-blend-mode "luminosity" })
 
                   (draw)
                   (when (nth-frame 3 slow-frame)))
-                  
-                  
+
+
                   (->>
                    (gen-rect (pattern (:id white-lines-4)) 300 300 "50%" "50%")
                   (style {:mix-blend-mode "luminosity"})
 
                    (draw)
                    (when (nth-frame 4 slow-frame)))
-                  
+
                   ;@move-me-5
-           
-           
+
+
            ))
-           
+
    (defn list2 [frame fast-frame  slow-frame svg-frame]
      (list
        (let
@@ -731,37 +736,36 @@
                  ;yellow yellow yellow yellow
                  ;yellow yellow yellow yellow
                  ;white white white white
-                 ;(pattern (:id blue-lines-5)) 
-                 ;blue 
+                 ;(pattern (:id blue-lines-5))
+                 ;blue
                   ;
                   ]]
            (->>
              (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
              (style {:opacity .95})
              (draw)))
-             
-             @scale-me-4
+
                                      ;@spinlm2
 
-             
+
             ;@bb6
-            
-            
-                  
-                  
-                        
+
+
+
+
+
             ))
-            
-            
+
+
                (defn list3 [frame fast-frame  slow-frame svg-frame]
                  (list
                    (let
                      [colors [
-                              midnight midnight midnight midnight
+                              ;midnight midnight midnight midnight
                               ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
-                              ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-                             ;mint mint mint mint
+                             ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+                             mint mint mint mint
                              ;mint mint mint mint
                              ;pink pink pink pink
                              ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
@@ -776,19 +780,20 @@
                          (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
                          (style {:opacity .95})
                          (draw)))
-                         
+
                          ;(doall (map deref levels))
-                         
+
                          ;@trio
-                         
+
                          ;@scale-me
                         ;(doall (map deref worms))
 
-                      
-                         
-                        
-                        
-                        
+
+                      @c-test
+                      @scale-me-3
+
+
+
                         ))
 
 (defn cx [fast-frame frame slow-frame svg-frame]
@@ -805,4 +810,3 @@
 
 
   ])) ; cx end
-  

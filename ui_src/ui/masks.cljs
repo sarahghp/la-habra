@@ -1,5 +1,5 @@
 (ns ui.masks
-  (:require 
+  (:require
    [ui.shapes :as shapes :refer [tri square pent hex hept oct
                                  b1 b2 b3 b4
                                 l1 l2 l3 l4 l5 l6
@@ -40,7 +40,7 @@
                           [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" :animation "woosh-2 10s infinite"}}]]
             [ "poly-mask-3"
                           [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :animation "lump-morph 10s infinite"}}]]
-                
+
                 [ "poly-mask-4"
                               [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" }}]]
             ["bitey"
@@ -60,50 +60,46 @@
              (->>
               (gen-circ white (* 0.25 @width) (* 0.75 @height) 200)
               (draw))]
-                
+
             ["cbrb"
              (->>
               (gen-circ white (* 0.75 @width) (* 0.75 @height) 200)
               (draw))]
             ["clt"
-               (map 
+               (map
                 #(->>
                  (gen-circ white (* (rand) (* 0.5 @width)) (* (rand) (* 0.5 @height)) 100)
                  (style {:opacity 1 :transform "scale(.3)"})
                  (draw))
                 (range 6))]
             ["crt"
-               (map 
+               (map
                 #(->>
                  (gen-circ white (+ (* 0.5 @width) (* (rand) (* 0.5 @width))) (* (rand) (* 0.5 @height)) 100)
                  (style {:opacity 1 :transform "scale(.3)"})
                  (draw))
                 (range 6))]
             ["clb"
-               (map 
+               (map
                 #(->>
                  (gen-circ white (* (rand) (* 0.25 @width)) (+ (* 0.5 @height) (* (rand) (* 0.5 @height))) 100)
                  (style {:opacity 1 :transform "scale(.3)"})
                  (draw))
                 (range 6))]
             ["crb"
-               (map 
+               (map
                 #(->>
                  (gen-circ white (+ (* 0.5 @width) (* (rand) (* 0.5 @width))) (+ (* 0.5 @height) (* (rand) (* 0.5 @height))) 100)
                  (style {:opacity 1 :transform "scale(.3)"})
                  (draw))
-                (range 6))]     
+                (range 6))]
             ["circs"
-               (map 
+               (map
                 #(->>
                  (gen-circ white (* (rand) @width) (* (rand) @height) 100)
                  (style {:opacity 1 :transform "scale(.3)"})
                  (draw))
                 (range 100))]
-            [ "grad-mask"
-              [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 340 :fill "url(#grad)" }]]
-            [ "grad-mask-an"
-              [:circle { :cx (* 0.5 @width) :cy (* 0.5 @height) :r 260 :fill "url(#grad)" :style {:transform-origin "center" :animation "small-scale-y 3s infinite"} }]]
             [ "cutout"
              (gen-group {} (->>
                (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
