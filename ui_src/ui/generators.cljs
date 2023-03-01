@@ -23,7 +23,7 @@
     :mask mask
     :type :circle
     :style {:fill fill-string
-            :transform-origin "center"}})
+            :transform-origin "center" :transform-box "fill-box"}})
 
 (defn gen-line
   [first-point second-point color & width]
@@ -34,7 +34,7 @@
     :stroke color
     :stroke-width (or width 4)
     :type :line
-    :style {:transform-origin "center"}})
+    :style {:transform-origin "center" :transform-box "fill-box"}})
 
 (defn gen-poly
   [fill-string points & mask]
@@ -42,6 +42,7 @@
     :mask mask
     :type :polygon
     :style {:fill fill-string
+            :transform-box "fill-box"
             :transform-origin "center"}})
 
 (defn gen-rect
@@ -53,6 +54,7 @@
     :mask mask
     :type :rect
     :style {:fill fill-string
+            :transform-box "fill-box"
             :transform-origin "center"}})
 
 (defn gen-shape
@@ -61,6 +63,7 @@
     :mask mask
     :type :path
     :style {:fill fill-string
+            :transform-box "fill-box"
             :transform-origin "center"}})
 
 
@@ -78,7 +81,7 @@
 (defn gen-group
   ([internals] (gen-group {} internals))
   ([{ :keys [style mask] :or { style {} mask "" } } & internals]
-    [:g { :key (random-uuid) :style style :mask mask } internals ]))
+    [:g { :key (random-uuid) :style (merge style { :transform-box "fill-box" }) :mask mask } internals ]))
 
 (defn gen-offset-lines
   [f h space-btw line-num]

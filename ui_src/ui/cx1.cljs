@@ -193,9 +193,9 @@
 (def move-me
   (->>
    (gen-shape (pattern (:id mint-dots)) hept)
-   (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
+   (style {:opacity 1 })
    (style {:mix-blend-mode "luminosity"})
-   (anim "wee" "8s" "infinite")
+   (anim "woosh" "80s" "infinite")
    (draw)
    (atom)))
 
@@ -469,8 +469,8 @@
       (draw)
       (gen-group {:style {
                           :transform-origin "center"
-                          :transform (str "translate(" (+ (rand-int 20) (rand-int 20))
-                                          "vw, "(+ (rand-int 20) (rand-int 20)) "vh) scale(" scale ")")}})
+                          :transform (str "translate(" (+ (rand-int 20) (rand-int 80))
+                                          "vw, "(+ (rand-int 20) (rand-int 40)) "vh) scale(" scale ")")}})
       (atom)))
    (take 10
          (repeatedly #(rand-nth [[midnight 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4]])))))
@@ -553,7 +553,7 @@
            (map #(gen-group {:style
                              {:transform-origin "center"
                               :transform "translate(-10vw, -10vh) scale(.3)"}} %))
-           (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "ascend 1s infinite"}} %))))))
+           (map #(gen-group {:style {:transform-origin "center" :opacity "1" :animation "ascend 1s infinite"}} %))))))
 
            (def trio2 (atom
                  (gen-group
@@ -765,7 +765,9 @@
                               ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
                              ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-                             mint mint mint mint
+                             ;mint mint mint mint
+                             ;navy navy navy navy
+                             blue blue blue blue
                              ;mint mint mint mint
                              ;pink pink pink pink
                              ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
@@ -783,14 +785,25 @@
 
                          ;(doall (map deref levels))
 
-                         ;@trio
+                        ;@trio
 
-                         ;@scale-me
-                        ;(doall (map deref worms))
+                      (doall (map deref worms))
 
 
-                      @c-test
-                      @scale-me-3
+                      #_(gen-group {:mask (url "circs")}
+                        @c-test
+                        )
+                      ;@scale-me-3
+                      ;@mf3
+                      ;@mf3a
+                      ;@mf3
+                      ;@blobs
+
+                      ;@drops
+                      @move-me
+
+
+
 
 
 

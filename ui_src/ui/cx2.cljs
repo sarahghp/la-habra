@@ -624,7 +624,7 @@
 
        ;@babrect3
                ;@open
-                    (->>
+                    #_(->>
                      (gen-circ (url (str "grad-" navy)) (* 0.5 @width) (* 0.5 @height) 300 )
                      (style {:transform "rotate(135deg)"})
                      (draw)
