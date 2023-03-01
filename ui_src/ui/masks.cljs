@@ -94,12 +94,15 @@
                  (draw))
                 (range 6))]
             ["circs"
+              (gen-group {:style {:animation "ascend 10s infinite" }} (->>
+                (gen-rect "#fff" 0 0 (* 1 @width) (* 1 @height))
+                (draw))
                (map
                 #(->>
-                 (gen-circ white (* (rand) @width) (* (rand) @height) 100)
-                 (style {:opacity 1 :transform "scale(.3)"})
+                 (gen-circ "#000" (* (rand) @width) (* (rand) @height) 100)
+                 (style {:opacity 1 :transform "scale(1)"})
                  (draw))
-                (range 100))]
+                (range 10)))]
             [ "cutout"
              (gen-group {} (->>
                (gen-rect white 10 12 (* 0.94 @width) (* 0.88 @height))
