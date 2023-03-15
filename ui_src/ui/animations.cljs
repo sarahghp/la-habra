@@ -1,5 +1,5 @@
 (ns ui.animations
-  (:require 
+  (:require
    [clojure.string :as string :refer [split join]]
    [ui.fills :as fills :refer
      [gray charcoal mint midnight navy blue orange
@@ -269,7 +269,7 @@
                            "translate(40vw, 40vh) rotate(120deg) scale(8.4)"
                            "translate(50vw, 30vh) rotate(0deg) scale(12.2)"
                            "translate(60vw, 80vh) rotate(400deg) scale(4.2)"]))
-                           
+
  (make-frames!
    "wee"
      [10, 55, 85, 92]
@@ -325,14 +325,28 @@
   (str "path('"tri"')")
 ]))
 
-(make-frames! 
+
+(make-frames!
+ "morph-2"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"hex"')")
+  (str "path('"hept"')")
+  (str "path('"pent"')")
+  (str "path('"tri"')")
+  (str "path('"square"')")
+  (str "path('"oct"')")
+  (str "path('"tri"')")
+]))
+
+(make-frames!
  "descend"
  [0 100]
  (make-body "transform"
              ["translate(0vw, -100vh)"
               "translate(0vw, 80vh)"]))
 
-(make-frames! 
+(make-frames!
  "ascend"
  [0 100]
  (make-body "transform"
@@ -367,24 +381,24 @@
 (back-and-forth! "small-scale-y"
                  "scaleY(1)"
                  "scaleY(.05)")
-                 
+
 
 (back-and-forth! "right-down-1"
                  "translate(10vw, 10vh) scale(1)"
                  "translate(80vw, 70vh) scale(1.8)")
-                 
+
 (back-and-forth! "right-down-2"
                  "translate(30vw, 10vh) scale(1)"
                  "translate(85vw, 90vh) scale(1.8)")
-                 
+
 (back-and-forth! "left-up-1"
                  "translate(12vw, 70vh) scale(1)"
                  "translate(70vw, 4vh) scale(1.8)")
-                 
+
 (back-and-forth! "left-up-2"
                  "translate(20vw, 95vh) scale(1)"
                  "translate(90vw, 10vh) scale(1.8)")
-                 
+
 (back-and-forth! "lengthen"
                  "scaleY(0%)"
                  "scaleY(100%)")

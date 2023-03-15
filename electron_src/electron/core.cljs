@@ -11,8 +11,8 @@
 
 (defn init-browser []
   (reset! main-window (browser-window.
-                        (clj->js {:width 1080
-                                  :height 800
+                        (clj->js {:width 1280
+                                  :height 720
                                   :webPreferences {:backgroundThrottling false}})))
   ; Path is relative to the compiled js file (main.js in our case)
   (.loadURL ^js/electron.BrowserWindow @main-window (str "file://" js/__dirname "/public/index.html"))

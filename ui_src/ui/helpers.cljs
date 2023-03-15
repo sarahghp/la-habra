@@ -17,6 +17,11 @@
   (let [n (count vals)]
     (nth vals (mod frame n))))
 
+(defn val-cyc-rep
+  [frame v-dur vals]
+  (let [reps (flatten (map #(repeat v-dur %) vals))] 
+    (val-cyc frame reps)))
+
 (defn deform [shape num-points amount]
   (let
     [shape-vec (split shape #"[Mz ]")
@@ -29,7 +34,7 @@
           item))
       shape-vec)
      ]
-        
+
     (str "M" (join " " (rest new-vec)) "z")
-     
+
     ))

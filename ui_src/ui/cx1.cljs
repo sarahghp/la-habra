@@ -1,7 +1,7 @@
 (ns ui.cx1
   (:require [reagent.core :as reagent :refer [atom]]
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
-            [ui.helpers :refer [cos sin style url val-cyc deform]]
+            [ui.helpers :refer [cos sin style url val-cyc val-cyc-rep deform]]
             [ui.shapes :as shapes :refer [tri square pent hex hept oct
                                           b1 b2 b3 b4
                                           l1 l2 l3 l4 l5 l6
@@ -54,7 +54,7 @@
      #(->>
        (gen-rect white (+ 30 (* % 160)) 10 200 36)
        (anim "etof" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
-       (style {:mix-blend-mode "color-dodge"})
+       ;(style {:mix-blend-mode "color-dodge"})
        (draw))
      (range 20))))
 
@@ -195,9 +195,18 @@
    (gen-shape (pattern (:id mint-dots)) hept)
    (style {:opacity 1 })
    (style {:mix-blend-mode "luminosity"})
-   (anim "woosh" "80s" "infinite")
+   (anim "woosh" "30s" "infinite")
    (draw)
    (atom)))
+
+ (def move-me-4
+   (->>
+    (gen-shape (pattern (:id mint-dots)) hept)
+    (style {:opacity 1 })
+    (style {:mix-blend-mode "luminosity"})
+    (anim "woosh" "18s" "infinite")
+    (draw)
+    (atom)))
 
 (def move-me-2
   (->>
@@ -456,7 +465,7 @@
 
 (def worms
   (map-indexed
-   (fn [idx [color scale]]
+   (fn [idx [color scale animation]]
      (->>
       (gen-shape "hsla(100, 100%, 100%, 0)" tri)
       (style {:stroke color
@@ -465,7 +474,7 @@
               :stroke-dashoffset (+ (rand-int 20) 80)
               :stroke-linejoin "round"
               :stroke-linecap "round"})
-      (anim "morph" "4s" "infinite" {:delay (str (* 4 (rand)) "s")})
+      (anim animation "4s" "infinite" {:delay (str (* 4 (rand)) "s")})
       (draw)
       (gen-group {:style {
                           :transform-origin "center"
@@ -473,7 +482,7 @@
                                           "vw, "(+ (rand-int 20) (rand-int 40)) "vh) scale(" scale ")")}})
       (atom)))
    (take 10
-         (repeatedly #(rand-nth [[midnight 4] [navy 4] [navy 3] [pink 4.4] [mint 2.4]])))))
+         (repeatedly #(rand-nth [[midnight 4 "morph-2"] [navy 4 "morph"] [navy 3 "morph"] [pink 4.4 "morph-2"] [mint 2.4 "morph-2"]])))))
 
 (def bb
   (->>
@@ -659,9 +668,9 @@
     (->>
      (gen-grid
        3 3
-       {:col (* @width .3) :row (* @height .3)}
+       {:col (* @width .33) :row (* @height .33)}
        (->>
-        (gen-circ (url (str "grad-" white)) 100 100 100)))
+        (gen-circ (url (str "grad-" white)) 100 80 100)))
        #_(map #(style styles %))
        #_(map #(anim animations %))
        (map draw)
@@ -745,7 +754,7 @@
              (style {:opacity .95})
              (draw)))
 
-                                     ;@spinlm2
+                                     @spinlm2
 
 
             ;@bb6
@@ -761,13 +770,17 @@
                  (list
                    (let
                      [colors [
-                              ;midnight midnight midnight midnight
-                              ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
+                              "#000"
+                              midnight midnight midnight midnight
+                              midnight
+                              (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1))
+                              (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5))
+                              (pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3))
 
-                             ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+                             mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
                              ;mint mint mint mint
                              ;navy navy navy navy
-                             blue blue blue blue
+                             ;blue blue blue blue
                              ;mint mint mint mint
                              ;pink pink pink pink
                              ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
@@ -787,20 +800,31 @@
 
                         ;@trio
 
-                      (doall (map deref worms))
+                      ;(doall (map deref worms))
 
 
-                      #_(gen-group {:mask (url "circs")}
+                      (->>
+                       (gen-circ (pattern (:id pink-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
+                       (style {:transform (str "scale(" (val-cyc-rep frame 2 [14 20 60 20]) ")")})
+                       (draw)
+                       (when (nth-frame 1 frame)))
+
+                       (->>
+                        (gen-circ (pattern (:id yellow-lines-5)) (* 0.5 @width) (* 0.5 @height) 100)
+                        (style {:transform (str "scale(" (val-cyc-rep frame 2 [60 10 80 20]) ")")})
+                        (draw)
+                        (when (nth-frame 2 frame)))
+
+
+                      (when (nth-frame 1 frame) (gen-group {:mask (url "circs")}
                         @c-test
-                        )
-                      ;@scale-me-3
-                      ;@mf3
-                      ;@mf3a
-                      ;@mf3
-                      ;@blobs
+                        ))
+                      @mf3
+                      @mf3a
 
                       ;@drops
-                      @move-me
+                      ;@move-me
+                      ;@move-me-4
 
 
 
