@@ -2,7 +2,7 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
             [ui.helpers :refer [cos sin style url val-cyc val-cyc-rep deform]]
-            [ui.shapes :as shapes :refer [tri square pent hex hept oct
+            [ui.shapes :as shapes :refer [tri square pent hex hept oct arc
                                           b1 b2 b3 b4
                                           l1 l2 l3 l4 l5 l6
                                           ul2 ul3
@@ -769,7 +769,7 @@
 
             ))
 
-    (def arc
+    (def flappy-arc
       (->>
         (gen-group {:mask (url "still-mask-1") :style {:animation "woosh 2s infinite"}}
          (->>
@@ -858,21 +858,21 @@
 
 
 
-  (gen-group {:mask (url "box-1")}
+  #_(gen-group {:mask (url "box-1")}
     (->>
      (gen-shape (pattern (:id mint-lines-5)) deformed1)
      (style {:transform "translate(10vw, 10vh) scale(2)"})
      (draw)
      (when (nth-frame 4 (- 1 frame)))))
 
-   (gen-group {:mask (url "box-2")}
+   #_(gen-group {:mask (url "box-2")}
      (->>
       (gen-shape (pattern (:id mint-lines-5)) deformed2 )
       (style {:transform "translate(40vw, 10vh) scale(2)"})
       (draw)
       (when (nth-frame 4 (- 3 frame)))))
 
-  (gen-group {:mask (url "box-3")}
+  #_(gen-group {:mask (url "box-3")}
     (->>
      (gen-shape (pattern (:id mint-lines-5)) deformed3 )
      (style {:transform "translate(80vw, 10vh) scale(2)"})
@@ -881,21 +881,21 @@
 
 
 
-       (gen-group {:mask (url "box-7")}
+       #_(gen-group {:mask (url "box-7")}
          (->>
           (gen-shape (pattern (:id orange-lines-5)) deformed4 )
           (style {:transform "translate(10vw, 70vh) scale(2)"})
           (draw)
           (when (nth-frame 4 (+ 1 frame)))))
 
-        (gen-group {:mask (url "box-8")}
+        #_(gen-group {:mask (url "box-8")}
           (->>
            (gen-shape (pattern (:id orange-lines-5)) deformed5 )
            (style {:transform "translate(40vw, 70vh) scale(2)"})
            (draw)
            (when (nth-frame 4 (+ 3 frame)))))
 
-       (gen-group {:mask (url "box-9")}
+       #_(gen-group {:mask (url "box-9")}
          (->>
           (gen-shape (pattern (:id orange-lines-5)) deformed6)
           (style {:transform "translate(80vw, 70vh) scale(2)"})
@@ -903,11 +903,30 @@
           (when (nth-frame 4 (+ 2 frame)))))
 
 
-          (->>
+          #_(->>
            (gen-circ (pattern (:id white-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
            (style {:transform "rotate(90deg) scale(30)"})
            (draw)
            (when (nth-frame 4 frame)))
+
+           (->>
+            (gen-shape clear arc)
+            (style {:transform "translate(30vw, 30vh) scale(3)"})
+            (style {:stroke blue
+                    :stroke-width 8
+                    :stroke-dasharray 12
+                    :stroke-dashoffset 12
+                    :stroke-linecap "round"})
+            (draw)
+            (when (nth-frame 4 frame)))
+
+            (->>
+             (gen-shape (pattern (:id mint-lines-5)) arc)
+             (style {:transform "translate(60vw, 30vh) scale(3)"})
+             (draw)
+             (when (nth-frame 6 frame)))
+
+
 
     ))
 
