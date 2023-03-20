@@ -126,7 +126,7 @@
              ;"luminosity" "luminosity" "luminosity"
             ; "luminosity"
             "multiply" "multiply"
-            ;"difference" "difference" "difference"
+            "difference" "difference" "difference"
             ; "difference" "difference" "difference"
               ])))
 
@@ -141,7 +141,10 @@
               ])))
 
 (reagent/render [:div
-                 [:div {:style {:position "absolute" :top 0 :left 0}} [drawing]] [:div {:style {:position "absolute" :top 0 :left 0}} [drawing2]]]
+                 #_[:div {:style {:position "absolute" :top 0 :left 0 }}
+                  [:video {:src "./2023-03-15a-formatted.mp4" :autoPlay true :loop true :width "2000px" :height "1800px" :style {:objectFit "cover"}}]]
+                 [:div {:style {:position "absolute" :top 0 :left 0}} [drawing]]
+                 [:div {:style {:position "absolute" :top 0 :left 0}} [drawing2]]]
                           (js/document.getElementById "app-container"))
 
 #_(reagent/render [drawing]

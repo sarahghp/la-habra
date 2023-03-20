@@ -24,7 +24,9 @@
       br-orange-dots br-orange-lines
       yellow-dots yellow-lines
       white-dots white-dots-lg white-lines
-      shadow noise]]))
+      shadow noise]]
+      [ui.animations :as animations :refer
+        [ anim ]]))
 
 
 ;; --------------- SETTINGS --------------------
@@ -32,14 +34,103 @@
 (def width (atom (.-innerWidth js/window)))
 (def height (atom (.-innerHeight js/window)))
 
+(def move-mask-1 [
+  "move-mask-1"
+  (gen-group {}
+    (->>
+     (gen-circ "#fff" 100 100 20)
+     (anim "loopy-left" "10s" "infinite")
+     (draw))
+   (->>
+    (gen-circ "#fff" 100 100 20)
+    (anim "loopy-left" "8s" "infinite" {:delay ".3s"})
+    (draw))
+  (->>
+   (gen-circ "#fff" 100 100 20)
+   (anim "loopy-right" "10s" "infinite")
+   (draw)))])
 
-(def mask-list [
-            [ "poly-mask"
-              [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
-            [ "poly-mask-2"
-                          [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" :animation "woosh-2 10s infinite"}}]]
-            [ "poly-mask-3"
-                          [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :animation "lump-morph 10s infinite"}}]]
+
+(def still-mask-1 [
+ "still-mask-1"
+ (gen-group {}
+   (->>
+    (gen-circ "#fff" 400 400 60)
+    #_(anim "loopy-left" "10s" "infinite")
+    (draw))
+  (->>
+   (gen-circ "#fff" 800 300 60)
+   #_(anim "loopy-left" "8s" "infinite" {:delay ".3s"})
+   (draw))
+ (->>
+  (gen-circ "#fff" 200 200 60)
+  #_(anim "loopy-right" "10s" "infinite")
+  (draw)))])
+
+
+(def box-1 [
+ "box-1"
+ (->>
+  (gen-rect white 0 0 (* 0.33 @width) (* 0.33 @height))
+  (draw))])
+
+(def box-2 [
+ "box-2"
+ (->>
+  (gen-rect white (* 0.33 @width) 0 (* 0.66 @width) (* 0.33 @height))
+  (draw))])
+
+(def box-3 [
+ "box-3"
+ (->>
+  (gen-rect white (* 0.66 @width) 0 @width (* 0.33 @height))
+  (draw))])
+
+(def box-4 [
+ "box-4"
+ (->>
+  (gen-rect white 0 (* 0.33 @height) (* 0.33 @width) (* 0.33 @height))
+  (draw))])
+
+(def box-5 [
+"box-5"
+(->>
+  (gen-rect white (* 0.33 @width) (* 0.33 @height) (* 0.33 @width) (* 0.33 @height))
+  (draw))])
+
+(def box-6 [
+ "box-6"
+ (->>
+  (gen-rect white (* 0.66 @width) (* 0.33 @height) (* 0.33 @width) (* 0.33 @height))
+  (draw))])
+
+(def box-7 [
+  "box-7"
+  (->>
+    (gen-rect white 0 (* 0.66 @height) (* 0.33 @width) (* 0.33 @height))
+    (draw))])
+
+(def box-8 [
+  "box-8"
+  (->>
+    (gen-rect white (* 0.33 @width) (* 0.66 @height) (* 0.33 @width) (* 0.33 @height))
+    (draw))])
+
+(def box-9 [
+ "box-9"
+ (->>
+  (gen-rect white (* 0.66 @width) (* 0.66 @height) (* 0.33 @width) (* 0.33 @height))
+  (draw))])
+
+(def mask-list
+  [ move-mask-1 still-mask-1
+  box-1 box-2 box-3 box-4 box-5 box-6 box-7 box-8 box-9
+    [ "poly-mask"
+      [:path {:d b2 :fill "#fff" :style { :transform-origin "center" :animation "woosh 2s infinite"}}]]
+    [ "poly-mask-2"
+      [:path {:d b3 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" :animation "woosh-2 10s infinite"}}]]
+    [ "poly-mask-3"
+      [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :animation "lump-morph 10s infinite"}}]]
 
                 [ "poly-mask-4"
                               [:path {:d l1 :fill "#fff" :style { :transform-origin "center" :transform "translate(20vw, 20vh)" }}]]

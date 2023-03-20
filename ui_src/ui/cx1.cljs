@@ -550,8 +550,9 @@
 (def trio (atom
       (gen-group
        {:style {:transform-origin "center"
-                :animation "rot 3s infinite"
-                }}
+       :transform-box "fill-box"
+
+                :animation "rot 13s infinite" }}
        (->>
          (gen-grid
            30 20
@@ -561,8 +562,11 @@
            (map draw)
            (map #(gen-group {:style
                              {:transform-origin "center"
-                              :transform "translate(-10vw, -10vh) scale(.3)"}} %))
-           (map #(gen-group {:style {:transform-origin "center" :opacity "1" :animation "ascend 1s infinite"}} %))))))
+                             :transform-box "fill-box"
+
+                              :transform "translate(-10vw, -10vh) scale(3)"}} %))
+           (map #(gen-group {:style {:transform-origin "center"             :transform-box "fill-box"
+ :opacity "1" :animation "ascend 10s infinite"}} %))))))
 
            (def trio2 (atom
                  (gen-group
@@ -578,7 +582,7 @@
                       (map draw)
                       (map #(gen-group {:style
                                         {:transform-origin "center"
-                                         :transform "translate(-10vw, -10vh) scale(.3)"}} %))
+                                         :transform "translate(-10vw, -10vh) scale(3)"}} %))
                       (map #(gen-group {:style {:transform-origin "center" :opacity ".7" :animation "rot 1s infinite"}} %))))))
 
 (def line-growth
@@ -765,73 +769,147 @@
 
             ))
 
-
-               (defn list3 [frame fast-frame  slow-frame svg-frame]
-                 (list
-                   (let
-                     [colors [
-                              "#000"
-                              midnight midnight midnight midnight
-                              midnight
-                              (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1))
-                              (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5))
-                              (pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3))
-
-                             mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
-                             ;mint mint mint mint
-                             ;navy navy navy navy
-                             ;blue blue blue blue
-                             ;mint mint mint mint
-                             ;pink pink pink pink
-                             ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
-                             ;br-orange br-orange br-orange br-orange
-                             ;yellow yellow yellow yellow
-                             ;yellow yellow yellow yellow
-                             ;white white white white
-                             ;(pattern (:id blue-lines-5)) blue (pattern (:id blue-lines-2))blue
-                              ;
-                              ]]
-                       (->>
-                         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
-                         (style {:opacity .95})
-                         (draw)))
-
-                         ;(doall (map deref levels))
-
-                        ;@trio
-
-                      ;(doall (map deref worms))
+    (def arc
+      (->>
+        (gen-group {:mask (url "still-mask-1") :style {:animation "woosh 2s infinite"}}
+         (->>
+          (gen-rect pink (* 0.2 @width) (* 0.2 @height) 200 200)
+          (draw)))
+       (atom)))
 
 
-                      (->>
-                       (gen-circ (pattern (:id pink-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
-                       (style {:transform (str "scale(" (val-cyc-rep frame 2 [14 20 60 20]) ")")})
-                       (draw)
-                       (when (nth-frame 1 frame)))
+(def deformed1 (deform hept 4 100))
+(def deformed2 (deform hept 5 100))
+(def deformed3 (deform hept 3 100))
+(def deformed4 (deform hept 4 100))
+(def deformed5 (deform hept 5 100))
+(def deformed6 (deform hept 3 100))
 
-                       (->>
-                        (gen-circ (pattern (:id yellow-lines-5)) (* 0.5 @width) (* 0.5 @height) 100)
-                        (style {:transform (str "scale(" (val-cyc-rep frame 2 [60 10 80 20]) ")")})
-                        (draw)
-                        (when (nth-frame 2 frame)))
+(defn list3 [frame fast-frame  slow-frame svg-frame]
+ (list
+   (let
+     [colors [
+              "#000"
+              midnight midnight midnight midnight
+              midnight
+              ;(pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1))
+              ;(pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5))
+              ;(pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3))
+
+            ; mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+             ;mint mint mint mint
+             ;navy navy navy navy
+             ;blue blue blue blue
+             ;mint mint mint mint
+             ;pink pink pink pink
+             ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
+             ;br-orange br-orange br-orange br-orange
+             ;yellow yellow yellow yellow
+             ;yellow yellow yellow yellow
+             ;white white white white
+             ;(pattern (:id blue-lines-5)) blue (pattern (:id blue-lines-2))blue
+              ;
+              ]]
+       (->>
+         (gen-rect (val-cyc frame colors) 0 0 "100vw" "100%")
+         (style {:opacity .95})
+         (draw)))
+
+         ;(doall (map deref levels))
 
 
-                      (when (nth-frame 1 frame) (gen-group {:mask (url "circs")}
-                        @c-test
-                        ))
-                      @mf3
-                      @mf3a
-
-                      ;@drops
-                      ;@move-me
-                      ;@move-me-4
+      ;(doall (map deref worms))
 
 
+      #_(->>
+       (gen-circ (pattern (:id pink-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
+       (style {:transform (str "scale(" (val-cyc-rep frame 2 [14 20 60 20]) ")")})
+       (draw)
+       (when (nth-frame 1 frame)))
+
+       #_(->>
+        (gen-circ (pattern (:id yellow-lines-5)) (* 0.5 @width) (* 0.5 @height) 100)
+        (style {:transform (str "scale(" (val-cyc-rep frame 2 [60 10 80 20]) ")")})
+        (draw)
+        (when (nth-frame 2 frame)))
+
+
+      #_(when (nth-frame 1 frame) (gen-group {:mask (url "circs")}
+        @c-test
+        ))
+      ;@mf3
+      ;@mf3a
 
 
 
+      ;@drops
+      ;@move-me
+      ;@move-me-4
+  ;@trio
 
-                        ))
+
+  #_(gen-group {:mask (url "move-mask-1")}
+    (when (nth-frame 1 frame)
+      (freak-out @width
+             @height
+             20
+             200
+             pink)))
+
+
+
+  (gen-group {:mask (url "box-1")}
+    (->>
+     (gen-shape (pattern (:id mint-lines-5)) deformed1)
+     (style {:transform "translate(10vw, 10vh) scale(2)"})
+     (draw)
+     (when (nth-frame 4 (- 1 frame)))))
+
+   (gen-group {:mask (url "box-2")}
+     (->>
+      (gen-shape (pattern (:id mint-lines-5)) deformed2 )
+      (style {:transform "translate(40vw, 10vh) scale(2)"})
+      (draw)
+      (when (nth-frame 4 (- 3 frame)))))
+
+  (gen-group {:mask (url "box-3")}
+    (->>
+     (gen-shape (pattern (:id mint-lines-5)) deformed3 )
+     (style {:transform "translate(80vw, 10vh) scale(2)"})
+     (draw)
+     (when (nth-frame 4 (- 5 frame)))))
+
+
+
+       (gen-group {:mask (url "box-7")}
+         (->>
+          (gen-shape (pattern (:id orange-lines-5)) deformed4 )
+          (style {:transform "translate(10vw, 70vh) scale(2)"})
+          (draw)
+          (when (nth-frame 4 (+ 1 frame)))))
+
+        (gen-group {:mask (url "box-8")}
+          (->>
+           (gen-shape (pattern (:id orange-lines-5)) deformed5 )
+           (style {:transform "translate(40vw, 70vh) scale(2)"})
+           (draw)
+           (when (nth-frame 4 (+ 3 frame)))))
+
+       (gen-group {:mask (url "box-9")}
+         (->>
+          (gen-shape (pattern (:id orange-lines-5)) deformed6)
+          (style {:transform "translate(80vw, 70vh) scale(2)"})
+          (draw)
+          (when (nth-frame 4 (+ 2 frame)))))
+
+
+          (->>
+           (gen-circ (pattern (:id white-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
+           (style {:transform "rotate(90deg) scale(30)"})
+           (draw)
+           (when (nth-frame 4 frame)))
+
+    ))
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
