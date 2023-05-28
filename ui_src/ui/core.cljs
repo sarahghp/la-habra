@@ -113,6 +113,7 @@
           [:circle {:id "testCirc2" :cx 0 :cy 0 :r 100 :fill (pattern (str "noise-" midnight))}]
 
      (map gen-grad all-fills)
+     (gen-grad pink yellow)
      (map identity masks)
      (map gen-color-noise all-fills)
      (map t/pattern-def-text [cd1 cd2 cd3 cd4])
@@ -135,8 +136,8 @@
              [
               ;"difference" "difference" "difference"
 
-             "multiply" "multiply" "multiply" "multiply"
-             ;"luminosity" "luminosity"
+             ;"multiply" "multiply" "multiply" "multiply"
+             "luminosity" "luminosity"
               ; "luminosity"
               ])))
 

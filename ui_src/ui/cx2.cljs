@@ -2,9 +2,10 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [ui.text :as t :refer [cd1 cd2 cd3 cd4]]
             [ui.helpers :refer [cos sin style url val-cyc deform]]
-            [ui.shapes :as shapes :refer [tri square pent hex hept oct
+            [ui.shapes :as shapes :refer [tri square pent hex hept oct arc
                                           b1 b2 b3 b4
-                                          l1 l2 l3 l4 l5 l6]]
+                                          l1 l2 l3 l4 l5 l6
+                                          scr1 scr2 scr3 scr4 scr5]]
             [ui.fills :as fills :refer
               [gray charcoal mint midnight navy blue orange
                 br-orange pink white yellow]]
@@ -515,134 +516,34 @@
 (defn cx2 [frame fast-frame slow-frame]
   (list
 
-    #_(doall (map deref all-the-moves))
-
-
-    ;@rr
+    ;; 💣
     ;(doall (map deref levels))
 
-   ; grid (80/20), b, c, d
-
-   ;(when (nth-frame 9 slow-frame) @a)
-   ;(when-not (nth-frame 3 slow-frame) @aaa)
-
-   ;(when (nth-frame 5 frame) @c)
 
 
-     #_(->>
-      (gen-rect white "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-      (draw)
-      (when (nth-frame 4 frame)))
+    ;; @sss 4 slow-frame
+    #_(when-not (nth-frame 4 slow-frame)
+      @sss)
 
-       #_(->>
-        (gen-rect blue "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-       (style {:transform "translate(50vw, 50vh)"})
-        (draw)
-        (when (nth-frame 3 frame)))
-
-         #_(->>
-          (gen-rect br-orange "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-         (style {:transform "translate(0vw, 50vh)"})
-          (draw)
-          (when (nth-frame 1 frame)))
-
-                #_(->>
-                 (gen-rect yellow "6vw" "6vw" (* 0.4 @width) (* 0.4 @height))
-                (style {:transform "translate(50vw, 0vh)"})
-                 (draw)
-                 (when (nth-frame 1 frame)))
-
-   ;(when (nth-frame 4 slow-frame) @sss)
-
-   ;(when (nth-frame 6 frame) @d)
-
-   #_(when (nth-frame 2 frame)(gen-line-grid mint 2
-     80 80
-     {:col 20 :row 20}))
-
-    ;@bb6
-    ;@bb6s
-
-   ;@scale-me
-   ;@rot-me
-
-   ;@drops
-   ;@drops2
 
    ;@babrect1
    ;@babrect2
 
 
 
-    #_(when (nth-frame 2 frame)
-      (freak-out @width
-                 @height
-                 40
-                 100
-                 orange))
+  ;@open
+  (->>
+   (gen-circ (url (str "grad-" white)) (* 0.5 @width) (* 0.5 @height) 300 )
+   (style {:transform "rotate(135deg)"})
+   (draw)
+   (when (nth-frame 4 frame)))
 
 
-  #_(when (nth-frame 1 frame)
-    (freak-out @width
-               @height
-               20
-               200
-               white))
-
-               #_(when (nth-frame 1 frame)
-                 (freak-out @width
-                            @height
-                            30
-                            300
-                            white))
+  #_(when (nth-frame 3 frame)(gen-line-grid charcoal 2
+    80 80
+    {:col 20 :row 20}))
 
 
-      #_(->>
-      (gen-circ (url (str "grad-" pink)) (* 0.5 @width) (* 0.5 @height) 300)
-      (style {:transform "rotate(135deg)"})
-      (draw)
-      (when (nth-frame 4 frame)))
-
-      #_(->>
-      (gen-circ (url (str "grad-" yellow)) (* 0.5 @width) (* 0.5 @height) 300)
-      (style {:transform "rotate(135deg)"})
-      (draw)
-      (when (nth-frame 0 frame)))
-
-      #_(when (nth-frame 6 frame)
-        (freak-out @width
-                   @height
-                   30
-                   100
-                   mint))
-
-#_(when (nth-frame 2 (+ 1 frame))(gen-line-grid white 2
-  80 80
-  {:col 20 :row 20})   )
-
-       ;@bb6a
-
-       ;@babrect3
-               ;@open
-                    (->>
-                     (gen-circ (url (str "grad-" navy)) (* 0.5 @width) (* 0.5 @height) 300 )
-                     (style {:transform "rotate(135deg)"})
-                     (draw)
-                     (when (nth-frame 2 frame)))
-
-                       #_(when (nth-frame 1 frame)
-                         (freak-out @width
-                                    @height
-                                    20
-                                    200
-                                    charcoal))
-
-                                    #_(when (nth-frame 1 frame)
-                                      (freak-out @width
-                                                 @height
-                                                 30
-                                                 300
-                                                 white))
 
 
    ))

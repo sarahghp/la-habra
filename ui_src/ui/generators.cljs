@@ -274,5 +274,5 @@
   ([start start-opacity end end-opacity]
     (let [grad-name (if (= start end) (str "grad-" start) (str "grad-" start "-" end))]
       [:linearGradient { :id grad-name :key (random-uuid)}
-                       [:stop { :offset "0" :stop-color start :stop-opacity "0" }]
-                       [:stop { :offset "1" :stop-color end :stop-opacity "1" }]])))
+                       [:stop { :offset "0" :stop-color start :stop-opacity start-opacity }]
+                       [:stop { :offset "1" :stop-color end :stop-opacity end-opacity }]])))

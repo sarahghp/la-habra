@@ -6,7 +6,8 @@
        br-orange pink white yellow]]
    [ui.shapes :as shapes :refer [tri square pent hex hept oct
                                  b1 b2 b3 b4
-                                 l1 l2 l3 l4 l5 l6]]
+                                 l1 l2 l3 l4 l5 l6
+                                 ll1 ll2 ll3 ll4 ll5]]
    [ui.generators :refer
     [freak-out new-freakout scatter lerp
      gen-circ gen-line gen-poly gen-rect gen-shape draw
@@ -364,6 +365,33 @@
   (str "path('"l5"')")
   (str "path('"l6"')")
   (str "path('"l1"')")
+]))
+
+
+(make-frames!
+ "lump-morph-2"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"ll1"')")
+  (str "path('"ll2"')")
+  (str "path('"ll3"')")
+  (str "path('"ll4"')")
+  (str "path('"ll5"')")
+  (str "path('"ll4"')")
+  (str "path('"ll1"')")
+]))
+
+(make-frames!
+ "lump-morph-3"
+  [0 15 30 45 60 75 100]
+ (make-body "d" [
+  (str "path('"ll2"')")
+  (str "path('"ll5"')")
+  (str "path('"ll1"')")
+  (str "path('"ll4"')")
+  (str "path('"ll3"')")
+  (str "path('"ll1"')")
+  (str "path('"ll5"')")
 ]))
 
 (a-to-b-to-a! "l1l6" "d"

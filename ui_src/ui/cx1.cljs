@@ -5,6 +5,7 @@
             [ui.shapes :as shapes :refer [tri square pent hex hept oct arc
                                           b1 b2 b3 b4
                                           l1 l2 l3 l4 l5 l6
+                                          ll1 ll2 ll3 ll4 ll5
                                           ul2 ul3
                                           scr1 scr2 scr3 scr4 scr5]]
             [ui.fills :as fills :refer
@@ -58,41 +59,39 @@
        (draw))
      (range 20))))
 
-
-     (def dr
-       (atom  (map
-          #(->>
-            (gen-rect white (+ 0 (* % 160)) 10 400 260)
-            (anim "etof" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
-            (style {:mix-blend-mode "color-dodge"})
-            (draw))
-          (range 10))))
-
-               (def op
-                 (atom  (map
-                    #(->>
-                      (gen-rect white (+ 0 (* % 160)) 10 400 260)
-                      (anim "ascend" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
-                      (style {:mix-blend-mode "color-dodge"})
-                      (draw))
-                    (range 10))))
-
-(def drops3
-  (atom  (map
-     #(->>
-       (gen-rect white (+ 30 (* % 160)) 10 200 36)
-       (anim "etof" "2.2s" "infinite" {:delay (str (* .7 %) "s")})
-       (style {:mix-blend-mode "color-dodge"})
-       (draw))
-     (range 20))))
-
-
 (def drops2
   (atom  (map
      #(->>
        (gen-rect white (+ 30 (* % 160)) 10 200 36)
        (anim "slide-up" "2.2s" "infinite" {:delay (str (* .5 %) "s")})
        (style {:mix-blend-mode "color-dodge"})
+       (draw))
+     (range 10))))
+
+(def drops3
+ (atom  (map
+    #(->>
+      (gen-rect white (+ 30 (* % 160)) 10 200 36)
+      (anim "etof" "2.2s" "infinite" {:delay (str (* .7 %) "s")})
+      (style {:mix-blend-mode "color-dodge"})
+      (draw))
+    (range 20))))
+
+(def dr
+  (atom  (map
+     #(->>
+       (gen-rect white (+ 0 (* % 160)) 10 400 260)
+       (anim "etof" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
+       (style {:mix-blend-mode "color-burn"})
+       (draw))
+     (range 10))))
+
+ (def op
+  (atom  (map
+     #(->>
+       (gen-rect white (+ 0 (* % 160)) 10 400 260)
+       (anim "ascend" "3.2s" "infinite" {:delay (str (* .5 %) "s")})
+       (style {:mix-blend-mode "color-burn"})
        (draw))
      (range 10))))
 
@@ -115,6 +114,16 @@
    (draw)
    #_(gen-group {:style {:animation "rot 2s infinite .4s"}})
    (atom)))
+
+   (def spinlm3
+     (->>
+      (gen-shape mint l1)
+      (style {:opacity .7 :transform "translate(30vw, 30vh) scale(3)"})
+
+       (anim "l1l6" "23s" "infinite")
+      (draw)
+      #_(gen-group {:style {:animation "rot 2s infinite .4s"}})
+      (atom)))
 
    (def spinlm4
      (->>
@@ -140,11 +149,10 @@
  (draw)
  (atom)))
 
-(def lm5 (->>
-  (gen-shape mint l1)
-  (style {:transform "translate(10vw, 10vh) scale(2.5)"})
-  (style {:mix-blend-mode "overlay"})
-  (anim "l1l6" "16s" "infinite")
+(def lm3 (->>
+  (gen-shape pink l1)
+  (style {:transform "translate(20vw, 20vh) scale(3)" :mix-blend-mode "color-dodge"})
+  (anim "l2l4" "3s" "infinite")
   (draw)
   (atom)))
 
@@ -156,6 +164,14 @@
  (draw)
  (atom)))
 
+(def lm5 (->>
+  (gen-shape mint l1)
+  (style {:transform "translate(10vw, 10vh) scale(2.5)"})
+  (style {:mix-blend-mode "overlay"})
+  (anim "l1l6" "16s" "infinite")
+  (draw)
+  (atom)))
+
 (def lm6 (->>
  (gen-shape mint l1)
  (style {:transform "translate(42vw, 18vh) scale(-3.5)"})
@@ -165,14 +181,66 @@
  (gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
  (atom)))
 
+ (def llm1 (->>
+  (gen-shape clear ll1)
+  (style {:stroke mint
+          :stroke-width 10
+          :stroke-dasharray 20
+          :stroke-dashoffset 20
+          :stroke-linecap "round"
+          :stroke-join "round"})
+  ;(style {:transform "translate(42vw, 18vh) scale(-3.5)"})
+  ;(style {:mix-blend-mode "overlay" :opacity .7})
+  (anim "lump-morph-2" "16s" "infinite")
+  (draw)
+  ;(gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
+  (atom)))
 
-
-(def lm3 (->>
- (gen-shape pink l1)
- (style {:transform "translate(20vw, 20vh) scale(1)" :mix-blend-mode "color-dodge"})
- (anim "l2l4" "3s" "infinite")
+(def llm2 (->>
+ (gen-shape clear ll1)
+ (style {:stroke white
+         :stroke-width 10
+         :stroke-dasharray 20
+         :stroke-dashoffset 20
+         :stroke-linecap "round"
+         :stroke-join "round"})
+ (style {:transform "translate(42vw, 18vh) scale(-3.5)"})
+ ;(style {:mix-blend-mode "overlay" :opacity .7})
+ (anim "lump-morph-2" "16s" "infinite")
  (draw)
+ ;(gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
  (atom)))
+
+ (def llm4 (->>
+  (gen-shape clear ll1)
+  (style {:stroke white
+          :stroke-width 10
+          :stroke-dasharray 20
+          :stroke-dashoffset 20
+          :stroke-linecap "round"
+          :stroke-join "round"})
+  (style {:transform "translate(22vw, 8vh) scale(-3.5)"})
+  ;(style {:mix-blend-mode "overlay" :opacity .7})
+  (anim "lump-morph-2" "6s" "infinite")
+  (draw)
+  ;(gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
+  (atom)))
+
+
+ (def llm3 (->>
+  (gen-shape clear ll1)
+  (style {:stroke orange
+          :stroke-width 10
+          :stroke-dasharray 20
+          :stroke-dashoffset 20
+          :stroke-linecap "round"
+          :stroke-join "round"})
+  (style {:transform "translate(42vw, 18vh)"})
+  ;(style {:mix-blend-mode "overlay" :opacity .7})
+  (anim "lump-morph-3" "16s" "infinite")
+  (draw)
+  ;(gen-group {:style {:transform-origin "center" :animation "ascend 8s infinite"}})
+  (atom)))
 
 (def babrect1
   (->>
@@ -243,11 +311,11 @@
 
 (def move-me-5
   (->>
-   (gen-shape clear scr1)
-   (style {:stroke yellow
+   (gen-shape clear scr5)
+   (style {:stroke pink
            :stroke-width 5})
    (style {:opacity 1 :transform-origin "center" :transform "scale(4.4)"})
-   (anim "woosh" "8s" "infinite")
+   (anim "woosh-2" "8s" "infinite")
    (draw)
    (atom)))
 
@@ -346,7 +414,7 @@
 
 (def sc-circ-2
   (->>
-   (gen-circ (pattern (:id pink-lines)) (* 0.5 @width) (* 0.4 @height) 100)
+   (gen-circ (pattern (:id blue-lines)) (* 0.5 @width) (* 0.4 @height) 100)
    (anim "scaley-huge" "5s" "infinite" {:delay "1.2s"})
    (draw)
    (atom)))
@@ -365,20 +433,19 @@
    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(5)"}})
    (atom)))
 
-
-   (def mf6
-     (->>
-      (gen-shape "hsla(100, 100%, 100%, 0)" l1)
-      (style {:stroke orange
-              :stroke-width 14
-              :stroke-dasharray 100
-              :stroke-dashoffset 100
-              :stroke-linecap "round"
-              :stroke-join "round"})
-      (anim "lump-morph" "10s" "infinite")
-      (draw)
-      (gen-group {:style {:transform-origin "center" :transform "translate(-20vw, -25vh) scale(5)"}})
-      (atom)))
+(def mf2
+ (->>
+  (gen-shape "hsla(100, 100%, 100%, 0)" l1)
+  (style {:stroke pink
+          :stroke-width 14
+          :stroke-dasharray 100
+          :stroke-dashoffset 100
+          :stroke-linecap "round"
+          :stroke-join "round"})
+  (anim "l1l6" "8s" "infinite" {:delay "1.2s"} )
+  (draw)
+  (gen-group {:style {:transform-origin "center" :transform "translate(-20vw, -10vh) scale(5)"}})
+  (atom)))
 
 (def mf3
   (->>
@@ -395,34 +462,34 @@
    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)" :animation "ascend 12s infinite" }})
    (atom)))
 
-   (def mf3a
-     (->>
-      (gen-shape "hsla(100, 100%, 100%, 0)" l1)
-      (style {:stroke yellow
-              :stroke-width 14
-              :stroke-dasharray 100
-              :stroke-dashoffset 100
-              ;å:stroke-linecap "round"
-              ;:stroke-join "round"
-              })
-      (anim "lump-morph" "14s" "infinite")
-      (draw)
-      (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)" }})
-      (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)" :animation "ascend 18s infinite" }})
-      (atom)))
+ (def mf3a
+   (->>
+    (gen-shape "hsla(100, 100%, 100%, 0)" l1)
+    (style {:stroke yellow
+            :stroke-width 14
+            :stroke-dasharray 100
+            :stroke-dashoffset 100
+            ;å:stroke-linecap "round"
+            ;:stroke-join "round"
+            })
+    (anim "lump-morph" "14s" "infinite")
+    (draw)
+    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)" }})
+    (gen-group {:style {:transform-origin "center" :transform "translate(20vw, 15vh) scale(3)" :animation "ascend 18s infinite" }})
+    (atom)))
 
-(def mf2
+(def mf6
   (->>
    (gen-shape "hsla(100, 100%, 100%, 0)" l1)
-   (style {:stroke mint
+   (style {:stroke orange
            :stroke-width 14
            :stroke-dasharray 100
            :stroke-dashoffset 100
            :stroke-linecap "round"
            :stroke-join "round"})
-   (anim "l1l6" "8s" "infinite" {:delay "1.2s"} )
+   (anim "lump-morph" "10s" "infinite")
    (draw)
-   (gen-group {:style {:transform-origin "center" :transform "translate(-10vw, -10vh) scale(5)"}})
+   (gen-group {:style {:transform-origin "center" :transform "translate(-20vw, -25vh) scale(5)"}})
    (atom)))
 
 
@@ -761,7 +828,7 @@
                                      @spinlm2
 
 
-            ;@bb6
+            @bb6
 
 
 
@@ -778,32 +845,40 @@
        (atom)))
 
 
-(def deformed1 (deform hept 4 100))
-(def deformed2 (deform hept 5 100))
-(def deformed3 (deform hept 3 100))
-(def deformed4 (deform hept 4 100))
+(def deformed1 (deform tri 4 100))
+(def deformed2 (deform square 5 100))
+(def deformed3 (deform pent 3 100))
+(def deformed4 (deform hex 4 100))
 (def deformed5 (deform hept 5 100))
-(def deformed6 (deform hept 3 100))
+(def deformed6 (deform oct 3 100))
+
+(def up1 (atom (gen-group {:style {:animation "ascend 10s infinite"}} @c-test)))
+(def up2 (atom (gen-group {:style {:animation "ascend 10s infinite"}} @spinlm)))
+
 
 (defn list3 [frame fast-frame  slow-frame svg-frame]
  (list
    (let
      [colors [
-              "#000"
-              midnight midnight midnight midnight
-              midnight
-              ;(pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1))
-              ;(pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5))
+              ;"#000"
+              ;midnight midnight midnight midnight
+              ;midnight
+              ;(pattern (:id pink-lines-1)) (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-1))
+              ;(pattern (:id pink-lines-5)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-5))
               ;(pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3)) (pattern (:id midnight-lines-3))
 
-            ; mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
+            ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
              ;mint mint mint mint
+
              ;navy navy navy navy
              ;blue blue blue blue
+
              ;mint mint mint mint
              ;pink pink pink pink
-             ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
+             pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
              ;br-orange br-orange br-orange br-orange
+             ;(pattern (:id  br-orange-lines-1)) (pattern (:id  br-orange-lines-1)) (pattern (:id  br-orange-lines-1))
+
              ;yellow yellow yellow yellow
              ;yellow yellow yellow yellow
              ;white white white white
@@ -815,103 +890,14 @@
          (style {:opacity .95})
          (draw)))
 
-         ;(doall (map deref levels))
+         ;; WORMS
+         ;; DR OP MAYBE
 
+         ;(doall (map deref worms))
 
-      ;(doall (map deref worms))
-
-
-      #_(->>
-       (gen-circ (pattern (:id pink-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
-       (style {:transform (str "scale(" (val-cyc-rep frame 2 [14 20 60 20]) ")")})
-       (draw)
-       (when (nth-frame 1 frame)))
-
-       #_(->>
-        (gen-circ (pattern (:id yellow-lines-5)) (* 0.5 @width) (* 0.5 @height) 100)
-        (style {:transform (str "scale(" (val-cyc-rep frame 2 [60 10 80 20]) ")")})
-        (draw)
-        (when (nth-frame 2 frame)))
-
-
-      #_(when (nth-frame 1 frame) (gen-group {:mask (url "circs")}
-        @c-test
-        ))
-      ;@mf3
-      ;@mf3a
-
-
-
-      ;@drops
-      ;@move-me
-      ;@move-me-4
-  ;@trio
-
-
-  #_(gen-group {:mask (url "move-mask-1")}
-    (when (nth-frame 1 frame)
-      (freak-out @width
-             @height
-             20
-             200
-             pink)))
-
-
-
-  #_(gen-group {:mask (url "box-1")}
-    (->>
-     (gen-shape (pattern (:id mint-lines-5)) deformed1)
-     (style {:transform "translate(10vw, 10vh) scale(2)"})
-     (draw)
-     (when (nth-frame 4 (- 1 frame)))))
-
-   #_(gen-group {:mask (url "box-2")}
-     (->>
-      (gen-shape (pattern (:id mint-lines-5)) deformed2 )
-      (style {:transform "translate(40vw, 10vh) scale(2)"})
-      (draw)
-      (when (nth-frame 4 (- 3 frame)))))
-
-  #_(gen-group {:mask (url "box-3")}
-    (->>
-     (gen-shape (pattern (:id mint-lines-5)) deformed3 )
-     (style {:transform "translate(80vw, 10vh) scale(2)"})
-     (draw)
-     (when (nth-frame 4 (- 5 frame)))))
-
-
-
-       #_(gen-group {:mask (url "box-7")}
-         (->>
-          (gen-shape (pattern (:id orange-lines-5)) deformed4 )
-          (style {:transform "translate(10vw, 70vh) scale(2)"})
-          (draw)
-          (when (nth-frame 4 (+ 1 frame)))))
-
-        #_(gen-group {:mask (url "box-8")}
-          (->>
-           (gen-shape (pattern (:id orange-lines-5)) deformed5 )
-           (style {:transform "translate(40vw, 70vh) scale(2)"})
-           (draw)
-           (when (nth-frame 4 (+ 3 frame)))))
-
-       #_(gen-group {:mask (url "box-9")}
-         (->>
-          (gen-shape (pattern (:id orange-lines-5)) deformed6)
-          (style {:transform "translate(80vw, 70vh) scale(2)"})
-          (draw)
-          (when (nth-frame 4 (+ 2 frame)))))
-
-
-          #_(->>
-           (gen-circ (pattern (:id white-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
-           (style {:transform "rotate(90deg) scale(30)"})
-           (draw)
-           (when (nth-frame 4 frame)))
-
-           (->>
+        #_(->>
             (gen-shape clear arc)
-            (style {:transform "translate(30vw, 30vh) scale(3)"})
+            (style {:transform "translate(70vw, 40vh) scale(7) rotate(-35deg)"})
             (style {:stroke blue
                     :stroke-width 8
                     :stroke-dasharray 12
@@ -920,13 +906,120 @@
             (draw)
             (when (nth-frame 4 frame)))
 
-            (->>
+            ;@up1
+            #_(->>
              (gen-shape (pattern (:id mint-lines-5)) arc)
-             (style {:transform "translate(60vw, 30vh) scale(3)"})
+             (style {:transform "translate(50vw, 50vh) scale(8)"})
              (draw)
              (when (nth-frame 6 frame)))
 
+             @sc-circ
+             @sc-circ-2
 
+             ;@lm3
+             ;@lm5
+             ;@move-me-3
+
+
+
+
+
+             #_(->>
+              (gen-shape clear scr1)
+              (style {:transform (str "translate(40vw, 40vh) scale(" (val-cyc-rep frame 2 [2 10 6]) ") rotate(125deg)")})
+              (style {:stroke (url (str "grad-" pink "-" yellow))
+                      :stroke-width 8
+                      :stroke-dasharray 0
+                      :stroke-dashoffset 0})
+              (draw)
+              (when (nth-frame 2 (+ 1 frame))))
+
+
+            ;; DO A DEFOREMED SHAPE
+            ;; LLMs || MFs NULL 2 6 || MF 3A || MF 3 || TRIO
+
+            #_(->>
+             (gen-shape (pattern (:id mint-lines-5)) deformed1)
+             (style {:transform "translate(10vw, 30vh) scale(7)"})
+             (draw)
+             (when (nth-frame 1 frame)))
+
+             #_(->>
+              (gen-shape (pattern (:id white-lines-5)) deformed2)
+              (style {:transform "translate(30vw, 30vh) scale(5)"})
+              (draw)
+              (when (nth-frame 1 frame)))
+
+              #_(->>
+               (gen-shape (pattern (:id navy-lines-3)) deformed3)
+               (style {:transform "translate(70vw, 30vh) scale(4)"})
+               (draw)
+               (when (nth-frame 1 (+ 1 frame))))
+
+
+
+            (->>
+              (gen-shape (pattern (:id white-dots-3)) deformed4)
+              (style {:transform "translate(60vw, 50vh) scale(4)"})
+              (draw)
+              (when (nth-frame 3 frame)))
+
+              (->>
+               (gen-shape (pattern (:id white-lines-1)) deformed5)
+               (style {:transform "translate(30vw, 50vh) scale(5)"})
+               (draw)
+               (when (nth-frame 5 frame)))
+
+               #_(->>
+                (gen-shape (pattern (:id white-dots-3)) deformed1)
+                (style {:transform "translate(50vw, 40vh) scale(4)"})
+                (draw)
+                (when (nth-frame 1 (+ 1 frame))))
+
+                ;@sc-circ
+                ;@sc-circ-2
+
+             @move-me
+            @move-me-4
+
+             @mf
+             @mf2
+
+             (when (nth-frame 5 frame)
+               (freak-out @width
+                          @height
+                          30
+                          300
+                          mint))
+                          ;@mf
+                          ;@mf2
+                          @mf6
+
+
+
+      #_(->>
+       (gen-circ (pattern (:id white-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
+       (style {:transform "rotate(90deg) scale(30)"})
+       (draw)
+       (when (nth-frame 2 frame)))
+
+       (->>
+        (gen-circ (pattern (:id midnight-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
+        (style {:transform "rotate(90deg) scale(30)"})
+        (draw)
+        (when (nth-frame 7 frame)))
+
+
+               #_(->>
+                (gen-circ (pattern (:id pink-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
+                (style {:transform (str "scale(" (val-cyc-rep frame 2 [14 20 60 20]) ")")})
+                (draw)
+                (when (nth-frame 3 frame)))
+
+                ;@dr @op
+
+                @llm2 @llm4
+                ;@llm1 @llm3
 
     ))
 
