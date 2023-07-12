@@ -668,6 +668,22 @@
        atom))
     (range 20)))
 
+    (def line-growth-2
+       (map-indexed
+        (fn [idx item]
+          (->>
+           (gen-rect midnight
+                     0
+                     (* (+ 1 idx) 0.07 @height)
+                     @width
+                     (* 4 (+ 1 idx) 0.001 @height))
+           ;(style {:mix-blend-mode "color-dodge"})
+           (anim "small-scale-y" "1s" "infinite"
+                 {:delay (str (* idx .1) "s")})
+           (draw)
+           atom))
+        (range 20)))
+
 
 (def blobs
   (atom
@@ -751,7 +767,9 @@
 
  (defn list1 [frame fast-frame slow-frame svg-frame]
    (list
-     (doall (map deref worms))
+     (->>
+      (gen-rect midnight 0 0 "100vw" "100%")
+      (draw))
      (let
        [colors [
                 midnight midnight midnight midnight
@@ -760,7 +778,7 @@
                 ;mint mint (pattern (:id mint-dots)) (pattern (:id mint-dots)) mint (pattern (:id mint-lines))
                ;mint mint mint mint
                ;mint mint mint mint
-               pink pink pink pink
+               ;pink pink pink pink
                ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
                ;br-orange br-orange br-orange br-orange
                ;yellow yellow yellow yellow
@@ -774,13 +792,15 @@
            (style {:opacity .95})
            (draw)))
 
-                (->>
+           ;@spinlm3
+
+                #_(->>
                  (gen-rect (pattern (:id white-lines-4)) 100 100 "30%" "30%")
                  (style {:mix-blend-mode "luminosity"})
                  (draw)
                  (when (nth-frame 2 slow-frame)))
 
-                 (->>
+                 #_(->>
                   (gen-rect (pattern (:id white-dots-5)) 400 100 "30%" "20%")
                   (style {:mix-blend-mode "luminosity" })
 
@@ -788,14 +808,28 @@
                   (when (nth-frame 3 slow-frame)))
 
 
-                  (->>
+                  #_(->>
                    (gen-rect (pattern (:id white-lines-4)) 300 300 "50%" "50%")
                   (style {:mix-blend-mode "luminosity"})
 
                    (draw)
                    (when (nth-frame 4 slow-frame)))
 
-                  ;@move-me-5
+                  @move-me-5
+                  @move-me-a
+                  @move-me-b
+
+                  @move-me-2
+                  @move-me-4
+
+                  @move-me-9
+
+
+                  ;(doall (map deref line-growth-2))
+
+                  @spinlm2
+
+
 
 
            ))
@@ -807,12 +841,12 @@
                   ;midnight midnight midnight midnight
                   ;midnight (pattern (:id midnight-lines-1)) (pattern (:id midnight-lines-5)) (pattern (:id midnight-lines-3))
 
-                  midnight midnight (pattern (:id midnight-dots-4)) (pattern (:id midnight-dots-3)) midnight (pattern (:id midnight-lines-5))
+                  ;midnight midnight (pattern (:id midnight-dots-4)) (pattern (:id midnight-dots-3)) midnight (pattern (:id midnight-lines-5))
                  ;mint mint mint mint
                  ;mint mint mint mint
                  ;pink pink pink pink
                  ;pink (pattern (:id pink-lines-4)) pink (pattern (:id pink-dots-5))
-                 ;br-orange br-orange br-orange br-orange
+                 br-orange br-orange br-orange br-orange
                  ;yellow yellow yellow yellow
                  ;yellow yellow yellow yellow
                  ;white white white white
@@ -893,7 +927,7 @@
          ;; WORMS
          ;; DR OP MAYBE
 
-         ;(doall (map deref worms))
+         (doall (map deref worms))
 
         #_(->>
             (gen-shape clear arc)
@@ -913,12 +947,12 @@
              (draw)
              (when (nth-frame 6 frame)))
 
-             @sc-circ
-             @sc-circ-2
+             ;@sc-circ
+             ;@sc-circ-2
 
              ;@lm3
              ;@lm5
-             ;@move-me-3
+             @move-me-3
 
 
 
@@ -979,13 +1013,13 @@
                 ;@sc-circ
                 ;@sc-circ-2
 
-             @move-me
-            @move-me-4
+             ;@move-me
+            ;@move-me-4
 
-             @mf
-             @mf2
+             ;@mf
+             ;@mf2
 
-             (when (nth-frame 5 frame)
+             #_(when (nth-frame 5 frame)
                (freak-out @width
                           @height
                           30
@@ -993,7 +1027,7 @@
                           mint))
                           ;@mf
                           ;@mf2
-                          @mf6
+                          ;@mf6
 
 
 
@@ -1003,7 +1037,7 @@
        (draw)
        (when (nth-frame 2 frame)))
 
-       (->>
+       #_(->>
         (gen-circ (pattern (:id midnight-lines-3)) (* 0.5 @width) (* 0.5 @height) 100)
         (style {:transform "rotate(90deg) scale(30)"})
         (draw)
@@ -1016,24 +1050,25 @@
                 (draw)
                 (when (nth-frame 3 frame)))
 
-                ;@dr @op
 
-                @llm2 @llm4
+                @dr @op
+
+                ;@llm2 @llm4
                 ;@llm1 @llm3
 
     ))
 
 (defn cx [fast-frame frame slow-frame svg-frame]
   (val-cyc svg-frame [
+    (list1 fast-frame frame slow-frame svg-frame)
     ;(list1 fast-frame frame slow-frame svg-frame)
-    ;(list1 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
+    ;(list3 fast-frame frame slow-frame svg-frame)
     ;(list2 fast-frame frame slow-frame svg-frame)
     ;(list1 fast-frame frame slow-frame svg-frame)
     ;(list2 fast-frame frame slow-frame svg-frame)
     ;(list1 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
-    (list3 fast-frame frame slow-frame svg-frame)
+    ;(list3 fast-frame frame slow-frame svg-frame)
+    ;(list3 fast-frame frame slow-frame svg-frame)
 
 
   ])) ; cx end

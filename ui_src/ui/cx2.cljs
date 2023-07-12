@@ -525,6 +525,9 @@
     #_(when-not (nth-frame 4 slow-frame)
       @sss)
 
+      #_(when-not (nth-frame 6 slow-frame)
+        @bbb)
+
 
    ;@babrect1
    ;@babrect2
@@ -532,14 +535,14 @@
 
 
   ;@open
-  (->>
+  #_(->>
    (gen-circ (url (str "grad-" white)) (* 0.5 @width) (* 0.5 @height) 300 )
    (style {:transform "rotate(135deg)"})
    (draw)
    (when (nth-frame 4 frame)))
 
 
-  #_(when (nth-frame 3 frame)(gen-line-grid charcoal 2
+  #_(when (nth-frame 2 frame)(gen-line-grid charcoal 2
     80 80
     {:col 20 :row 20}))
 
